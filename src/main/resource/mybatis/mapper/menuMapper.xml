@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuyang.crm.dao.MenuDao">
+
+    <resultMap id="menuResult" type="Menu">
+        <id column="menuID" property="menuID"/>
+        <result column="userID" property="userID"/>
+        <result column="menuName" property="menuName"/>
+        <result column="menuUrl" property="menuUrl"/>
+        <result column="parentID" property="parentID"/>
+    </resultMap>
+
+    <sql id="menuSql">
+        menuID,
+        userID,
+        menuName,
+        menuUrl,
+        parentID
+    </sql>
+
+    <select id="menuList" parameterType="Menu" resultMap="menuResult">
+        SELECT
+        <include refid="menuSql"/>
+        FROM menu
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="menuID != null">AND
+                menuID = #{menuID}
+            </if>
+            <if test="userID != null">AND
+                userID = #{userID}
+            </if>
+            <if test="menuName != null">AND
+                menuName like '%' || #{menuName} || '%'
+            </if>
+            <if test="parentID != null">AND
+                parentID = #{parentID}
+            </if>
+        </trim>
+    </select>
+
+    <select id="menuInfo" parameterType="Menu" resultMap="menuResult">
+        SELECT
+        <include refid="menuSql"/>
+        FROM menu
+        WHERE  menuID = #{menuID}
+    </select>
+
+    <insert id="insertMenu" parameterType="Menu">
+        INSERT menu(
+        userID,
+        menuName,
+        menuUrl,
+        parentID
+        )VALUES
+        (
+        #{userID},
+        #{menuName},
+        #{menuUrl},
+        #{parentID}
+        )
+    </insert>
+
+    <update id="updateMenu" parameterType="Menu">
+        UPDATE menu SET
+        menuName = #{menuName}
+        WHERE  menuID = #{menuID}
+    </update>
+
+</mapper>

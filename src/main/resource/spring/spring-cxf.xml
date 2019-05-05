@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://cxf.apache.org/jaxws
+       http://cxf.apache.org/schemas/jaxws.xsd"
+       xmlns="http://www.springframework.org/schema/beans">
+
+    <!-- WebService的实现Bean定义 -->
+    <bean id="userService" class="com.xuyang.crm.cxf.CxfWebServiceImpl" />
+
+    <import resource="classpath:META-INF/cxf/cxf.xml" />
+    <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+    <!--
+    1、访问接口服务：http://localhost:8080/webservice/soap/userService?wsdl
+    2、访问接口中的方法：
+    http://localhost:8080/webservice/userService/getUserName?userId=aaa
+    或：http://localhost:8080/webservice/soap/userService/getUserName?arg0=aaa
+    -->
+    <jaxws:endpoint id="cxfWebservice" address="/soap/userService" implementor="com.xuyang.crm.cxf.CxfWebServiceImpl"/>
+
+</beans>

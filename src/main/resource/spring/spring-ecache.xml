@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+    <context:component-scan base-package="com.xuyang.crm"/>
+
+    <bean id="ehCacheManagerFactoryBean" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="cacheManagerName" value="ecahce"/>
+        <property name="configLocation" value="classpath:ecache/ehcache.xml"/>
+    </bean>
+
+    <bean id="ehCacheFactoryBean" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+        <property name="cacheManager" ref="ehCacheManagerFactoryBean"/>
+        <property name="cacheName" value="ecacheNaeme"/>
+    </bean>
+
+    <bean id="ehCacheCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <property name="cacheManager" ref="ehCacheManagerFactoryBean"/>
+    </bean>
+
+</beans>

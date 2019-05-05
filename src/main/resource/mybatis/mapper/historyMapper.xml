@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuyang.crm.dao.HistoryDao">
+
+    <resultMap id="historyResult" type="History">
+        <id column="historyID" property="historyID"/>
+        <result column="userID" property="userID"/>
+        <result column="historyName" property="historyName"/>
+        <result column="historyContext" property="historyContext"/>
+        <result column="historyStatue" property="historyStatue"/>
+    </resultMap>
+
+    <sql id="historySql">
+        historyID,
+        userID,
+        historyName,
+        historyContext,
+        historyStatue
+    </sql>
+
+    <select id="historyList" parameterType="History" resultMap="historyResult">
+        SELECT
+        <include refid="historySql"/>
+        FROM history
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="historyID != null">AND
+                historyID = #{historyID}
+            </if>
+            <if test="userID != null">AND
+                userID = #{userID}
+            </if>
+            <if test="historyName != null">AND
+                historyName like '%' || #{historyName} || '%'
+            </if>
+            <if test="birthday != null">AND
+                historyContext like '%' || #{historyContext} || '%'
+            </if>
+            <if test="email != null">AND
+                historyStatue like '%' || #{historyStatue} || '%'
+            </if>
+        </trim>
+    </select>
+
+    <select id="historyInfo" parameterType="History" resultMap="historyResult">
+        SELECT
+        <include refid="historySql"/>
+        FROM history
+        WHERE  historyID = #{historyID}
+    </select>
+
+    <insert id="insertHistory" parameterType="History">
+        INSERT history(
+        userID,
+        historyName,
+        historyContext,
+        historyStatue
+        )VALUES
+        (
+        #{userID},
+        #{historyName},
+        #{historyContext},
+        #{historyStatue}
+        )
+    </insert>
+</mapper>

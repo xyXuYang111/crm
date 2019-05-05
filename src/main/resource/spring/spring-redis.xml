@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+    <context:property-placeholder location="classpath:properties/xuyang.properties"/>
+    <!-- redis配置 -->
+    <!-- redis连接池 -->
+    <bean id="jedisConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="300"/>
+        <property name="maxIdle" value="200"/>
+        <property name="MaxWaitMillis" value="10000"/>
+        <property name="testOnBorrow" value="true"/>
+        <property name="testOnReturn" value="true"/>
+    </bean>
+
+    <!-- redis连接工厂 -->
+    <bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <property name="hostName" value="${hostName}"/>
+        <property name="port" value="${port}"/>
+        <property name="password" value="${pwd}"/>
+        <property name="poolConfig" ref="jedisConfig"/>
+    </bean>
+
+    <!-- redis操作模板，这里采用尽量面向对象的模板 -->
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="keySerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+        </property>
+        <property name="valueSerializer">
+            <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
+        </property>
+        <property name="hashKeySerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+        </property>
+        <property name="hashValueSerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+        </property>
+    </bean>
+
+    <!--自定义redis工具类,在需要缓存的地方注入此类  -->
+    <bean id="redisrCacheManager" class="com.xuyang.crm.redis.RedisService">
+        <property name="redisTemplate" ref="redisTemplate" />
+    </bean>
+
+    <!-- 定义监听类 -->
+    <bean id="redisMessageListener" class="com.xuyang.crm.redis.RedisMessageListener">
+        <property name="redisTemplate" ref="redisTemplate"/>
+    </bean>
+
+    <!-- 定义监听容器 -->
+    <bean id="redisMessageListenerContainer" class="org.springframework.data.redis.listener.RedisMessageListenerContainer"
+          destroy-method="destroy">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <!-- 任务执行器 -->
+        <property name="taskExecutor">
+            <bean class="org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler">
+                <property name="poolSize" value="10"/>
+            </bean>
+        </property>
+        <!-- 消息监听器 -->
+        <property name="messageListeners">
+            <map>
+                <entry key-ref="redisMessageListener">
+                    <list>
+                        <bean class="org.springframework.data.redis.listener.PatternTopic">
+                            <constructor-arg value="chat*" />
+                        </bean>
+                    </list>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+</beans>
