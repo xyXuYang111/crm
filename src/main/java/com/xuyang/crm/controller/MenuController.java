@@ -50,6 +50,11 @@ public class MenuController {
         return "index";
     }
 
+    @RequestMapping(value = "getInsertMenu", method = RequestMethod.POST)
+    public String getInsertMenu(){
+        return "add";
+    }
+
     @RequestMapping(value = "insertMenu", method = RequestMethod.POST)
     public String insertMenu(Menu menu, HttpSession session){
         log.info("新增目录清单");
