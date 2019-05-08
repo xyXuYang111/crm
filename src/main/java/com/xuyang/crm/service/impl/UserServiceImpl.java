@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> userInfo(User user) {
+    public User userInfo(User user) {
         log.info("获取用户");
         return userDao.userInfo(user);
     }

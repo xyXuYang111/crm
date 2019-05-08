@@ -15,7 +15,7 @@ public interface UserDao {
 
     public List<User> userList(User user);
 
-    public List<User> userInfo(User user);
+    public User userInfo(User user);
 
     public void insertUser(User user);
 
