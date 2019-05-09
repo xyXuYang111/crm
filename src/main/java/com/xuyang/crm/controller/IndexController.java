@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -63,17 +64,29 @@ public class IndexController {
         return result;
     }
 
-    @RequestMapping(value = "index", method = RequestMethod.POST)
-    public String index(HttpSession session){
+    @RequestMapping(value = "index", method = RequestMethod.GET)
+    public String index(HttpSession session, Model model){
         log.info("主界面");
         String userID = (String) session.getAttribute("userID");
         User user = new User();
         user.setUserID(userID);
         User userInfo = userService.userInfo(user);
+        model.addAttribute("user", userInfo);
         return "page/index";
     }
 
-    @RequestMapping(value = "loginOut", method = RequestMethod.POST)
+    @RequestMapping(value = "home", method = RequestMethod.GET)
+    public String home(HttpSession session, Model model){
+        log.info("内容界面");
+        String userID = (String) session.getAttribute("userID");
+        User user = new User();
+        user.setUserID(userID);
+        User userInfo = userService.userInfo(user);
+        model.addAttribute("user", userInfo);
+        return "page/home";
+    }
+
+    @RequestMapping(value = "loginOut", method = RequestMethod.GET)
     public String loginOut(HttpSession session) {
         log.info("用户退出");
         session.removeAttribute("userID");

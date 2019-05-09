@@ -50,7 +50,7 @@
             <li class="layui-nav-item layui-hide-xs">
                 <a href="javascript:;">
                     <img src="${contextPath}/static/images/face.jpg" class="layui-nav-img">
-                    ${user.name}
+                    ${user.userName}
                 </a>
                 <dl class="layui-nav-child">
                     <dd id="userRead" userid="${user.id}"><a href="javascript:;">个人资料</a></dd>
@@ -86,7 +86,7 @@
             <!-- 内容 -->
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">
-                    <iframe src="home.html"></iframe>
+                    <iframe src="/home.do"></iframe>
                 </div>
             </div>
         </div>

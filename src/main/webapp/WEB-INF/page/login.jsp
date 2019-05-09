@@ -29,7 +29,7 @@
         </div>
         <div class="layui-form-item form_code">
             <input class="layui-input" name="verifyCodeActual" placeholder="验证码" lay-verify="required" type="text" autocomplete="off">
-            <div class="code"><img id="captcha_img" alt="点击更换" title="点击更换" onclick="refresh()" src="/captcha/getCaptcha.jpg" width="116" height="36"/></div>
+            <div class="code"><img id="captcha_img" alt="点击更换" title="点击更换" onclick="refresh()" src="${contextPath}/captcha/getCaptcha.jpg" width="116" height="36"/></div>
         </div>
         <button class="layui-btn login_btn" lay-submit="" lay-filter="login">登录</button>
     </form>
