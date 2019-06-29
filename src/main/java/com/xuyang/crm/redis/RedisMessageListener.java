@@ -1,5 +1,6 @@
 package com.xuyang.crm.redis;
 
+import com.xuyang.crm.redis.redisRepository.RedisRepository;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class RedisMessageListener implements MessageListener {
 
-    @Autowired
     private RedisTemplate redisTemplate;
 
     @Override
@@ -31,5 +31,8 @@ public class RedisMessageListener implements MessageListener {
         byte[] channel = message.getChannel();
         String msgChannel = (String) redisTemplate.getValueSerializer().deserialize(channel);
         System.out.println(msgChannel);
+
+        //数据写到redis中
+        RedisRepository.leftPush(msgChannel, msgBody);
     }
 }
