@@ -14,7 +14,7 @@
     </context:component-scan>
 
     <import resource="classpath:spring/spring-mybatis.xml"/>
-    <!--<import resource="classpath:spring/spring-redis.xml"/>-->
+    <import resource="classpath:spring/spring-redis.xml"/>
     <import resource="classpath:spring/spring-ecache.xml"/>
     <import resource="classpath:spring/spring-cxf.xml"/>
     <import resource="classpath*:spring/spring-task.xml"/>

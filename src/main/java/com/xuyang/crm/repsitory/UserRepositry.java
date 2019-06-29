@@ -43,7 +43,7 @@ public class UserRepositry {
      * @return
      */
     @Cacheable(value = "cacheName", key = "'ecache_info_'+ #key")
-    public List<User> userInfo(User user, String key) {
+    public User userInfo(User user, String key) {
         log.info("获取用户");
         return userService.userInfo(user);
     }

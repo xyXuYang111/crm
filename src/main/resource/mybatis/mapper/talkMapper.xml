@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuyang.crm.dao.TalkDao">
+
+    <resultMap id="talkResult" type="Talk">
+        <id column="talkID" property="talkID"/>
+        <result column="userName" property="userName"/>
+        <result column="talkContent" property="talkContent"/>
+        <result column="createDate" property="createDate"/>
+        <result column="talkCode" property="talkCode"/>
+    </resultMap>
+
+    <sql id="talkSql">
+        talkID,
+        userName,
+        talkContent,
+        createDate,
+        talkCode
+    </sql>
+
+    <insert id="insertTalk" parameterType="Talk">
+        INSERT user(
+        userName,
+        talkContent,
+        createDate,
+        talkCode
+        )VALUES
+        (
+        #{userName},
+        #{talkContent},
+        #{createDate},
+        #{talkCode}
+        )
+    </insert>
+
+</mapper>

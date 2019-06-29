@@ -43,6 +43,22 @@
         </property>
     </bean>
 
+    <bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="keySerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+        </property>
+        <property name="valueSerializer">
+            <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
+        </property>
+        <property name="hashKeySerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+        </property>
+        <property name="hashValueSerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+        </property>
+    </bean>
+
     <!--自定义redis工具类,在需要缓存的地方注入此类  -->
     <bean id="redisrCacheManager" class="com.xuyang.crm.redis.RedisService">
         <property name="redisTemplate" ref="redisTemplate" />

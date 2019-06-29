@@ -13,11 +13,31 @@ public class Talk implements Serializable {
 
     private static final long serialVersionUID = -1151984553314027917L;
 
+    private String talkID;
+
     private String userName;
+
+    private String talkCode;
 
     private String talkContent;
 
     private String createDate;
+
+    public String getTalkID() {
+        return talkID;
+    }
+
+    public void setTalkID(String talkID) {
+        this.talkID = talkID;
+    }
+
+    public String getTalkCode() {
+        return talkCode;
+    }
+
+    public void setTalkCode(String talkCode) {
+        this.talkCode = talkCode;
+    }
 
     public String getUserName() {
         return userName;

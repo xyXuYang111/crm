@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,17 +20,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class RedisMessageListener implements MessageListener {
 
-    private RedisTemplate redisTemplate;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     @Override
     public void onMessage(Message message, byte[] bytes) {
         byte[] body = message.getBody();
         //信息内容
-        String msgBody = (String) redisTemplate.getValueSerializer().deserialize(body);
+        String msgBody = (String) stringRedisTemplate.getValueSerializer().deserialize(body);
         System.out.println(msgBody);
         //节点
         byte[] channel = message.getChannel();
-        String msgChannel = (String) redisTemplate.getValueSerializer().deserialize(channel);
+        String msgChannel = (String) stringRedisTemplate.getValueSerializer().deserialize(channel);
         System.out.println(msgChannel);
 
         //数据写到redis中
