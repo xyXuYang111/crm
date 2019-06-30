@@ -929,6 +929,13 @@
       <version>2.27</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka -->
+    <dependency>
+      <groupId>org.springframework.kafka</groupId>
+      <artifactId>spring-kafka</artifactId>
+      <version>2.2.7.RELEASE</version>
+    </dependency>
+
   </dependencies>
 
   <build>

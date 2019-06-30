@@ -18,5 +18,6 @@
     <import resource="classpath:spring/spring-ecache.xml"/>
     <import resource="classpath:spring/spring-cxf.xml"/>
     <import resource="classpath*:spring/spring-task.xml"/>
+    <import resource="classpath*:spring/spring-kafka.xml"/>
 
 </beans>
