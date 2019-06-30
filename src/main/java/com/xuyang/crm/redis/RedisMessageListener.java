@@ -18,23 +18,48 @@ import org.springframework.stereotype.Component;
 @Data
 @Slf4j
 @Component
-public class RedisMessageListener implements MessageListener {
+public class RedisMessageListener<T> implements MessageListener {
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    private RedisService redisService;
+
+    public void setStringRedisTemplate(StringRedisTemplate stringRedisTemplate) {
+        this.stringRedisTemplate = stringRedisTemplate;
+    }
 
     @Override
     public void onMessage(Message message, byte[] bytes) {
         byte[] body = message.getBody();
         //信息内容
-        String msgBody = (String) stringRedisTemplate.getValueSerializer().deserialize(body);
-        System.out.println(msgBody);
+        T msgBody = (T) stringRedisTemplate.getValueSerializer().deserialize(body);
         //节点
         byte[] channel = message.getChannel();
         String msgChannel = (String) stringRedisTemplate.getValueSerializer().deserialize(channel);
         System.out.println(msgChannel);
 
         //数据写到redis中
-        RedisRepository.leftPush(msgChannel, msgBody);
+        redisService.leftPush(msgChannel, msgBody);
+        log.debug("消息发送成功");
+    }
+
+    /**
+     * 发送消息
+     * @param message
+     */
+    public void sendMessage(String channel, String message){
+        log.debug("消息内容");
+        stringRedisTemplate.convertAndSend(channel, message);
+    }
+
+    /**
+     * 发送消息
+     * @param message
+     */
+    public void sendMessage(String channel, T message){
+        log.debug("消息内容");
+        stringRedisTemplate.convertAndSend(channel, message.toString());
     }
 }

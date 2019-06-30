@@ -25,6 +25,10 @@ public class RedisService<T> {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    public void setRedisTemplate(RedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
+
     /**
      * 设置缓存失效时间
      *

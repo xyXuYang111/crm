@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @Data
 @Slf4j
-@WebFilter(value = "MyLoginFilter", urlPatterns = "/*")
+@WebFilter(filterName = "MyLoginFilter", urlPatterns = "/*")
 public class MyLoginFilter implements Filter {
 
     @Override
@@ -25,13 +25,8 @@ public class MyLoginFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest)servletRequest;
         HttpServletResponse response = (HttpServletResponse)servletResponse;
         HttpSession session = request.getSession();
-        String userID = (String) session.getAttribute("userID");
-        if(userID == null){
-            response.sendRedirect("login.do");
-        }else{
-            //放行
-            filterChain.doFilter(servletRequest, servletResponse);
-        }
+        log.debug("过滤器开始记录");
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override

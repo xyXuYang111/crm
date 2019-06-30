@@ -1,6 +1,7 @@
 package com.xuyang.crm.redis.redisRepository;
 
 import com.xuyang.crm.redis.RedisService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import java.util.Set;
  * @Date: 2019/4/20 04:36
  * @Description:
  */
+@Slf4j
 @Component
 public class RedisRepository {
 
@@ -27,7 +29,6 @@ public class RedisRepository {
      * 根据key获取value
      */
     public static Object getValueByKey(String key){
-
         return redisService.get(key);
     }
 
