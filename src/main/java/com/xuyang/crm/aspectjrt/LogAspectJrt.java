@@ -1,10 +1,16 @@
 package com.xuyang.crm.aspectjrt;
 
+import com.xuyang.crm.redis.RedisService;
+import com.xuyang.crm.redis.redisRepository.RedisRepository;
+import com.xuyang.crm.util.DateUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.lang.reflect.Array;
 
 /**
  * 接口访问监听
@@ -16,7 +22,13 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class LogAspectJrt {
 
-    //指定切入点表达式，拦截那些方法，即为那些类生成代理对象
+    @Autowired
+    private RedisService redisService;
+
+    public void setRedisService(RedisService redisService) {
+        this.redisService = redisService;
+    }
+//指定切入点表达式，拦截那些方法，即为那些类生成代理对象
     //@Pointcut("execution(* com.bie.aop.UserDao.save(..))")  ..代表所有参数
     //@Pointcut("execution(* com.bie.aop.UserDao.*())")  指定所有的方法
     //@Pointcut("execution(* com.bie.aop.UserDao.save())") 指定save方法
@@ -43,6 +55,7 @@ public class LogAspectJrt {
         log.info("被代理的对象:" + joinPoint.getTarget());
         log.info("代理对象自己:" + joinPoint.getThis());
 
+
     }
 
     /**
@@ -57,6 +70,13 @@ public class LogAspectJrt {
         log.info("执行的方法名：" + methodName);
         StringBuilder stringBuilder = new StringBuilder();
         value(joinPoint, stringBuilder);
+        String date = DateUtil.getNowTime();
+        String key = String.valueOf(System.currentTimeMillis());
+
+        //操作内容记录
+        RedisRepository.setMap(date, methodName, stringBuilder.toString());
+        //消息异常机制：日志记录
+        RedisRepository.setMap(date, key, e.getMessage());
     }
 
     /**
@@ -73,6 +93,13 @@ public class LogAspectJrt {
 
         StringBuilder stringBuilder = new StringBuilder();
         value(joinPoint, stringBuilder);
+        String date = DateUtil.getNowTime();
+        String key = String.valueOf(System.currentTimeMillis());
+
+        //操作内容记录
+        RedisRepository.setMap(date, methodName, stringBuilder.toString());
+        //消息异常机制：日志记录
+        RedisRepository.setMap(date, key, "操作成功");
     }
 
     private void value(JoinPoint joinPoint, StringBuilder stringBuilder){

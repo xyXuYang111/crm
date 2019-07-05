@@ -1,5 +1,6 @@
 package com.xuyang.crm.redis.redisRepository;
 
+import com.xuyang.crm.redis.RedisMessageListener;
 import com.xuyang.crm.redis.RedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

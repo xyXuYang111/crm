@@ -7,8 +7,9 @@
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
+    <context:component-scan base-package="com.xuyang.crm"/>
     <context:property-placeholder location="classpath:properties/xuyang.properties"/>
-    <!-- redis配置 -->
+
     <!-- redis连接池 -->
     <bean id="jedisConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxTotal" value="300"/>
@@ -49,12 +50,6 @@
     <bean id="redisMessageListenerContainer" class="org.springframework.data.redis.listener.RedisMessageListenerContainer"
           destroy-method="destroy">
         <property name="connectionFactory" ref="connectionFactory"/>
-        <!-- 任务执行器 -->
-        <property name="taskExecutor">
-            <bean class="org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler">
-                <property name="poolSize" value="10"/>
-            </bean>
-        </property>
         <!-- 消息监听器 -->
         <property name="messageListeners">
             <map>
