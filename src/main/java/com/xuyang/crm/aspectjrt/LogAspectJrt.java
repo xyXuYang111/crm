@@ -33,7 +33,7 @@ public class LogAspectJrt {
     //@Pointcut("execution(* com.bie.aop.UserDao.*())")  指定所有的方法
     //@Pointcut("execution(* com.bie.aop.UserDao.save())") 指定save方法
 
-    @Pointcut("execution(* com.xuyang.crm.controller.*.*(..))")
+    @Pointcut("execution(* com.xuyang.crm.*.*.*(..))")
     public void pointCut(){ }
 
     /**
