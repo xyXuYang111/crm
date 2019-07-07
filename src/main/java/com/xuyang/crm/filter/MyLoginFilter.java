@@ -20,15 +20,10 @@ import java.io.IOException;
 @Data
 @Slf4j
 @Component
-@WebFilter(filterName = "MyLoginFilter", urlPatterns = "/*")
 public class MyLoginFilter implements Filter {
 
     @Autowired
     private RedisService redisService;
-
-    public void setRedisService(RedisService redisService) {
-        this.redisService = redisService;
-    }
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -37,26 +32,6 @@ public class MyLoginFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest)servletRequest;
-
-        //获取ip地址
-        String ip = IpUtil.getIpAddress(request);
-        String uri = request.getRequestURI();//返回请求行中的资源名称
-        String url = request.getRequestURL().toString();//获得客户端发送请求的完整url
-        String returnIp = request.getRemoteAddr();//返回发出请求的IP地址
-        String params = request.getQueryString();//返回请求行中的参数部分
-        String host=request.getRemoteHost();//返回发出请求的客户机的主机名
-        int port =request.getRemotePort();//返回发出请求的客户机的端口号。
-
-        Url urlInfo = new Url();
-        urlInfo.setIp(ip);
-        urlInfo.setUri(uri);
-        urlInfo.setUrl(url);
-        urlInfo.setReturnIp(returnIp);
-        urlInfo.setParams(params);
-        urlInfo.setHost(host);
-        urlInfo.setPort(port);
-        redisService.put(ip, String.valueOf(System.currentTimeMillis()), urlInfo);
         log.debug("记录日志成功");
         filterChain.doFilter(servletRequest, servletResponse);
     }

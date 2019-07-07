@@ -1,6 +1,5 @@
 package com.xuyang.crm.controller;
 
-import com.xuyang.crm.model.Files;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.*;
-import java.util.Date;
 
 @Slf4j
 @Data
@@ -24,13 +22,13 @@ public class FilesController {
      * @RequestParam("file") 将name=file控件得到的文件封装成CommonsMultipartFile 对象
      */
     @ResponseBody
-    @RequestMapping(value = "fileUpload", method = RequestMethod.POST)
-    public String fileUpload(@RequestBody @RequestParam("file") CommonsMultipartFile file) throws Exception {
+    @RequestMapping(value = "fileTextUpload", method = RequestMethod.POST)
+    public String fileTextUpload(@RequestBody @RequestParam("file") CommonsMultipartFile file) throws Exception {
         //用来检测程序运行时间
         log.debug("文件名称："+file.getOriginalFilename());
         try {
             //获取输出流
-            OutputStream os=new FileOutputStream("D:\\file\\server\\" + file.getOriginalFilename());
+            OutputStream os=new FileOutputStream("D:\\file\\server\\text\\" + file.getOriginalFilename());
             //获取输入流 CommonsMultipartFile 中可以直接得到文件的流
             InputStream is=file.getInputStream();
             int temp;
@@ -54,11 +52,11 @@ public class FilesController {
      * 采用file.Transto 来保存上传的文件
      */
     @ResponseBody
-    @RequestMapping(value = "fileUpload2", method = RequestMethod.POST)
-    public String  fileUpload2(@RequestBody @RequestParam("file") CommonsMultipartFile file) throws Exception {
+    @RequestMapping(value = "filePhotoUpload", method = RequestMethod.POST)
+    public String  filePhotoUpload(@RequestBody @RequestParam("file") CommonsMultipartFile file) throws Exception {
         try {
             log.debug("fileName："+file.getOriginalFilename());
-            String path="D:\\file\\server\\" + file.getOriginalFilename();
+            String path="D:\\file\\server\\photo\\" + file.getOriginalFilename();
             File newFile=new File(path);
             //通过CommonsMultipartFile的方法直接写文件（注意这个时候）
             file.transferTo(newFile);

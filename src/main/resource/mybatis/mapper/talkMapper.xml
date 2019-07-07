@@ -28,7 +28,7 @@
         (
         #{userName},
         #{talkContent},
-        #{createDate},
+        now(),
         #{talkCode}
         )
     </insert>

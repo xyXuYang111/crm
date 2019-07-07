@@ -28,68 +28,9 @@ public class IndexController {
      *
      * @return
      */
-    @RequestMapping(value = "login", method = RequestMethod.GET)
+    @RequestMapping(value = "error", method = RequestMethod.GET)
     public String login() {
-        log.info("跳转到登录界面");
-        return "page/login";
-    }
-
-    /**
-     * 登录
-     *
-     * @return
-     */
-    @RequestMapping(value = "userLogin", method = RequestMethod.POST)
-    @ResponseBody
-    public Result userLogin(@RequestBody User user, HttpSession session) {
-        log.info("登录请求");
-        Result result = new Result();
-        User userInfo = userService.userInfo(user);
-        try {
-            if (userInfo == null) {
-                result.setCode("0");
-                result.setMsg("登录失败");
-            } else {
-                result.setCode("1");
-                result.setMsg("登录成功");
-
-                String userID = userInfo.getUserID();
-                session.setAttribute("userID", userID);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            result.setCode("0");
-            result.setMsg(e.getMessage());
-        }
-        return result;
-    }
-
-    @RequestMapping(value = "index", method = RequestMethod.GET)
-    public String index(HttpSession session, Model model){
-        log.info("主界面");
-        String userID = (String) session.getAttribute("userID");
-        User user = new User();
-        user.setUserID(userID);
-        User userInfo = userService.userInfo(user);
-        model.addAttribute("user", userInfo);
-        return "page/index";
-    }
-
-    @RequestMapping(value = "home", method = RequestMethod.GET)
-    public String home(HttpSession session, Model model){
-        log.info("内容界面");
-        String userID = (String) session.getAttribute("userID");
-        User user = new User();
-        user.setUserID(userID);
-        User userInfo = userService.userInfo(user);
-        model.addAttribute("user", userInfo);
-        return "page/home";
-    }
-
-    @RequestMapping(value = "loginOut", method = RequestMethod.GET)
-    public String loginOut(HttpSession session) {
-        log.info("用户退出");
-        session.removeAttribute("userID");
-        return "page/login";
+        log.info("出来异常了");
+        return "error";
     }
 }

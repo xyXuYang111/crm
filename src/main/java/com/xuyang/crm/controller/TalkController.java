@@ -65,7 +65,17 @@ public class TalkController {
         String channel = talk.getTalkCode();
         log.debug("订阅编码：" + channel);
         //获取前10条记录
-        List<Talk> talkList = redisService.getObjectList(channel, 0, 10);
+        List<Talk> talkList = redisService.getObjectList(channel, 0, -1);
+        System.out.println(talkList.size());
+        return talkList;
+    }
+
+    @RequestMapping(value = "talkCodeController", method = RequestMethod.POST)
+    @ResponseBody
+    public List<String> talkCodeController() {
+        log.debug("获取订阅对象");
+        //获取前10条记录
+        List<String> talkList = redisService.getObjectList("TALK_CODE", 0, -1);
         System.out.println(talkList.size());
         return talkList;
     }

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @Transactional
@@ -20,5 +22,10 @@ public class TalkServiceImpl implements TalkService {
     public void insertTalk(Talk talk) {
         log.debug("添加聊天记录");
         talkDao.insertTalk(talk);
+    }
+
+    @Override
+    public List<Talk> talkList(Talk talk) {
+        return null;
     }
 }

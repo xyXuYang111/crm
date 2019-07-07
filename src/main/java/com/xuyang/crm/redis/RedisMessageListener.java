@@ -1,6 +1,9 @@
 package com.xuyang.crm.redis;
 
+import com.xuyang.crm.model.Talk;
 import com.xuyang.crm.redis.redisRepository.RedisRepository;
+import com.xuyang.crm.service.impl.TalkServiceImpl;
+import com.xuyang.crm.util.DateUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,8 @@ public class RedisMessageListener<T> implements MessageListener {
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    private TalkServiceImpl talkService;
 
     @Autowired
     private RedisService redisService;
@@ -42,6 +47,10 @@ public class RedisMessageListener<T> implements MessageListener {
 
         //数据写到redis中
         redisService.leftPush(msgChannel, msgBody);
+        redisService.leftPush("TALK_CODE", msgChannel);
+
+        String date = DateUtil.getNowTime();
+        redisService.put("TALK", date, msgBody);
         log.debug("消息发送成功");
     }
 

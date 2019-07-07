@@ -10,8 +10,6 @@ import org.aspectj.lang.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Array;
-
 /**
  * 接口访问监听
  * 监听前端接口的所有访问：收集日志
@@ -25,15 +23,12 @@ public class LogAspectJrt {
     @Autowired
     private RedisService redisService;
 
-    public void setRedisService(RedisService redisService) {
-        this.redisService = redisService;
-    }
 //指定切入点表达式，拦截那些方法，即为那些类生成代理对象
     //@Pointcut("execution(* com.bie.aop.UserDao.save(..))")  ..代表所有参数
     //@Pointcut("execution(* com.bie.aop.UserDao.*())")  指定所有的方法
     //@Pointcut("execution(* com.bie.aop.UserDao.save())") 指定save方法
 
-    @Pointcut("execution(* com.xuyang.crm.*.*.*(..))")
+    @Pointcut("execution(* com.xuyang.crm.controller.TalkController.*(..))")
     public void pointCut(){ }
 
     /**

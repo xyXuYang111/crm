@@ -169,6 +169,17 @@ public class RedisService<T> {
      * @param key
      * @param item
      * @param object
+     */
+    public void leftPut(String key, String item, Object object) {
+        redisTemplate.opsForHash().put(key, item, object);
+    }
+
+    /**
+     * 向一张hash表中放入数据,如果不存在将创建
+     *
+     * @param key
+     * @param item
+     * @param object
      * @param time   时间(秒) 注意:如果已存在的hash表有时间,这里将会替换原有的时间
      */
     public void put(String key, String item, Object object, long time) {

@@ -2,8 +2,6 @@ package com.xuyang.crm.aspectjrt;
 
 import com.xuyang.crm.model.Error;
 import com.xuyang.crm.redis.RedisMessageListener;
-import com.xuyang.crm.redis.RedisService;
-import com.xuyang.crm.redis.redisRepository.RedisRepository;
 import com.xuyang.crm.util.DateUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -25,15 +23,12 @@ public class SendAspectJrt {
     @Autowired
     private RedisMessageListener redisMessageListener;
 
-    public void setRedisMessageListener(RedisMessageListener redisMessageListener) {
-        this.redisMessageListener = redisMessageListener;
-    }
 //指定切入点表达式，拦截那些方法，即为那些类生成代理对象
     //@Pointcut("execution(* com.bie.aop.UserDao.save(..))")  ..代表所有参数
     //@Pointcut("execution(* com.bie.aop.UserDao.*())")  指定所有的方法
     //@Pointcut("execution(* com.bie.aop.UserDao.save())") 指定save方法
 
-    @Pointcut("execution(* com.xuyang.crm.*.*.*(..))")
+    @Pointcut("execution(* com.xuyang.crm.controller.TalkController.*(..))")
     public void pointCut(){ }
 
     /**

@@ -5,27 +5,12 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
-	   http://www.springframework.org/schema/context/spring-context-4.0.xsd"
-       default-lazy-init="true">
+	   http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
 
     <context:component-scan base-package="com.xuyang.crm"/>
 
-    <import resource="classpath:spring/spring-mybatis.xml"/>
-    <import resource="classpath:spring/spring-redis.xml"/>
-    <import resource="classpath:spring/spring-ecache.xml"/>
-    <import resource="classpath:spring/spring-cxf.xml"/>
-    <import resource="classpath*:spring/spring-task.xml"/>
-    <import resource="classpath*:spring/spring-kafka.xml"/>
+    <import resource="classpath:spring/spring-*.xml"/>
 
-    <bean id="myLoginFilter" class="com.xuyang.crm.filter.MyLoginFilter">
-        <property name="redisService" ref="redisService"/>
-    </bean>
-
-    <bean id="logAspectJrt2" class="com.xuyang.crm.aspectjrt.LogAspectJrt">
-        <property name="redisService" ref="redisService"/>
-    </bean>
-
-    <bean id="sendAspectJrt2" class="com.xuyang.crm.aspectjrt.SendAspectJrt">
-        <property name="redisMessageListener" ref="redisMessageListener"/>
-    </bean>
 </beans>
