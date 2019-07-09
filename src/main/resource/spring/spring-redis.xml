@@ -51,4 +51,10 @@
         </property>
     </bean>
 
+    <!--spring-session配置-->
+    <!--初始化一切spring-session准备，且把springSessionFilter放入IOC -->
+    <bean id="redisHttpSessionConfiguration"
+          class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration">
+        <property name="maxInactiveIntervalInSeconds" value="1800" />
+    </bean>
 </beans>
