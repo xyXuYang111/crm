@@ -73,4 +73,12 @@
         </root>
     </loggers>
 
+    <logger name="com.kafka.ighack.Consumer"  level="debug" additivity="false" >
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <logger name="org.apache.kafka" level="OFF"/>
+    <logger name="io.netty" level="OFF" />
+    <logger name="com.lambdaworks.redis" level="OFF" />
+
 </configuration>
