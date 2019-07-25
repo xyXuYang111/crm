@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 @Slf4j
 public class ResultHandlerInterceptor implements HandlerInterceptor {
+
     @Autowired
     private RedisService redisService;
 

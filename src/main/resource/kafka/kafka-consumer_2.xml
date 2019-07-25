@@ -37,7 +37,7 @@
     <!-- 消费者容器配置信息 -->
     <bean id="containerProperties2" class="org.springframework.kafka.listener.ContainerProperties">
         <constructor-arg value="mhb-test_2"/>
-        <property name="messageListener" ref="kafkaConsumer1"/>
+        <property name="messageListener" ref="kafkaConsumer2"/>
     </bean>
 
     <!-- 创建kafkatemplate bean，使用的时候，只需要注入这个bean，即可使用template的send消息方法 -->
