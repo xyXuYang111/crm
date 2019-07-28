@@ -15,8 +15,8 @@
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
         <property name="url" value="${url}"/>
         <property name="driverClassName" value="${driver-class}"/>
-        <property name="username" value="${userName}"/>
-        <property name="password" value="${password}"/>
+        <property name="username" value="root"/>
+        <property name="password" value="1234qwer"/>
     </bean>
 
     <!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuyang.crm.dao.ObjectDao">
+
+    <resultMap id="objectResult" type="ObjectValue">
+        <id column="id" property="id"/>
+        <result column="objectName" property="objectName"/>
+        <result column="objectContext" property="objectContext"/>
+        <result column="createTime" property="createTime"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="userName" property="userName"/>
+    </resultMap>
+
+    <sql id="objectSql">
+        id,
+        objectName,
+        objectContext,
+        createTime,
+        updateTime,
+        userName
+    </sql>
+
+    <select id="objectValueList" parameterType="ObjectValue" resultMap="objectResult">
+        SELECT
+        <include refid="objectSql"/>
+        FROM OBJECT
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="id != null and id != ''">AND
+                id = #{id}
+            </if>
+            <if test="objectName != null and objectName!=''">AND
+                objectName like '%' || #{objectName} || '%'
+            </if>
+            <if test="objectContext != null and objectContext!= ''">AND
+                objectContext like '%' || #{objectContext} || '%'
+            </if>
+            <if test="userName != null and userName!= ''">AND
+                userName like '%' || #{userName} || '%'
+            </if>
+        </trim>
+        ORDER BY createTime DESC
+    </select>
+
+    <select id="objectValueInfo" parameterType="ObjectValue" resultMap="objectResult">
+        SELECT
+        <include refid="objectSql"/>
+        FROM OBJECT
+        WHERE  id = #{id}
+    </select>
+
+    <insert id="insertObjectValue" parameterType="ObjectValue">
+        INSERT OBJECT(
+        objectName,
+        objectContext,
+        createTime,
+        userName
+        )VALUES
+        (
+        #{objectName},
+        #{objectContext},
+        now(),
+        #{userName}
+        )
+    </insert>
+
+    <update id="updateObjectValue" parameterType="ObjectValue">
+        UPDATE OBJECT SET
+        <if test="objectName != null and objectName!=''">
+            objectName = #{objectName},
+        </if>
+        <if test="objectContext != null and objectContext!= ''">
+            objectContext = #{objectContext},
+        </if>
+        updateTime = now(),
+        userName = #{userName}
+        WHERE  id = #{id}
+    </update>
+
+    <delete id="deleteObjectValue" parameterType="ObjectValue">
+        DELETE OBJECT
+        WHERE  id = #{id}
+    </delete>
+</mapper>
