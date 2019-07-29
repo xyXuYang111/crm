@@ -6,15 +6,12 @@
        xsi:schemaLocation="http://www.springframework.org/schema/context
           http://www.springframework.org/schema/context/spring-context.xsd
           http://www.springframework.org/schema/data/mongo
-          http://www.springframework.org/schema/data/mongo/spring-mongo-2.0.xsd
+          http://www.springframework.org/schema/data/mongo/spring-mongo.xsd
           http://www.springframework.org/schema/beans
           http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!-- 读取属性文件 -->
     <context:property-placeholder location="classpath:properties/xuyang.properties" />
-
-    <!-- 启用注解支持 -->
-    <context:annotation-config />
 
     <!--
         MongoDB配置部分
