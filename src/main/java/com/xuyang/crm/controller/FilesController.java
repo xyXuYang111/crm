@@ -82,5 +82,4 @@ public class FilesController {
         return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file),
                 headers, HttpStatus.CREATED);
     }
-
 }
