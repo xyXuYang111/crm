@@ -32,9 +32,9 @@ public class TalkTask {
         String url = "localhost/kafkaInsertMessage.do";
 
         Talk talk = new Talk();
-        talk.setCreateDate(DateUtil.getNowTime());
+        talk.setCreateDate(DateUtil.getNowSecond());
         talk.setUserName("许洋");
-        talk.setTalkContent(DateUtil.getNowTime() + "往kafka中写书");
+        talk.setTalkContent(DateUtil.getNowSecond() + "往kafka中写书");
 
         kafkaProvider.sendKafka("mhb-test_2", 123, talk.toString());
         kafkaProvider.sendKafka("mhb-test_1", 123, talk.toString());
@@ -52,9 +52,9 @@ public class TalkTask {
         String url = "localhost/insertObjectValue.do";
 
         ObjectValue objectValue = new ObjectValue();
-        objectValue.setCreateTime(DateUtil.getNowTime());
+        objectValue.setCreateTime(DateUtil.getNowSecond());
         objectValue.setUserName("许洋");
-        objectValue.setObjectContext(DateUtil.getNowTime() + "写的mysql测试数据");
+        objectValue.setObjectContext(DateUtil.getNowSecond() + "写的mysql测试数据");
         objectValue.setObjectName("测试数据");
 
         try {
@@ -62,7 +62,7 @@ public class TalkTask {
 
             String redisCode = "REDIS_OBJECT_";
             //记录日志
-            redisService.put(redisCode, DateUtil.getNowTime(), objectValue);
+            redisService.put(redisCode, DateUtil.getNowSecond(), objectValue);
             log.debug("定时调度结束：objectValue新增数据");
         } catch (Exception e) {
             e.printStackTrace();
