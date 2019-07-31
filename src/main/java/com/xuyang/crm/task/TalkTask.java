@@ -1,8 +1,10 @@
 package com.xuyang.crm.task;
 
 import com.xuyang.crm.kafka.provider.KafkaProvider;
+import com.xuyang.crm.model.MongoInfo;
 import com.xuyang.crm.model.ObjectValue;
 import com.xuyang.crm.model.Talk;
+import com.xuyang.crm.mongo.service.MongoService;
 import com.xuyang.crm.redis.RedisService;
 import com.xuyang.crm.service.ObjectService;
 import com.xuyang.crm.util.DateUtil;
@@ -24,6 +26,9 @@ public class TalkTask {
 
     @Autowired
     private KafkaProvider kafkaProvider;
+
+    @Autowired
+    private MongoService mongoService;
 
     @Scheduled(cron = "0 */1 * * * ?")
     public void task(){
@@ -67,6 +72,22 @@ public class TalkTask {
         } catch (Exception e) {
             e.printStackTrace();
             log.debug("定时调度异常：" + e.getMessage());
+        }
+    }
+
+    @Scheduled(cron = "*/10 * * * * ? ")
+    public void mongoValueTesk(){
+        log.debug("定时调度开始：mongo新增数据");
+        MongoInfo mongoInfo = new MongoInfo();
+        mongoInfo.setId(String.valueOf(System.currentTimeMillis()));
+        mongoInfo.setAge(22);
+        mongoInfo.setName("许洋");
+        mongoInfo.setBirth(DateUtil.getNowSecond());
+        try {
+            mongoService.insert(mongoInfo);
+            log.debug("数据添加结束");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

@@ -19,14 +19,14 @@
         2.db-factory：相当于sessionFactory
         3.mongoTemplate：与数据库接口交互的主要实现类
     -->
-    <mongo:mongo-client id="mongo" host="${mongo.host}" port="${mongo.port}">
+    <mongo:mongo-client id="mongo" host="localhost" port="27017">
         <mongo:client-options
-                connections-per-host="${mongo.connectionsPerHost}"
-                threads-allowed-to-block-for-connection-multiplier="${mongo.threadsAllowedToBlockForConnectionMultiplier}"
-                connect-timeout="${mongo.connectTimeout}"
-                max-wait-time="${mongo.maxWaitTime}"
-                socket-keep-alive="${mongo.socketKeepAlive}"
-                socket-timeout="${mongo.socketTimeout}"/>
+                connections-per-host="8"
+                threads-allowed-to-block-for-connection-multiplier="4"
+                connect-timeout="1000"
+                max-wait-time="1500"
+                socket-keep-alive="true"
+                socket-timeout="1500"/>
     </mongo:mongo-client>
 
     <mongo:db-factory id="mongoDbFactory" dbname="${mongo.dbname}" mongo-ref="mongo"/>

@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 /**
  * @Auther: 许洋
@@ -32,12 +31,12 @@ public class MongoInfo implements Serializable {
     private String name;
 
     // 字段还可以用自定义名称
-    @Field("myage")
+    @Field("age")
     private int age;
 
     // 还可以生成索引
     @Indexed(name = "index_birth", direction = IndexDirection.DESCENDING)
     @Field
-    private Timestamp birth;
+    private String birth;
 
 }
