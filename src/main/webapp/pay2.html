@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<!--[if IE 6]><html class="ie ie6" lang="zh"><![endif]-->
+<!--[if IE 7]><html class="ie ie7" lang="zh"><![endif]-->
+<!--[if IE 8]><html class="ie ie8" lang="zh"><![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="zh">
+<!--<![endif]-->
+
+<head>
+    <meta charset="UTF-8">
+
+    <script type="text/javascript">
+        var __serverTime = '2019-08-01 20:25:05';
+    </script>
+    <script type="text/javascript">
+        var __startTime = new Date(),_sTime =__startTime.getTime();
+    </script>
+<!--    <script type="text/javascript">-->
+<!--        !function(e){function a(n){if(c[n])return c[n].exports;var b=c[n]={"exports":{},"id":n,"loaded":!1};return e[n].call(b.exports,b,b.exports,a),b.loaded=!0,b.exports}var n=window["webpackJsonp"];window["webpackJsonp"]=function(t,d){for(var f,o,l=0,p=[];l<t.length;l++)o=t[l],b[o]&&p.push.apply(p,b[o]),b[o]=0;for(f in d)e[f]=d[f];for(n&&n(t,d);p.length;)p.shift().call(null,a);if(d[0])return c[0]=0,a(0)};var c={},b={"17":0};a.e=function(e,n){if(0===b[e])return n.call(null,a);if(void 0!==b[e])b[e].push(n);else{b[e]=[n];var c=document.getElementsByTagName("head")[0],t=document.createElement("script");t.type="text/javascript",t.charset="utf-8",t.async=!0,t.src=a.p+"js/app/"+({"0":"apiDemo","1":"demo","2":"develop","3":"game","4":"gameChannel","5":"monthChannel","6":"qbChannel","7":"goodsChannel","8":"sjsjch","9":"ltmclub","10":"lzfssh","11":"goods","12":"month","13":"nbaTeam","14":"paybank","15":"pending","16":"qb"}[e]||e)+"."+{"0":"afd213e2c723799bce11","1":"030364ce03e4854ed0b7","2":"1073c3a38aaa6e27f195","3":"b027be2cea6569e58d94","4":"399b6e7be7f03b9b7e33","5":"b0a42b52eac8a10ebba0","6":"9870941b0ef7a29b55d2","7":"0c8f7ccfcbaaf2b704c0","8":"ebd7934e4280843df3a5","9":"1c674e8efeafe25cbcea","10":"27eecb3be8660af5251f","11":"52d5c42ed80bef39c647","12":"be2cdbe39fee19019780","13":"7392041b34449a1936ed","14":"2db2758a3eb444b46f90","15":"2d14c0785e5039572abf","16":"a762452367a183336ef7"}[e]+".js",c.appendChild(t)}},a.m=e,a.c=c,a.p="//midas.gtimg.cn/midas/minipay_v2/"}([]);-->
+<!--    </script>-->
+    <!--域名预解析-->
+    <meta http-equiv="x-dns-prefetch-control" content="on" />
+    <link rel="dns-prefetch" href="//api.unipay.qq.com" />
+    <link rel="dns-prefetch" href="//midas.gtimg.cn/" />
+    <title>开通包月</title>
+    <link rel="stylesheet" href="//midas.gtimg.cn/midas/minipay_v2/css/main.7ac031de6745c7e5908c8f6a2d532347.css?max_age=8035200&gzip_on=1"/>
+    <script type="text/javascript">/**
+     * Created by taddeng on 2016/6/25.
+     */
+    if (typeof JSON !== "object") {
+        JSON = {};
+    }
+
+    (function () {
+        "use strict";
+
+        var rx_one = /^[\],:{}\s]*$/;
+        var rx_two = /\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g;
+        var rx_three = /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g;
+        var rx_four = /(?:^|:|,)(?:\s*\[)+/g;
+        var rx_escapable = /[\\\"\u0000-\u001f\u007f-\u009f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g;
+        var rx_dangerous = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g;
+
+        function f(n) {
+            // Format integers to have at least two digits.
+            return n < 10
+                ? "0" + n
+                : n;
+        }
+
+        function this_value() {
+            return this.valueOf();
+        }
+
+        if (typeof Date.prototype.toJSON !== "function") {
+
+            Date.prototype.toJSON = function () {
+
+                return isFinite(this.valueOf())
+                    ? this.getUTCFullYear() + "-" +
+                    f(this.getUTCMonth() + 1) + "-" +
+                    f(this.getUTCDate()) + "T" +
+                    f(this.getUTCHours()) + ":" +
+                    f(this.getUTCMinutes()) + ":" +
+                    f(this.getUTCSeconds()) + "Z"
+                    : null;
+            };
+
+            Boolean.prototype.toJSON = this_value;
+            Number.prototype.toJSON = this_value;
+            String.prototype.toJSON = this_value;
+        }
+
+        var gap;
+        var indent;
+        var meta;
+        var rep;
+
+
+        function quote(string) {
+
+            // If the string contains no control characters, no quote characters, and no
+            // backslash characters, then we can safely slap some quotes around it.
+            // Otherwise we must also replace the offending characters with safe escape
+            // sequences.
+
+            rx_escapable.lastIndex = 0;
+            return rx_escapable.test(string)
+                ? "\"" + string.replace(rx_escapable, function (a) {
+                var c = meta[a];
+                return typeof c === "string"
+                    ? c
+                    : "\\u" + ("0000" + a.charCodeAt(0).toString(16)).slice(-4);
+            }) + "\""
+                : "\"" + string + "\"";
+        }
+
+
+        function str(key, holder) {
+
+            // Produce a string from holder[key].
+
+            var i;          // The loop counter.
+            var k;          // The member key.
+            var v;          // The member value.
+            var length;
+            var mind = gap;
+            var partial;
+            var value = holder[key];
+
+            // If the value has a toJSON method, call it to obtain a replacement value.
+
+            if (value && typeof value === "object" &&
+                typeof value.toJSON === "function") {
+                value = value.toJSON(key);
+            }
+
+            // If we were called with a replacer function, then call the replacer to
+            // obtain a replacement value.
+
+            if (typeof rep === "function") {
+                value = rep.call(holder, key, value);
+            }
+
+            // What happens next depends on the value's type.
+
+            switch (typeof value) {
+                case "string":
+                    return quote(value);
+
+                case "number":
+
+                    // JSON numbers must be finite. Encode non-finite numbers as null.
+
+                    return isFinite(value)
+                        ? String(value)
+                        : "null";
+
+                case "boolean":
+                case "null":
+
+                    // If the value is a boolean or null, convert it to a string. Note:
+                    // typeof null does not produce "null". The case is included here in
+                    // the remote chance that this gets fixed someday.
+
+                    return String(value);
+
+                // If the type is "object", we might be dealing with an object or an array or
+                // null.
+
+                case "object":
+
+                    // Due to a specification blunder in ECMAScript, typeof null is "object",
+                    // so watch out for that case.
+
+                    if (!value) {
+                        return "null";
+                    }
+
+                    // Make an array to hold the partial results of stringifying this object value.
+
+                    gap += indent;
+                    partial = [];
+
+                    // Is the value an array?
+
+                    if (Object.prototype.toString.apply(value) === "[object Array]") {
+
+                        // The value is an array. Stringify every element. Use null as a placeholder
+                        // for non-JSON values.
+
+                        length = value.length;
+                        for (i = 0; i < length; i += 1) {
+                            partial[i] = str(i, value) || "null";
+                        }
+
+                        // Join all of the elements together, separated with commas, and wrap them in
+                        // brackets.
+
+                        v = partial.length === 0
+                            ? "[]"
+                            : gap
+                                ? "[\n" + gap + partial.join(",\n" + gap) + "\n" + mind + "]"
+                                : "[" + partial.join(",") + "]";
+                        gap = mind;
+                        return v;
+                    }
+
+                    // If the replacer is an array, use it to select the members to be stringified.
+
+                    if (rep && typeof rep === "object") {
+                        length = rep.length;
+                        for (i = 0; i < length; i += 1) {
+                            if (typeof rep[i] === "string") {
+                                k = rep[i];
+                                v = str(k, value);
+                                if (v) {
+                                    partial.push(quote(k) + (
+                                        gap
+                                            ? ": "
+                                            : ":"
+                                    ) + v);
+                                }
+                            }
+                        }
+                    } else {
+
+                        // Otherwise, iterate through all of the keys in the object.
+
+                        for (k in value) {
+                            if (Object.prototype.hasOwnProperty.call(value, k)) {
+                                v = str(k, value);
+                                if (v) {
+                                    partial.push(quote(k) + (
+                                        gap
+                                            ? ": "
+                                            : ":"
+                                    ) + v);
+                                }
+                            }
+                        }
+                    }
+
+                    // Join all of the member texts together, separated with commas,
+                    // and wrap them in braces.
+
+                    v = partial.length === 0
+                        ? "{}"
+                        : gap
+                            ? "{\n" + gap + partial.join(",\n" + gap) + "\n" + mind + "}"
+                            : "{" + partial.join(",") + "}";
+                    gap = mind;
+                    return v;
+            }
+        }
+
+        // If the JSON object does not yet have a stringify method, give it one.
+
+        if (typeof JSON.stringify !== "function") {
+            meta = {    // table of character substitutions
+                "\b": "\\b",
+                "\t": "\\t",
+                "\n": "\\n",
+                "\f": "\\f",
+                "\r": "\\r",
+                "\"": "\\\"",
+                "\\": "\\\\"
+            };
+            JSON.stringify = function (value, replacer, space) {
+
+                // The stringify method takes a value and an optional replacer, and an optional
+                // space parameter, and returns a JSON text. The replacer can be a function
+                // that can replace values, or an array of strings that will select the keys.
+                // A default replacer method can be provided. Use of the space parameter can
+                // produce text that is more easily readable.
+
+                var i;
+                gap = "";
+                indent = "";
+
+                // If the space parameter is a number, make an indent string containing that
+                // many spaces.
+
+                if (typeof space === "number") {
+                    for (i = 0; i < space; i += 1) {
+                        indent += " ";
+                    }
+
+                    // If the space parameter is a string, it will be used as the indent string.
+
+                } else if (typeof space === "string") {
+                    indent = space;
+                }
+
+                // If there is a replacer, it must be a function or an array.
+                // Otherwise, throw an error.
+
+                rep = replacer;
+                if (replacer && typeof replacer !== "function" &&
+                    (typeof replacer !== "object" ||
+                        typeof replacer.length !== "number")) {
+                    throw new Error("JSON.stringify");
+                }
+
+                // Make a fake root object containing our value under the key of "".
+                // Return the result of stringifying the value.
+
+                return str("", {"": value});
+            };
+        }
+
+
+        // If the JSON object does not yet have a parse method, give it one.
+
+        if (typeof JSON.parse !== "function") {
+            JSON.parse = function (text, reviver) {
+
+                // The parse method takes a text and an optional reviver function, and returns
+                // a JavaScript value if the text is a valid JSON text.
+
+                var j;
+
+                function walk(holder, key) {
+
+                    // The walk method is used to recursively walk the resulting structure so
+                    // that modifications can be made.
+
+                    var k;
+                    var v;
+                    var value = holder[key];
+                    if (value && typeof value === "object") {
+                        for (k in value) {
+                            if (Object.prototype.hasOwnProperty.call(value, k)) {
+                                v = walk(value, k);
+                                if (v !== undefined) {
+                                    value[k] = v;
+                                } else {
+                                    delete value[k];
+                                }
+                            }
+                        }
+                    }
+                    return reviver.call(holder, key, value);
+                }
+
+
+                // Parsing happens in four stages. In the first stage, we replace certain
+                // Unicode characters with escape sequences. JavaScript handles many characters
+                // incorrectly, either silently deleting them, or treating them as line endings.
+
+                text = String(text);
+                rx_dangerous.lastIndex = 0;
+                if (rx_dangerous.test(text)) {
+                    text = text.replace(rx_dangerous, function (a) {
+                        return "\\u" +
+                            ("0000" + a.charCodeAt(0).toString(16)).slice(-4);
+                    });
+                }
+
+                // In the second stage, we run the text against regular expressions that look
+                // for non-JSON patterns. We are especially concerned with "()" and "new"
+                // because they can cause invocation, and "=" because it can cause mutation.
+                // But just to be safe, we want to reject all unexpected forms.
+
+                // We split the second stage into 4 regexp operations in order to work around
+                // crippling inefficiencies in IE's and Safari's regexp engines. First we
+                // replace the JSON backslash pairs with "@" (a non-JSON character). Second, we
+                // replace all simple value tokens with "]" characters. Third, we delete all
+                // open brackets that follow a colon or comma or that begin the text. Finally,
+                // we look to see that the remaining characters are only whitespace or "]" or
+                // "," or ":" or "{" or "}". If that is so, then the text is safe for eval.
+
+                if (
+                    rx_one.test(
+                        text
+                            .replace(rx_two, "@")
+                            .replace(rx_three, "]")
+                            .replace(rx_four, "")
+                    )
+                ) {
+
+                    // In the third stage we use the eval function to compile the text into a
+                    // JavaScript structure. The "{" operator is subject to a syntactic ambiguity
+                    // in JavaScript: it can begin a block or an object literal. We wrap the text
+                    // in parens to eliminate the ambiguity.
+
+                    j = eval("(" + text + ")");
+
+                    // In the optional fourth stage, we recursively walk the new structure, passing
+                    // each name/value pair to a reviver function for possible transformation.
+
+                    return (typeof reviver === "function")
+                        ? walk({"": j}, "")
+                        : j;
+                }
+
+                // If the text is not JSON parseable, then a SyntaxError is thrown.
+
+                throw new SyntaxError("JSON.parse");
+            };
+        }
+    }());
+    </script>
+    <script type="text/javascript">
+        <!--@echo js.sizzle -->
+    </script>
+
+    <script type="text/javascript">
+        <!--@echo js.closest -->
+    </script>
+    <style type="text/css">
+        html,
+        body {
+            overflow: hidden;
+            margin: 0;
+            height: 100%;
+        }
+
+        input::-ms-clear {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+
+        input::-ms-reveal {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+
+        body {
+            margin: auto;
+            *position: relative;
+        }
+
+        .ms-controller {
+            display: none;
+        }
+
+        .cp-container {
+            margin: auto;
+        }
+
+        .panel {
+            display: none;
+        }
+
+        .panel.show {
+            display: block;
+        }
+
+        input[type=text]::-ms-clear {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+
+        input[type=text]::-ms-reveal {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+    </style>
+    <style>
+        .mdsweb-loading-wrapper{
+            background: #fff;
+            height: 100%;
+            position: absolute;
+            width: 100%;
+            top:0;left:0;
+        }
+    </style>
+
+    <script type="text/javascript">
+        var _speedMark = new Date(),cssTimeEnd =_speedMark.getTime();
+    </script>
+</head>
+
+<body>
+<div ms-controller="app" id="app-wrap" class="cp-container cp-container--new ">
+    <div id="order" ms-controller="month" ms-html="html" ms-class-1="panel" ms-class-2="mini-s:screenType=='min'" ms-class-3="global-disabled:isNeedMask&&supportFilter"
+         ms-class-4="ie1011global-disabled:isNeedMask&&!supportFilter"></div>
+    <div id="subChannel" ms-controller="subChannel" ms-html="html" class="panel"></div>
+    <div id="result" class="cp-body panel" ms-controller="result" ms-html="resultWrapper"></div>
+</div>
+<div id="animation_mask" class="animation_mask"></div>
+<div id="animation_masktop" class="animation_masktop"></div>
+
+<div class="cp-body mdsweb-loading-wrapper" id="cp_loading_">
+    <div class="mdsweb-loading">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    </div>
+</div>
+
+<div id="mkey" mkey="898a53af749067266e0ba9c8400a673ccd94a1ada91b1ec941fba7788d038e87bdace53061591a29a4d1f3db8a7b4e9962396440033d6c09f4554e9b3395271c13a4b0a6eef9dc6ccff2de4c2ece7ba7d7e87ee305bb7c0f7a0eeaf03a721b7ec6f6cbc79cca22dcffcc6afc602f37016cdead5b1946ea084f820bd470ccd32593476e1c531661482a612aff220f6cfa7e3e94c9bf00747e5ae1b9d5150db59a"></div>
+<script type="text/javascript">
+    //包月各业务默认配置，包括允许的数量区间，默认数量
+    /*{
+        name: '超级会员',
+        minAmount: 1,
+        maxAmount: 999,
+        count: 3,
+        //如果包月档位不够，则显示默认档位顺序
+        recommendPriceList:[3,6,12]
+        monthCardMP:{//各月卡的活动tips
+            "all": "开通绿钻贵族一个月及以上享8折优惠",
+            "MUTP161206114255176":"开通绿钻贵族一个月及以上享7折优惠"
+            "2":{//月卡id
+                groupId:"group1",
+                tips:"test"
+            }
+        }
+    }*/
+    //包月各业务默认信息，待CGI更新后，服务名字配置可以删除
+    window.__Service={
+        "base":{
+            minAmount: 1,
+            maxAmount: 99,
+            count: 3,
+            recommendPriceList:[3,6,12]
+        },
+        "qqacct_save":{
+            unitName:"Q币",
+            maxAmount: 9999,
+            recommendList:[10,20,60]
+        }
+    };
+    //控制包月UI相关显示信息
+    window.__UIConfig = {
+        //包月，充Q币默认的UI配置信息
+        "base": {
+            "wxNick":"{nickName}（微信昵称）"
+        },
+        "qb":{
+            //订单页面title
+            title:"充值Q币",
+            //订单子页展示的物品服务名字
+            orderServiceName:"充值 {count} {unitName}"
+        },
+        "month":{
+            //订单页面title
+            title:"开通包月",
+            //订单子页展示的物品服务名字,（开通/升级）{name}N（年/个月）
+            orderServiceName:"{opType}{name}{count}{unitName}",
+            //月卡product_short_name优先，如果没有配置，则展示配置格式
+            //价格栏里面按天展示的名称
+            priceItemNameByDay:"{count}天",
+            //价格栏里面的名称显示
+            priceItemName:"{count}个月",
+            //价格栏年费的名称显示
+            priceItemNameByYear:"{count}年",
+            //一些常用文案配置
+            //补齐年费会员方案
+            yearTips:"补齐年费",
+            openYearTips:"开通年费",
+            //月卡优惠文案
+            monthCardTips:"{count}{unitName}优惠{discountPrice}元",//"{opType}{count}{unitName}{name}优惠{discountPrice}元",
+            //升级字符串
+            upgradeTxt:"升级",
+            //开通
+            openTxt:"开通"
+        }
+    };
+
+    window._allowScanToWechat = ["1450011461", "1450008186", "1450017645", "1450000173", "1450008189", "1450013547", "1450013543"];
+    window._disableWechatNativePay = ['1450007826'];
+</script>
+<script type="text/javascript">
+    window.__BANK_CONFIG={
+        "cmb": {
+            "name": "招商银行",
+            "cardTypes": [
+                "debit",
+                "credit"
+            ],
+            "kjCards": [
+                "debit",
+                "credit"
+            ],
+            "credit": {
+                "payTypes": [
+                    "bank",
+                    "kj"
+                ],
+                "bank": 1038,
+                "kj": 3006
+            },
+            "debit": {
+                "payTypes": [
+                    "bank",
+                    "kj"
+                ],
+                "bank": 1001,
+                "kj": 2011
+            }
+        },
+
+        "icbc": {
+            name: '工商银行',
+            cardTypes: ['debit', 'credit'],
+            kjCards: ['debit', 'credit'],
+            credit: {
+                payTypes: ['bank', 'kj'],
+                bank: 1002,
+                kj: 3003
+            },
+            debit: {
+                payTypes: ['bank', 'kj'],
+                bank: 1071,
+                kj: 2032
+            }
+        },
+        "ccb": {
+            "name": "建设银行",
+            "cardTypes": [
+                "debit",
+                "credit"
+            ],
+            "kjCards": [
+                "debit",
+                "credit"
+            ],
+            "credit": {
+                "payTypes": [
+                    "bank",
+                    "kj"
+                ],
+                "bank": 1081,
+                "kj": 3106
+            },
+            "debit": {
+                "payTypes": [
+                    "bank",
+                    "kj"
+                ],
+                "bank": 1003,
+                "kj": 2013
+            }
+        },
+        "abc": {
+            "name": "农业银行",
+            "cardTypes": [
+                "debit",
+                "credit"
+            ],
+            "kjCards": [
+                "debit",
+                "credit"
+            ],
+            "credit": {
+                "payTypes": [
+                    "kj"
+                ],
+                "kj": 3007
+            },
+            "debit": {
+                "payTypes": [
+                    "bank",
+                    "kj"
+                ],
+                "bank": 1005,
+                "kj": 4186
+            }
+        },
+        "boc": {
+            "name": "中国银行",
+            "cardTypes": [
+                "debit",
+                "credit"
+            ],
+            "kjCards": [
+                "debit"
+            ],
+            "credit": {
+                "payTypes": [
+                    "bank"
+                ],
+                "bank": 1052
+            },
+            "debit": {
+                "payTypes": [
+                    "bank","kj"
+                ],
+                "bank": 1026,
+                "kj": 2028
+            }
+        },
+        "cib": {
+            "name": "兴业银行",
+            "cardTypes": [
+                "debit",
+                "credit"
+            ],
+            "kjCards": [
+                "debit",
+                "credit"
+            ],
+            "credit": {
+                "payTypes": [
+                    //"bank",
+                    "kj"
+                ],
+                //"bank": 1059,
+                "kj": 3113
+            },
+            "debit": {
+                "payTypes": [
+                    //"bank",
+                    "kj"
+                ],
+                //"bank": 1009,
+                "kj": 2021
+            }
+        },
+        "bob": {
+            "name": "北京银行",
+            "cardTypes": [
+                "debit"
+            ],
+            "debit": {
+                "payTypes": [
+                    "bank"
+                ],
+                "bank": 1032
+            }
+        },
+        "ceb": {
+            "logo": "cebb",
+            "name": "光大银行",
+            "cardTypes": [
+                "debit",
+                "credit"
+            ],
+            "kjCards": [
+                "debit",
+                "credit"
+            ],
+            "credit": {
+                "payTypes": [
+                    "kj"
+                ],
+                "kj": 3108
+            },
+            "debit": {
+                "payTypes": [
+                    "bank",
+                    "kj"
+                ],
+                "bank": 1078,
+                "kj": 2014
+            }
+        },
+        "comm": {
+            "logo": "boco",
+            "name": "交通银行",
+            "cardTypes": [
+                "debit",
+                "credit"
+            ],
+            "kjCards": [
+                "debit"
+            ],
+            "credit": {
+                "payTypes": [
+                    "bank"
+                ],
+                "bank": 1020
+            },
+            "debit": {
+                "payTypes": [
+                    "bank","kj"
+                ],
+                "bank": 1072,
+                "kj": 2041
+            }
+        },
+        "cmbc": {
+            "name": "民生银行",
+            "cardTypes": [
+                "debit",
+                "credit"
+            ],
+            "kjCards": [
+                "debit"
+            ],
+            "credit": {
+                "payTypes": [
+                    "bank",
+                    "kj"
+                ],
+                "bank": 1006,
+                "kj": 3119
+            },
+            "debit": {
+                "payTypes": [
+                    "bank",
+                    "kj"
+                ],
+                "bank": 1041,
+                "kj": 2008
+            }
+        },
+        "citic": {
+            "logo": "ecitic",
+            "name": "中信银行",
+            "cardTypes": [
+                "debit",
+                "credit"
+            ],
+            "kjCards": [
+                "debit",
+                "credit"
+            ],
+            "credit": {
+                "payTypes": ["kj"],
+                "kj": 3115
+            },
+            "debit": {
+                "payTypes": [
+                    "bank",
+                    "kj"
+                ],
+                "bank": 1021,
+                "kj": 2125
+            }
+        },
+        "pab": {
+            "logo": "pingan",
+            "name": "平安银行",
+            "cardTypes": [
+                "debit",
+                "credit"
+            ],
+            "kjCards": [
+                "debit",
+                "credit"
+            ],
+            "credit": {
+                "payTypes": [
+                    "kj"
+                ],
+                "kj": 3110
+            },
+            "debit": {
+                "payTypes": [
+                    "bank","kj"
+                ],
+                "bank": 1010,
+                "kj": 2024
+            }
+        },
+        "psbc": {
+            "logo": "post",
+            "name": "邮政银行",
+            "cardTypes": [
+                "debit"
+            ],
+            "kjCards": [
+                "debit"
+            ],
+            "debit": {
+                "payTypes": [
+                    "bank","kj"
+                ],
+                "bank": 1066,
+                "kj": 2023
+            }
+        },
+        "nbcb": {
+            "name": "宁波银行",
+            "cardTypes": [
+                "debit",
+                "credit"
+            ],
+            "kjCards": [
+                "credit"
+            ],
+            "credit": {
+                "payTypes": [
+                    "kj"
+                ],
+                "kj": 3201
+            },
+            "debit": {
+                "payTypes": [
+                    "bank"
+                ],
+                "bank": 1112
+            }
+        },
+        "njcb": {
+            "name": "南京银行",
+            "cardTypes": [
+                "debit"
+            ],
+            "kjCards": [],
+            "debit": {
+                "payTypes": [
+                    "bank"
+                ],
+                "bank": 1054
+            }
+        },
+        "gdb": {
+            "name": "广发银行",
+            "cardTypes": [
+                "debit",
+                "credit"
+            ],
+            "kjCards": [
+                "debit",
+                "credit"
+            ],
+            "credit": {
+                "payTypes": [
+                    //"bank",
+                    "kj"
+                ],
+                //"bank": 1079,
+                "kj": 3109
+            },
+            "debit": {
+                "payTypes": [
+                    //"bank",
+                    "kj"
+                ],
+                //"bank": 1051,
+                "kj": 2016
+            }
+        },
+        "spdb": {
+            "name": "浦发银行",
+            "cardTypes": [
+                "debit",
+                "credit"
+            ],
+            "kjCards": [
+                "debit",
+                "credit"
+            ],
+            "credit": {
+                "payTypes": [
+                    "bank",
+                    "kj"
+                ],
+                "bank": 1004,
+                "kj": 3117
+            },
+            "debit": {
+                "payTypes": [
+                    "bank",
+                    "kj"
+                ],
+                "bank": 1110,
+                "kj":2017
+            }
+        },
+        "srcb": {
+            "name": "上海农商",
+            "cardTypes": [
+                "debit"
+            ],
+            "kjCards": [],
+            "debit": {
+                "payTypes": [
+                    "bank"
+                ],
+                "bank": 1113
+            }
+        },
+        "bea": {
+            "logo": "hkbea",
+            "name": "东亚银行",
+            "cardTypes": [
+                "debit",
+                "credit"
+            ],
+            "kjCards": [],
+            "credit": {
+                "payTypes": [
+                    "bank"
+                ],
+                "bank": 1077
+            },
+            "debit": {
+                "payTypes": [
+                    "bank"
+                ],
+                "bank": 1076
+            }
+        }
+    };
+</script>
+<script type="text/javascript">
+    //主要用来做错误类别匹配，如果有配置关系，则前端调用ErrorUtil.matchError("1001-1001-0",res)在判断是否错误码匹配时，
+    //res.ret,res.err_code和__errorMap[res.err_code]任何一个匹配指定的错误码"1001-1001-0",都访问true,
+    //主要为了为了防止写好的前端代码如ErrorUtil.matchError("1001-1001-0",res)，在后台做了错误码映射后导致前端匹配不成功
+    window.__errorMap={
+        "1001-1001-0":"1001"
+        //res.err_code=>res.ret
+        // 理论上配置了映射关系的错误代码透传后台返回错误文案，前端可以把相关配置删除
+    };
+    //主要用于配置后台没有做错误映射的文案配置
+    window.__errorConfig = {
+        "1003-65609-65609":"此号码已绑定微信，请开通超级会员",
+        "1001-1001-0":{ msg: "请求参数错误(pf or zoneid not valid)", fix:true},
+        //结果页文案通用提示，前面有*号表示是一类错误码提示文案
+        "*65539":{ msg:"您已开通该业务的自动续费，该支付方式不支持重复购买", fix:true }
+    };
+</script>
+
+</body>
+
+</html>
