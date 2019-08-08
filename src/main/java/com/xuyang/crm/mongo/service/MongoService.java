@@ -1,5 +1,8 @@
 package com.xuyang.crm.mongo.service;
 
+import com.xuyang.crm.model.MongoInfo;
+import org.apache.poi.ss.formula.functions.T;
+
 import java.util.List;
 import java.util.Map;
 
@@ -8,18 +11,16 @@ import java.util.Map;
  * @Date: 2019/7/29 02:16
  * @Description:
  */
-public interface MongoService<T> {
+public interface MongoService {
 
     //添加
-    public void insert(T object) throws Exception;
-    //根据条件查找
-    public List<T> findList(Map<String,Object> params) throws Exception;
-    //查找所有
-    public List<T> findAll(Map<String,Object> params) throws Exception;
-    //修改
-    public void update(Map<String,Object> params) throws Exception;
-    //创建集合
-    public void createCollection(String collectionName) throws Exception;
-    //根据条件删除
-    public void remove(Map<String,Object> params) throws Exception;
+    public void insert(MongoInfo mongoInfo) throws Exception;
+
+    public void update(MongoInfo mongoInfo) throws Exception;
+
+    public MongoInfo findByAnd(MongoInfo mongoInfo) throws Exception;
+
+    public List<MongoInfo> findByOr(MongoInfo mongoInfo) throws Exception;
+
+    public List<MongoInfo> findByPattern(MongoInfo mongoInfo) throws Exception;
 }

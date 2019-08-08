@@ -2,11 +2,14 @@ package com.xuyang.crm.mongo.service.impl;
 
 import com.xuyang.crm.model.MongoInfo;
 import com.xuyang.crm.mongo.service.MongoService;
+import com.xuyang.crm.mongo.util.MongodbUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.net.nntp.Article;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -27,61 +30,70 @@ public class MongoServiceImpl implements MongoService {
 
     /**
      * mongo数据存储
-     * @param object 参数
+     * @param mongoInfo 参数
      * @throws Exception
      */
     @Override
-    public void insert(Object object) throws Exception {
-        mongoTemplate.save(object);
+    public void insert(MongoInfo mongoInfo) throws Exception {
+        mongoTemplate.save(mongoInfo);
     }
 
     /**
-     * 多条件触发查询
-     * 多条件查询：
-     *    和sql差不多，条件没办法做到动态筛选
-     * @param params
+     * 只能单个单个的修改吗
+     * @param mongoInfo
+     * @throws Exception
+     */
+    @Override
+    public void update(MongoInfo mongoInfo) throws Exception {
+        //根据条件
+        Query query = new Query(Criteria.where("id").is(mongoInfo.getId()));
+        Update update = Update.update("name", mongoInfo.getName()).set("age", mongoInfo.getAge());
+        mongoTemplate.updateFirst(query, update, Article.class);
+    }
+
+    /**
+     * 根据ID查询数据
+     * 唯一条件
+     * @param mongoInfo
      * @return
      * @throws Exception
      */
     @Override
-    public List findList(Map params) throws Exception {
+    public MongoInfo findByAnd(MongoInfo mongoInfo) throws Exception {
         Query query = new Query();
-        Criteria criteria = new Criteria().andOperator(Criteria.where("name").gt(params.get("name")),
-                Criteria.where("id").gt(params.get("id")),
-                Criteria.where("age").gt(params.get("age")),
-                Criteria.where("birth").gt(params.get("birth")));
+        Criteria criteria = new Criteria().andOperator(Criteria.where("id").is(mongoInfo.getId()));
+        query.addCriteria(criteria);
+        return mongoTemplate.findOne(query, MongoInfo.class);
+    }
+
+    /**
+     * or的方式查询数据
+     * @param mongoInfo
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<MongoInfo> findByOr(MongoInfo mongoInfo) throws Exception {
+        Query query = new Query();
+        Criteria criteria = new Criteria().orOperator(Criteria.where("id").is(mongoInfo.getId()),
+                Criteria.where("name").is(mongoInfo.getName()),
+                Criteria.where("age").is(mongoInfo.getAge()),
+                Criteria.where("birth").is(mongoInfo.getBirth()));
         query.addCriteria(criteria);
         return mongoTemplate.find(query, MongoInfo.class);
     }
 
+    /**
+     * 模糊查询(全模糊+or查询)
+     * @param mongoInfo
+     * @return
+     * @throws Exception
+     */
     @Override
-    public List findAll(Map params) throws Exception {
-        //完全匹配
-        Pattern allPattern = Pattern.compile("^许$", Pattern.CASE_INSENSITIVE);
-        //右匹配
-        Pattern rightPattern = Pattern.compile("^.*许$", Pattern.CASE_INSENSITIVE);
-        //左匹配
-        Pattern leftPattern = Pattern.compile("^许.*$", Pattern.CASE_INSENSITIVE);
-        //模糊匹配-p
-        Pattern pattern = Pattern.compile("^.*许.*$", Pattern.CASE_INSENSITIVE);
-
-        Query query = Query.query(Criteria.where("name").regex(pattern));
-        List list = mongoTemplate.find(query, Object.class);
-        return list;
-    }
-
-    @Override
-    public void update(Map params) throws Exception {
-
-    }
-
-    @Override
-    public void createCollection(String collectionName) throws Exception {
-
-    }
-
-    @Override
-    public void remove(Map params) throws Exception {
-
+    public List<MongoInfo> findByPattern(MongoInfo mongoInfo) throws Exception {
+        Query query = new Query();
+        Criteria criteria = new Criteria().orOperator(Criteria.where("name").regex(MongodbUtil.pattern(mongoInfo.getName())));
+        query.addCriteria(criteria);
+        return mongoTemplate.find(query, MongoInfo.class);
     }
 }

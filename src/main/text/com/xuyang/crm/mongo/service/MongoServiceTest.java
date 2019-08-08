@@ -20,13 +20,6 @@ public class MongoServiceTest {
 
     @Test
     public void findList() {
-        Map<String, String> stringMap = new HashMap<>();
-        stringMap.put("name", "许洋");
-        try {
-            List<MongoInfo> mongoInfoList = mongoService.findList(stringMap);
-            System.out.println(mongoInfoList.size());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 }

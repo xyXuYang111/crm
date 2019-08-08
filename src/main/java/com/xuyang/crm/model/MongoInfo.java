@@ -17,7 +17,7 @@ import java.io.Serializable;
  */
 @Data
 @Slf4j
-@Document("mongoInfo")
+@Document(collection = "mongoInfo")
 public class MongoInfo implements Serializable {
 
     private static final long serialVersionUID = -3475519817418705626L;

@@ -28,14 +28,6 @@ public class MongoController {
     @ResponseBody
     @RequestMapping(value = "mongoInfoList", method = RequestMethod.POST)
     public List<MongoInfo> mongoInfoList(){
-        Map<String, String> stringMap = new HashMap<>();
-        stringMap.put("name", "许洋");
-        try {
-            List<MongoInfo> mongoInfoList = mongoService.findList(stringMap);
-            return mongoInfoList;
-        } catch (Exception e) {
-            log.error("mongo异常：" + e.getMessage());
-            return null;
-        }
+        return null;
     }
 }
