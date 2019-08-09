@@ -6,6 +6,9 @@ import com.xuyang.crm.mongo.util.MongodbUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.nntp.Article;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -92,8 +95,56 @@ public class MongoServiceImpl implements MongoService {
     @Override
     public List<MongoInfo> findByPattern(MongoInfo mongoInfo) throws Exception {
         Query query = new Query();
-        Criteria criteria = new Criteria().orOperator(Criteria.where("name").regex(MongodbUtil.pattern(mongoInfo.getName())));
+        Criteria criteria = new Criteria().orOperator(Criteria.where("name").is(mongoInfo.getName()));
         query.addCriteria(criteria);
         return mongoTemplate.find(query, MongoInfo.class);
+    }
+
+    /**
+     * 自动忽略
+     * @param mongoInfo
+     * @return findByPattern
+     * @throws Exception
+     */
+    @Override
+    public List<MongoInfo> findByExists(MongoInfo mongoInfo) throws Exception {
+        Query query = new Query();
+        Criteria criteria = new Criteria().exists(false).
+                andOperator(Criteria.where("name").regex(MongodbUtil.pattern(mongoInfo.getName())));
+        query.addCriteria(criteria);
+        return mongoTemplate.find(query, MongoInfo.class);
+    }
+
+    /**
+     * 分页查询
+     * @param mongoInfo
+     * @param pageable 分页条件
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<MongoInfo> findByPage(MongoInfo mongoInfo, Pageable pageable) throws Exception {
+        Query query = new Query();
+        Criteria criteria = new Criteria();
+        criteria.exists(false).andOperator(Criteria.where("name").regex(MongodbUtil.pattern(mongoInfo.getName())));
+        query.addCriteria(criteria);
+        // 分页 和 排序
+        query.with(pageable);
+        //根据什么条件进行排序
+        query.with(new Sort(Sort.Direction.DESC, "id"));
+        return mongoTemplate.find(query, MongoInfo.class);
+    }
+
+    /**
+     * 自定义条件删除
+     * @param mongoInfo
+     * @throws Exception
+     */
+    @Override
+    public void removeByID(MongoInfo mongoInfo) throws Exception {
+        Query query = new Query();
+        Criteria criteria = new Criteria().andOperator(Criteria.where("id").is(mongoInfo.getId()));
+        query.addCriteria(criteria);
+        mongoTemplate.remove(query, MongoInfo.class);
     }
 }
