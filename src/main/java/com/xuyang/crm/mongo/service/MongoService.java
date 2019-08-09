@@ -30,4 +30,8 @@ public interface MongoService {
     public List<MongoInfo> findByPage(MongoInfo mongoInfo, Pageable pageable) throws Exception;
 
     public void removeByID(MongoInfo mongoInfo) throws Exception;
+
+    public void dropCollection(String collectionName) throws Exception;
+
+    public List<MongoInfo> mongodbCount(MongoInfo mongoInfo) throws Exception;
 }

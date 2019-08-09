@@ -1,23 +1,23 @@
 package com.xuyang.crm.mongo.service.impl;
 
+import com.mongodb.DBObject;
 import com.xuyang.crm.model.MongoInfo;
 import com.xuyang.crm.mongo.service.MongoService;
 import com.xuyang.crm.mongo.util.MongodbUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.nntp.Article;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
 
 /**
  * @Auther: 许洋
@@ -146,5 +146,42 @@ public class MongoServiceImpl implements MongoService {
         Criteria criteria = new Criteria().andOperator(Criteria.where("id").is(mongoInfo.getId()));
         query.addCriteria(criteria);
         mongoTemplate.remove(query, MongoInfo.class);
+    }
+
+    /**
+     * 删除集合（也就是删表）
+     * @param collectionName
+     * @throws Exception
+     */
+    @Override
+    public void dropCollection(String collectionName) throws Exception {
+        mongoTemplate.dropCollection(collectionName);
+    }
+
+    /**
+     * MongoInfo的聚合
+     * @param mongoInfo
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<MongoInfo> mongodbCount(MongoInfo mongoInfo) throws Exception {
+
+        Criteria criteria = new Criteria();
+        criteria.andOperator(Criteria.where("age").gt("0"),
+                Criteria.where("name").lt("30"));
+
+        Aggregation agg = Aggregation.newAggregation(
+                Aggregation.match(criteria),//条件
+                Aggregation.group("name").//根据name进行分组
+                        addToSet("age").as("ages").//获取此name下的此人所有年龄数据
+                        first("id").as("firstId").//获取此name下的第一个id
+                        sum("id").as("peopleNum").//获取此name下的所有人员数据
+                        last("id").as("lastID"),//获取此name下的最后一个id
+                Aggregation.sort(Sort.Direction.DESC, "id")//排序
+        );
+        AggregationResults<MongoInfo> mongoInfoAggregationResults = mongoTemplate.aggregate(agg,"mongoInfo", MongoInfo.class);
+        List<MongoInfo> mongoInfoList=mongoInfoAggregationResults.getMappedResults();
+        return mongoInfoList;
     }
 }
