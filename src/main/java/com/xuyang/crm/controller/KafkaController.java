@@ -4,7 +4,6 @@ import com.xuyang.crm.kafka.provider.KafkaProvider;
 import com.xuyang.crm.model.Talk;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @Description:
  */
 @Slf4j
-@Controller
 public class KafkaController {
 
     @Autowired

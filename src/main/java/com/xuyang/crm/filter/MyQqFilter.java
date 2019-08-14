@@ -1,6 +1,5 @@
 package com.xuyang.crm.filter;
 
-import com.xuyang.crm.util.IpUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.*;
@@ -23,11 +22,11 @@ public class MyQqFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-
+        log.debug("拦截放行");
         HttpServletRequest request = (HttpServletRequest)servletRequest;
 
         String uri = request.getRequestURI();//返回请求行中的资源名称
-
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override

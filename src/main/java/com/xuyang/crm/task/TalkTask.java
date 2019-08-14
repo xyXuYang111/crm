@@ -1,6 +1,5 @@
 package com.xuyang.crm.task;
 
-import com.xuyang.crm.kafka.provider.KafkaProvider;
 import com.xuyang.crm.model.MongoInfo;
 import com.xuyang.crm.model.ObjectValue;
 import com.xuyang.crm.model.Talk;
@@ -10,7 +9,6 @@ import com.xuyang.crm.service.ObjectService;
 import com.xuyang.crm.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -25,12 +23,9 @@ public class TalkTask {
     private ObjectService objectService;
 
     @Autowired
-    private KafkaProvider kafkaProvider;
-
-    @Autowired
     private MongoService mongoService;
 
-    @Scheduled(cron = "0 */1 * * * ?")
+    //@Scheduled(cron = "0 */1 * * * ?")
     public void task(){
         log.debug("定时调度开始：kafka新增数据");
         RestTemplate restTemplate = new RestTemplate();
@@ -41,8 +36,8 @@ public class TalkTask {
         talk.setUserName("许洋");
         talk.setTalkContent(DateUtil.getNowSecond() + "往kafka中写书");
 
-        kafkaProvider.sendKafka("mhb-test_2", 123, talk.toString());
-        kafkaProvider.sendKafka("mhb-test_1", 123, talk.toString());
+        //kafkaProvider.sendKafka("mhb-test_2", 123, talk.toString());
+        //kafkaProvider.sendKafka("mhb-test_1", 123, talk.toString());
 
         String redisCode = "REDIS_KAFKA_";
         //记录日志
@@ -50,7 +45,7 @@ public class TalkTask {
         log.debug("定时调度结束：kafka新增数据");
     }
 
-    @Scheduled(cron = "*/10 * * * * ? ")
+    //@Scheduled(cron = "*/10 * * * * ? ")
     public void objectValueTesk(){
         log.debug("定时调度开始：objectValue新增数据");
         RestTemplate restTemplate = new RestTemplate();
@@ -75,7 +70,7 @@ public class TalkTask {
         }
     }
 
-    @Scheduled(cron = "*/10 * * * * ? ")
+    //@Scheduled(cron = "*/10 * * * * ? ")
     public void mongoValueTesk(){
         log.debug("定时调度开始：mongo新增数据");
         MongoInfo mongoInfo = new MongoInfo();

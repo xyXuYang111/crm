@@ -36,7 +36,7 @@
 
     <!-- 消费者容器配置信息 -->
     <bean id="containerProperties1" class="org.springframework.kafka.listener.ContainerProperties">
-        <constructor-arg value="mhb-test_1"/>
+        <constructor-arg value="kafka_1"/>
         <property name="messageListener" ref="kafkaConsumer1"/>
     </bean>
 
