@@ -1,6 +1,5 @@
 package com.xuyang.crm.mongo.service.impl;
 
-import com.mongodb.DBObject;
 import com.xuyang.crm.model.MongoInfo;
 import com.xuyang.crm.mongo.service.MongoService;
 import com.xuyang.crm.mongo.util.MongodbUtil;
@@ -70,7 +69,7 @@ public class MongoServiceImpl implements MongoService {
     }
 
     /**
-     * or的方式查询数据
+     * 多数据查询
      * @param mongoInfo
      * @return
      * @throws Exception
@@ -78,45 +77,16 @@ public class MongoServiceImpl implements MongoService {
     @Override
     public List<MongoInfo> findByOr(MongoInfo mongoInfo) throws Exception {
         Query query = new Query();
-        Criteria criteria = new Criteria().orOperator(Criteria.where("id").is(mongoInfo.getId()),
-                Criteria.where("name").is(mongoInfo.getName()),
-                Criteria.where("age").is(mongoInfo.getAge()),
-                Criteria.where("birth").is(mongoInfo.getBirth()));
+        Criteria criteria = new Criteria().orOperator(Criteria.where("id").exists(true).is(mongoInfo.getId()),
+                Criteria.where("name").exists(false).regex(MongodbUtil.pattern(mongoInfo.getName())),
+                Criteria.where("age").exists(false).is(mongoInfo.getAge()),
+                Criteria.where("birth").exists(false).is(mongoInfo.getBirth()));
         query.addCriteria(criteria);
         return mongoTemplate.find(query, MongoInfo.class);
     }
 
     /**
-     * 模糊查询(全模糊+or查询)
-     * @param mongoInfo
-     * @return
-     * @throws Exception
-     */
-    @Override
-    public List<MongoInfo> findByPattern(MongoInfo mongoInfo) throws Exception {
-        Query query = new Query();
-        Criteria criteria = new Criteria().orOperator(Criteria.where("name").is(mongoInfo.getName()));
-        query.addCriteria(criteria);
-        return mongoTemplate.find(query, MongoInfo.class);
-    }
-
-    /**
-     * 自动忽略
-     * @param mongoInfo
-     * @return findByPattern
-     * @throws Exception
-     */
-    @Override
-    public List<MongoInfo> findByExists(MongoInfo mongoInfo) throws Exception {
-        Query query = new Query();
-        Criteria criteria = new Criteria().exists(false).
-                andOperator(Criteria.where("name").regex(MongodbUtil.pattern(mongoInfo.getName())));
-        query.addCriteria(criteria);
-        return mongoTemplate.find(query, MongoInfo.class);
-    }
-
-    /**
-     * 分页查询
+     * 分页查询:倒叙排序
      * @param mongoInfo
      * @param pageable 分页条件
      * @return
@@ -125,26 +95,33 @@ public class MongoServiceImpl implements MongoService {
     @Override
     public List<MongoInfo> findByPage(MongoInfo mongoInfo, Pageable pageable) throws Exception {
         Query query = new Query();
-        Criteria criteria = new Criteria();
-        criteria.exists(false).andOperator(Criteria.where("name").regex(MongodbUtil.pattern(mongoInfo.getName())));
+        Criteria criteria = new Criteria().orOperator(Criteria.where("id").exists(true).is(mongoInfo.getId()),
+                Criteria.where("name").exists(false).regex(MongodbUtil.pattern(mongoInfo.getName())),
+                Criteria.where("age").exists(false).is(mongoInfo.getAge()),
+                Criteria.where("birth").exists(false).is(mongoInfo.getBirth()));
         query.addCriteria(criteria);
         // 分页 和 排序
         query.with(pageable);
         //根据什么条件进行排序
         query.with(new Sort(Sort.Direction.DESC, "id"));
+
         return mongoTemplate.find(query, MongoInfo.class);
     }
 
     /**
-     * 自定义条件删除
+     * 主键删除
      * @param mongoInfo
      * @throws Exception
      */
     @Override
     public void removeByID(MongoInfo mongoInfo) throws Exception {
         Query query = new Query();
-        Criteria criteria = new Criteria().andOperator(Criteria.where("id").is(mongoInfo.getId()));
+        Criteria criteria = new Criteria().andOperator(Criteria.where("id").exists(true).is(mongoInfo.getId()),
+                Criteria.where("name").exists(false).is(mongoInfo.getName()),
+                Criteria.where("age").exists(false).is(mongoInfo.getAge()),
+                Criteria.where("birth").exists(false).is(mongoInfo.getBirth()));
         query.addCriteria(criteria);
+
         mongoTemplate.remove(query, MongoInfo.class);
     }
 
@@ -184,4 +161,5 @@ public class MongoServiceImpl implements MongoService {
         List<MongoInfo> mongoInfoList=mongoInfoAggregationResults.getMappedResults();
         return mongoInfoList;
     }
+
 }

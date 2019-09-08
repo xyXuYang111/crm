@@ -36,36 +36,4 @@ public class History implements Serializable {
      * 运行结果
      */
     private String historyStatue;
-
-    public String getHistoryID() {
-        return historyID;
-    }
-
-    public void setHistoryID(String historyID) {
-        this.historyID = historyID;
-    }
-
-    public String getUserID() {
-        return userID;
-    }
-
-    public void setUserID(String userID) {
-        this.userID = userID;
-    }
-
-    public String getHistoryName() {
-        return historyName;
-    }
-
-    public void setHistoryName(String historyName) {
-        this.historyName = historyName;
-    }
-
-    public String getHistoryContext() {
-        return historyContext;
-    }
-
-    public void setHistoryContext(String historyContext) {
-        this.historyContext = historyContext;
-    }
 }

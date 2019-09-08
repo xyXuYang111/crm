@@ -1,9 +1,11 @@
 package com.xuyang.crm.controller;
 
-import com.xuyang.crm.model.MongoInfo;
-import com.xuyang.crm.mongo.service.MongoService;
+import com.xuyang.crm.model.MongoParam;
+import com.xuyang.crm.mongo.service.MongoParamService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @Auther: 许洋
@@ -22,75 +25,80 @@ import java.util.List;
 public class MongoController {
 
     @Autowired
-    private MongoService mongoService;
+    private MongoParamService mongoParamService;
 
+    /**
+     * 新增mongoDB数据
+     * @param mongoParam
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
-    @RequestMapping(value = "mongoInfoList", method = RequestMethod.POST)
-    public List<MongoInfo> mongoInfoList(@RequestBody MongoInfo mongoInfo){
-        try {
-            log.debug("mongodb学习之or查询");
-            List<MongoInfo> mongoInfoList = mongoService.findByOr(mongoInfo);
-            return mongoInfoList;
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return null;
-        }
+    @RequestMapping(value = "insertMongoDB", method = RequestMethod.POST)
+    public String insertMongoDB(@RequestBody MongoParam mongoParam) throws Exception{
+        log.debug("mongoParam参数"+ mongoParam.toString());
+        mongoParam.setId(UUID.randomUUID().toString());
+        mongoParamService.insert(mongoParam);
+        return "添加成功，uuid是：" + UUID.randomUUID().toString();
     }
 
+    /**
+     * 修改mongoDB数据
+     * @param mongoParam
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
-    @RequestMapping(value = "mongoInfoPattern", method = RequestMethod.POST)
-    public List<MongoInfo> mongoInfoPattern(@RequestBody MongoInfo mongoInfo){
-        try {
-            log.debug("mongodb学习之模糊查询");
-            List<MongoInfo> mongoInfoList = mongoService.findByPattern(mongoInfo);
-            return mongoInfoList;
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return null;
-        }
+    @RequestMapping(value = "updateMongoDB", method = RequestMethod.POST)
+    public String updateMongoDB(@RequestBody MongoParam mongoParam) throws Exception{
+        log.debug("mongoParam参数"+ mongoParam.toString());
+        mongoParamService.update(mongoParam);
+        return "添加成功，uuid是：" + UUID.randomUUID().toString();
     }
 
+    /**
+     * 单行数据查询mongoDB数据
+     * @param mongoParam
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
-    @RequestMapping(value = "mongoInfoExists", method = RequestMethod.POST)
-    public List<MongoInfo> mongoInfoExists(@RequestBody MongoInfo mongoInfo){
-        try {
-            log.debug("mongodb学习之自动忽略查询");
-            List<MongoInfo> mongoInfoList = mongoService.findByExists(mongoInfo);
-            return mongoInfoList;
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return null;
-        }
+    @RequestMapping(value = "selectOneMongoDB", method = RequestMethod.POST)
+    public MongoParam selectOneMongoDB(@RequestBody MongoParam mongoParam) throws Exception{
+        log.debug("mongoParam参数"+ mongoParam.toString());
+        MongoParam findMongoDB = mongoParamService.findByAnd(mongoParam);
+        return findMongoDB;
     }
 
+    /**
+     * 多行数据mongoDB数据
+     * @param mongoParam
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
-    @RequestMapping(value = "insertMongodb", method = RequestMethod.POST)
-    public MongoInfo insertMongodb(@RequestBody MongoInfo mongoInfo){
-        try {
-            log.debug("mongodb学习之or查询");
-            mongoInfo.setId(String.valueOf(System.currentTimeMillis()));
-            mongoService.insert(mongoInfo);
-
-            MongoInfo mongoInfoLine= mongoService.findByAnd(mongoInfo);
-            log.debug("新增的结果数据：" + mongoInfoLine.toString());
-
-            return mongoInfoLine;
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return null;
-        }
+    @RequestMapping(value = "selectListMongoDB", method = RequestMethod.POST)
+    public List<MongoParam> selectListMongoDB(@RequestBody MongoParam mongoParam) throws Exception{
+        log.debug("mongoParam参数"+ mongoParam.toString());
+        List<MongoParam> findMongoDB = mongoParamService.findByOr(mongoParam);
+        log.debug("查询结果：" + findMongoDB.size());
+        return findMongoDB;
     }
 
+    /**
+     * 多行数据mongoDB数据
+     * @param mongoParam
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
-    @RequestMapping(value = "updateMongodb", method = RequestMethod.POST)
-    public String updateMongodb(@RequestBody MongoInfo mongoInfo){
-        try {
-            log.debug("mongodb学习之修改数据");
-            mongoService.update(mongoInfo);
-            return "mongodb修改成功";
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return "mongodb修改失败：" + e.getMessage();
-        }
+    @RequestMapping(value = "selectListPageMongoDB", method = RequestMethod.POST)
+    public List<MongoParam> selectListPageMongoDB(@RequestBody MongoParam mongoParam) throws Exception{
+        log.debug("mongoParam参数"+ mongoParam.toString());
+        // 每页10个
+        Pageable pageable = new PageRequest(1, 10);
+        List<MongoParam> findMongoDB = mongoParamService.findByPage(mongoParam, pageable);
+        log.debug("分页查询结果：" + findMongoDB.size());
+        return findMongoDB;
     }
 }

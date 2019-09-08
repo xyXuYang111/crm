@@ -1,0 +1,136 @@
+body{
+	height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: url('../img/win10img/bg_04.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    box-sizing: border-box;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.layui-layer-hui{
+	width: 200px !important;
+	margin-top: 25px !important;
+}
+.layui-layer-min{
+	display: none !important;
+}
+.winmian{
+	padding: 10px 0;
+}
+.winmian ul li{
+	width: 76px;
+    height: auto;
+    color: #fff;
+    cursor: default;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.00);
+    overflow: hidden;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    margin-bottom: 15px;
+}
+.winmian ul li span{
+	display: block;
+	width: 45px;
+	height: 45px;
+	font-size: 45px;
+	margin: 0 auto;
+	color: #FFFFFF;
+}
+.winmian ul li span img{
+	width: 90%;
+	display: block;
+	margin: 0 auto;
+}
+.winmian ul li p{
+	color: #FFFFFF;
+	font-size: 12px;
+	width: 100%;
+	text-align: center;
+	margin: 10px 0 5px 0;
+}
+.winmian ul li:hover{
+	border: 1px solid rgba(221, 221, 221, .8);
+    background-color: rgba(255, 255, 255, .3);
+    overflow: visible;
+    height: auto;
+}
+footer{
+	width: 100%;
+    height: 40px;
+    position: fixed;
+    bottom: 0;
+    background:rgba(57,54,54,0.5);
+    z-index: 9999999999999999999999;
+}
+footer .winstart{
+	height: 40px;
+	width: 48px;
+	float: left;
+}
+footer .winstart:hover{
+	background-color: #3F3F3F;
+}
+footer .winstart img{
+	width: 20px;
+	display: block;
+	margin: 0 auto;
+	margin-top: 11px;
+}
+footer ul{
+	float: left;
+}
+footer ul li{
+    line-height: 40px;
+    width: 160px;
+    text-align: center;
+    color: #FFFFFF;
+    background-color: #4c4a4a;
+    float: left;
+    margin-right: 5px;
+}
+footer ul li:hover{
+	background-color: #3F3F3F;
+}
+footer ul .active{
+    background-color: #3F3F3F;
+}
+footer .time{
+	float: right;
+	width: 75px;
+    height: 40px;
+    padding-top: 2px;
+}
+footer .time:hover{
+	background-color: #3F3F3F;
+}
+footer .time p{
+	width: 100%;
+	text-align: center;
+	font-size: 12px;
+	color: #FFFFFF;
+	line-height: 18px;
+}
+footer .news{
+	float: right;
+	width: 40px;
+    height: 40px;
+}
+footer .news img{
+	width: 20px;
+	display: block;
+	margin: 0 auto;
+	margin-top: 12px;
+}
+footer .news:hover{
+	background-color: #3F3F3F;
+}

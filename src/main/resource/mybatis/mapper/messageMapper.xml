@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuyang.crm.message.dao.MessageDao">
+
+    <resultMap id="messageResult" type="Message">
+        <id column="messageID" property="messageID"/>
+        <result column="messageName" property="messageName"/>
+        <result column="messageDes" property="messageDes"/>
+        <result column="messageContent" property="messageContent"/>
+        <result column="createTime" property="createTime"/>
+    </resultMap>
+
+    <sql id="messageSql">
+        messageID,
+        messageName,
+        messageDes,
+        messageContent,
+        createTime
+    </sql>
+
+    <select id="messageList" parameterType="Message" resultMap="messageResult">
+        SELECT
+        <include refid="messageSql"/>
+        FROM message
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="messageID != null">AND
+                messageID = #{messageID}
+            </if>
+            <if test="messageName != null">AND
+                messageName like '%' || #{messageName} || '%'
+            </if>
+            <if test="messageContent != null">AND
+                messageContent like '%' || #{messageContent} || '%'
+            </if>
+            <if test="messageDes != null">AND
+                messageDes like '%' || #{messageDes} || '%'
+            </if>
+        </trim>
+    </select>
+
+    <select id="messageInfo" parameterType="Message" resultMap="messageResult">
+        SELECT
+        <include refid="messageSql"/>
+        FROM message
+        WHERE  messageID = #{messageID}
+        <if test="messageName != null">AND
+            messageName like '%' || #{messageName} || '%'
+        </if>
+        <if test="messageContent != null">AND
+            messageContent like '%' || #{messageContent} || '%'
+        </if>
+        <if test="messageDes != null">AND
+            messageDes like '%' || #{messageDes} || '%'
+        </if>
+    </select>
+
+    <insert id="insertMessage" parameterType="Message" useGeneratedKeys="true" keyProperty="messageID">
+        INSERT message(
+         messageName,
+         messageDes,
+         messageContent,
+         createTime
+        )VALUES
+        (
+        #{messageName},
+        #{messageDes},
+        #{messageContent},
+        now()
+        )
+    </insert>
+
+    <update id="updateMessage" parameterType="Message">
+        UPDATE message SET
+        messageName = #{messageName}
+        WHERE  messageID = #{messageID}
+    </update>
+
+    <delete id="deleteMessage" parameterType="Message">
+        DELETE FROM message
+        WHERE  messageID = #{messageID}
+    </delete>
+</mapper>

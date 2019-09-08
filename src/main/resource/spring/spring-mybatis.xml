@@ -17,6 +17,28 @@
         <property name="driverClassName" value="${driver-class}"/>
         <property name="username" value="root"/>
         <property name="password" value="1234qwer"/>
+
+        <!-- 开启Druid的监控统计功能,StatFilter可以和其他的Filter配置使用 -->
+        <property name="filters" value="stat"/>
+
+        <!-- proxyFilters属性配置,通过bean的方式配置 -->
+        <property name="proxyFilters">
+            <list>
+                <ref bean="log-filter"/>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 上面的druid的配置 -->
+    <bean id="log-filter" class="com.alibaba.druid.filter.logging.Log4j2Filter">
+        <!-- 所有连接相关的日志 -->
+        <property name="connectionLogEnabled" value="false"/>
+        <!-- 所有Statement相关的日志 -->
+        <property name="statementLogEnabled" value="false"/>
+        <!-- 是否显示结果集 -->
+        <property name="resultSetLogEnabled" value="true"/>
+        <!-- 是否显示SQL语句 -->
+        <property name="statementExecutableSqlLogEnable" value="true"/>
     </bean>
 
     <!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
@@ -30,7 +52,7 @@
     <!-- DAO接口所在包名，Spring会自动查找其下的类 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
-        <property name="basePackage" value="com.xuyang.crm.dao" />
+        <property name="basePackage" value="com.xuyang.crm" />
         <property name="annotationClass" value="com.xuyang.crm.annotation.MyBatisDao"/>
     </bean>
 

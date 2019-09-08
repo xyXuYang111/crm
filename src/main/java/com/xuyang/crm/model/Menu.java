@@ -37,35 +37,5 @@ public class Menu implements Serializable {
      */
     private String parentID;
 
-    public String getMenuID() {
-        return menuID;
-    }
-
-    public void setMenuID(String menuID) {
-        this.menuID = menuID;
-    }
-
-    public String getUserID() {
-        return userID;
-    }
-
-    public void setUserID(String userID) {
-        this.userID = userID;
-    }
-
-    public String getMenuName() {
-        return menuName;
-    }
-
-    public void setMenuName(String menuName) {
-        this.menuName = menuName;
-    }
-
-    public String getParentID() {
-        return parentID;
-    }
-
-    public void setParentID(String parentID) {
-        this.parentID = parentID;
-    }
+    private String json;
 }

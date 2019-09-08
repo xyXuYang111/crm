@@ -28,44 +28,4 @@ public class Talk implements Serializable {
 
     @JsonProperty(value = "createDate")
     private String createDate;
-
-    public String getTalkID() {
-        return talkID;
-    }
-
-    public void setTalkID(String talkID) {
-        this.talkID = talkID;
-    }
-
-    public String getTalkCode() {
-        return talkCode;
-    }
-
-    public void setTalkCode(String talkCode) {
-        this.talkCode = talkCode;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getTalkContent() {
-        return talkContent;
-    }
-
-    public void setTalkContent(String talkContent) {
-        this.talkContent = talkContent;
-    }
-
-    public String getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(String createDate) {
-        this.createDate = createDate;
-    }
 }

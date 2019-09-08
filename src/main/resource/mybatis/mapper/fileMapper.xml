@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuyang.crm.file.dao.FileDao">
+
+    <resultMap id="fileResult" type="Files">
+        <id column="fileID" property="fileID"/>
+        <result column="systemName" property="systemName"/>
+        <result column="fileName" property="fileName"/>
+        <result column="createTime" property="createTime"/>
+    </resultMap>
+
+    <sql id="fileSql">
+        fileID,
+        systemName,
+        fileName,
+        filePath,
+        fileType,
+        createTime
+    </sql>
+
+    <select id="fileList" parameterType="Files" resultMap="fileResult">
+        SELECT
+        <include refid="fileSql"/>
+        FROM file
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="fileID != null">AND
+                fileID = #{fileID}
+            </if>
+            <if test="fileName != null">AND
+                fileName like '%' || #{fileName} || '%'
+            </if>
+            <if test="systemName != null">AND
+                systemName like '%' || #{systemName} || '%'
+            </if>
+        </trim>
+    </select>
+
+    <select id="fileInfo" parameterType="Files" resultMap="fileResult">
+        SELECT
+        <include refid="fileSql"/>
+        FROM file
+        WHERE  fileID = #{fileID}
+        <if test="fileName != null">AND
+            fileName like '%' || #{fileName} || '%'
+        </if>
+        <if test="systemName != null">AND
+            systemName like '%' || #{systemName} || '%'
+        </if>
+    </select>
+
+    <insert id="insertFile" parameterType="Files" useGeneratedKeys="true" keyProperty="fileID">
+        INSERT file(
+        fileName,
+        systemName,
+        filePath,
+        fileType,
+        createTime
+        )VALUES
+        (
+        #{fileName},
+        #{systemName},
+        #{filePath},
+        #{fileType},
+        now()
+        )
+    </insert>
+
+    <update id="updateFile" parameterType="Files">
+        UPDATE file SET
+        fileName = #{fileName}
+        WHERE  fileID = #{fileID}
+    </update>
+
+    <delete id="deleteFile" parameterType="Files">
+        DELETE FROM file
+        WHERE  fileID = #{fileID}
+    </delete>
+</mapper>

@@ -1,8 +1,10 @@
 package com.xuyang.crm.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
 
@@ -13,33 +15,31 @@ public class Logger implements Serializable {
 
     private static final long serialVersionUID = -4991901771565207029L;
 
+    @Field
+    @JsonProperty(value = "logID")
+    private String logID;
+
+    @Field
+    @JsonProperty(value = "logContent")
+    private String logContent;
+
+    @Field
+    @JsonProperty(value = "logType")
+    private String logType;
+
+    @Field
+    @JsonProperty(value = "createTime")
+    private String createTime;
+
+    @Field
+    @JsonProperty(value = "content")
     private String content;
 
+    @Field
+    @JsonProperty(value = "code")
     private String code;
 
+    @Field
+    @JsonProperty(value = "time")
     private String time;
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
 }

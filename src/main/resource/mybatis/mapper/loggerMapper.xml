@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuyang.crm.log.dao.LoggerDao">
+
+    <resultMap id="logResult" type="Logger">
+        <id column="logID" property="logID"/>
+        <result column="logContent" property="logContent"/>
+        <result column="logType" property="logType"/>
+        <result column="createTime" property="createTime"/>
+    </resultMap>
+
+    <sql id="logSql">
+        logID,
+        logContent,
+        logType,
+        createTime
+    </sql>
+
+    <select id="loggerList" parameterType="Logger" resultMap="logResult">
+        SELECT
+        <include refid="logSql"/>
+        FROM log
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="logID != null">AND
+                logID = #{logID}
+            </if>
+            <if test="logContent != null">AND
+                logContent like '%' || #{logContent} || '%'
+            </if>
+            <if test="logType != null">AND
+                logType like '%' || #{logType} || '%'
+            </if>
+        </trim>
+    </select>
+
+    <select id="loggerInfo" parameterType="Logger" resultMap="logResult">
+        SELECT
+        <include refid="logSql"/>
+        FROM log
+        WHERE  logID = #{logID}
+        <if test="logContent != null">AND
+            logContent like '%' || #{logContent} || '%'
+        </if>
+        <if test="logType != null">AND
+            logType like '%' || #{logType} || '%'
+        </if>
+    </select>
+
+    <insert id="insertLogger" parameterType="Logger" useGeneratedKeys="true" keyProperty="logID">
+        INSERT log(
+        logContent,
+        logType,
+        createTime
+        )VALUES
+        (
+        #{logContent},
+        #{logType},
+        now()
+        )
+    </insert>
+
+    <delete id="deleteLogger" parameterType="Logger">
+        DELETE FROM
+        log
+        WHERE  logID = #{logID}
+    </delete>
+</mapper>
