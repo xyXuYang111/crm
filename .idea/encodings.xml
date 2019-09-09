@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="Encoding" addBOMForNewFiles="with NO BOM">
+  <component name="Encoding" native2AsciiForPropertiesFiles="true" defaultCharsetForPropertiesFiles="UTF-8">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resource/mybatis/mapper/fileMapper.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/resource/mybatis/mapper/historyMapper.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resource/mybatis/mapper/loggerMapper.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/resource/mybatis/mapper/menuMapper.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resource/mybatis/mapper/messageMapper.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resource/mybatis/mapper/objectMapper.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/resource/mybatis/mapper/userMapper.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/resource/mybatis/mybatis-config.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>
