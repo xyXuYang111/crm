@@ -97,8 +97,6 @@ public class FilesMongoDBAspectJrt {
 
         StringBuilder stringBuilder = new StringBuilder();
         value(joinPoint, stringBuilder);
-        String date = DateUtil.getNowTime();
-        String key = String.valueOf(System.currentTimeMillis());
 
         //文件日志记录
         LoggerAbstract loggerInterface = LoggerFactory.getLoggerAbstract(LoggerDef.LOGGER_TYPE_1);
@@ -108,11 +106,6 @@ public class FilesMongoDBAspectJrt {
         logger.setLogContent(stringBuilder.toString());
         loggerInterface.insertMongoDBLogger();
         loggerInterface.insertSqlLogger();
-
-        //操作内容记录
-        RedisRepository.setMap(date, methodName, stringBuilder.toString());
-        //消息异常机制：日志记录
-        RedisRepository.setMap(date, key, "操作成功");
     }
 
     private void value(JoinPoint joinPoint, StringBuilder stringBuilder){

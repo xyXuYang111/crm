@@ -70,14 +70,6 @@ public class MessageMongoDBAspectJrt {
         logger.setLogResult(e.getMessage());
         logger.setLogContent(stringBuilder.toString());
         loggerInterface.insertMongoDBLogger();
-
-        String date = DateUtil.getNowTime();
-        String key = String.valueOf(System.currentTimeMillis());
-
-        //操作内容记录
-        RedisRepository.setMap(date, methodName, stringBuilder.toString());
-        //消息异常机制：日志记录
-        RedisRepository.setMap(date, key, e.getMessage());
     }
 
     /**
@@ -94,8 +86,6 @@ public class MessageMongoDBAspectJrt {
 
         StringBuilder stringBuilder = new StringBuilder();
         value(joinPoint, stringBuilder);
-        String date = DateUtil.getNowTime();
-        String key = String.valueOf(System.currentTimeMillis());
 
         //文件日志记录
         LoggerAbstract loggerInterface = LoggerFactory.getLoggerAbstract(LoggerDef.LOGGER_TYPE_1);
@@ -104,11 +94,6 @@ public class MessageMongoDBAspectJrt {
         logger.setLogResult("成功");
         logger.setLogContent(stringBuilder.toString());
         loggerInterface.insertMongoDBLogger();
-
-        //操作内容记录
-        RedisRepository.setMap(date, methodName, stringBuilder.toString());
-        //消息异常机制：日志记录
-        RedisRepository.setMap(date, key, "操作成功");
     }
 
     private void value(JoinPoint joinPoint, StringBuilder stringBuilder){

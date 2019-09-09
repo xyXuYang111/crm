@@ -71,6 +71,17 @@ public class IndexController {
      *
      * @return
      */
+    @RequestMapping(value = "searchIndex", method = RequestMethod.GET)
+    public String searchIndex() {
+        log.info("收藏网页主页");
+        return "search/index";
+    }
+
+    /**
+     * 登录
+     *
+     * @return
+     */
     @RequestMapping(value = "about", method = RequestMethod.GET)
     public String about() {
         log.info("关于个人的主页");

@@ -22,6 +22,7 @@
             <li><a href="/fileIndex.do">文件</a></li>
             <li><a href="/messageIndex.do">点滴</a></li>
             <li><a href="/loggerIndex.do">日志</a></li>
+            <li><a href="/searchIndex.do">收藏链接</a></li>
             <li><a href="/about.do">关于</a></li>
         </ul>
     </div>
