@@ -49,6 +49,7 @@
                     <th>序号</th>
                     <th>日志内容</th>
                     <th>日志类型</th>
+                    <th>日志结果</th>
                     <th>上传时间</th>
                 </tr>
                 </thead>
@@ -57,6 +58,7 @@
                         <td>${list.logID}</td>
                         <td>${list.logContent}</td>
                         <td>${list.logType}</td>
+                        <td>${list.logResult}</td>
                         <td>${list.createTime}</td>
                     </tr>
                 </c:forEach>

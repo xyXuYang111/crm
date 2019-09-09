@@ -24,6 +24,10 @@ public class Logger implements Serializable {
     private String logContent;
 
     @Field
+    @JsonProperty(value = "logResult")
+    private String logResult;
+
+    @Field
     @JsonProperty(value = "logType")
     private String logType;
 

@@ -2,6 +2,10 @@ package com.xuyang.crm.file.factory;
 
 import com.xuyang.crm.file.service.FileMongoDB;
 import com.xuyang.crm.file.service.FileService;
+import com.xuyang.crm.log.def.LoggerDef;
+import com.xuyang.crm.log.factory.LoggerAbstract;
+import com.xuyang.crm.log.factory.LoggerFactory;
+import com.xuyang.crm.log.factory.LoggerInterface;
 import com.xuyang.crm.log.service.LoggerMongoDB;
 import com.xuyang.crm.log.service.LoggerService;
 import com.xuyang.crm.model.Files;
@@ -72,13 +76,6 @@ public abstract class AbstractFile implements FileOperate {
         filesInfo.setCreateTime(DateUtil.getNowSecond());
         //文件信息入库
         fileMongoDB.insertFile(filesInfo);
-
-        Logger logger = new Logger();
-        logger.setLogContent(files.toString());
-        logger.setLogType("文件");
-        //日志记录
-        loggerService.insertLogger(logger);
-        loggerMongoDB.insertLogger(logger);
     }
 
     @Override

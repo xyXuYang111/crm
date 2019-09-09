@@ -13,6 +13,7 @@
         logID,
         logContent,
         logType,
+        logResult,
         createTime
     </sql>
 
@@ -50,11 +51,13 @@
         INSERT log(
         logContent,
         logType,
+        logResult,
         createTime
         )VALUES
         (
         #{logContent},
         #{logType},
+        #{logResult},
         now()
         )
     </insert>
