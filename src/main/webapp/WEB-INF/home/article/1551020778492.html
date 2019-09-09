@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Mirrored from www.nonelonely.com/article/1551020778492 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:05:49 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+
+    <title>log4j2日志的完整配置文件信息和同步与异步的配置信息- 书生个人博客</title>
+    <link href="../static/plugins/editormd/css/editormd.min.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+<meta name="baidu_union_verify" content="3e514e79dc5e7201b9bee186137e9562">
+<meta name="keywords" content="log4j2,原创">
+
+<meta name="description" content="log4j2日志的完整配置文件信息和同步与异步的配置信息，如果在springboot中用，请先去掉默认的logback日志文件名:log4j2.xml&amp;lt;?xmlversion=&quot;1.0&quot;encoding=&quot;UTF-8&quot;?&amp;gt;&amp;lt;!--status=&quot;OFF&quot;，可以去掉，它的含义为是否记录log4j2本身的event信息，默认是OFF--&amp;gt;&amp;lt;configurationstatus=&quot;OFF&quot;&amp;gt;&amp;lt;!--定义下面的引用名--&amp;gt;&amp;lt;!--自">
+
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../static/plugins/layui/css/layui.css">
+<link rel="stylesheet" href="../static/plugins/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../static/assets/css/frontend/base.css">
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "../../hm.baidu.com/hm6618.js?c07ddd5b98c69450ebd8e255627f70b0";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <link rel="canonical" href="1551020778492.html"/>
+    <script src="../../msite.baidu.com/sdk/cb688.js?appid=1622832448885693"></script>
+    <script src="../static/plugins/jquery/jquery.min.js"></script>
+     <style>
+         @media screen and (max-width: 767px) {
+             .layui-layer-page {
+                 display: none;
+             }
+         }
+
+         .markdown-body.layui-layer-content {
+             padding: 20px;
+             /*background-image: url("/static/assets/img/long.png");*/
+         }
+         .markdown-body  .layui-layer-title{
+             background-color: #e4e4e400;
+         }
+         .markdown-body  .layui-layer{
+             background-color: #e4e4e4;
+             background-image: url("../static/assets/img/long.png") ;
+             background-size: 100% 100%;
+         }
+         .markdown-body .layui-layer-content {
+
+            padding: 20px;
+         }
+
+     </style>
+
+</head>
+<body class="animated fadeIn">
+
+<div class="wrapper" >
+    <header>
+    <div class="headtop"></div>
+    <div class="contenttop">
+        <div class="logo f_l"> Java码猿-书生个人博客</div>
+        <div class="search f_r">
+            <input name="keyboard"  id="bdcsMain" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+            <input name="Submit" class="input_submit" onclick="window.open('http://zhannei.baidu.com/cse/search?s=6583887351044514798&entry=1&q='+document.getElementById('bdcsMain').value)" value="搜索" type="button">
+            <!--<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=6583887351044514798' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>-->
+            <ul class="layui-nav" style="background-color: rgba(0,0,0,0);" >
+                
+                
+
+                <li  class="layui-nav-item"><a href="#"  style="color: #000;" onclick="goto()" title="QQ登入" class="iconfont icon-qq"></a>
+                </li>
+            </ul>
+
+
+        </div>
+        <div class="blank"></div>
+
+        <nav>
+            <div  class="navigation">
+                <ul class="menu">
+                    <li><a href="../index.html">网站首页</a></li>
+                    <li><a href="#">技术文章</a>
+                        <ul >
+                            <li><a  href="../pages748a.html?cateId=1">Spring系列</a></li>
+                            <li><a  href="../pages3c7b.html?cateId=6">前端开发</a></li>
+                            <li><a  href="../pages4ead.html?cateId=7">软件安装</a></li>
+                            <li><a  href="../pages8396.html?cateId=9">Java语法</a></li>
+                            <li><a  href="../pagesff6a.html?cateId=10">资源下载</a></li>
+                            <li><a  href="../pagesad9e.html?cateId=12">ORM框架</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="../note.html">我的日记</a> </li>
+                    <li><a href="../msg.html">给我留言</a> </li>
+                    <li><a href="../about.html">关于</a></li>
+                </ul>
+            </div>
+        </nav>
+        <SCRIPT type=text/javascript>
+            // Navigation Menu
+            $(function() {
+                $(".menu ul").css({display: "none"}); // Opera Fix
+                $(".menu li").hover(function(){
+                    $(this).find('ul:first').css({visibility: "visible",display: "none"}).slideDown("normal");
+                },function(){
+                    $(this).find('ul:first').css({visibility: "hidden"});
+                });
+            });
+
+            function  search() {
+                var s=$('#keyboard').val();
+                location.href = s === "" ? "/" : "/pages?searchStr=" + s;
+            };
+            function goto () {
+                var url = window.location.href;
+                var winObj = window.open('/api/qq?url=' + url, '_self');
+            }
+        </SCRIPT>
+
+    </div>
+</header>
+    <div class="jztop"></div>
+
+    <!--<bmy-article-page :alipay="params.alipay" :wechat="params.wechat_pay" :su="su">-->
+        <!--<div th:insert ="frontend/fragment/articlepage :: article"  slot="article"></div>-->
+        <!--<div  th:insert="frontend/fragment/comment :: comment" slot="post"></div>-->
+
+        <!--<bmy-comment-list slot="comment" :comments="comments" :tips="params.comment_notice"-->
+                          <!--:re="params.all_comment_open == 1 && article.commented"></bmy-comment-list>-->
+       <!--<bmy-search slot="search"></bmy-search>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相似文章'})" slot="similar"></div>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${lots},${'热度文章'})" slot="lot"></div>-->
+    <!--</bmy-article-page>-->
+
+    <div id="blog-body" class="layui-container">
+       <div class="layui-row layui-col-space10">
+           <div id="blog-info" class="layui-col-md12">
+                <div class="layui-collapse layui-panel layui-article photos" >
+
+                     <div  ><div class="layui-colla-item">
+                    <h2 class="nh1"><span>您现在的位置是：<a href="../index.html" target="_blank">网站首页</a>>><a href="#" target="_blank">信息浏览</a>
+                    </span><b>文章详情</b></h2>
+                          <div class="layui-colla-content layui-show layui-article">
+                                   <fieldset class="layui-elem-field layui-field-title layui-article-page-title">
+                                       <legend class="center-to-head" align="center">log4j2日志的完整配置文件信息和同步与异步的配置信息</legend>
+                                      </fieldset>
+                                  <div class="layui-text layui-blog-body">
+                                           <div class="layui-row">
+                                                  <div class="layui-col-md6 layui-col-md-offset3 text-center blog-base-info">
+                                                           <span><i class="fa fa-clock-o" ></i>2019-02-24 23:06 </span>
+                                                           <span><i class="fa fa-user-o"></i> <span style="color: #FF5722;">我的电脑</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-renzhengkaobei"></use></svg></span>
+                                                          <span><i class="fa fa-comment-o"></i></span>
+                                                           <span><i class="fa fa-eye"></i> 1644</span>
+                                                       </div>
+                                               </div>
+                                      <!-- Baidu Button BEGIN -->
+                                           <!--<div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">-->
+                                                  <!--<span class="bds_more">分享到：</span>-->
+                                                  <!--<a class="bds_qzone"></a>-->
+                                                  <!--<a class="bds_tsina"></a>-->
+                                                  <!--<a class="bds_tqq"></a>-->
+                                                  <!--<a class="bds_renren"></a>-->
+                                                  <!--<a class="bds_t163"></a>-->
+                                                  <!--<a class="shareCount"></a>-->
+                                          <!--</div>-->
+                                          <!--<script type="text/javascript" id="bdshare_js" data="type=tools&uid=6701193" ></script>-->
+                                          <!--<script type="text/javascript" id="bdshell_js"></script>-->
+                                          <!--<script type="text/javascript">-->
+                                              <!--document.getElementById("bdshell_js").src = "https://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)-->
+                                          <!--</script>-->
+                                      <!-- Baidu Button END -->
+                                           <hr>
+                                           <div class="content detail markdown-body editormd-preview-container editormd-preview-active"><blockquote>
+<p>log4j2日志的完整配置文件信息和同步与异步的配置信息，如果在springboot中用，请先去掉默认的logback日志</p>
+</blockquote>
+<p>文件名:log4j2.xml</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pun">&lt;?</span><span class="pln">xml version</span><span class="pun">=</span><span class="str">"1.0"</span><span class="pln"> encoding</span><span class="pun">=</span><span class="str">"UTF-8"</span><span class="pun">?&gt;</span></code></li><li class="L1"><code><span class="com">&lt;!--  status="OFF"，可以去掉，它的含义为是否记录log4j2本身的event信息，默认是OFF --&gt;</span></code></li><li class="L2"><code><span class="tag">&lt;configuration</span><span class="pln"> </span><span class="atn">status</span><span class="pun">=</span><span class="atv">"OFF"</span><span class="tag">&gt;</span></code></li><li class="L3"><code><span class="pln">    </span><span class="com">&lt;!-- 定义下面的引用名 --&gt;</span></code></li><li class="L4"><code><span class="pln">    </span><span class="com">&lt;!-- </span></code></li><li class="L5"><code><span class="com">        自定义格式：</span></code></li><li class="L6"><code><span class="com">            %t：线程名称</span></code></li><li class="L7"><code><span class="com">            %p：日志级别</span></code></li><li class="L8"><code><span class="com">            %c：日志消息所在类名</span></code></li><li class="L9"><code><span class="com">            %m：消息内容</span></code></li><li class="L0"><code><span class="com">            %M：输出执行方法</span></code></li><li class="L1"><code><span class="com">            %d：发生时间，%d{yyyy-MM-dd HH:mm:ss,SSS}，输出类似：2018-10-18 22:10:28,921</span></code></li><li class="L2"><code><span class="com">            %x: 输出和当前线程相关联的NDC(嵌套诊断环境),尤其用到像java servlets这样的多客户多线程的应用中。</span></code></li><li class="L3"><code><span class="com">            %L：代码中的行数</span></code></li><li class="L4"><code><span class="com">            %n：换行 </span></code></li><li class="L5"><code><span class="com">        --&gt;</span><span class="pln"> </span></code></li><li class="L6"><code><span class="pln">    </span><span class="tag">&lt;Properties&gt;</span></code></li><li class="L7"><code><span class="pln">        </span><span class="tag">&lt;property</span><span class="pln"> </span><span class="atn">name</span><span class="pun">=</span><span class="atv">"log_pattern"</span><span class="tag">&gt;</span><span class="pln">%d{yyyy-MM-dd HH:mm:ss z} %-5p %c{36} %L %M - %m%x%n</span><span class="tag">&lt;/property&gt;</span></code></li><li class="L8"><code><span class="pln">        </span><span class="tag">&lt;property</span><span class="pln"> </span><span class="atn">name</span><span class="pun">=</span><span class="atv">"file_name"</span><span class="tag">&gt;</span><span class="pln">logs/app.log</span><span class="tag">&lt;/property&gt;</span></code></li><li class="L9"><code><span class="pln">        </span><span class="tag">&lt;property</span><span class="pln"> </span><span class="atn">name</span><span class="pun">=</span><span class="atv">"file_info"</span><span class="tag">&gt;</span><span class="pln">logs/info.log</span><span class="tag">&lt;/property&gt;</span></code></li><li class="L0"><code><span class="pln">        </span><span class="tag">&lt;property</span><span class="pln"> </span><span class="atn">name</span><span class="pun">=</span><span class="atv">"rolling_file_name"</span><span class="tag">&gt;</span><span class="pln">logs/app-%d{yyyy-MM-dd}-%i.log.gz</span><span class="tag">&lt;/property&gt;</span></code></li><li class="L1"><code><span class="pln">        </span><span class="tag">&lt;property</span><span class="pln"> </span><span class="atn">name</span><span class="pun">=</span><span class="atv">"every_file_size"</span><span class="tag">&gt;</span><span class="pln">10M</span><span class="tag">&lt;/property&gt;</span><span class="com">&lt;!-- 日志切割的最小单位 --&gt;</span></code></li><li class="L2"><code><span class="pln">        </span><span class="tag">&lt;property</span><span class="pln"> </span><span class="atn">name</span><span class="pun">=</span><span class="atv">"output_log_level"</span><span class="tag">&gt;</span><span class="pln">debug</span><span class="tag">&lt;/property&gt;</span><span class="com">&lt;!-- 日志输出级别 --&gt;</span></code></li><li class="L3"><code><span class="pln">    </span><span class="tag">&lt;/Properties&gt;</span></code></li><li class="L4"><code></code></li><li class="L5"><code><span class="pln">    </span><span class="com">&lt;!--先定义所有的appender--&gt;</span></code></li><li class="L6"><code><span class="pln">    </span><span class="com">&lt;!-- 日志级别</span></code></li><li class="L7"><code><span class="com">            trace：追踪，就是程序推进一下，可以写个trace输出</span></code></li><li class="L8"><code><span class="com">            debug：调试，一般作为最低级别，trace基本不用。</span></code></li><li class="L9"><code><span class="com">            info：输出重要的信息，使用较多</span></code></li><li class="L0"><code><span class="com">            warn：警告，有些信息不是错误信息，但也要给一些提示。</span></code></li><li class="L1"><code><span class="com">            error：错误信息。用的也很多。</span></code></li><li class="L2"><code><span class="com">            fatal：致命错误。级别较高.</span></code></li><li class="L3"><code><span class="com">     --&gt;</span></code></li><li class="L4"><code><span class="pln">    </span><span class="tag">&lt;appenders&gt;</span></code></li><li class="L5"><code></code></li><li class="L6"><code><span class="pln">        </span><span class="com">&lt;!--Appenders节点，常见的有三种子节点:Console、RollingFile、File.--&gt;</span></code></li><li class="L7"><code></code></li><li class="L8"><code><span class="pln">        </span><span class="com">&lt;!-- Console</span></code></li><li class="L9"><code><span class="com">        name :给loggers调用</span></code></li><li class="L0"><code><span class="com">        target:SYSTEM_OUT 或 SYSTEM_ERR,一般只设置默认:SYSTEM_OUT.</span></code></li><li class="L1"><code><span class="com">        --&gt;</span></code></li><li class="L2"><code><span class="pln">        </span><span class="tag">&lt;Console</span><span class="pln"> </span><span class="atn">name</span><span class="pun">=</span><span class="atv">"Console"</span><span class="pln"> </span><span class="atn">target</span><span class="pun">=</span><span class="atv">"SYSTEM_OUT"</span><span class="tag">&gt;</span></code></li><li class="L3"><code><span class="pln">            </span><span class="com">&lt;!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）--&gt;</span></code></li><li class="L4"><code><span class="pln">            </span><span class="tag">&lt;ThresholdFilter</span><span class="pln"> </span><span class="atn">level</span><span class="pun">=</span><span class="atv">"trace"</span><span class="pln"> </span><span class="atn">onMatch</span><span class="pun">=</span><span class="atv">"</span><span class="pln">ACCEPT</span><span class="atv">"</span><span class="pln"> </span><span class="atn">onMismatch</span><span class="pun">=</span><span class="atv">"</span><span class="pln">DENY</span><span class="atv">"</span><span class="tag">&gt;&lt;/ThresholdFilter&gt;</span></code></li><li class="L5"><code><span class="pln">            </span><span class="com">&lt;!--输出日志的格式--&gt;</span></code></li><li class="L6"><code><span class="pln">            </span><span class="tag">&lt;PatternLayout</span><span class="pln"> </span><span class="atn">pattern</span><span class="pun">=</span><span class="atv">"${log_pattern}"</span><span class="tag">&gt;&lt;/PatternLayout&gt;</span></code></li><li class="L7"><code><span class="pln">        </span><span class="tag">&lt;/Console&gt;</span></code></li><li class="L8"><code></code></li><li class="L9"><code></code></li><li class="L0"><code><span class="pln">         </span><span class="com">&lt;!--File</span></code></li><li class="L1"><code><span class="com">         fileName:指定输出日志的目的文件带全路径的文件名.</span></code></li><li class="L2"><code><span class="com">         append:决定是否添加还是重新建文件会打印出所有信息，false这个log每次运行程序会自动清空，</span></code></li><li class="L3"><code><span class="com">          --&gt;</span></code></li><li class="L4"><code><span class="pln">            </span><span class="tag">&lt;File</span><span class="pln"> </span><span class="atn">name</span><span class="pun">=</span><span class="atv">"log"</span><span class="pln"> </span><span class="atn">fileName</span><span class="pun">=</span><span class="atv">"${file_name}"</span><span class="pln"> </span><span class="atn">append</span><span class="pun">=</span><span class="atv">"false"</span><span class="pln"> </span><span class="tag">&gt;</span></code></li><li class="L5"><code><span class="pln">                </span><span class="tag">&lt;PatternLayout</span><span class="pln"> </span><span class="atn">pattern</span><span class="pun">=</span><span class="atv">"${log_pattern}"</span><span class="tag">&gt;&lt;/PatternLayout&gt;</span></code></li><li class="L6"><code><span class="pln">                 </span><span class="com">&lt;!--输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）--&gt;</span></code></li><li class="L7"><code><span class="pln">                </span><span class="tag">&lt;ThresholdFilter</span><span class="pln"> </span><span class="atn">level</span><span class="pun">=</span><span class="atv">"error"</span><span class="pln"> </span><span class="atn">onMatch</span><span class="pun">=</span><span class="atv">"</span><span class="pln">ACCEPT</span><span class="atv">"</span><span class="pln"> </span><span class="atn">onMismatch</span><span class="pun">=</span><span class="atv">"</span><span class="pln">DENY</span><span class="atv">"</span><span class="tag">&gt;&lt;/ThresholdFilter&gt;</span></code></li><li class="L8"><code><span class="pln">            </span><span class="tag">&lt;/File&gt;</span><span class="pln"> </span></code></li><li class="L9"><code><span class="pln">             </span><span class="tag">&lt;File</span><span class="pln"> </span><span class="atn">name</span><span class="pun">=</span><span class="atv">"logss"</span><span class="pln"> </span><span class="atn">fileName</span><span class="pun">=</span><span class="atv">"${file_info}"</span><span class="pln"> </span><span class="atn">append</span><span class="pun">=</span><span class="atv">"false"</span><span class="pln"> </span><span class="tag">&gt;</span></code></li><li class="L0"><code><span class="pln">                </span><span class="tag">&lt;PatternLayout</span><span class="pln"> </span><span class="atn">pattern</span><span class="pun">=</span><span class="atv">"${log_pattern}"</span><span class="tag">&gt;&lt;/PatternLayout&gt;</span></code></li><li class="L1"><code><span class="pln">                </span><span class="tag">&lt;ThresholdFilter</span><span class="pln"> </span><span class="atn">level</span><span class="pun">=</span><span class="atv">"info"</span><span class="pln"> </span><span class="atn">onMatch</span><span class="pun">=</span><span class="atv">"</span><span class="pln">ACCEPT</span><span class="atv">"</span><span class="pln"> </span><span class="atn">onMismatch</span><span class="pun">=</span><span class="atv">"</span><span class="pln">DENY</span><span class="atv">"</span><span class="tag">&gt;&lt;/ThresholdFilter&gt;</span></code></li><li class="L2"><code><span class="pln">            </span><span class="tag">&lt;/File&gt;</span></code></li><li class="L3"><code></code></li><li class="L4"><code></code></li><li class="L5"><code><span class="pln">        </span><span class="com">&lt;!--RollingFile</span></code></li><li class="L6"><code><span class="com">        　              fileName:指定输出日志的目的文件带全路径的文件名.</span></code></li><li class="L7"><code><span class="com">　　　　　　　　PatternLayout:输出格式，不设置默认为:%m%n.</span></code></li><li class="L8"><code><span class="com">　　　　　　　　filePattern:指定新建日志文件的名称格式.</span></code></li><li class="L9"><code><span class="com">　　　　　　　　Policies:指定滚动日志的策略，就是什么时候进行新建日志文件输出日志.</span></code></li><li class="L0"><code><span class="com">　　　　　　　   TimeBasedTriggeringPolicy:Policies子节点，基于时间的滚动策略，interval属性用来指定多久滚动一次，默认是1 hour。modulate=true用来调整时间：比如现在是早上3am，interval是4，那么第一次滚动是在4am，接着是8am，12am...而不是7am.</span></code></li><li class="L1"><code><span class="com">　　　　　　　　SizeBasedTriggeringPolicy:Policies子节点，基于指定文件大小的滚动策略，size属性用来定义每个日志文件的大小.</span></code></li><li class="L2"><code><span class="com">　　　　　　　　DefaultRolloverStrategy:用来指定同一个文件夹下最多有几个日志文件时开始删除最旧的，创建新的(通过max属性),默认</span></code></li><li class="L3"><code></code></li><li class="L4"><code><span class="com">              这个会打印出所有的信息，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档</span></code></li><li class="L5"><code><span class="com">           --&gt;</span></code></li><li class="L6"><code><span class="pln">       </span><span class="com">&lt;!-- 按月生成归档日志，可以使用 filePattern="logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz" </span></code></li><li class="L7"><code></code></li><li class="L8"><code><span class="com">        &lt;RollingFile name="RollingFile" fileName="${file_name}"</span></code></li><li class="L9"><code><span class="com">                     filePattern="${rolling_file_name}"&gt;</span></code></li><li class="L0"><code><span class="com">            &lt;PatternLayout pattern="${log_pattern}"&gt;&lt;/PatternLayout&gt;</span></code></li><li class="L1"><code><span class="com">            &lt;SizeBasedTriggeringPolicy size="${every_file_size}"&gt;&lt;/SizeBasedTriggeringPolicy&gt;</span></code></li><li class="L2"><code><span class="com">        &lt;/RollingFile&gt;</span></code></li><li class="L3"><code><span class="com">        --&gt;</span></code></li><li class="L4"><code><span class="pln">        </span><span class="com">&lt;!--如果需要配置多个Rollingfile地址，还需要在root下添加appender-ref ref="RollingFile1"/&gt;  </span></code></li><li class="L5"><code><span class="com">         &lt;RollingFile name="RollingFile1" fileName="logs/app1.log"</span></code></li><li class="L6"><code><span class="com">                     filePattern="logs/app1-%d{yyyy-MM-dd}-%i.log.gz"&gt;</span></code></li><li class="L7"><code><span class="com">            &lt;PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss z} %-5level %class{36} %L %M - %msg%xEx%n"&gt;&lt;/PatternLayout&gt;</span></code></li><li class="L8"><code><span class="com">            &lt;SizeBasedTriggeringPolicy size="10MB"&gt;&lt;/SizeBasedTriggeringPolicy&gt;</span></code></li><li class="L9"><code><span class="com">        &lt;/RollingFile&gt;</span></code></li><li class="L0"><code><span class="com">         --&gt;</span></code></li><li class="L1"><code><span class="pln">  </span><span class="tag">&lt;/appenders&gt;</span></code></li><li class="L2"><code><span class="pln">   </span><span class="com">&lt;!--定义logger</span></code></li><li class="L3"><code><span class="com">        只有定义了logger并引入的appender，appender才会生效</span></code></li><li class="L4"><code><span class="com">             常见的有两种:Root和Logger.</span></code></li><li class="L5"><code><span class="com">　　　　　　　Root节点用来指定项目的根日志，如果没有单独指定Logger，那么就会默认使用该Root日志输出</span></code></li><li class="L6"><code><span class="com">　　　　　　　　　level:日志输出级别，共有8个级别，按照从低到高为：All &lt; Trace &lt; Debug &lt; Info &lt; Warn &lt; Error &lt; Fatal &lt; OFF.</span></code></li><li class="L7"><code><span class="com">　　　　　　　　　AppenderRef：Root的子节点，用来指定该日志输出到哪个Appender.</span></code></li><li class="L8"><code><span class="com">　　　　　　　Logger节点用来单独指定日志的形式，比如要为指定包下的class指定不同的日志级别等。</span></code></li><li class="L9"><code><span class="com">　　　　　　　　　level:日志输出级别，共有8个级别，按照从低到高为：All &lt; Trace &lt; Debug &lt; Info &lt; Warn &lt; Error &lt; Fatal &lt; OFF.</span></code></li><li class="L0"><code><span class="com">　　　　　　　　　name:用来指定该Logger所适用的类或者类所在的包全路径,继承自Root节点.</span></code></li><li class="L1"><code><span class="com">　　　　　　　　　AppenderRef：Logger的子节点，用来指定该日志输出到哪个Appender,</span></code></li><li class="L2"><code><span class="com">                                如果没有指定，就会默认继承自Root.如果指定了，</span></code></li><li class="L3"><code><span class="com">                                那么会在指定的这个Appender和Root的Appender中都会输出，</span></code></li><li class="L4"><code><span class="com">                                此时我们可以设置Logger的additivity="false"只在自定义的Appender中进行输出。</span></code></li><li class="L5"><code><span class="com">    --&gt;</span></code></li><li class="L6"><code><span class="pln">    </span><span class="tag">&lt;loggers&gt;</span></code></li><li class="L7"><code><span class="pln">        </span><span class="com">&lt;!--建立一个默认的root的logger，需要在root的level中指定输出的级别，--&gt;</span></code></li><li class="L8"><code><span class="pln">          </span><span class="tag">&lt;Root</span><span class="pln"> </span><span class="atn">level</span><span class="pun">=</span><span class="atv">"trace"</span><span class="pln"> </span><span class="atn">includeLocation</span><span class="pun">=</span><span class="atv">"true"</span><span class="tag">&gt;</span></code></li><li class="L9"><code><span class="pln">        </span><span class="tag">&lt;AppenderRef</span><span class="pln"> </span><span class="atn">ref</span><span class="pun">=</span><span class="atv">"log"</span><span class="tag">&gt;&lt;/AppenderRef&gt;</span></code></li><li class="L0"><code><span class="pln">       </span><span class="com">&lt;!-- &lt;AppenderRef ref="Console"&gt;&lt;/AppenderRef&gt; --&gt;</span><span class="pln"> </span></code></li><li class="L1"><code><span class="pln">        </span><span class="tag">&lt;/Root&gt;</span></code></li><li class="L2"><code></code></li><li class="L3"><code><span class="pln">        </span><span class="com">&lt;!-- 异步日志在程序的classpath需要加载disruptor-3.0.0.jar或者更高的版本。</span></code></li><li class="L4"><code></code></li><li class="L5"><code><span class="com">        异步日志分为两种：</span></code></li><li class="L6"><code></code></li><li class="L7"><code><span class="com">        a.全异步模式</span></code></li><li class="L8"><code><span class="com">        这种异步日志方式，不需要修改修改原理的配置文件，Logger仍然使用&lt;root&gt; and &lt;logger&gt;</span></code></li><li class="L9"><code><span class="com">        只需要在主程序代码开头，加一句系统属性的代码：</span></code></li><li class="L0"><code><span class="com">        System.setProperty("Log4jContextSelector", "org.apache.logging.log4j.core.async.AsyncLoggerContextSelector");</span></code></li><li class="L1"><code></code></li><li class="L2"><code><span class="com">        b.异步和非异步混合输出模式</span></code></li><li class="L3"><code><span class="com">         在配置文件中Logger使用&lt;asyncRoot&gt; or &lt;asyncLogger&gt;</span></code></li><li class="L4"><code><span class="com">             --&gt;</span></code></li><li class="L5"><code><span class="pln"> </span><span class="tag">&lt;/loggers&gt;</span></code></li><li class="L6"><code><span class="tag">&lt;/configuration&gt;</span></code></li></ol></pre></div>
+                                      </div>
+                                   <div class="layui-row text-center layui-mt20">
+                                           
+                                           <div class="layui-btn layui-btn-danger" onclick="emotion()"><i class="fa fa-thumbs-o-up" id="za"> 赞 (122)</i></div>
+                                       </div>
+                                   <div class="layui-row layui-mt20">
+                                         <blockquote class="layui-elem-quote text-center " style="border: none;">
+                                                  <span class="layui-show-md-inline-block layui-hide"  >文章出处：书生个人博客</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                   <span class="layui-show-md-inline-block layui-hide" id="artiurl"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                  <span>转载注明下哦！o(≧v≦)o~~</span>
+                                           </blockquote>
+                                    </div>
+                                 <div class="layui-row layui-mt20">
+                                         <p class="blog-tags">
+                                              标签：
+                                                       <span >log4j2</span><span >原创</span>
+
+                                               </p>
+                                 </div>
+                                 <div class="layui-row layui-col-space20 layui-mt20 article-page-similar">
+                                           <p>相似文章：</p>
+                                            <hr>
+                                             <ul>
+                                                    <li><a href="1551716918682.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Nginx面试中最常见的18道题</a> </li>
+                                                    <li><a href="1563164605393.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Javamail配置阿里云邮箱发送邮件解决526 Authentication failure[0]的错误。</a> </li>
+                                                    <li><a href="1566354006050.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;解决canvas的fillText绘制文本时无法清空上次文本造成重叠的问题</a> </li>
+                                                    <li><a href="1556191655033.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Redis的下载和安装与集群的配置解决redis requiresRuby version &gt;= 2.2.2的问题</a> </li>
+                                                    <li><a href="1563978742701.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;javaScript 获取 当前时间 时间差 时间戳 倒计时的方法</a> </li>
+                                                    <li><a href="1551091267972.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;配置日志文件去掉Kafka的调式信息</a> </li>
+                                                    <li><a href="1556813069557.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;分享本网站的个人博客模板，程序员前端个人博客模板</a> </li>
+                                                    <li><a href="1550139661320.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;解决C:\Program Files\TortoiseSVN\bin\SendRpt.exe not found的问题</a> </li>
+                                                    <li><a href="1556167621636.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;linux的Centos系统开放特定端口，关闭防火墙，解决Centos7没有iptables的问题</a> </li>
+                                                    <li><a href="1551347280419.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;tomcat,nginx,SpringBoot中启动gzip压缩优化网站</a> </li>
+                                              </ul>
+                                    </div>
+                               </div>
+                      <script>
+                          $("#artiurl").html("文章地址："+location.href);
+
+
+                      </script>
+
+                       </div></div>
+
+                </div>
+
+               <div  >
+<div id="cta" class="layui-collapse layui-panel layui-article">
+       <div class="layui-colla-item">
+               <div class="layui-colla-content layui-show layui-article comment">
+                       <fieldset class="layui-elem-field layui-field-title">
+                               <legend>随便说两句</legend>
+                               <div class="layui-field-box">
+                                       <label for="comment-input"></label>
+                                           <textarea id="comment-input" style="display: none;"></textarea>
+                                  </div>
+                               
+                               <a class="layui-btn layui-btn-sm layui-btn-danger" style="float: right;width: 120px;"  href="#"  onclick="javascript:beforeLogin()" id="beforeLogin"><i class="fa fa-qq"></i> 请先登录</a>
+                           </fieldset>
+                   </div>
+           </div>
+    </div>
+</div>
+<script>
+    function beforeLogin() {
+        var url=window.location.href;
+        window.open('/api/qq?url='+url,'_self');
+    }
+
+</script>
+
+               <blockquote id="cccc" class="layui-elem-quote layui-mt20" style="border-left: 5px solid #F44336;"><span style="color:#FF5722;">遵守国家法律法规，请勿回复无意义内容，请不要回复嵌套过多的楼层！</span></blockquote>
+               <div class="comment-list">
+
+</div>
+
+
+
+
+           </div>
+               <!--<div class="layui-col-md3" id="article-app">-->
+                       <!--<div id="affix-side">-->
+                           <!--<div th:replace="frontend/fragment/callme :: callme" ></div>-->
+                           <!--&lt;!&ndash;<div class="layui-tab layui-tab-card layui-master-recommend" >&ndash;&gt;-->
+                               <!--&lt;!&ndash;<div class="layui-tab-content select-none">&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<h3 class="tit">时光悄然</h3>&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<div class="layui-inline" id="test22"></div>&ndash;&gt;-->
+                               <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--<div th:replace ="frontend/fragment/guidang" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/imageinfo" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/cate" ></div>-->
+                           <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相关文章'})" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/image :: image"></div>-->
+                           <!--</div>-->
+                   <!--</div>-->
+           </div>
+    </div>
+
+
+    <footer >
+    <div class="footer"><p>
+	<span><strong>友情链接:</strong><strong>&nbsp;</strong> &nbsp;&nbsp;</span><a class="ke-insertfile" href="https://www.layui.com/" target="_blank">layui</a><span>&nbsp;&nbsp;</span>&nbsp;<a class="ke-insertfile" href="http://www.shuyong.net/" target="_blank">舍力博客</a>&nbsp;&nbsp;<a class="ke-insertfile" href="javascript:;" id="friend">申请友链</a> 
+</p>
+<p>
+	2018-2019 nonelonely.com | 网站备案号：<a class="ke-insertfile" href="http://www.miitbeian.gov.cn/" target="_blank">闽ICP备18026034号-1</a> 
+</p>
+<p>
+	<br />
+</p></div>
+
+    <div class="layui-hide-xs" style="position: fixed;left: 100px; bottom: 100px; z-index: 999999;" id="robot" data-method="robot">
+        <div class="layui-layer-tips" ><div id="" class="layui-layer-content" style="background-color: rgb(114, 193, 236);width: 150px">Hi 我是小码，可以点击我问我笑话，天气，智能聊天，故事，查询备案等等。<i class="layui-layer-TipsG layui-layer-TipsT" style="border-right-color:rgb(114, 193, 236);"></i></div><span class="layui-layer-setwin"></span></div>
+        <a href="#" ><img src="../static/assets/img/robot.png" width="100px" alt="Hi 我是小码！" >
+        </a>
+    </div>
+
+
+</footer>
+<script src="../static/plugins/layui/layui.js"></script>
+
+<script>
+    layui.use([ 'layer'], function () {
+        var layer = layui.layer;
+        var $ = layui.jquery;
+        //触发事件
+        var active = {
+            robot: function(){
+                var that = this;
+                $("#robot").css('display','none');
+                //多窗口模式，层叠置顶
+                layer.open({
+                    type: 2,
+                    title:'智能小码',
+                    area: ['600px', '480px'],
+                    content: '/webrobot',
+                    end:function () {
+                        $("#robot").css('display','');
+                    }
+                });
+            },
+            friend: function () {
+                layer.open({
+                    title: '申请友链'
+                    ,content: '发送邮件至：admin@nonelonely.com<br>' +
+                        '邮件标题为：申请书生个人博客友链'
+                });
+            }
+        };
+
+        $('#robot').on('click', function(){
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+        $('#friend').on('click', function(){
+            var othis = $(this), method = 'friend';
+            active[method] ? active[method].call(this, othis) : '';
+        });
+
+
+        // var la;
+            // la = layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot',
+            //     {
+            //         tips: [1, '#3595CC'],
+            //         end: function () {
+            //             if($("#robot").is(":visible")) {
+            //                 la = layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot',
+            //                     {tips: [1, '#3595CC']})
+            //             }
+            //         }
+            //     });
+            // window.setInterval(" if($('#robot').is(':visible')) {la=layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot', { tips: [1, '#3595CC'],end : function(){ la=layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot', {tips: [1, '#3595CC']});}});}", 10000*6 );
+
+    });
+</script>
+
+</div>
+
+
+
+
+<script>
+    var articleId=1551020778492;
+    var su=null ;
+    $(function(){
+        $(".comment-list").addCommentList({data:[],add:""});
+        $("#comment").click(function(){
+            var obj = new Object();
+            obj.img="images/img.html";
+            obj.replyName="匿名";
+            obj.content=$("#content").val();
+            obj.browse="深圳";
+            obj.osname="win10";
+            obj.replyBody="";
+            $(".comment-list").addCommentList({data:[],add:obj});
+        });
+    })
+
+    var layer;
+    var layedit;
+    var index;
+    layui.use(['layedit', 'laypage', 'laydate', 'element','layer'], function () {
+        layer = layui.layer;
+        var element = layui.element;
+        layedit = layui.layedit;
+        // var laydate = layui.laydate;
+        // //不出现底部栏
+        // laydate.render({
+        //     elem: '#test22'
+        //     ,showBottom: false
+        //     ,position: 'static'
+        //     ,calendar: true
+        //     ,theme: '#a7a4a4'
+        // });
+
+       index= layedit.build('comment-input', {
+            tool: ['face', '|', 'left', 'center', 'right', 'link', 'unlink']
+            , height: 150
+        });
+        //相册
+        if($(window).width() > 750){
+            layer.photos({
+                photos: '.photos'
+                ,zIndex: 9999999999
+                ,anim: -1
+            });
+        } else {
+            $('body').on('click', '.photos img', function(){
+                window.open(this.src);
+            });
+        }
+
+            layer.open({
+                title: '目录',
+                type: 1,
+                offset: 'r',
+                shade: 0,
+                closeBtn: 2,
+                content: $(".markdown-toc")
+            });
+
+        // $('#affix-side').hcSticky({
+        //     stickTo: '#blog-body'
+        // });
+
+    });
+    function submit() {
+
+        var osname = detectOS();
+
+        var obj = new Object();
+        if (su) {
+           obj.img = su.avatar;
+           obj.replyName = su.nickname;
+        }
+        obj.content=layedit.getContent(index);
+        obj.browse=navigator.appName;
+        obj.osname=osname;
+        obj.time=new Date();
+        obj.replyBody="";
+
+        obj.comment= obj.content;
+        if(!obj.comment){
+            layer.msg('不能为空');
+            return false;
+        }
+        var indexc = layer.load();
+        obj.userId=su.id;
+        obj.user=su.id;
+        obj.articleId=articleId;
+        obj.enable=true;
+        obj.parentId=0;
+
+         obj.time =new Date();
+
+
+
+
+        $.post("/token/comment/sub",obj, function (resp) {
+            layer.close(indexc);
+            $(window.frames["LAY_layedit_1"].document).find("body").html('');
+            layer.msg(resp.message);
+            setTimeout(function () {
+                if (resp.code === 200) {
+                    $(".comment-list").addCommentList({data:[],add:obj});
+                }
+            }, 1000);
+        });
+
+    };
+
+    function emotion() {
+        var uid = "guest";
+        if (BMY.getCookie("article::" + 1551020778492 + "::" + uid) != null) {
+            layer.msg("近期您已经点过赞，感谢您的支持！");
+        } else {
+            $.post("/article/approve", {articleId: 1551020778492}, function (json) {
+                if (json.code === BMY.status.ok) {
+                    BMY.setCookie("article::" + 1551020778492+ "::" + uid, "noteblog system");
+                  //  that.approve++;
+                    $('#za').html('赞 (123)')
+                    layer.msg("谢谢您的支持！");
+                }
+            })
+        }
+    }
+    function money  (alipay, wechat) {
+        alipay = "#\/static\/assets\/img\/wechat.png";
+        wechat="#\/static\/assets\/img\/alipay.png";
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['640px', '300px'],
+            shadeClose: true,
+            skin: 'text-center',
+            content:
+                '<div class="layui-fluid">' +
+                '   <div class="layui-row layui-mt20">' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + wechat + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">微信</p>' +
+                '       </div>' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + alipay + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">支付宝</p>' +
+                '       </div>' +
+                '   </div> ' +
+                '</div>'
+        });
+    }
+
+
+
+
+</script>
+<script src="../static/assets/js/jquery.comment.js" ></script>
+</body>
+
+<!-- Mirrored from www.nonelonely.com/article/1551020778492 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:05:49 GMT -->
+</html>

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Mirrored from www.nonelonely.com/article/1549088339266 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:05:35 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+
+    <title>Java面试宝典之40个集合类面试题和答案- 书生个人博客</title>
+    <link href="../static/plugins/editormd/css/editormd.min.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+<meta name="baidu_union_verify" content="3e514e79dc5e7201b9bee186137e9562">
+<meta name="keywords" content="面试">
+
+<meta name="description" content="1.Java集合框架是什么？说出一些集合框架的优点？每种编程语言中都有集合，最初的Java版本包含几种集合类：Vector、Stack、HashTable和Array。随着集合的广泛使用，Java1.2提出了囊括所有集合接口、实现和算法的集合框架。在保证线程安全的情况下使用泛型和并发集合类，Java已经经历了很久。它还包括在Java并发包中，阻塞接口以及它们">
+
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../static/plugins/layui/css/layui.css">
+<link rel="stylesheet" href="../static/plugins/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../static/assets/css/frontend/base.css">
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "../../hm.baidu.com/hm6618.js?c07ddd5b98c69450ebd8e255627f70b0";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <link rel="canonical" href="1549088339266.html"/>
+    <script src="../../msite.baidu.com/sdk/cb688.js?appid=1622832448885693"></script>
+    <script src="../static/plugins/jquery/jquery.min.js"></script>
+     <style>
+         @media screen and (max-width: 767px) {
+             .layui-layer-page {
+                 display: none;
+             }
+         }
+
+         .markdown-body.layui-layer-content {
+             padding: 20px;
+             /*background-image: url("/static/assets/img/long.png");*/
+         }
+         .markdown-body  .layui-layer-title{
+             background-color: #e4e4e400;
+         }
+         .markdown-body  .layui-layer{
+             background-color: #e4e4e4;
+             background-image: url("../static/assets/img/long.png") ;
+             background-size: 100% 100%;
+         }
+         .markdown-body .layui-layer-content {
+
+            padding: 20px;
+         }
+
+     </style>
+
+</head>
+<body class="animated fadeIn">
+
+<div class="wrapper" >
+    <header>
+    <div class="headtop"></div>
+    <div class="contenttop">
+        <div class="logo f_l"> Java码猿-书生个人博客</div>
+        <div class="search f_r">
+            <input name="keyboard"  id="bdcsMain" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+            <input name="Submit" class="input_submit" onclick="window.open('http://zhannei.baidu.com/cse/search?s=6583887351044514798&entry=1&q='+document.getElementById('bdcsMain').value)" value="搜索" type="button">
+            <!--<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=6583887351044514798' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>-->
+            <ul class="layui-nav" style="background-color: rgba(0,0,0,0);" >
+                
+                
+
+                <li  class="layui-nav-item"><a href="#"  style="color: #000;" onclick="goto()" title="QQ登入" class="iconfont icon-qq"></a>
+                </li>
+            </ul>
+
+
+        </div>
+        <div class="blank"></div>
+
+        <nav>
+            <div  class="navigation">
+                <ul class="menu">
+                    <li><a href="../index.html">网站首页</a></li>
+                    <li><a href="#">技术文章</a>
+                        <ul >
+                            <li><a  href="../pages748a.html?cateId=1">Spring系列</a></li>
+                            <li><a  href="../pages3c7b.html?cateId=6">前端开发</a></li>
+                            <li><a  href="../pages4ead.html?cateId=7">软件安装</a></li>
+                            <li><a  href="../pages8396.html?cateId=9">Java语法</a></li>
+                            <li><a  href="../pagesff6a.html?cateId=10">资源下载</a></li>
+                            <li><a  href="../pagesad9e.html?cateId=12">ORM框架</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="../note.html">我的日记</a> </li>
+                    <li><a href="../msg.html">给我留言</a> </li>
+                    <li><a href="../about.html">关于</a></li>
+                </ul>
+            </div>
+        </nav>
+        <SCRIPT type=text/javascript>
+            // Navigation Menu
+            $(function() {
+                $(".menu ul").css({display: "none"}); // Opera Fix
+                $(".menu li").hover(function(){
+                    $(this).find('ul:first').css({visibility: "visible",display: "none"}).slideDown("normal");
+                },function(){
+                    $(this).find('ul:first').css({visibility: "hidden"});
+                });
+            });
+
+            function  search() {
+                var s=$('#keyboard').val();
+                location.href = s === "" ? "/" : "/pages?searchStr=" + s;
+            };
+            function goto () {
+                var url = window.location.href;
+                var winObj = window.open('/api/qq?url=' + url, '_self');
+            }
+        </SCRIPT>
+
+    </div>
+</header>
+    <div class="jztop"></div>
+
+    <!--<bmy-article-page :alipay="params.alipay" :wechat="params.wechat_pay" :su="su">-->
+        <!--<div th:insert ="frontend/fragment/articlepage :: article"  slot="article"></div>-->
+        <!--<div  th:insert="frontend/fragment/comment :: comment" slot="post"></div>-->
+
+        <!--<bmy-comment-list slot="comment" :comments="comments" :tips="params.comment_notice"-->
+                          <!--:re="params.all_comment_open == 1 && article.commented"></bmy-comment-list>-->
+       <!--<bmy-search slot="search"></bmy-search>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相似文章'})" slot="similar"></div>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${lots},${'热度文章'})" slot="lot"></div>-->
+    <!--</bmy-article-page>-->
+
+    <div id="blog-body" class="layui-container">
+       <div class="layui-row layui-col-space10">
+           <div id="blog-info" class="layui-col-md12">
+                <div class="layui-collapse layui-panel layui-article photos" >
+
+                     <div  ><div class="layui-colla-item">
+                    <h2 class="nh1"><span>您现在的位置是：<a href="../index.html" target="_blank">网站首页</a>>><a href="#" target="_blank">信息浏览</a>
+                    </span><b>文章详情</b></h2>
+                          <div class="layui-colla-content layui-show layui-article">
+                                   <fieldset class="layui-elem-field layui-field-title layui-article-page-title">
+                                       <legend class="center-to-head" align="center">Java面试宝典之40个集合类面试题和答案</legend>
+                                      </fieldset>
+                                  <div class="layui-text layui-blog-body">
+                                           <div class="layui-row">
+                                                  <div class="layui-col-md6 layui-col-md-offset3 text-center blog-base-info">
+                                                           <span><i class="fa fa-clock-o" ></i>2019-02-02 14:18 </span>
+                                                           <span><i class="fa fa-user-o"></i> <span style="color: #FF5722;">许多年以后</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-renzhengkaobei"></use></svg></span>
+                                                          <span><i class="fa fa-comment-o"></i></span>
+                                                           <span><i class="fa fa-eye"></i> 1213</span>
+                                                       </div>
+                                               </div>
+                                      <!-- Baidu Button BEGIN -->
+                                           <!--<div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">-->
+                                                  <!--<span class="bds_more">分享到：</span>-->
+                                                  <!--<a class="bds_qzone"></a>-->
+                                                  <!--<a class="bds_tsina"></a>-->
+                                                  <!--<a class="bds_tqq"></a>-->
+                                                  <!--<a class="bds_renren"></a>-->
+                                                  <!--<a class="bds_t163"></a>-->
+                                                  <!--<a class="shareCount"></a>-->
+                                          <!--</div>-->
+                                          <!--<script type="text/javascript" id="bdshare_js" data="type=tools&uid=6701193" ></script>-->
+                                          <!--<script type="text/javascript" id="bdshell_js"></script>-->
+                                          <!--<script type="text/javascript">-->
+                                              <!--document.getElementById("bdshell_js").src = "https://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)-->
+                                          <!--</script>-->
+                                      <!-- Baidu Button END -->
+                                           <hr>
+                                           <div class="content detail markdown-body editormd-preview-container editormd-preview-active"><h3 id="h3-1-java-"><a name="1.Java集合框架是什么？说出一些集合框架的优点？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>1.Java集合框架是什么？说出一些集合框架的优点？</h3><blockquote>
+<p>每种编程语言中都有集合，最初的Java版本包含几种集合类：Vector、Stack、HashTable和Array。随着集合的广泛使用，Java1.2提出了囊括所有集合接口、实现和算法的集合框架。在保证线程安全的情况下使用泛型和并发集合类，Java已经经历了很久。它还包括在Java并发包中，阻塞接口以及它们的实现。集合框架的部分优点如下：</p>
+</blockquote>
+<p>（1）使用核心集合类降低开发成本，而非实现我们自己的集合类。<br>（2）随着使用经过严格测试的集合框架类，代码质量会得到提高。<br>（3）通过使用JDK附带的集合类，可以降低代码维护成本。<br>（4）复用性和可操作性。</p>
+<h3 id="h3-2-"><a name="2.集合框架中的泛型有什么优点？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>2.集合框架中的泛型有什么优点？</h3><pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="typ">Java1</span><span class="pun">.</span><span class="lit">5</span><span class="pun">引入了泛型，所有的集合接口和实现都大量地使用它。泛型允许我们为集合提供一个可以容纳的对象类型，因此，如果你添加其它类型的任何元素，它会在编译时报错。这避免了在运行时出现</span><span class="typ">ClassCastException</span><span class="pun">，因为你将会在编译时得到报错信息。泛型也使得代码整洁，我们不需要使用显式转换和</span><span class="pln">instanceOf</span><span class="pun">操作符。它也给运行时带来好处，因为不会产生类型检查的字节码指令。</span></code></li></ol></pre><h3 id="h3-3-java-"><a name="3.Java集合框架的基础接口有哪些？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>3.Java集合框架的基础接口有哪些？</h3><pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="typ">Collection</span><span class="pun">为集合层级的根接口。一个集合代表一组对象，这些对象即为它的元素。</span><span class="typ">Java</span><span class="pun">平台不提供这个接口任何直接的实现。</span></code></li><li class="L1"><code><span class="typ">Set</span><span class="pun">是一个不能包含重复元素的集合。这个接口对数学集合抽象进行建模，被用来代表集合，就如一副牌。</span></code></li><li class="L2"><code><span class="typ">List</span><span class="pun">是一个有序集合，可以包含重复元素。你可以通过它的索引来访问任何元素。</span><span class="typ">List</span><span class="pun">更像长度动态变换的数组。</span></code></li><li class="L3"><code><span class="typ">Map</span><span class="pun">是一个将</span><span class="pln">key</span><span class="pun">映射到</span><span class="pln">value</span><span class="pun">的对象.一个</span><span class="typ">Map</span><span class="pun">不能包含重复的</span><span class="pln">key</span><span class="pun">：每个</span><span class="pln">key</span><span class="pun">最多只能映射一个</span><span class="pln">value</span><span class="pun">。</span></code></li><li class="L4"><code><span class="pun">一些其它的接口有</span><span class="typ">Queue</span><span class="pun">、</span><span class="typ">Dequeue</span><span class="pun">、</span><span class="typ">SortedSet</span><span class="pun">、</span><span class="typ">SortedMap</span><span class="pun">和</span><span class="typ">ListIterator</span><span class="pun">。</span></code></li></ol></pre><h3 id="h3-4-collection-cloneable-serializable-"><a name="4.为何Collection不从Cloneable和Serializable接口继承？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>4.为何Collection不从Cloneable和Serializable接口继承？</h3><pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="typ">Collection</span><span class="pun">接口指定一组对象，对象即为它的元素。如何维护这些元素由</span><span class="typ">Collection</span><span class="pun">的具体实现决定。例如，一些如</span><span class="typ">List</span><span class="pun">的</span><span class="typ">Collection</span><span class="pun">实现允许重复的元素，而其它的如</span><span class="typ">Set</span><span class="pun">就不允许。很多</span><span class="typ">Collection</span><span class="pun">实现有一个公有的</span><span class="pln">clone</span><span class="pun">方法。然而，把它放到集合的所有实现中也是没有意义的。这是因为</span><span class="typ">Collection</span><span class="pun">是一个抽象表现。重要的是实现。</span></code></li><li class="L1"><code><span class="pun">当与具体实现打交道的时候，克隆或序列化的语义和含义才发挥作用。所以，具体实现应该决定如何对它进行克隆或序列化，或它是否可以被克隆或序列化。</span></code></li><li class="L2"><code><span class="pun">在所有的实现中授权克隆和序列化，最终导致更少的灵活性和更多的限制。特定的实现应该决定它是否可以被克隆和序列化。</span></code></li></ol></pre><h3 id="h3-5-map-collection-"><a name="5.为何Map接口不继承Collection接口？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>5.为何Map接口不继承Collection接口？</h3><pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pun">尽管</span><span class="typ">Map</span><span class="pun">接口和它的实现也是集合框架的一部分，但</span><span class="typ">Map</span><span class="pun">不是集合，集合也不是</span><span class="typ">Map</span><span class="pun">。因此，</span><span class="typ">Map</span><span class="pun">继承</span><span class="typ">Collection</span><span class="pun">毫无意义，反之亦然。</span></code></li><li class="L1"><code><span class="pun">如果</span><span class="typ">Map</span><span class="pun">继承</span><span class="typ">Collection</span><span class="pun">接口，那么元素去哪儿？</span><span class="typ">Map</span><span class="pun">包含</span><span class="pln">key</span><span class="pun">-</span><span class="pln">value</span><span class="pun">对，它提供抽取</span><span class="pln">key</span><span class="pun">或</span><span class="pln">value</span><span class="pun">列表集合的方法，但是它不适合“一组对象”规范。</span></code></li></ol></pre><h3 id="h3-6-iterator-"><a name="6.Iterator是什么？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>6.Iterator是什么？</h3><pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="typ">Iterator</span><span class="pun">接口提供遍历任何</span><span class="typ">Collection</span><span class="pun">的接口。我们可以从一个</span><span class="typ">Collection</span><span class="pun">中使用迭代器方法来获取迭代器实例。迭代器取代了</span><span class="typ">Java</span><span class="pun">集合框架中的</span><span class="typ">Enumeration</span><span class="pun">。迭代器允许调用者在迭代过程中移除元素。</span></code></li></ol></pre><h3 id="h3-7-enumeration-iterator-"><a name="7.Enumeration和Iterator接口的区别？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>7.Enumeration和Iterator接口的区别？</h3><pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="typ">Enumeration</span><span class="pun">的速度是</span><span class="typ">Iterator</span><span class="pun">的两倍，也使用更少的内存。</span><span class="typ">Enumeration</span><span class="pun">是非常基础的，也满足了基础的需要。但是，与</span><span class="typ">Enumeration</span><span class="pun">相比，</span><span class="typ">Iterator</span><span class="pun">更加安全，因为当一个集合正在被遍历的时候，它会阻止其它线程去修改集合。</span></code></li></ol></pre><p>迭代器取代了Java集合框架中的Enumeration。迭代器允许调用者从集合中移除元素，而Enumeration不能做到。为了使它的功能更加清晰，迭代器方法名已经经过改善。</p>
+<h3 id="h3-8-iterator-add-"><a name="8.为何没有像Iterator.add()这样的方法，向集合中添加元素？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>8.为何没有像Iterator.add()这样的方法，向集合中添加元素？</h3><pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pun">语义不明，已知的是，</span><span class="typ">Iterator</span><span class="pun">的协议不能确保迭代的次序。然而要注意，</span><span class="typ">ListIterator</span><span class="pun">没有提供一个</span><span class="pln">add</span><span class="pun">操作，它要确保迭代的顺序。</span></code></li></ol></pre><h3 id="h3-9-"><a name="9.为何迭代器没有一个方法可以直接获取下一个元素，而不需要移动游标？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>9.为何迭代器没有一个方法可以直接获取下一个元素，而不需要移动游标？</h3><pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pun">它可以在当前</span><span class="typ">Iterator</span><span class="pun">的顶层实现，但是它用得很少，如果将它加到接口中，每个继承都要去实现它，这没有意义。</span></code></li></ol></pre><h3 id="h3-10-iterater-listiterator-"><a name="10.Iterater和ListIterator之间有什么区别？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>10.Iterater和ListIterator之间有什么区别？</h3><p>（1）我们可以使用Iterator来遍历Set和List集合，而ListIterator只能遍历List。<br>（2）Iterator只可以向前遍历，而LIstIterator可以双向遍历。<br>（3）ListIterator从Iterator接口继承，然后添加了一些额外的功能，比如添加一个元素、替换一个元素、获取前面或后面元素的索引位置。</p>
+<h3 id="h3-11-list-"><a name="11.遍历一个List有哪些不同的方式？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>11.遍历一个List有哪些不同的方式？</h3><pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="typ">List</span><span class="pun">&lt;</span><span class="typ">String</span><span class="pun">&gt;</span><span class="pln"> strList </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">ArrayList</span><span class="pun">&lt;&gt;();</span><span class="pln"> </span><span class="com">//使用for-each循环 for(String obj : strList){          System.out.println(obj); } //using iterator Iterator&lt;String&gt; it = strList.iterator(); while(it.hasNext()){   String obj = it.next();   System.out.println(obj); }</span></code></li></ol></pre><p> 使用迭代器更加线程安全，因为它可以确保，在当前遍历的集合元素被更改的时候，它会抛出ConcurrentModificationException。</p>
+<h3 id="h3-12-fail-fast-"><a name="12.通过迭代器fail-fast属性，你明白了什么？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>12.通过迭代器fail-fast属性，你明白了什么？</h3><p>每次我们尝试获取下一个元素的时候，Iterator fail-fast属性检查当前集合结构里的任何改动。如果发现任何改动，它抛出ConcurrentModificationException。Collection中所有Iterator的实现都是按fail-fast来设计的（ConcurrentHashMap和CopyOnWriteArrayList这类并发集合类除外）。</p>
+<h3 id="h3-13-fail-fast-fail-safe-"><a name="13.fail-fast与fail-safe有什么区别？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>13.fail-fast与fail-safe有什么区别？</h3><p> Iterator的fail-fast属性与当前的集合共同起作用，因此它不会受到集合中任何改动的影响。Java.util包中的所有集合类都被设计为fail-fast的，而java.util.concurrent中的集合类都为fail-safe的。Fail-fast迭代器抛出ConcurrentModificationException，而fail-safe迭代器从不抛出ConcurrentModificationException。</p>
+<h3 id="h3-14-concurrentmodificationexception-"><a name="14.在迭代一个集合的时候，如何避免ConcurrentModificationException？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>14.在迭代一个集合的时候，如何避免ConcurrentModificationException？</h3><p>在遍历一个集合的时候，我们可以使用并发集合类来避免ConcurrentModificationException，比如使用CopyOnWriteArrayList，而不是ArrayList。</p>
+<h3 id="h3-15-iterator-"><a name="15.为何Iterator接口没有具体的实现？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>15.为何Iterator接口没有具体的实现？</h3><p>Iterator接口定义了遍历集合的方法，但它的实现则是集合实现类的责任。每个能够返回用于遍历的Iterator的集合类都有它自己的Iterator实现内部类。<br>这就允许集合类去选择迭代器是fail-fast还是fail-safe的。比如，ArrayList迭代器是fail-fast的，而CopyOnWriteArrayList迭代器是fail-safe的。</p>
+<h3 id="h3-16-unsupportedoperationexception-"><a name="16.UnsupportedOperationException是什么？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>16.UnsupportedOperationException是什么？</h3><p>UnsupportedOperationException是用于表明操作不支持的异常。在JDK类中已被大量运用，在集合框架java.util.Collections.UnmodifiableCollection将会在所有add和remove操作中抛出这个异常。</p>
+<h3 id="h3-17-java-hashmap-"><a name="17.在Java中，HashMap是如何工作的？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>17.在Java中，HashMap是如何工作的？</h3><p>HashMap在Map.Entry静态内部类实现中存储key-value对。HashMap使用哈希算法，在put和get方法中，它使用hashCode()和equals()方法。当我们通过传递key-value对调用put方法的时候，HashMap使用Key hashCode()和哈希算法来找出存储key-value对的索引。Entry存储在LinkedList中，所以如果存在entry，它使用equals()方法来检查传递的key是否已经存在，如果存在，它会覆盖value，如果不存在，它会创建一个新的entry然后保存。当我们通过传递key调用get方法时，它再次使用hashCode()来找到数组中的索引，然后使用equals()方法找出正确的Entry，然后返回它的值。下面的图片解释了详细内容。<br>其它关于HashMap比较重要的问题是容量、负荷系数和阀值调整。HashMap默认的初始容量是32，负荷系数是0.75。阀值是为负荷系数乘以容量，无论何时我们尝试添加一个entry，如果map的大小比阀值大的时候，HashMap会对map的内容进行重新哈希，且使用更大的容量。容量总是2的幂，所以如果你知道你需要存储大量的key-value对，比如缓存从数据库里面拉取的数据，使用正确的容量和负荷系数对HashMap进行初始化是个不错的做法。</p>
+<h3 id="h3-18-hashcode-equals-"><a name="18.hashCode()和equals()方法有何重要性？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>18.hashCode()和equals()方法有何重要性？</h3><p>HashMap使用Key对象的hashCode()和equals()方法去决定key-value对的索引。当我们试着从HashMap中获取值的时候，这些方法也会被用到。如果这些方法没有被正确地实现，在这种情况下，两个不同Key也许会产生相同的hashCode()和equals()输出，HashMap将会认为它们是相同的，然后覆盖它们，而非把它们存储到不同的地方。同样的，所有不允许存储重复数据的集合类都使用hashCode()和equals()去查找重复，所以正确实现它们非常重要。equals()和hashCode()的实现应该遵循以下规则：<br>（1）如果o1.equals(o2)，那么o1.hashCode() == o2.hashCode()总是为true的。<br>（2）如果o1.hashCode() == o2.hashCode()，并不意味着o1.equals(o2)会为true。</p>
+<h3 id="h3-19-map-key-"><a name="19.我们能否使用任何类作为Map的key？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>19.我们能否使用任何类作为Map的key？</h3><p>我们可以使用任何类作为Map的key，然而在使用它们之前，需要考虑以下几点：<br>（1）如果类重写了equals()方法，它也应该重写hashCode()方法。<br>（2）类的所有实例需要遵循与equals()和hashCode()相关的规则。请参考之前提到的这些规则。<br>（3）如果一个类没有使用equals()，你不应该在hashCode()中使用它。<br>（4）用户自定义key类的最佳实践是使之为不可变的，这样，hashCode()值可以被缓存起来，拥有更好的性能。不可变的类也可以确保hashCode()和equals()在未来不会改变，这样就会解决与可变相关的问题了。<br>    比如，我有一个类MyKey，在HashMap中使用它。<br>//传递给MyKey的name参数被用于equals()和hashCode()中 MyKey key = new MyKey(‘Pankaj’); //assume hashCode=1234 myHashMap.put(key, ‘Value’); // 以下的代码会改变key的hashCode()和equals()值 key.setName(‘Amit’); //assume new hashCode=7890 //下面会返回null，因为HashMap会尝试查找存储同样索引的key，而key已被改变了，匹配失败，返回null myHashMap.get(new MyKey(‘Pankaj’));<br>那就是为何String和Integer被作为HashMap的key大量使用。</p>
+<h3 id="h3-20-map-"><a name="20.Map接口提供了哪些不同的集合视图？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>20.Map接口提供了哪些不同的集合视图？</h3><p>Map接口提供三个集合视图：<br>（1）Set keyset()：返回map中包含的所有key的一个Set视图。集合是受map支持的，map的变化会在集合中反映出来，反之亦然。当一个迭代器正在遍历一个集合时，若map被修改了（除迭代器自身的移除操作以外），迭代器的结果会变为未定义。集合支持通过Iterator的Remove、Set.remove、removeAll、retainAll和clear操作进行元素移除，从map中移除对应的映射。它不支持add和addAll操作。<br>（2）Collection values()：返回一个map中包含的所有value的一个Collection视图。这个collection受map支持的，map的变化会在collection中反映出来，反之亦然。当一个迭代器正在遍历一个collection时，若map被修改了（除迭代器自身的移除操作以外），迭代器的结果会变为未定义。集合支持通过Iterator的Remove、Set.remove、removeAll、retainAll和clear操作进行元素移除，从map中移除对应的映射。它不支持add和addAll操作。<br>（3）Set&lt;Map.Entry&lt;K,V&gt;&gt; entrySet()：返回一个map钟包含的所有映射的一个集合视图。这个集合受map支持的，map的变化会在collection中反映出来，反之亦然。当一个迭代器正在遍历一个集合时，若map被修改了（除迭代器自身的移除操作，以及对迭代器返回的entry进行setValue外），迭代器的结果会变为未定义。集合支持通过Iterator的Remove、Set.remove、removeAll、retainAll和clear操作进行元素移除，从map中移除对应的映射。它不支持add和addAll操作。</p>
+<h3 id="h3-21-hashmap-hashtable-"><a name="21.HashMap和HashTable有何不同？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>21.HashMap和HashTable有何不同？</h3><p>（1）HashMap允许key和value为null，而HashTable不允许。<br>（2）HashTable是同步的，而HashMap不是。所以HashMap适合单线程环境，HashTable适合多线程环境。<br>（3）在Java1.4中引入了LinkedHashMap，HashMap的一个子类，假如你想要遍历顺序，你很容易从HashMap转向LinkedHashMap，但是HashTable不是这样的，它的顺序是不可预知的。<br>（4）HashMap提供对key的Set进行遍历，因此它是fail-fast的，但HashTable提供对key的Enumeration进行遍历，它不支持fail-fast。<br>（5）HashTable被认为是个遗留的类，如果你寻求在迭代的时候修改Map，你应该使用CocurrentHashMap。</p>
+<h3 id="h3-22-hashmap-treemap-"><a name="22.如何决定选用HashMap还是TreeMap？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>22.如何决定选用HashMap还是TreeMap？</h3><p>对于在Map中插入、删除和定位元素这类操作，HashMap是最好的选择。然而，假如你需要对一个有序的key集合进行遍历，TreeMap是更好的选择。基于你的collection的大小，也许向HashMap中添加元素会更快，将map换为TreeMap进行有序key的遍历。</p>
+<h3 id="h3-23-arraylist-vector-"><a name="23.ArrayList和Vector有何异同点？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>23.ArrayList和Vector有何异同点？</h3><p> ArrayList和Vector在很多时候都很类似。<br>（1）两者都是基于索引的，内部由一个数组支持。<br>（2）两者维护插入的顺序，我们可以根据插入顺序来获取元素。<br>（3）ArrayList和Vector的迭代器实现都是fail-fast的。<br>（4）ArrayList和Vector两者允许null值，也可以使用索引值对元素进行随机访问。<br>    以下是ArrayList和Vector的不同点。<br>（1）Vector是同步的，而ArrayList不是。然而，如果你寻求在迭代的时候对列表进行改变，你应该使用CopyOnWriteArrayList。<br>（2）ArrayList比Vector快，它因为有同步，不会过载。<br>（3）ArrayList更加通用，因为我们可以使用Collections工具类轻易地获取同步列表和只读列表。</p>
+<h3 id="h3-24-array-arraylist-array-"><a name="24.Array和ArrayList有何区别？什么时候更适合用Array？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>24.Array和ArrayList有何区别？什么时候更适合用Array？</h3><pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="typ">Array</span><span class="pun">可以容纳基本类型和对象，而</span><span class="typ">ArrayList</span><span class="pun">只能容纳对象。</span></code></li><li class="L1"><code><span class="typ">Array</span><span class="pun">是指定大小的，而</span><span class="typ">ArrayList</span><span class="pun">大小是固定的。</span></code></li><li class="L2"><code><span class="typ">Array</span><span class="pun">没有提供</span><span class="typ">ArrayList</span><span class="pun">那么多功能，比如</span><span class="pln">addAll</span><span class="pun">、</span><span class="pln">removeAll</span><span class="pun">和</span><span class="pln">iterator</span><span class="pun">等。尽管</span><span class="typ">ArrayList</span><span class="pun">明显是更好的选择，但也有些时候</span><span class="typ">Array</span><span class="pun">比较好用。</span></code></li></ol></pre><p>（1）如果列表的大小已经指定，大部分情况下是存储和遍历它们。<br>（2）对于遍历基本数据类型，尽管Collections使用自动装箱来减轻编码任务，在指定大小的基本类型的列表上工作也会变得很慢。<br>（3）如果你要使用多维数组，使用[][]比List&lt;List&lt;&gt;&gt;更容易。</p>
+<h3 id="h3-25-arraylist-linkedlist-"><a name="25.ArrayList和LinkedList有何区别？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>25.ArrayList和LinkedList有何区别？</h3><p>ArrayList和LinkedList两者都实现了List接口，但是它们之间有些不同。<br>（1）ArrayList是由Array所支持的基于一个索引的数据结构，所以它提供对元素的随机访问，复杂度为O(1)，但LinkedList存储一系列的节点数据，每个节点都与前一个和下一个节点相连接。所以，尽管有使用索引获取元素的方法，内部实现是从起始点开始遍历，遍历到索引的节点然后返回元素，时间复杂度为O(n)，比ArrayList要慢。<br>（2）与ArrayList相比，在LinkedList中插入、添加和删除一个元素会更快，因为在一个元素被插入到中间的时候，不会涉及改变数组的大小，或更新索引。<br>（3）LinkedList比ArrayList消耗更多的内存，因为LinkedList中的每个节点存储了前后节点的引用。</p>
+<h3 id="h3-26-"><a name="26.哪些集合类提供对元素的随机访问？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>26.哪些集合类提供对元素的随机访问？</h3><p>ArrayList、HashMap、TreeMap和HashTable类提供对元素的随机访问。<br>27.EnumSet是什么？<br> java.util.EnumSet是使用枚举类型的集合实现。当集合创建时，枚举集合中的所有元素必须来自单个指定的枚举类型，可以是显示的或隐示的。EnumSet是不同步的，不允许值为null的元素。它也提供了一些有用的方法，比如copyOf(Collection c)、of(E first,E…rest)和complementOf(EnumSet s)。</p>
+<h3 id="h3-28-"><a name="28.哪些集合类是线程安全的？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>28.哪些集合类是线程安全的？</h3><p> Vector、HashTable、Properties和Stack是同步类，所以它们是线程安全的，可以在多线程环境下使用。Java1.5并发API包括一些集合类，允许迭代时修改，因为它们都工作在集合的克隆上，所以它们在多线程环境中是安全的。</p>
+<h3 id="h3-29-"><a name="29.并发集合类是什么？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>29.并发集合类是什么？</h3><p>Java1.5并发包（java.util.concurrent）包含线程安全集合类，允许在迭代时修改集合。迭代器被设计为fail-fast的，会抛出ConcurrentModificationException。一部分类为：CopyOnWriteArrayList、 ConcurrentHashMap、CopyOnWriteArraySet。</p>
+<h3 id="h3-30-blockingqueue-"><a name="30.BlockingQueue是什么？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>30.BlockingQueue是什么？</h3><p>Java.util.concurrent.BlockingQueue是一个队列，在进行检索或移除一个元素的时候，它会等待队列变为非空；当在添加一个元素时，它会等待队列中的可用空间。BlockingQueue接口是Java集合框架的一部分，主要用于实现生产者-消费者模式。我们不需要担心等待生产者有可用的空间，或消费者有可用的对象，因为它都在BlockingQueue的实现类中被处理了。Java提供了集中BlockingQueue的实现，比如ArrayBlockingQueue、LinkedBlockingQueue、PriorityBlockingQueue,、SynchronousQueue等。</p>
+<h3 id="h3-31-"><a name="31.队列和栈是什么，列出它们的区别？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>31.队列和栈是什么，列出它们的区别？</h3><p>栈和队列两者都被用来预存储数据。java.util.Queue是一个接口，它的实现类在Java并发包中。队列允许先进先出（FIFO）检索元素，但并非总是这样。Deque接口允许从两端检索元素。<br>栈与队列很相似，但它允许对元素进行后进先出（LIFO）进行检索。<br> Stack是一个扩展自Vector的类，而Queue是一个接口。</p>
+<h3 id="h3-32-collections-"><a name="32.Collections类是什么？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>32.Collections类是什么？</h3><p>Java.util.Collections是一个工具类仅包含静态方法，它们操作或返回集合。它包含操作集合的多态算法，返回一个由指定集合支持的新集合和其它一些内容。这个类包含集合框架算法的方法，比如折半搜索、排序、混编和逆序等。</p>
+<h3 id="h3-33-comparable-comparator-"><a name="33.Comparable和Comparator接口是什么？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>33.Comparable和Comparator接口是什么？</h3><p> 如果我们想使用Array或Collection的排序方法时，需要在自定义类里实现Java提供Comparable接口。Comparable接口有compareTo(T OBJ)方法，它被排序方法所使用。我们应该重写这个方法，如果“this”对象比传递的对象参数更小、相等或更大时，它返回一个负整数、0或正整数。但是，在大多数实际情况下，我们想根据不同参数进行排序。比如，作为一个CEO，我想对雇员基于薪资进行排序，一个HR想基于年龄对他们进行排序。这就是我们需要使用Comparator接口的情景，因为Comparable.compareTo(Object o)方法实现只能基于一个字段进行排序，我们不能根据对象排序的需要选择字段。Comparator接口的compare(Object o1, Object o2)方法的实现需要传递两个对象参数，若第一个参数比第二个小，返回负整数；若第一个等于第二个，返回0；若第一个比第二个大，返回正整数。</p>
+<h3 id="h3-34-comparable-comparator-"><a name="34.Comparable和Comparator接口有何区别？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>34.Comparable和Comparator接口有何区别？</h3><p>Comparable和Comparator接口被用来对对象集合或者数组进行排序。Comparable接口被用来提供对象的自然排序，我们可以使用它来提供基于单个逻辑的排序。<br>Comparator接口被用来提供不同的排序算法，我们可以选择需要使用的Comparator来对给定的对象集合进行排序。</p>
+<h3 id="h3-35-"><a name="35.我们如何对一组对象进行排序？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>35.我们如何对一组对象进行排序？</h3><p>如果我们需要对一个对象数组进行排序，我们可以使用Arrays.sort()方法。如果我们需要排序一个对象列表，我们可以使用Collection.sort()方法。两个类都有用于自然排序（使用Comparable）或基于标准的排序（使用Comparator）的重载方法sort()。Collections内部使用数组排序方法，所有它们两者都有相同的性能，只是Collections需要花时间将列表转换为数组。</p>
+<h3 id="h3-36-"><a name="36.当一个集合被作为参数传递给一个函数时，如何才可以确保函数不能修改它？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>36.当一个集合被作为参数传递给一个函数时，如何才可以确保函数不能修改它？</h3><p>在作为参数传递之前，我们可以使用Collections.unmodifiableCollection(Collection c)方法创建一个只读集合，这将确保改变集合的任何操作都会抛出UnsupportedOperationException。</p>
+<h3 id="h3-37-synchronized-"><a name="37.我们如何从给定集合那里创建一个synchronized的集合？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>37.我们如何从给定集合那里创建一个synchronized的集合？</h3><p>我们可以使用Collections.synchronizedCollection(Collection c)根据指定集合来获取一个synchronized（线程安全的）集合。</p>
+<h3 id="h3-38-"><a name="38.集合框架里实现的通用算法有哪些？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>38.集合框架里实现的通用算法有哪些？</h3><pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="typ">Java</span><span class="pun">集合框架提供常用的算法实现，比如排序和搜索。</span><span class="typ">Collections</span><span class="pun">类包含这些方法实现。大部分算法是操作</span><span class="typ">List</span><span class="pun">的，但一部分对所有类型的集合都是可用的。部分算法有排序、搜索、混编、最大最小值。</span></code></li></ol></pre><h3 id="h3-39-o-"><a name="39.大写的O是什么？举几个例子？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>39.大写的O是什么？举几个例子？</h3><p>大写的O描述的是，就数据结构中的一系列元素而言，一个算法的性能。Collection类就是实际的数据结构，我们通常基于时间、内存和性能，使用大写的O来选择集合实现。比如：例子1：ArrayList的get(index i)是一个常量时间操作，它不依赖list中元素的数量。所以它的性能是O(1)。例子2：一个对于数组或列表的线性搜索的性能是O(n)，因为我们需要遍历所有的元素来查找需要的元素。</p>
+<h3 id="h3-40-java-"><a name="40.与Java集合框架相关的有哪些最好的实践？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>40.与Java集合框架相关的有哪些最好的实践？</h3><p>（1）根据需要选择正确的集合类型。比如，如果指定了大小，我们会选用Array而非ArrayList。如果我们想根据插入顺序遍历一个Map，我们需要使用TreeMap。如果我们不想重复，我们应该使用Set。<br>（2）一些集合类允许指定初始容量，所以如果我们能够估计到存储元素的数量，我们可以使用它，就避免了重新哈希或大小调整。<br>（3）基于接口编程，而非基于实现编程，它允许我们后来轻易地改变实现。<br>（4）总是使用类型安全的泛型，避免在运行时出现ClassCastException。<br>（5）使用JDK提供的不可变类作为Map的key，可以避免自己实现hashCode()和equals()。<br>（6）尽可能使用Collections工具类，或者获取只读、同步或空的集合，而非编写自己的实现。它将会提供代码重用性，它有着更好的稳定性和可维护性。</p>
+</div>
+                                      </div>
+                                   <div class="layui-row text-center layui-mt20">
+                                           
+                                           <div class="layui-btn layui-btn-danger" onclick="emotion()"><i class="fa fa-thumbs-o-up" id="za"> 赞 (119)</i></div>
+                                       </div>
+                                   <div class="layui-row layui-mt20">
+                                         <blockquote class="layui-elem-quote text-center " style="border: none;">
+                                                  <span class="layui-show-md-inline-block layui-hide"  >文章出处：书生个人博客</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                   <span class="layui-show-md-inline-block layui-hide" id="artiurl"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                  <span>转载注明下哦！o(≧v≦)o~~</span>
+                                           </blockquote>
+                                    </div>
+                                 <div class="layui-row layui-mt20">
+                                         <p class="blog-tags">
+                                              标签：
+                                                       <span >面试</span>
+
+                                               </p>
+                                 </div>
+                                 <div class="layui-row layui-col-space20 layui-mt20 article-page-similar">
+                                           <p>相似文章：</p>
+                                            <hr>
+                                             <ul>
+                                                    <li><a href="1561737062940.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Caused by: java.net.URISyntaxException: Illegal character异常解决方法</a> </li>
+                                                    <li><a href="1548170146951.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;多线程基础知识总结与名词解释</a> </li>
+                                                    <li><a href="1553956465889.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;从底层了解ArrayList和Vector的区别</a> </li>
+                                                    <li><a href="1555843783735.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Java数组的选择，冒泡，快速，插入，反转排序算法详解</a> </li>
+                                                    <li><a href="1551538656534.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;创建java自定义异常类和使用throws和throw以及区别</a> </li>
+                                                    <li><a href="1551890831917.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;JSP的EL表达式的使用</a> </li>
+                                                    <li><a href="1559531976400.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;深入理解5种单例模式以及对其的改造在多线程下的使用</a> </li>
+                                                    <li><a href="1553876299810.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;从Java匿名内部类深入到JDK8的Lombda表达式</a> </li>
+                                                    <li><a href="1567992407132.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;使用Hyperic-Sigar获取服务器设备信息（监控服务器）</a> </li>
+                                                    <li><a href="1550396519278.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;不用循环把List转换成String</a> </li>
+                                              </ul>
+                                    </div>
+                               </div>
+                      <script>
+                          $("#artiurl").html("文章地址："+location.href);
+
+
+                      </script>
+
+                       </div></div>
+
+                </div>
+
+               <div  >
+<div id="cta" class="layui-collapse layui-panel layui-article">
+       <div class="layui-colla-item">
+               <div class="layui-colla-content layui-show layui-article comment">
+                       <fieldset class="layui-elem-field layui-field-title">
+                               <legend>随便说两句</legend>
+                               <div class="layui-field-box">
+                                       <label for="comment-input"></label>
+                                           <textarea id="comment-input" style="display: none;"></textarea>
+                                  </div>
+                               
+                               <a class="layui-btn layui-btn-sm layui-btn-danger" style="float: right;width: 120px;"  href="#"  onclick="javascript:beforeLogin()" id="beforeLogin"><i class="fa fa-qq"></i> 请先登录</a>
+                           </fieldset>
+                   </div>
+           </div>
+    </div>
+</div>
+<script>
+    function beforeLogin() {
+        var url=window.location.href;
+        window.open('/api/qq?url='+url,'_self');
+    }
+
+</script>
+
+               <blockquote id="cccc" class="layui-elem-quote layui-mt20" style="border-left: 5px solid #F44336;"><span style="color:#FF5722;">遵守国家法律法规，请勿回复无意义内容，请不要回复嵌套过多的楼层！</span></blockquote>
+               <div class="comment-list">
+
+</div>
+
+
+
+
+           </div>
+               <!--<div class="layui-col-md3" id="article-app">-->
+                       <!--<div id="affix-side">-->
+                           <!--<div th:replace="frontend/fragment/callme :: callme" ></div>-->
+                           <!--&lt;!&ndash;<div class="layui-tab layui-tab-card layui-master-recommend" >&ndash;&gt;-->
+                               <!--&lt;!&ndash;<div class="layui-tab-content select-none">&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<h3 class="tit">时光悄然</h3>&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<div class="layui-inline" id="test22"></div>&ndash;&gt;-->
+                               <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--<div th:replace ="frontend/fragment/guidang" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/imageinfo" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/cate" ></div>-->
+                           <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相关文章'})" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/image :: image"></div>-->
+                           <!--</div>-->
+                   <!--</div>-->
+           </div>
+    </div>
+
+
+    <footer >
+    <div class="footer"><p>
+	<span><strong>友情链接:</strong><strong>&nbsp;</strong> &nbsp;&nbsp;</span><a class="ke-insertfile" href="https://www.layui.com/" target="_blank">layui</a><span>&nbsp;&nbsp;</span>&nbsp;<a class="ke-insertfile" href="http://www.shuyong.net/" target="_blank">舍力博客</a>&nbsp;&nbsp;<a class="ke-insertfile" href="javascript:;" id="friend">申请友链</a> 
+</p>
+<p>
+	2018-2019 nonelonely.com | 网站备案号：<a class="ke-insertfile" href="http://www.miitbeian.gov.cn/" target="_blank">闽ICP备18026034号-1</a> 
+</p>
+<p>
+	<br />
+</p></div>
+
+    <div class="layui-hide-xs" style="position: fixed;left: 100px; bottom: 100px; z-index: 999999;" id="robot" data-method="robot">
+        <div class="layui-layer-tips" ><div id="" class="layui-layer-content" style="background-color: rgb(114, 193, 236);width: 150px">Hi 我是小码，可以点击我问我笑话，天气，智能聊天，故事，查询备案等等。<i class="layui-layer-TipsG layui-layer-TipsT" style="border-right-color:rgb(114, 193, 236);"></i></div><span class="layui-layer-setwin"></span></div>
+        <a href="#" ><img src="../static/assets/img/robot.png" width="100px" alt="Hi 我是小码！" >
+        </a>
+    </div>
+
+
+</footer>
+<script src="../static/plugins/layui/layui.js"></script>
+
+<script>
+    layui.use([ 'layer'], function () {
+        var layer = layui.layer;
+        var $ = layui.jquery;
+        //触发事件
+        var active = {
+            robot: function(){
+                var that = this;
+                $("#robot").css('display','none');
+                //多窗口模式，层叠置顶
+                layer.open({
+                    type: 2,
+                    title:'智能小码',
+                    area: ['600px', '480px'],
+                    content: '/webrobot',
+                    end:function () {
+                        $("#robot").css('display','');
+                    }
+                });
+            },
+            friend: function () {
+                layer.open({
+                    title: '申请友链'
+                    ,content: '发送邮件至：admin@nonelonely.com<br>' +
+                        '邮件标题为：申请书生个人博客友链'
+                });
+            }
+        };
+
+        $('#robot').on('click', function(){
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+        $('#friend').on('click', function(){
+            var othis = $(this), method = 'friend';
+            active[method] ? active[method].call(this, othis) : '';
+        });
+
+
+        // var la;
+            // la = layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot',
+            //     {
+            //         tips: [1, '#3595CC'],
+            //         end: function () {
+            //             if($("#robot").is(":visible")) {
+            //                 la = layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot',
+            //                     {tips: [1, '#3595CC']})
+            //             }
+            //         }
+            //     });
+            // window.setInterval(" if($('#robot').is(':visible')) {la=layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot', { tips: [1, '#3595CC'],end : function(){ la=layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot', {tips: [1, '#3595CC']});}});}", 10000*6 );
+
+    });
+</script>
+
+</div>
+
+
+
+
+<script>
+    var articleId=1549088339266;
+    var su=null ;
+    $(function(){
+        $(".comment-list").addCommentList({data:[],add:""});
+        $("#comment").click(function(){
+            var obj = new Object();
+            obj.img="images/img.html";
+            obj.replyName="匿名";
+            obj.content=$("#content").val();
+            obj.browse="深圳";
+            obj.osname="win10";
+            obj.replyBody="";
+            $(".comment-list").addCommentList({data:[],add:obj});
+        });
+    })
+
+    var layer;
+    var layedit;
+    var index;
+    layui.use(['layedit', 'laypage', 'laydate', 'element','layer'], function () {
+        layer = layui.layer;
+        var element = layui.element;
+        layedit = layui.layedit;
+        // var laydate = layui.laydate;
+        // //不出现底部栏
+        // laydate.render({
+        //     elem: '#test22'
+        //     ,showBottom: false
+        //     ,position: 'static'
+        //     ,calendar: true
+        //     ,theme: '#a7a4a4'
+        // });
+
+       index= layedit.build('comment-input', {
+            tool: ['face', '|', 'left', 'center', 'right', 'link', 'unlink']
+            , height: 150
+        });
+        //相册
+        if($(window).width() > 750){
+            layer.photos({
+                photos: '.photos'
+                ,zIndex: 9999999999
+                ,anim: -1
+            });
+        } else {
+            $('body').on('click', '.photos img', function(){
+                window.open(this.src);
+            });
+        }
+
+            layer.open({
+                title: '目录',
+                type: 1,
+                offset: 'r',
+                shade: 0,
+                closeBtn: 2,
+                content: $(".markdown-toc")
+            });
+
+        // $('#affix-side').hcSticky({
+        //     stickTo: '#blog-body'
+        // });
+
+    });
+    function submit() {
+
+        var osname = detectOS();
+
+        var obj = new Object();
+        if (su) {
+           obj.img = su.avatar;
+           obj.replyName = su.nickname;
+        }
+        obj.content=layedit.getContent(index);
+        obj.browse=navigator.appName;
+        obj.osname=osname;
+        obj.time=new Date();
+        obj.replyBody="";
+
+        obj.comment= obj.content;
+        if(!obj.comment){
+            layer.msg('不能为空');
+            return false;
+        }
+        var indexc = layer.load();
+        obj.userId=su.id;
+        obj.user=su.id;
+        obj.articleId=articleId;
+        obj.enable=true;
+        obj.parentId=0;
+
+         obj.time =new Date();
+
+
+
+
+        $.post("/token/comment/sub",obj, function (resp) {
+            layer.close(indexc);
+            $(window.frames["LAY_layedit_1"].document).find("body").html('');
+            layer.msg(resp.message);
+            setTimeout(function () {
+                if (resp.code === 200) {
+                    $(".comment-list").addCommentList({data:[],add:obj});
+                }
+            }, 1000);
+        });
+
+    };
+
+    function emotion() {
+        var uid = "guest";
+        if (BMY.getCookie("article::" + 1549088339266 + "::" + uid) != null) {
+            layer.msg("近期您已经点过赞，感谢您的支持！");
+        } else {
+            $.post("/article/approve", {articleId: 1549088339266}, function (json) {
+                if (json.code === BMY.status.ok) {
+                    BMY.setCookie("article::" + 1549088339266+ "::" + uid, "noteblog system");
+                  //  that.approve++;
+                    $('#za').html('赞 (120)')
+                    layer.msg("谢谢您的支持！");
+                }
+            })
+        }
+    }
+    function money  (alipay, wechat) {
+        alipay = "#\/static\/assets\/img\/wechat.png";
+        wechat="#\/static\/assets\/img\/alipay.png";
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['640px', '300px'],
+            shadeClose: true,
+            skin: 'text-center',
+            content:
+                '<div class="layui-fluid">' +
+                '   <div class="layui-row layui-mt20">' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + wechat + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">微信</p>' +
+                '       </div>' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + alipay + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">支付宝</p>' +
+                '       </div>' +
+                '   </div> ' +
+                '</div>'
+        });
+    }
+
+
+
+
+</script>
+<script src="../static/assets/js/jquery.comment.js" ></script>
+</body>
+
+<!-- Mirrored from www.nonelonely.com/article/1549088339266 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:05:35 GMT -->
+</html>

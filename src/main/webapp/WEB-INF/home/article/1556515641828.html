@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Mirrored from www.nonelonely.com/article/1556515641828 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:02:31 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+
+    <title>SpringBoot的数据缓存——基于Redis缓存技术的配置- 书生个人博客</title>
+    <link href="../static/plugins/editormd/css/editormd.min.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+<meta name="baidu_union_verify" content="3e514e79dc5e7201b9bee186137e9562">
+<meta name="keywords" content="springboot使用Redis缓存数据,springboot系列">
+
+<meta name="description" content="我们知道Spring支持很多种缓存，针对不同的缓存技术，我们都需要实现不同的CacheManager。但是SpringBoot帮我们自动配置了多个CacheManager的实现，我们只要引用不同的依赖包，SpringBoot会帮我们切换到不同的CacheManager，本篇文章说的是基于Redis的数据缓存。1.导入依赖包:&amp;lt;dependency&amp;gt;&amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;&amp;lt;artifactId&amp;gt;">
+
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../static/plugins/layui/css/layui.css">
+<link rel="stylesheet" href="../static/plugins/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../static/assets/css/frontend/base.css">
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "../../hm.baidu.com/hm6618.js?c07ddd5b98c69450ebd8e255627f70b0";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <link rel="canonical" href="1556515641828.html"/>
+    <script src="../../msite.baidu.com/sdk/cb688.js?appid=1622832448885693"></script>
+    <script src="../static/plugins/jquery/jquery.min.js"></script>
+     <style>
+         @media screen and (max-width: 767px) {
+             .layui-layer-page {
+                 display: none;
+             }
+         }
+
+         .markdown-body.layui-layer-content {
+             padding: 20px;
+             /*background-image: url("/static/assets/img/long.png");*/
+         }
+         .markdown-body  .layui-layer-title{
+             background-color: #e4e4e400;
+         }
+         .markdown-body  .layui-layer{
+             background-color: #e4e4e4;
+             background-image: url("../static/assets/img/long.png") ;
+             background-size: 100% 100%;
+         }
+         .markdown-body .layui-layer-content {
+
+            padding: 20px;
+         }
+
+     </style>
+
+</head>
+<body class="animated fadeIn">
+
+<div class="wrapper" >
+    <header>
+    <div class="headtop"></div>
+    <div class="contenttop">
+        <div class="logo f_l"> Java码猿-书生个人博客</div>
+        <div class="search f_r">
+            <input name="keyboard"  id="bdcsMain" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+            <input name="Submit" class="input_submit" onclick="window.open('http://zhannei.baidu.com/cse/search?s=6583887351044514798&entry=1&q='+document.getElementById('bdcsMain').value)" value="搜索" type="button">
+            <!--<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=6583887351044514798' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>-->
+            <ul class="layui-nav" style="background-color: rgba(0,0,0,0);" >
+                
+                
+
+                <li  class="layui-nav-item"><a href="#"  style="color: #000;" onclick="goto()" title="QQ登入" class="iconfont icon-qq"></a>
+                </li>
+            </ul>
+
+
+        </div>
+        <div class="blank"></div>
+
+        <nav>
+            <div  class="navigation">
+                <ul class="menu">
+                    <li><a href="../index.html">网站首页</a></li>
+                    <li><a href="#">技术文章</a>
+                        <ul >
+                            <li><a  href="../pages748a.html?cateId=1">Spring系列</a></li>
+                            <li><a  href="../pages3c7b.html?cateId=6">前端开发</a></li>
+                            <li><a  href="../pages4ead.html?cateId=7">软件安装</a></li>
+                            <li><a  href="../pages8396.html?cateId=9">Java语法</a></li>
+                            <li><a  href="../pagesff6a.html?cateId=10">资源下载</a></li>
+                            <li><a  href="../pagesad9e.html?cateId=12">ORM框架</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="../note.html">我的日记</a> </li>
+                    <li><a href="../msg.html">给我留言</a> </li>
+                    <li><a href="../about.html">关于</a></li>
+                </ul>
+            </div>
+        </nav>
+        <SCRIPT type=text/javascript>
+            // Navigation Menu
+            $(function() {
+                $(".menu ul").css({display: "none"}); // Opera Fix
+                $(".menu li").hover(function(){
+                    $(this).find('ul:first').css({visibility: "visible",display: "none"}).slideDown("normal");
+                },function(){
+                    $(this).find('ul:first').css({visibility: "hidden"});
+                });
+            });
+
+            function  search() {
+                var s=$('#keyboard').val();
+                location.href = s === "" ? "/" : "/pages?searchStr=" + s;
+            };
+            function goto () {
+                var url = window.location.href;
+                var winObj = window.open('/api/qq?url=' + url, '_self');
+            }
+        </SCRIPT>
+
+    </div>
+</header>
+    <div class="jztop"></div>
+
+    <!--<bmy-article-page :alipay="params.alipay" :wechat="params.wechat_pay" :su="su">-->
+        <!--<div th:insert ="frontend/fragment/articlepage :: article"  slot="article"></div>-->
+        <!--<div  th:insert="frontend/fragment/comment :: comment" slot="post"></div>-->
+
+        <!--<bmy-comment-list slot="comment" :comments="comments" :tips="params.comment_notice"-->
+                          <!--:re="params.all_comment_open == 1 && article.commented"></bmy-comment-list>-->
+       <!--<bmy-search slot="search"></bmy-search>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相似文章'})" slot="similar"></div>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${lots},${'热度文章'})" slot="lot"></div>-->
+    <!--</bmy-article-page>-->
+
+    <div id="blog-body" class="layui-container">
+       <div class="layui-row layui-col-space10">
+           <div id="blog-info" class="layui-col-md12">
+                <div class="layui-collapse layui-panel layui-article photos" >
+
+                     <div  ><div class="layui-colla-item">
+                    <h2 class="nh1"><span>您现在的位置是：<a href="../index.html" target="_blank">网站首页</a>>><a href="#" target="_blank">信息浏览</a>
+                    </span><b>文章详情</b></h2>
+                          <div class="layui-colla-content layui-show layui-article">
+                                   <fieldset class="layui-elem-field layui-field-title layui-article-page-title">
+                                       <legend class="center-to-head" align="center">SpringBoot的数据缓存——基于Redis缓存技术的配置</legend>
+                                      </fieldset>
+                                  <div class="layui-text layui-blog-body">
+                                           <div class="layui-row">
+                                                  <div class="layui-col-md6 layui-col-md-offset3 text-center blog-base-info">
+                                                           <span><i class="fa fa-clock-o" ></i>2019-04-29 13:27 </span>
+                                                           <span><i class="fa fa-user-o"></i> <span style="color: #FF5722;">许多年以后</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-renzhengkaobei"></use></svg></span>
+                                                          <span><i class="fa fa-comment-o"></i></span>
+                                                           <span><i class="fa fa-eye"></i> 1667</span>
+                                                       </div>
+                                               </div>
+                                      <!-- Baidu Button BEGIN -->
+                                           <!--<div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">-->
+                                                  <!--<span class="bds_more">分享到：</span>-->
+                                                  <!--<a class="bds_qzone"></a>-->
+                                                  <!--<a class="bds_tsina"></a>-->
+                                                  <!--<a class="bds_tqq"></a>-->
+                                                  <!--<a class="bds_renren"></a>-->
+                                                  <!--<a class="bds_t163"></a>-->
+                                                  <!--<a class="shareCount"></a>-->
+                                          <!--</div>-->
+                                          <!--<script type="text/javascript" id="bdshare_js" data="type=tools&uid=6701193" ></script>-->
+                                          <!--<script type="text/javascript" id="bdshell_js"></script>-->
+                                          <!--<script type="text/javascript">-->
+                                              <!--document.getElementById("bdshell_js").src = "https://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)-->
+                                          <!--</script>-->
+                                      <!-- Baidu Button END -->
+                                           <hr>
+                                           <div class="content detail markdown-body editormd-preview-container editormd-preview-active"><p>我们知道Spring支持很多种缓存，针对不同的缓存技术，我们都需要实现不同的CacheManager。但是SpringBoot帮我们自动配置了多个CacheManager的实现，我们只要引用不同的依赖包，SpringBoot会帮我们切换到不同的CacheManager，本篇文章说的是基于Redis的数据缓存。</p>
+<p><strong>1.导入依赖包:</strong></p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln"> </span><span class="pun">&lt;</span><span class="pln">dependency</span><span class="pun">&gt;</span></code></li><li class="L1"><code class="lang-java"><span class="pln">            </span><span class="pun">&lt;</span><span class="pln">groupId</span><span class="pun">&gt;</span><span class="pln">org</span><span class="pun">.</span><span class="pln">springframework</span><span class="pun">.</span><span class="pln">boot</span><span class="pun">&lt;/</span><span class="pln">groupId</span><span class="pun">&gt;</span></code></li><li class="L2"><code class="lang-java"><span class="pln">            </span><span class="pun">&lt;</span><span class="pln">artifactId</span><span class="pun">&gt;</span><span class="pln">spring</span><span class="pun">-</span><span class="pln">boot</span><span class="pun">-</span><span class="pln">starter</span><span class="pun">-</span><span class="pln">cache</span><span class="pun">&lt;/</span><span class="pln">artifactId</span><span class="pun">&gt;</span></code></li><li class="L3"><code class="lang-java"><span class="pln">        </span><span class="pun">&lt;/</span><span class="pln">dependency</span><span class="pun">&gt;</span></code></li><li class="L4"><code class="lang-java"><span class="pln">        </span><span class="pun">&lt;</span><span class="pln">dependency</span><span class="pun">&gt;</span></code></li><li class="L5"><code class="lang-java"><span class="pln">            </span><span class="pun">&lt;</span><span class="pln">groupId</span><span class="pun">&gt;</span><span class="pln">org</span><span class="pun">.</span><span class="pln">springframework</span><span class="pun">.</span><span class="pln">boot</span><span class="pun">&lt;/</span><span class="pln">groupId</span><span class="pun">&gt;</span></code></li><li class="L6"><code class="lang-java"><span class="pln">            </span><span class="pun">&lt;</span><span class="pln">artifactId</span><span class="pun">&gt;</span><span class="pln">spring</span><span class="pun">-</span><span class="pln">boot</span><span class="pun">-</span><span class="pln">starter</span><span class="pun">-</span><span class="pln">data</span><span class="pun">-</span><span class="pln">redis</span><span class="pun">&lt;/</span><span class="pln">artifactId</span><span class="pun">&gt;</span></code></li><li class="L7"><code class="lang-java"><span class="pln">            </span><span class="pun">&lt;</span><span class="pln">exclusions</span><span class="pun">&gt;</span></code></li><li class="L8"><code class="lang-java"><span class="pln">                </span><span class="pun">&lt;</span><span class="pln">exclusion</span><span class="pun">&gt;</span></code></li><li class="L9"><code class="lang-java"><span class="pln">                    </span><span class="pun">&lt;</span><span class="pln">groupId</span><span class="pun">&gt;</span><span class="pln">io</span><span class="pun">.</span><span class="pln">lettuce</span><span class="pun">&lt;/</span><span class="pln">groupId</span><span class="pun">&gt;</span></code></li><li class="L0"><code class="lang-java"><span class="pln">                    </span><span class="pun">&lt;</span><span class="pln">artifactId</span><span class="pun">&gt;</span><span class="pln">lettuce</span><span class="pun">-</span><span class="pln">core</span><span class="pun">&lt;/</span><span class="pln">artifactId</span><span class="pun">&gt;</span></code></li><li class="L1"><code class="lang-java"><span class="pln">                </span><span class="pun">&lt;/</span><span class="pln">exclusion</span><span class="pun">&gt;</span></code></li><li class="L2"><code class="lang-java"><span class="pln">            </span><span class="pun">&lt;/</span><span class="pln">exclusions</span><span class="pun">&gt;</span></code></li><li class="L3"><code class="lang-java"><span class="pln">        </span><span class="pun">&lt;/</span><span class="pln">dependency</span><span class="pun">&gt;</span></code></li><li class="L4"><code class="lang-java"><span class="pln">        </span><span class="pun">&lt;</span><span class="pln">dependency</span><span class="pun">&gt;</span></code></li><li class="L5"><code class="lang-java"><span class="pln">            </span><span class="pun">&lt;</span><span class="pln">groupId</span><span class="pun">&gt;</span><span class="pln">redis</span><span class="pun">.</span><span class="pln">clients</span><span class="pun">&lt;/</span><span class="pln">groupId</span><span class="pun">&gt;</span></code></li><li class="L6"><code class="lang-java"><span class="pln">            </span><span class="pun">&lt;</span><span class="pln">artifactId</span><span class="pun">&gt;</span><span class="pln">jedis</span><span class="pun">&lt;/</span><span class="pln">artifactId</span><span class="pun">&gt;</span></code></li><li class="L7"><code class="lang-java"><span class="pln">        </span><span class="pun">&lt;/</span><span class="pln">dependency</span><span class="pun">&gt;</span></code></li><li class="L8"><code class="lang-java"><span class="pln">        </span><span class="pun">&lt;</span><span class="pln">dependency</span><span class="pun">&gt;</span></code></li><li class="L9"><code class="lang-java"><span class="pln">            </span><span class="pun">&lt;</span><span class="pln">groupId</span><span class="pun">&gt;</span><span class="pln">org</span><span class="pun">.</span><span class="pln">springframework</span><span class="pun">.</span><span class="pln">boot</span><span class="pun">&lt;/</span><span class="pln">groupId</span><span class="pun">&gt;</span></code></li><li class="L0"><code class="lang-java"><span class="pln">            </span><span class="pun">&lt;</span><span class="pln">artifactId</span><span class="pun">&gt;</span><span class="pln">spring</span><span class="pun">-</span><span class="pln">boot</span><span class="pun">-</span><span class="pln">starter</span><span class="pun">-</span><span class="pln">web</span><span class="pun">&lt;/</span><span class="pln">artifactId</span><span class="pun">&gt;</span></code></li><li class="L1"><code class="lang-java"><span class="pln">        </span><span class="pun">&lt;/</span><span class="pln">dependency</span><span class="pun">&gt;</span></code></li></ol></pre>
+<blockquote>
+<p>这里我们导入了spring-boot-starter-cache，这个包就是实现了不同的CacheManager。我们去除lettuce，用jedis来操作redis</p>
+</blockquote>
+<p><strong>2.单机的redis配置</strong><br>单机的RedisCacheManager在springboot中有帮我们实现，我们只要配置信息就行</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pun">#缓存的配置</span></code></li><li class="L1"><code class="lang-java"><span class="pln">spring</span><span class="pun">.</span><span class="pln">cache</span><span class="pun">.</span><span class="pln">cache</span><span class="pun">-</span><span class="pln">name</span><span class="pun">=</span><span class="pln">c1</span><span class="pun">,</span><span class="pln">c2  </span><span class="pun">#缓存的前置名</span></code></li><li class="L2"><code class="lang-java"><span class="pln">spring</span><span class="pun">.</span><span class="pln">cache</span><span class="pun">.</span><span class="pln">redis</span><span class="pun">.</span><span class="pln">time</span><span class="pun">-</span><span class="pln">to</span><span class="pun">-</span><span class="pln">live</span><span class="pun">=</span><span class="lit">1800s</span><span class="pln">  </span><span class="pun">#缓存的时间</span></code></li><li class="L3"><code class="lang-java"><span class="pun">#</span><span class="pln">redis</span><span class="pun">配置</span></code></li><li class="L4"><code class="lang-java"><span class="pln">spring</span><span class="pun">.</span><span class="pln">redis</span><span class="pun">.</span><span class="pln">database</span><span class="pun">=</span><span class="lit">0</span><span class="pln">   </span><span class="pun">#</span><span class="pln">redis</span><span class="pun">有</span><span class="lit">16</span><span class="pun">库</span></code></li><li class="L5"><code class="lang-java"><span class="pln">spring</span><span class="pun">.</span><span class="pln">redis</span><span class="pun">.</span><span class="pln">host</span><span class="pun">=</span><span class="pln">l92</span><span class="pun">.</span><span class="lit">168.174</span><span class="pun">.</span><span class="lit">10</span><span class="pln">   </span><span class="pun">#</span><span class="pln">redis</span><span class="pun">的</span><span class="pln">IP</span></code></li><li class="L6"><code class="lang-java"><span class="pln">spring</span><span class="pun">.</span><span class="pln">redis</span><span class="pun">.</span><span class="pln">port</span><span class="pun">=</span><span class="lit">6379</span><span class="pln">     </span><span class="pun">#</span><span class="pln">redis</span><span class="pun">的端口</span></code></li><li class="L7"><code class="lang-java"><span class="pln">spring</span><span class="pun">.</span><span class="pln">edis</span><span class="pun">.</span><span class="pln">password</span><span class="pun">=</span><span class="pln">l23@123    </span><span class="pun">#</span><span class="pln">redis</span><span class="pun">的密码</span></code></li><li class="L8"><code class="lang-java"><span class="pln">spring</span><span class="pun">.</span><span class="pln">redis</span><span class="pun">.</span><span class="pln">jedis</span><span class="pun">.</span><span class="pln">pool</span><span class="pun">.</span><span class="pln">max</span><span class="pun">-</span><span class="pln">active</span><span class="pun">=</span><span class="lit">8</span><span class="pln">   </span><span class="pun">#</span><span class="pln">redis</span><span class="pun">的连接池最大连接数</span></code></li><li class="L9"><code class="lang-java"><span class="pln">spring</span><span class="pun">.</span><span class="pln">redis</span><span class="pun">.</span><span class="pln">jedis</span><span class="pun">.</span><span class="pln">pool</span><span class="pun">.</span><span class="pln">max</span><span class="pun">-</span><span class="pln">idle</span><span class="pun">=</span><span class="lit">8</span><span class="pln">     </span><span class="pun">#</span><span class="pln">redis</span><span class="pun">的连接池中最大连接空闲数</span></code></li><li class="L0"><code class="lang-java"><span class="pln">spring</span><span class="pun">.</span><span class="pln">redis</span><span class="pun">.</span><span class="pln">jedis</span><span class="pun">.</span><span class="pln">pool</span><span class="pun">.</span><span class="pln">max</span><span class="pun">-</span><span class="pln">wait</span><span class="pun">=-</span><span class="lit">1ms</span><span class="pln">  </span><span class="pun">#</span><span class="pln">redis</span><span class="pun">的连接池中最大等待时间，-</span><span class="lit">1</span><span class="pun">，表示没有限制</span></code></li><li class="L1"><code class="lang-java"><span class="pln">spring</span><span class="pun">.</span><span class="pln">redis</span><span class="pun">.</span><span class="pln">jedis</span><span class="pun">.</span><span class="pln">pool</span><span class="pun">.</span><span class="pln">min</span><span class="pun">-</span><span class="pln">idle</span><span class="pun">=</span><span class="lit">0</span><span class="pln">      </span><span class="pun">#</span><span class="pln">redis</span><span class="pun">的连接池中最小连接空闲数</span></code></li></ol></pre>
+<p><strong>3.Redis集群缓存配置（集群的RedisCacheManager要我们自己实现）</strong><br>在yml文件种配置Redis集群信息</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">spring</span><span class="pun">:</span></code></li><li class="L1"><code class="lang-java"><span class="pln">    redis</span><span class="pun">:</span></code></li><li class="L2"><code class="lang-java"><span class="pln">     cluster</span><span class="pun">:</span></code></li><li class="L3"><code class="lang-java"><span class="pln">       ports</span><span class="pun">:</span></code></li><li class="L4"><code class="lang-java"><span class="pln">          </span><span class="pun">-</span><span class="lit">8001</span></code></li><li class="L5"><code class="lang-java"><span class="pln">          </span><span class="pun">-</span><span class="lit">8002</span></code></li><li class="L6"><code class="lang-java"><span class="pln">          </span><span class="pun">-</span><span class="lit">8003</span></code></li><li class="L7"><code class="lang-java"><span class="pln">          </span><span class="pun">-</span><span class="lit">8004</span></code></li><li class="L8"><code class="lang-java"><span class="pln">          </span><span class="pun">-</span><span class="lit">8005</span></code></li><li class="L9"><code class="lang-java"><span class="pln">          </span><span class="pun">-</span><span class="lit">8006</span></code></li><li class="L0"><code class="lang-java"><span class="pln">        host</span><span class="pun">:</span><span class="pln"> </span><span class="lit">192.168</span><span class="pun">.</span><span class="lit">174.10</span></code></li><li class="L1"><code class="lang-java"><span class="pln">        poolConfig</span><span class="pun">:</span></code></li><li class="L2"><code class="lang-java"><span class="pln">           max</span><span class="pun">-</span><span class="pln">total</span><span class="pun">:</span><span class="pln"> </span><span class="lit">8</span></code></li><li class="L3"><code class="lang-java"><span class="pln">           max</span><span class="pun">-</span><span class="pln">idle</span><span class="pun">:</span><span class="pln"> </span><span class="lit">8</span></code></li><li class="L4"><code class="lang-java"><span class="pln">           max</span><span class="pun">-</span><span class="pln">wait</span><span class="pun">-</span><span class="pln">millis</span><span class="pun">:</span><span class="pln"> </span><span class="pun">-</span><span class="lit">1</span></code></li><li class="L5"><code class="lang-java"><span class="pln">           min</span><span class="pun">-</span><span class="pln">idle</span><span class="pun">:</span><span class="pln"> </span><span class="lit">0</span></code></li></ol></pre>
+<p>编写集群缓存的配置类(单机的有实现，所以我们只要在配置文件种配置就行，集群的RedisCacheManager配置类要自己编写)</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="lit">@Configuration</span></code></li><li class="L1"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">RedisCacheConfig</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    </span><span class="lit">@Autowired</span></code></li><li class="L3"><code class="lang-java"><span class="pln">    </span><span class="typ">RedisConnectionFactory</span><span class="pln"> connectionFactory</span><span class="pun">;</span></code></li><li class="L4"><code class="lang-java"><span class="pln">    </span><span class="lit">@Bean</span></code></li><li class="L5"><code class="lang-java"><span class="pln">    </span><span class="typ">RedisCacheManager</span><span class="pln"> redisCacheManager</span><span class="pun">(){</span></code></li><li class="L6"><code class="lang-java"><span class="pln">      </span><span class="typ">Map</span><span class="pun">&lt;</span><span class="typ">String</span><span class="pun">,</span><span class="pln"> </span><span class="typ">RedisCacheConfiguration</span><span class="pun">&gt;</span><span class="pln"> configMap</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">HashMap</span><span class="pun">&lt;&gt;();</span></code></li><li class="L7"><code class="lang-java"><span class="pln">        </span><span class="typ">RedisCacheConfiguration</span><span class="pln"> redisCacheConfiguration</span><span class="pun">=</span><span class="typ">RedisCacheConfiguration</span><span class="pun">.</span><span class="pln">defaultCacheConfig</span><span class="pun">().</span><span class="pln">prefixKeysWith</span><span class="pun">(</span><span class="str">"sang:"</span><span class="pun">)</span></code></li><li class="L8"><code class="lang-java"><span class="pln">                </span><span class="pun">.</span><span class="pln">disableCachingNullValues</span><span class="pun">().</span><span class="pln">entryTtl</span><span class="pun">(</span><span class="typ">Duration</span><span class="pun">.</span><span class="pln">ofMinutes</span><span class="pun">(</span><span class="lit">30</span><span class="pun">));</span></code></li><li class="L9"><code class="lang-java"><span class="pln">        configMap</span><span class="pun">.</span><span class="pln">put</span><span class="pun">(</span><span class="str">"c1"</span><span class="pun">,</span><span class="pln">redisCacheConfiguration</span><span class="pun">);</span></code></li><li class="L0"><code class="lang-java"><span class="pln">        </span><span class="typ">RedisCacheWriter</span><span class="pln"> cacheWriter</span><span class="pun">=</span><span class="typ">RedisCacheWriter</span><span class="pun">.</span><span class="pln">nonLockingRedisCacheWriter</span><span class="pun">(</span><span class="pln">connectionFactory</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pln">        </span><span class="typ">RedisCacheManager</span><span class="pln"> redisCacheManager</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">RedisCacheManager</span><span class="pun">(</span><span class="pln">cacheWriter</span><span class="pun">,</span><span class="typ">RedisCacheConfiguration</span><span class="pun">.</span><span class="pln">defaultCacheConfig</span><span class="pun">(),</span><span class="pln">configMap</span><span class="pun">);</span></code></li><li class="L2"><code class="lang-java"><span class="pln">        </span><span class="kwd">return</span><span class="pln">  redisCacheManager</span><span class="pun">;</span></code></li><li class="L3"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li><li class="L4"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<p>代码说明:</p>
+<ul>
+<li><p>在配直Redis集群时，已经向Spring容器中注册了一个JedisConnectionFactory的实例，里将之注入到RedisCacheConfig直文件中备用（RedisConnectionFactory是JedisConnectionFactory的父类）。配直Redis集群可以参考这篇博客:<a href="1556289630491.html" title="SpringBoot整合Redis单机和整合Redis集群的完整例子">SpringBoot整合Redis单机和整合Redis集群的完整例子</a></p>
+</li><li><p>在RedisCacheConfig中提供RedisCacheManager的实例，该实例的构建需要三个参数，第一个参数是一个cacheWriter，直接通过nonLockingRedisCacheWriter方法构造出来即可；第二个参数是默认的缓存配直；第三个参数是提前定义好的缓存配直。</p>
+</li><li><p>RedisCacheManager构造方中第三个参数是个提前定义好的缓存参数，它是一个Map类型的数，该Map中的key就是指缓存名字，value就是该名称的缓存所对应的缓存自己直，例如key的前缀、缓存过期时间等，若缓存注解中使用的缓存称不存在于Map中，则使用RedisCacheManager构造方法中第二个参数所定义的缓存策略进行数据缓存。例如如下两个缓存配直：</p>
+</li></ul>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln"> </span><span class="lit">@Cacheable</span><span class="pun">(</span><span class="pln">value</span><span class="pun">=</span><span class="str">"c1"</span><span class="pun">)</span></code></li><li class="L1"><code><span class="pln"> </span><span class="lit">@Cacheable</span><span class="pun">(</span><span class="pln">value</span><span class="pun">=</span><span class="str">"c2"</span><span class="pun">)</span></code></li></ol></pre><ul>
+<li>8-9行是一个自定义的缓存配直，设直了key的前缀为“sang：”，禁止缓存一个null，设直缓存的过期时间为30分钟。</li></ul>
+<p><strong>4.开启缓存</strong><br>缓存配置好了后，我们只要在启动类前设置<a href="https://github.com/EnableCaching" title="@EnableCaching" class="at-link">@EnableCaching</a>注解来开启缓存</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="lit">@Spring</span><span class="pln">  </span><span class="typ">BootApplication</span></code></li><li class="L1"><code class="lang-java"><span class="lit">@EnableCaching</span></code></li><li class="L2"><code class="lang-java"><span class="kwd">public</span><span class="pln">  </span><span class="kwd">class</span><span class="pln">  </span><span class="typ">RedisclustercacheApplication</span><span class="pln">  </span><span class="pun">{</span></code></li><li class="L3"><code class="lang-java"><span class="kwd">public</span><span class="pln">  </span><span class="kwd">static</span><span class="pln">  </span><span class="kwd">void</span><span class="pln">  main  </span><span class="pun">(</span><span class="typ">String</span><span class="pln"> </span><span class="pun">[]</span><span class="pln"> args </span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L4"><code class="lang-java"><span class="typ">SpringApplication</span><span class="pun">.</span><span class="pln">run</span><span class="pun">(</span><span class="typ">RedisclustercacheApplication</span><span class="pun">.</span><span class="kwd">class</span><span class="pln"> </span><span class="pun">,</span><span class="pln"> args</span><span class="pun">);</span></code></li><li class="L5"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li><li class="L6"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<p><strong>5.使用缓存</strong><br>spring提供了4个注解来声明缓存的使用</p>
+<table>
+<thead>
+<tr>
+<th>注解</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/Cacheable" title="@Cacheable" class="at-link">@Cacheable</a></td>
+<td>在方法使用先，先看缓存是否有数据，如果有则返回，如果没有则调用方法，结果返回也存入缓存中</td>
+</tr>
+<tr>
+<td><a href="https://github.com/CachePut" title="@CachePut" class="at-link">@CachePut</a></td>
+<td>不管缓存是否有数据，都会更新，将返回结果都会存入缓存中</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ChcheEvict" title="@ChcheEvict" class="at-link">@ChcheEvict</a></td>
+<td>将一条或多条数据从缓存中删除</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Caching" title="@Caching" class="at-link">@Caching</a></td>
+<td>组合多条缓存注解在一个方法上</td>
+</tr>
+</tbody>
+</table>
+<p>代码:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln"> </span><span class="com">//先查询缓存名personname是否有数据，如果有则返回，如果没有则调用方法，将结果返回的也存入缓存中</span></code></li><li class="L1"><code class="lang-java"><span class="pln">  </span><span class="lit">@Cacheable</span><span class="pun">(</span><span class="pln">value</span><span class="pun">=</span><span class="str">"personname"</span><span class="pun">,</span><span class="pln">key</span><span class="pun">=</span><span class="str">"#person.name"</span><span class="pun">)</span></code></li><li class="L2"><code class="lang-java"><span class="pln"> </span><span class="kwd">public</span><span class="pln"> </span><span class="typ">Person</span><span class="pln"> save</span><span class="pun">(</span><span class="typ">String</span><span class="pln"> name</span><span class="pun">){</span></code></li><li class="L3"><code class="lang-java"><span class="pln">    </span><span class="typ">Person</span><span class="pln"> p</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Person</span><span class="pun">();</span></code></li><li class="L4"><code class="lang-java"><span class="pln">    </span><span class="typ">Person</span><span class="pun">.</span><span class="pln">setName</span><span class="pun">(</span><span class="pln">name</span><span class="pun">);</span></code></li><li class="L5"><code class="lang-java"><span class="pln">    </span><span class="kwd">return</span><span class="pln"> p</span><span class="pun">;</span></code></li><li class="L6"><code class="lang-java"></code></li><li class="L7"><code class="lang-java"><span class="pun">}</span></code></li><li class="L8"><code class="lang-java"></code></li><li class="L9"><code class="lang-java"><span class="pln"> </span><span class="com">//缓存名为personname，新增或者更新把Person的name存入缓存中，也就是不管缓存是否有数据，都会更新</span></code></li><li class="L0"><code class="lang-java"><span class="pln"> </span><span class="lit">@CachePut</span><span class="pln"> </span><span class="pun">(</span><span class="pln">value</span><span class="pun">=</span><span class="str">"personname"</span><span class="pun">,</span><span class="pln">key</span><span class="pun">=</span><span class="str">"#person.name"</span><span class="pun">)</span></code></li><li class="L1"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="typ">Person</span><span class="pln"> save</span><span class="pun">(</span><span class="typ">String</span><span class="pln"> name</span><span class="pun">){</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    </span><span class="typ">Person</span><span class="pln"> p</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Person</span><span class="pun">();</span></code></li><li class="L3"><code class="lang-java"><span class="pln">    </span><span class="typ">Person</span><span class="pun">.</span><span class="pln">setName</span><span class="pun">(</span><span class="pln">name</span><span class="pun">);</span></code></li><li class="L4"><code class="lang-java"><span class="pln">    </span><span class="kwd">return</span><span class="pln"> p</span><span class="pun">;</span></code></li><li class="L5"><code class="lang-java"></code></li><li class="L6"><code class="lang-java"><span class="pun">}</span></code></li><li class="L7"><code class="lang-java"><span class="com">//删除缓存名为personname的缓存</span></code></li><li class="L8"><code class="lang-java"><span class="lit">@ChcheEvict</span><span class="pun">(</span><span class="pln">value</span><span class="pun">=</span><span class="str">"personname"</span><span class="pun">)</span></code></li><li class="L9"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> del</span><span class="pun">(</span><span class="typ">String</span><span class="pln"> name</span><span class="pun">){</span></code></li><li class="L0"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<blockquote>
+<p>如果没有指定key的情况下，会把参数当作key存入缓存中</p>
+</blockquote>
+</div>
+                                      </div>
+                                   <div class="layui-row text-center layui-mt20">
+                                           
+                                           <div class="layui-btn layui-btn-danger" onclick="emotion()"><i class="fa fa-thumbs-o-up" id="za"> 赞 (102)</i></div>
+                                       </div>
+                                   <div class="layui-row layui-mt20">
+                                         <blockquote class="layui-elem-quote text-center " style="border: none;">
+                                                  <span class="layui-show-md-inline-block layui-hide"  >文章出处：书生个人博客</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                   <span class="layui-show-md-inline-block layui-hide" id="artiurl"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                  <span>转载注明下哦！o(≧v≦)o~~</span>
+                                           </blockquote>
+                                    </div>
+                                 <div class="layui-row layui-mt20">
+                                         <p class="blog-tags">
+                                              标签：
+                                                       <span >springboot使用Redis缓存数据</span><span >springboot系列</span>
+
+                                               </p>
+                                 </div>
+                                 <div class="layui-row layui-col-space20 layui-mt20 article-page-similar">
+                                           <p>相似文章：</p>
+                                            <hr>
+                                             <ul>
+                                                    <li><a href="1556515641828.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot的数据缓存——基于Redis缓存技术的配置</a> </li>
+                                                    <li><a href="1563463749150.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot配置Cross解决跨域问题</a> </li>
+                                                    <li><a href="1565238567917.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;springMVC接收zip文件和直接解析读取zip文件信息</a> </li>
+                                                    <li><a href="1556772837831.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot的数据缓存——基于Ehcache2.x缓存技术的配置</a> </li>
+                                                    <li><a href="1552469919154.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;javaweb的spi 的简单应用</a> </li>
+                                                    <li><a href="1567612549318.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;springboot常见10道面试题</a> </li>
+                                                    <li><a href="1546503121433.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot之@Component，@Bean与@Configuration配置</a> </li>
+                                                    <li><a href="1551457724956.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;springMVC和springBoot使用MultipartFile上传文件</a> </li>
+                                                    <li><a href="1562823806738.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Kaptcha的详细配置表以及在springboot中的整合和使用</a> </li>
+                                                    <li><a href="1548057271567.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Thymeleaf 如何格式化LocalDate和LocalDatetime类型时间</a> </li>
+                                              </ul>
+                                    </div>
+                               </div>
+                      <script>
+                          $("#artiurl").html("文章地址："+location.href);
+
+
+                      </script>
+
+                       </div></div>
+
+                </div>
+
+               <div  >
+<div id="cta" class="layui-collapse layui-panel layui-article">
+       <div class="layui-colla-item">
+               <div class="layui-colla-content layui-show layui-article comment">
+                       <fieldset class="layui-elem-field layui-field-title">
+                               <legend>随便说两句</legend>
+                               <div class="layui-field-box">
+                                       <label for="comment-input"></label>
+                                           <textarea id="comment-input" style="display: none;"></textarea>
+                                  </div>
+                               
+                               <a class="layui-btn layui-btn-sm layui-btn-danger" style="float: right;width: 120px;"  href="#"  onclick="javascript:beforeLogin()" id="beforeLogin"><i class="fa fa-qq"></i> 请先登录</a>
+                           </fieldset>
+                   </div>
+           </div>
+    </div>
+</div>
+<script>
+    function beforeLogin() {
+        var url=window.location.href;
+        window.open('/api/qq?url='+url,'_self');
+    }
+
+</script>
+
+               <blockquote id="cccc" class="layui-elem-quote layui-mt20" style="border-left: 5px solid #F44336;"><span style="color:#FF5722;">遵守国家法律法规，请勿回复无意义内容，请不要回复嵌套过多的楼层！</span></blockquote>
+               <div class="comment-list">
+
+</div>
+
+
+
+
+           </div>
+               <!--<div class="layui-col-md3" id="article-app">-->
+                       <!--<div id="affix-side">-->
+                           <!--<div th:replace="frontend/fragment/callme :: callme" ></div>-->
+                           <!--&lt;!&ndash;<div class="layui-tab layui-tab-card layui-master-recommend" >&ndash;&gt;-->
+                               <!--&lt;!&ndash;<div class="layui-tab-content select-none">&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<h3 class="tit">时光悄然</h3>&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<div class="layui-inline" id="test22"></div>&ndash;&gt;-->
+                               <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--<div th:replace ="frontend/fragment/guidang" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/imageinfo" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/cate" ></div>-->
+                           <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相关文章'})" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/image :: image"></div>-->
+                           <!--</div>-->
+                   <!--</div>-->
+           </div>
+    </div>
+
+
+    <footer >
+    <div class="footer"><p>
+	<span><strong>友情链接:</strong><strong>&nbsp;</strong> &nbsp;&nbsp;</span><a class="ke-insertfile" href="https://www.layui.com/" target="_blank">layui</a><span>&nbsp;&nbsp;</span>&nbsp;<a class="ke-insertfile" href="http://www.shuyong.net/" target="_blank">舍力博客</a>&nbsp;&nbsp;<a class="ke-insertfile" href="javascript:;" id="friend">申请友链</a> 
+</p>
+<p>
+	2018-2019 nonelonely.com | 网站备案号：<a class="ke-insertfile" href="http://www.miitbeian.gov.cn/" target="_blank">闽ICP备18026034号-1</a> 
+</p>
+<p>
+	<br />
+</p></div>
+
+    <div class="layui-hide-xs" style="position: fixed;left: 100px; bottom: 100px; z-index: 999999;" id="robot" data-method="robot">
+        <div class="layui-layer-tips" ><div id="" class="layui-layer-content" style="background-color: rgb(114, 193, 236);width: 150px">Hi 我是小码，可以点击我问我笑话，天气，智能聊天，故事，查询备案等等。<i class="layui-layer-TipsG layui-layer-TipsT" style="border-right-color:rgb(114, 193, 236);"></i></div><span class="layui-layer-setwin"></span></div>
+        <a href="#" ><img src="../static/assets/img/robot.png" width="100px" alt="Hi 我是小码！" >
+        </a>
+    </div>
+
+
+</footer>
+<script src="../static/plugins/layui/layui.js"></script>
+
+<script>
+    layui.use([ 'layer'], function () {
+        var layer = layui.layer;
+        var $ = layui.jquery;
+        //触发事件
+        var active = {
+            robot: function(){
+                var that = this;
+                $("#robot").css('display','none');
+                //多窗口模式，层叠置顶
+                layer.open({
+                    type: 2,
+                    title:'智能小码',
+                    area: ['600px', '480px'],
+                    content: '/webrobot',
+                    end:function () {
+                        $("#robot").css('display','');
+                    }
+                });
+            },
+            friend: function () {
+                layer.open({
+                    title: '申请友链'
+                    ,content: '发送邮件至：admin@nonelonely.com<br>' +
+                        '邮件标题为：申请书生个人博客友链'
+                });
+            }
+        };
+
+        $('#robot').on('click', function(){
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+        $('#friend').on('click', function(){
+            var othis = $(this), method = 'friend';
+            active[method] ? active[method].call(this, othis) : '';
+        });
+
+
+        // var la;
+            // la = layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot',
+            //     {
+            //         tips: [1, '#3595CC'],
+            //         end: function () {
+            //             if($("#robot").is(":visible")) {
+            //                 la = layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot',
+            //                     {tips: [1, '#3595CC']})
+            //             }
+            //         }
+            //     });
+            // window.setInterval(" if($('#robot').is(':visible')) {la=layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot', { tips: [1, '#3595CC'],end : function(){ la=layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot', {tips: [1, '#3595CC']});}});}", 10000*6 );
+
+    });
+</script>
+
+</div>
+
+
+
+
+<script>
+    var articleId=1556515641828;
+    var su=null ;
+    $(function(){
+        $(".comment-list").addCommentList({data:[],add:""});
+        $("#comment").click(function(){
+            var obj = new Object();
+            obj.img="images/img.html";
+            obj.replyName="匿名";
+            obj.content=$("#content").val();
+            obj.browse="深圳";
+            obj.osname="win10";
+            obj.replyBody="";
+            $(".comment-list").addCommentList({data:[],add:obj});
+        });
+    })
+
+    var layer;
+    var layedit;
+    var index;
+    layui.use(['layedit', 'laypage', 'laydate', 'element','layer'], function () {
+        layer = layui.layer;
+        var element = layui.element;
+        layedit = layui.layedit;
+        // var laydate = layui.laydate;
+        // //不出现底部栏
+        // laydate.render({
+        //     elem: '#test22'
+        //     ,showBottom: false
+        //     ,position: 'static'
+        //     ,calendar: true
+        //     ,theme: '#a7a4a4'
+        // });
+
+       index= layedit.build('comment-input', {
+            tool: ['face', '|', 'left', 'center', 'right', 'link', 'unlink']
+            , height: 150
+        });
+        //相册
+        if($(window).width() > 750){
+            layer.photos({
+                photos: '.photos'
+                ,zIndex: 9999999999
+                ,anim: -1
+            });
+        } else {
+            $('body').on('click', '.photos img', function(){
+                window.open(this.src);
+            });
+        }
+
+            layer.open({
+                title: '目录',
+                type: 1,
+                offset: 'r',
+                shade: 0,
+                closeBtn: 2,
+                content: $(".markdown-toc")
+            });
+
+        // $('#affix-side').hcSticky({
+        //     stickTo: '#blog-body'
+        // });
+
+    });
+    function submit() {
+
+        var osname = detectOS();
+
+        var obj = new Object();
+        if (su) {
+           obj.img = su.avatar;
+           obj.replyName = su.nickname;
+        }
+        obj.content=layedit.getContent(index);
+        obj.browse=navigator.appName;
+        obj.osname=osname;
+        obj.time=new Date();
+        obj.replyBody="";
+
+        obj.comment= obj.content;
+        if(!obj.comment){
+            layer.msg('不能为空');
+            return false;
+        }
+        var indexc = layer.load();
+        obj.userId=su.id;
+        obj.user=su.id;
+        obj.articleId=articleId;
+        obj.enable=true;
+        obj.parentId=0;
+
+         obj.time =new Date();
+
+
+
+
+        $.post("/token/comment/sub",obj, function (resp) {
+            layer.close(indexc);
+            $(window.frames["LAY_layedit_1"].document).find("body").html('');
+            layer.msg(resp.message);
+            setTimeout(function () {
+                if (resp.code === 200) {
+                    $(".comment-list").addCommentList({data:[],add:obj});
+                }
+            }, 1000);
+        });
+
+    };
+
+    function emotion() {
+        var uid = "guest";
+        if (BMY.getCookie("article::" + 1556515641828 + "::" + uid) != null) {
+            layer.msg("近期您已经点过赞，感谢您的支持！");
+        } else {
+            $.post("/article/approve", {articleId: 1556515641828}, function (json) {
+                if (json.code === BMY.status.ok) {
+                    BMY.setCookie("article::" + 1556515641828+ "::" + uid, "noteblog system");
+                  //  that.approve++;
+                    $('#za').html('赞 (103)')
+                    layer.msg("谢谢您的支持！");
+                }
+            })
+        }
+    }
+    function money  (alipay, wechat) {
+        alipay = "#\/static\/assets\/img\/wechat.png";
+        wechat="#\/static\/assets\/img\/alipay.png";
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['640px', '300px'],
+            shadeClose: true,
+            skin: 'text-center',
+            content:
+                '<div class="layui-fluid">' +
+                '   <div class="layui-row layui-mt20">' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + wechat + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">微信</p>' +
+                '       </div>' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + alipay + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">支付宝</p>' +
+                '       </div>' +
+                '   </div> ' +
+                '</div>'
+        });
+    }
+
+
+
+
+</script>
+<script src="../static/assets/js/jquery.comment.js" ></script>
+</body>
+
+<!-- Mirrored from www.nonelonely.com/article/1556515641828 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:02:31 GMT -->
+</html>

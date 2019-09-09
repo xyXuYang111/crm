@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Mirrored from www.nonelonely.com/pages?tagSearch=JDK by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:05:26 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="UTF-8">
+<meta name="baidu_union_verify" content="3e514e79dc5e7201b9bee186137e9562">
+
+<meta name="keywords" content="Java、Java学习、SpringBoot、SpringBoot实战、书生、个人博客、书生个人博客">
+
+<meta name="description" content="这是记录和分享Java、SpringBoot和多线程以及系统维护知识的个人博客。">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="static/plugins/layui/css/layui.css">
+<link rel="stylesheet" href="static/plugins/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="static/assets/css/frontend/base.css">
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "../hm.baidu.com/hm6618.js?c07ddd5b98c69450ebd8e255627f70b0";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+    <meta property="wb:webmaster" content="ba9ff005e151c9ad" />
+    <title>书生个人博客</title>
+    <script src="static/plugins/layui/layui.js"></script>
+<script src="static/plugins/jquery/jquery.min.js"></script>
+<script src="static/plugins/vue/vue.min.js"></script>
+<script src="static/plugins/hc-sticky/hc-sticky.min.js"></script>
+<script src="static/assets/js/BMY.js"></script>
+<script src="static/assets/js/frontend/script.js"></script>
+<script src="static/assets/js/BMY.vue.js"></script>
+<script src="static/plugins/pushbar/pushbar.js"></script>
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+<script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+<script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body class="animated fadeIn" >
+<div id="index-app" class="wrapper">
+    <header>
+    <div class="headtop"></div>
+    <div class="contenttop">
+        <div class="logo f_l"> Java码猿-书生个人博客</div>
+        <div class="search f_r">
+            <input name="keyboard"  id="bdcsMain" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+            <input name="Submit" class="input_submit" onclick="window.open('http://zhannei.baidu.com/cse/search?s=6583887351044514798&entry=1&q='+document.getElementById('bdcsMain').value)" value="搜索" type="button">
+            <!--<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=6583887351044514798' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>-->
+            <ul class="layui-nav" style="background-color: rgba(0,0,0,0);" >
+                
+                
+
+                <li  class="layui-nav-item"><a href="#"  style="color: #000;" onclick="goto()" title="QQ登入" class="iconfont icon-qq"></a>
+                </li>
+            </ul>
+
+
+        </div>
+        <div class="blank"></div>
+
+        <nav>
+            <div  class="navigation">
+                <ul class="menu">
+                    <li><a href="index.html">网站首页</a></li>
+                    <li><a href="#">技术文章</a>
+                        <ul >
+                            <li><a  href="pages748a.html?cateId=1">Spring系列</a></li>
+                            <li><a  href="pages3c7b.html?cateId=6">前端开发</a></li>
+                            <li><a  href="pages4ead.html?cateId=7">软件安装</a></li>
+                            <li><a  href="pages8396.html?cateId=9">Java语法</a></li>
+                            <li><a  href="pagesff6a.html?cateId=10">资源下载</a></li>
+                            <li><a  href="pagesad9e.html?cateId=12">ORM框架</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="note.html">我的日记</a> </li>
+                    <li><a href="msg.html">给我留言</a> </li>
+                    <li><a href="about.html">关于</a></li>
+                </ul>
+            </div>
+        </nav>
+        <SCRIPT type=text/javascript>
+            // Navigation Menu
+            $(function() {
+                $(".menu ul").css({display: "none"}); // Opera Fix
+                $(".menu li").hover(function(){
+                    $(this).find('ul:first').css({visibility: "visible",display: "none"}).slideDown("normal");
+                },function(){
+                    $(this).find('ul:first').css({visibility: "hidden"});
+                });
+            });
+
+            function  search() {
+                var s=$('#keyboard').val();
+                location.href = s === "" ? "/" : "/pages?searchStr=" + s;
+            };
+            function goto () {
+                var url = window.location.href;
+                var winObj = window.open('/api/qq?url=' + url, '_self');
+            }
+        </SCRIPT>
+
+    </div>
+</header>
+    <div class="jztop"></div>
+    <div id="main-body" class="layui-container">
+        <div class="layui-row layui-col-space10">
+          <div id="article-list" class="layui-col-md9">
+              <h2 class="nh1"><b>查找的文章</b></h2>
+                    <div class="layui-collapse layui-panel layui-article">
+       <div class="layui-colla-item">
+              <div class="layui-colla-content layui-show layui-article">
+                       <fieldset class="layui-elem-field layui-field-title">
+                              <legend class="center-to-head">
+                                       <span class="layui-btn layui-btn-radius layui-btn-sm" style="background: linear-gradient(to right,#2fcc71,#2fcc7196);"> 软件安装 </span>
+                                       
+
+                           
+                           <a href="article/1544525634862.html">LINUX(centos)在线与离线安装JDK的步骤和遇到的问题</a>
+
+                            </legend>
+
+                               <div class="layui-field-box">
+                                       &nbsp;&nbsp;&nbsp;&nbsp;最近开始学习linux,在这记录安装JDK的过程和遇到的问题一在线安装:安装之前先检查一下系统有没有自带open-jdk命令：rpm-qa|grepjavarpm-qa|grepjdkrpm-qa|grepgcj如果没有输入信息表示没有安装。如果有安装可以使用如下命令批量卸载所有带有Java的文件（这句命令的关键字是java）：rpm-qa|grepjava|xargsrpm-e—nodeps首先检索包含java的列表yumlistjava*检索1.8的列表yumlist...&nbsp;
+
+                                   
+
+                                   <a href="article/1544525634862.html">更多<i class="fa fa-angle-double-right"></i> </a>
+
+                                   </div>
+                               
+
+                               <div class="operation">
+                                       <div class="tags">
+                                               <span class="layui-badge-rim" ><a href="pagesc10a.html?tagSearch=Centos" ><i class="fa fa-tag"></i> Centos</a></span><span class="layui-badge-rim" ><a href="pages20ac.html?tagSearch=JDK" ><i class="fa fa-tag"></i> JDK</a></span>
+
+                                           </div>
+                                       <div class="info">
+                                               <span class="views"><i class="fa fa-thermometer-half"></i> 2082<code style="font-family: cursive;">℃</code></span>
+                        <span class="dtime">2018-12-11</span>
+                                           </div>
+                                   </div>
+                           </fieldset>
+                   </div>
+         </div>
+
+
+    </div><div class="layui-collapse layui-panel layui-article">
+       <div class="layui-colla-item">
+              <div class="layui-colla-content layui-show layui-article">
+                       <fieldset class="layui-elem-field layui-field-title">
+                              <legend class="center-to-head">
+                                       <span class="layui-btn layui-btn-radius layui-btn-sm" style="background: linear-gradient(to right,#2fcc71,#2fcc7196);"> Java语法 </span>
+                                       
+
+                           
+                           <a href="article/1548748295557.html">Java自定义注解和解析注解</a>
+
+                            </legend>
+
+                               <div class="layui-field-box">
+                                       &nbsp;&nbsp;&nbsp;&nbsp;在SpringBoot中，注解太多了，但是不知道注解是怎么工作的，所以我就开始研究注解的开发和使用，本文章就从java注解开始学习。在java中，内置了3种注解(元数据)分别是@Override,@Deprecated和@SuppressWarnings。当然只有这3中是远远不够的所以还定义了4种注解，专门用来创建其他注解的，就是自定义注解，我们接下来要学习的是如何自定义自己的注解和...&nbsp;
+
+                                   
+
+                                   <a href="article/1548748295557.html">更多<i class="fa fa-angle-double-right"></i> </a>
+
+                                   </div>
+                               
+
+                               <div class="operation">
+                                       <div class="tags">
+                                               <span class="layui-badge-rim" ><a href="pages20ac.html?tagSearch=JDK" ><i class="fa fa-tag"></i> JDK</a></span><span class="layui-badge-rim" ><a href="pages8f59.html?tagSearch=%e6%b3%a8%e8%a7%a3" ><i class="fa fa-tag"></i> 注解</a></span><span class="layui-badge-rim" ><a href="pages3ea1.html?tagSearch=%e5%8e%9f%e5%88%9b" ><i class="fa fa-tag"></i> 原创</a></span>
+
+                                           </div>
+                                       <div class="info">
+                                               <span class="views"><i class="fa fa-thermometer-half"></i> 1089<code style="font-family: cursive;">℃</code></span>
+                        <span class="dtime">2019-01-29</span>
+                                           </div>
+                                   </div>
+                           </fieldset>
+                   </div>
+         </div>
+
+
+    </div><div class="layui-collapse layui-panel layui-article">
+       <div class="layui-colla-item">
+              <div class="layui-colla-content layui-show layui-article">
+                       <fieldset class="layui-elem-field layui-field-title">
+                              <legend class="center-to-head">
+                                       <span class="layui-btn layui-btn-radius layui-btn-sm" style="background: linear-gradient(to right,#2fcc71,#2fcc7196);"> Java语法 </span>
+                                       
+
+                           
+                           <a href="article/1548814993331.html"> nested exception is java.lang.RuntimeException: java.lang.NullPointerException的修复</a>
+
+                            </legend>
+
+                               <div class="layui-field-box">
+                                       &nbsp;&nbsp;&nbsp;&nbsp;出现Requestprocessingfailed;nestedexceptionisjava.lang.RuntimeException:java.lang.NullPointerException这种问题大多是空指针造成的，我们只要debug一下，发现哪里出现问题就可以解决了。今天我就出现了这个问题经过调式发现我的一个va...&nbsp;
+
+                                   
+
+                                   <a href="article/1548814993331.html">更多<i class="fa fa-angle-double-right"></i> </a>
+
+                                   </div>
+                               
+
+                               <div class="operation">
+                                       <div class="tags">
+                                               <span class="layui-badge-rim" ><a href="pages20ac.html?tagSearch=JDK" ><i class="fa fa-tag"></i> JDK</a></span><span class="layui-badge-rim" ><a href="pages3ea1.html?tagSearch=%e5%8e%9f%e5%88%9b" ><i class="fa fa-tag"></i> 原创</a></span>
+
+                                           </div>
+                                       <div class="info">
+                                               <span class="views"><i class="fa fa-thermometer-half"></i> 1627<code style="font-family: cursive;">℃</code></span>
+                        <span class="dtime">2019-01-30</span>
+                                           </div>
+                                   </div>
+                           </fieldset>
+                   </div>
+         </div>
+
+
+    </div><div class="layui-collapse layui-panel layui-article">
+       <div class="layui-colla-item">
+              <div class="layui-colla-content layui-show layui-article">
+                       <fieldset class="layui-elem-field layui-field-title">
+                              <legend class="center-to-head">
+                                       <span class="layui-btn layui-btn-radius layui-btn-sm" style="background: linear-gradient(to right,#2fcc71,#2fcc7196);"> Java语法 </span>
+                                       
+
+                           
+                           <a href="article/1550247872963.html">看源码深入了解JDK动态代理</a>
+
+                            </legend>
+
+                               <div class="layui-field-box">
+                                       &nbsp;&nbsp;&nbsp;&nbsp;在java中有多种动态代理技术，比如JDK,CGLIB,Javassist,ASM,其中最常用是JDK动态代理和CGLIB。JDK动态代理是JDK自带的，是java.lang.reflect.*包提供的方式，它必须要借用接口才能产生代理对象。我们就深入解析源码了解它是如何生成代理对象，又如何代理逻辑的。一.首页它要用到接口，先定义一个接口publicinterfaceanimal{publicvoidisAnimal();}二.实现类publicclassdogimplement...&nbsp;
+
+                                   
+
+                                   <a href="article/1550247872963.html">更多<i class="fa fa-angle-double-right"></i> </a>
+
+                                   </div>
+                               
+
+                               <div class="operation">
+                                       <div class="tags">
+                                               <span class="layui-badge-rim" ><a href="pages20ac.html?tagSearch=JDK" ><i class="fa fa-tag"></i> JDK</a></span><span class="layui-badge-rim" ><a href="pages1396.html?tagSearch=Java" ><i class="fa fa-tag"></i> Java</a></span><span class="layui-badge-rim" ><a href="pages3ea1.html?tagSearch=%e5%8e%9f%e5%88%9b" ><i class="fa fa-tag"></i> 原创</a></span>
+
+                                           </div>
+                                       <div class="info">
+                                               <span class="views"><i class="fa fa-thermometer-half"></i> 1728<code style="font-family: cursive;">℃</code></span>
+                        <span class="dtime">2019-02-16</span>
+                                           </div>
+                                   </div>
+                           </fieldset>
+                   </div>
+         </div>
+
+
+    </div><div class="layui-collapse layui-panel layui-article">
+       <div class="layui-colla-item">
+              <div class="layui-colla-content layui-show layui-article">
+                       <fieldset class="layui-elem-field layui-field-title">
+                              <legend class="center-to-head">
+                                       <span class="layui-btn layui-btn-radius layui-btn-sm" style="background: linear-gradient(to right,#2fcc71,#2fcc7196);"> Java语法 </span>
+                                       
+
+                           
+                           <a href="article/1555512182666.html">Java用Date和Calendar处理时间和日期，获取年，月，日</a>
+
+                            </legend>
+
+                               <div class="layui-field-box">
+                                       &nbsp;&nbsp;&nbsp;&nbsp;我们可以用Date和Calendar处理时间和日期的各种操作，如进行对日期，时间的加减运算，或者获取指定时间的年，月，日，时，分，秒的信息等。Date类·Date类是一个很古老的类，在jdk1.0就有了，所以很多方法都过时了，一般我们只用到这2个构造方法和getTime方法privatetransientlongfastTime;publicDate(){this(System.currentTimeMillis());}publicDate(longdate){fastTime=date;}...&nbsp;
+
+                                   
+
+                                   <a href="article/1555512182666.html">更多<i class="fa fa-angle-double-right"></i> </a>
+
+                                   </div>
+                               
+
+                               <div class="operation">
+                                       <div class="tags">
+                                               <span class="layui-badge-rim" ><a href="pages20ac.html?tagSearch=JDK" ><i class="fa fa-tag"></i> JDK</a></span>
+
+                                           </div>
+                                       <div class="info">
+                                               <span class="views"><i class="fa fa-thermometer-half"></i> 1833<code style="font-family: cursive;">℃</code></span>
+                        <span class="dtime">2019-04-17</span>
+                                           </div>
+                                   </div>
+                           </fieldset>
+                   </div>
+         </div>
+
+
+    </div><div class="layui-collapse layui-panel layui-article">
+       <div class="layui-colla-item">
+              <div class="layui-colla-content layui-show layui-article">
+                       <fieldset class="layui-elem-field layui-field-title">
+                              <legend class="center-to-head">
+                                       <span class="layui-btn layui-btn-radius layui-btn-sm" style="background: linear-gradient(to right,#2fcc71,#2fcc7196);"> Java语法 </span>
+                                       
+
+                           
+                           <a href="article/1555589128980.html">Java序列化和反序列化与transient关键字</a>
+
+                            </legend>
+
+                               
+                               <div class="layui-field-box has-pic">
+                                       <div class="layui-row layui-col-space10">
+                                               <div class="layui-col-lg10 layui-col-md10 layui-col-sm10 layui-col-xs12">
+                                                   &nbsp;&nbsp;&nbsp;&nbsp;当我们需要把Java对象保存在磁盘中或者要在网络中传播，那我们就要用到Java对象的序列化和反序列化。对象序列化把内存中的对象转换成跟平台无关的二进制流，从而可以永久的保存在磁盘中或者在网络中传播。这在现实开发中经常用到，如:web容器把Session保存在磁盘中，减少内存的占用，等需要时，再反序列化。还有分布部署程序时，我们用到的RPC远程访问别人方法返回对...&nbsp;
+                                                   
+                                                   <a href="article/1555589128980.html">更多<i class="fa fa-angle-double-right"></i> </a>
+                                                  </div>
+                                               <div class="layui-col-lg2 layui-col-md2 layui-col-sm2">
+                                                       <img src="../s2.ax1x.com/2019/04/18/ESO43Q.png" class="panel-pic">
+                                                   </div>
+                                           </div>
+                                   </div>
+
+                               <div class="operation">
+                                       <div class="tags">
+                                               <span class="layui-badge-rim" ><a href="pages20ac.html?tagSearch=JDK" ><i class="fa fa-tag"></i> JDK</a></span><span class="layui-badge-rim" ><a href="pages3c6c.html?tagSearch=%e5%ba%8f%e5%88%97%e5%8c%96" ><i class="fa fa-tag"></i> 序列化</a></span>
+
+                                           </div>
+                                       <div class="info">
+                                               <span class="views"><i class="fa fa-thermometer-half"></i> 1065<code style="font-family: cursive;">℃</code></span>
+                        <span class="dtime">2019-04-18</span>
+                                           </div>
+                                   </div>
+                           </fieldset>
+                   </div>
+         </div>
+
+
+    </div><div class="layui-collapse layui-panel layui-article">
+       <div class="layui-colla-item">
+              <div class="layui-colla-content layui-show layui-article">
+                       <fieldset class="layui-elem-field layui-field-title">
+                              <legend class="center-to-head">
+                                       <span class="layui-btn layui-btn-radius layui-btn-sm" style="background: linear-gradient(to right,#2fcc71,#2fcc7196);"> Java语法 </span>
+                                       
+
+                           
+                           <a href="article/1557985089377.html">List&lt;Map&gt;或者List&lt;JavaBean&gt;根据每个字段进行分组</a>
+
+                            </legend>
+
+                               <div class="layui-field-box">
+                                       &nbsp;&nbsp;&nbsp;&nbsp;我们从数据库查出所有的记录是放入List&amp;lt;Map&amp;gt;或者List&amp;lt;JavaBean&amp;gt;中的，但是我们有时要根据每个字段分组，我们可以这样分成Map&amp;lt;key,List&amp;lt;JavaBean&amp;gt;&amp;gt;代码:获取所有狗的生病记录，按照年龄进行分组，年龄为Map的KeyList&amp;lt;Dog&amp;gt;currentBcValue=dao.getAllDog();Map&amp;lt;String,List&amp;lt;Dog&amp;gt;&amp;gt;dogMap=newHashMap&amp;lt;String,List&amp;l...&nbsp;
+
+                                   
+
+                                   <a href="article/1557985089377.html">更多<i class="fa fa-angle-double-right"></i> </a>
+
+                                   </div>
+                               
+
+                               <div class="operation">
+                                       <div class="tags">
+                                               <span class="layui-badge-rim" ><a href="pages20ac.html?tagSearch=JDK" ><i class="fa fa-tag"></i> JDK</a></span><span class="layui-badge-rim" ><a href="pages3ea1.html?tagSearch=%e5%8e%9f%e5%88%9b" ><i class="fa fa-tag"></i> 原创</a></span>
+
+                                           </div>
+                                       <div class="info">
+                                               <span class="views"><i class="fa fa-thermometer-half"></i> 1754<code style="font-family: cursive;">℃</code></span>
+                        <span class="dtime">2019-05-16</span>
+                                           </div>
+                                   </div>
+                           </fieldset>
+                   </div>
+         </div>
+
+
+    </div>
+              <div><div class="layui-laypage"><a href="javascript:;" class="layui-disabled">上一页</a><span class="layui-laypage-curr"><em class="layui-laypage-em" style="background-color:#f44336;"></em><em>1</em></span><a href="javascript:;" class="layui-disabled">下一页</a></div></div>
+                </div>
+            <div class="layui-col-md3">
+                <div id="affix-side">
+                    <div class="layui-tab layui-tab-card layui-master-recommend" >
+      <div class="layui-tab-content select-none">
+          <h3 class="tit">点击排行</h3>
+              <div class="lot">
+                     <a href="article/1553441211846.html" >
+                         <span class="layui-badge">1</span>
+                         
+                         
+                         
+                        &nbsp; &nbsp;解决Could not connec...</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1549448628966.html" >
+                         
+                         <span class="layui-badge layui-bg-orange">2</span>
+                         
+                         
+                        &nbsp; &nbsp;《Java并发编程之美》 PDF免费...</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1549357863921.html" >
+                         
+                         
+                         <span class="layui-badge layui-bg-green">3</span>
+                         
+                        &nbsp; &nbsp;Spring Boot+Vue全栈开...</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1556102550622.html" >
+                         
+                         
+                         
+                         <span class="layui-badge layui-bg-gray">4</span>
+                        &nbsp; &nbsp;Java8中字符串时间转 Date与...</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1550989140908.html" >
+                         
+                         
+                         
+                         <span class="layui-badge layui-bg-gray">5</span>
+                        &nbsp; &nbsp;Mybatis模糊查询的几种方式</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1544457036686.html" >
+                         
+                         
+                         
+                         <span class="layui-badge layui-bg-gray">6</span>
+                        &nbsp; &nbsp;WIN10 自带功能拨号连接下开启移...</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1551457724956.html" >
+                         
+                         
+                         
+                         <span class="layui-badge layui-bg-gray">7</span>
+                        &nbsp; &nbsp;springMVC和springBo...</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1549604746146.html" >
+                         
+                         
+                         
+                         <span class="layui-badge layui-bg-gray">8</span>
+                        &nbsp; &nbsp;数据结构与算法分析Java语言描述(...</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1546503121433.html" >
+                         
+                         
+                         
+                         <span class="layui-badge layui-bg-gray">9</span>
+                        &nbsp; &nbsp;SpringBoot之@Compon...</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1556289630491.html" >
+                         
+                         
+                         
+                         <span class="layui-badge layui-bg-gray">10</span>
+                        &nbsp; &nbsp; SpringBoot整合Redis...</a>
+
+                 </div>
+        </div>
+</div>
+                    <div class="layui-tab layui-tab-card layui-master-recommend" >
+      <div class="layui-tab-content select-none">
+          <h3 class="tit">Spring系列</h3>
+              <div class="lot">
+                     <a href="article/1554548473306.html" >
+                         <span class="layui-badge">1</span>
+                         
+                         
+                         
+                        &nbsp; &nbsp;开发自己IoC容器</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1562823806738.html" >
+                         
+                         <span class="layui-badge layui-bg-orange">2</span>
+                         
+                         
+                        &nbsp; &nbsp;Kaptcha的详细配置表以及在sp...</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1553356568899.html" >
+                         
+                         
+                         <span class="layui-badge layui-bg-green">3</span>
+                         
+                        &nbsp; &nbsp;SpringBoot使用Quartz...</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1550049091199.html" >
+                         
+                         
+                         
+                         <span class="layui-badge layui-bg-gray">4</span>
+                        &nbsp; &nbsp;Spring Boot使用Handl...</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1563339259314.html" >
+                         
+                         
+                         
+                         <span class="layui-badge layui-bg-gray">5</span>
+                        &nbsp; &nbsp;SpringBoot中集成Log4j...</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1565238567917.html" >
+                         
+                         
+                         
+                         <span class="layui-badge layui-bg-gray">6</span>
+                        &nbsp; &nbsp;springMVC接收zip文件和直...</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1567612549318.html" >
+                         
+                         
+                         
+                         <span class="layui-badge layui-bg-gray">7</span>
+                        &nbsp; &nbsp;springboot常见10道面试题</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1553441211846.html" >
+                         
+                         
+                         
+                         <span class="layui-badge layui-bg-gray">8</span>
+                        &nbsp; &nbsp;解决Could not connec...</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1547875444402.html" >
+                         
+                         
+                         
+                         <span class="layui-badge layui-bg-gray">9</span>
+                        &nbsp; &nbsp;SpringBoot配置虚拟路径解决...</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1547913714464.html" >
+                         
+                         
+                         
+                         <span class="layui-badge layui-bg-gray">10</span>
+                        &nbsp; &nbsp;SpringBoot之一些小技巧的合集</a>
+
+                 </div>
+        </div>
+</div>
+                    <div class="layui-tab layui-tab-card layui-master-recommend" >
+      <div class="layui-tab-content select-none">
+          <h3 class="tit">Java语法</h3>
+              <div class="lot">
+                     <a href="article/1553949744282.html" >
+                         <span class="layui-badge">1</span>
+                         
+                         
+                         
+                        &nbsp; &nbsp;从源码深入底层解析Java的数组列表...</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1548814993331.html" >
+                         
+                         <span class="layui-badge layui-bg-orange">2</span>
+                         
+                         
+                        &nbsp; &nbsp; nested exception ...</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1550763734503.html" >
+                         
+                         
+                         <span class="layui-badge layui-bg-green">3</span>
+                         
+                        &nbsp; &nbsp;垃圾收集器与内存分配策略</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1550502442380.html" >
+                         
+                         
+                         
+                         <span class="layui-badge layui-bg-gray">4</span>
+                        &nbsp; &nbsp;Java虚拟机的内存区域讲解</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1565592757497.html" >
+                         
+                         
+                         
+                         <span class="layui-badge layui-bg-gray">5</span>
+                        &nbsp; &nbsp;Java的字节流转成字符流</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1559531976400.html" >
+                         
+                         
+                         
+                         <span class="layui-badge layui-bg-gray">6</span>
+                        &nbsp; &nbsp;深入理解5种单例模式以及对其的改造在...</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1551278059630.html" >
+                         
+                         
+                         
+                         <span class="layui-badge layui-bg-gray">7</span>
+                        &nbsp; &nbsp;字符串（String）的一些知识点</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1565848704511.html" >
+                         
+                         
+                         
+                         <span class="layui-badge layui-bg-gray">8</span>
+                        &nbsp; &nbsp;Java的文件操作：File类的使用...</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1553876299810.html" >
+                         
+                         
+                         
+                         <span class="layui-badge layui-bg-gray">9</span>
+                        &nbsp; &nbsp;从Java匿名内部类深入到JDK8的...</a>
+
+                 </div>
+              <div class="lot">
+                     <a href="article/1553956465889.html" >
+                         
+                         
+                         
+                         <span class="layui-badge layui-bg-gray">10</span>
+                        &nbsp; &nbsp;从底层了解ArrayList和Vec...</a>
+
+                 </div>
+        </div>
+</div>
+                    <div class="layui-tab layui-tab-card layui-tags">
+    <div class="layui-tab-content select-none guidang">
+        <h3 class="tit">时间归档</h3>
+        <a href="pagesdbc8.html?time=2019-09" >2019年09月 (3)</a><a href="pages71e9.html?time=2019-08" >2019年08月 (5)</a><a href="pages95d8.html?time=2019-07" >2019年07月 (6)</a><a href="pages0bf9.html?time=2019-06" >2019年06月 (8)</a><a href="pages03f5.html?time=2019-05" >2019年05月 (10)</a><a href="pagesbb68.html?time=2019-04" >2019年04月 (14)</a><a href="pages8a0f.html?time=2019-03" >2019年03月 (20)</a><a href="pagescd7a.html?time=2019-02" >2019年02月 (44)</a><a href="pages7ca1.html?time=2019-01" >2019年01月 (14)</a><a href="pages28db.html?time=2018-12" >2018年12月 (6)</a>
+
+    </div>
+</div>
+                    <div class="layui-tab layui-tab-card layui-tags">
+      <div class="layui-tab-content select-none tabs">
+          <h3 class="tit">关键词</h3>
+              <a href="pages71d2.html?tagSearch=List%e4%b8%8eString%e8%bd%ac%e6%8d%a2" >List与... (1)</a><a href="pages0046.html?tagSearch=WebSocket" >WebSo... (1)</a><a href="pagesd709.html?tagSearch=undefined" >undef... (3)</a><a href="pages8586.html?tagSearch=javamail" >javam... (1)</a><a href="pages1c90.html?tagSearch=%e9%98%bf%e9%87%8c%e4%ba%91%e4%b8%8d%e8%83%bd%e5%8f%91%e9%82%ae%e4%bb%b6" >阿里云不能... (1)</a><a href="pagesd284.html?tagSearch=redis%e9%9b%86%e7%be%a4%e9%85%8d%e7%bd%ae" >redis... (1)</a><a href="pagesb9ec.html?tagSearch=Thymeleaf" >Thyme... (1)</a><a href="pages8f59.html?tagSearch=%e6%b3%a8%e8%a7%a3" >注解 (1)</a><a href="pages25ec.html?tagSearch=eclipse%e5%ae%89%e8%a3%85%e5%8f%8d%e7%bc%96%e8%af%91%e5%b7%a5%e5%85%b7" >eclip... (1)</a><a href="pagesd1ec.html?tagSearch=nginx" >nginx (3)</a><a href="pages8916.html?tagSearch=%e8%b0%b7%e6%ad%8c%e7%9a%84%e6%b5%8f%e8%a7%88%e5%99%a8%e6%8f%92%e4%bb%b6" >谷歌的浏览... (1)</a><a href="pages6452.html?tagSearch=MySql" >MySql (3)</a><a href="pagesa29a.html?tagSearch=java%e5%8f%8d%e5%b0%84%e6%9c%ba%e5%88%b6" >java反... (1)</a><a href="pages1ec4.html?tagSearch=QQ%e7%99%bb%e9%99%86" >QQ登陆 (1)</a><a href="pages580e.html?tagSearch=SpringBoot%e6%95%b4%e5%90%88Redis" >Sprin... (1)</a>
+
+        </div>
+ </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- container代码 结束 -->
+    <div class="jzend"></div>
+    <footer >
+    <div class="footer"><p>
+	<span><strong>友情链接:</strong><strong>&nbsp;</strong> &nbsp;&nbsp;</span><a class="ke-insertfile" href="https://www.layui.com/" target="_blank">layui</a><span>&nbsp;&nbsp;</span>&nbsp;<a class="ke-insertfile" href="http://www.shuyong.net/" target="_blank">舍力博客</a>&nbsp;&nbsp;<a class="ke-insertfile" href="javascript:;" id="friend">申请友链</a> 
+</p>
+<p>
+	2018-2019 nonelonely.com | 网站备案号：<a class="ke-insertfile" href="http://www.miitbeian.gov.cn/" target="_blank">闽ICP备18026034号-1</a> 
+</p>
+<p>
+	<br />
+</p></div>
+
+    <div class="layui-hide-xs" style="position: fixed;left: 100px; bottom: 100px; z-index: 999999;" id="robot" data-method="robot">
+        <div class="layui-layer-tips" ><div id="" class="layui-layer-content" style="background-color: rgb(114, 193, 236);width: 150px">Hi 我是小码，可以点击我问我笑话，天气，智能聊天，故事，查询备案等等。<i class="layui-layer-TipsG layui-layer-TipsT" style="border-right-color:rgb(114, 193, 236);"></i></div><span class="layui-layer-setwin"></span></div>
+        <a href="#" ><img src="static/assets/img/robot.png" width="100px" alt="Hi 我是小码！" >
+        </a>
+    </div>
+
+
+</footer>
+</div>
+<script>
+    layui.config({base: '/static/assets/js/frontend/'}).extend({
+        article: 'article'
+    });
+    layui.use(['laytpl', 'element', 'flow', 'article'], function () {
+        var flow = layui.flow;
+        var element = layui.element;
+        var laytpl = layui.laytpl;
+        var article = layui.article;
+
+
+
+        // flow.load({
+        //     elem: '#article-list' //流加载容器
+        //     , done: function (page, next) { //执行下一页的回调
+        //         return article(page, next, laytpl);
+        //     }
+        // });
+
+
+
+    });
+
+
+</script>
+</body>
+
+<!-- Mirrored from www.nonelonely.com/pages?tagSearch=JDK by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:05:26 GMT -->
+</html>

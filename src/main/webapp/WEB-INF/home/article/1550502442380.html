@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Mirrored from www.nonelonely.com/article/1550502442380 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:02:32 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+
+    <title>Java虚拟机的内存区域讲解- 书生个人博客</title>
+    <link href="../static/plugins/editormd/css/editormd.min.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+<meta name="baidu_union_verify" content="3e514e79dc5e7201b9bee186137e9562">
+<meta name="keywords" content="Java,原创,虚拟机内存区域">
+
+<meta name="description" content="对于Java来说不容易出现内存泄露和内存溢出的问题，是因为有虚拟机自动内存管理机制，但是一旦出现问题，不了解虚拟机是怎么用内存的，那么排除错误是一件艰难的工作。接下来从概念上了解虚拟机内存的各个区域分区java虚拟机在执行Java程序时，会把内存分为方法区，Java虚拟机栈，本地方法栈，Java堆，程序计数器。如图:程序计数器顾名">
+
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../static/plugins/layui/css/layui.css">
+<link rel="stylesheet" href="../static/plugins/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../static/assets/css/frontend/base.css">
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "../../hm.baidu.com/hm6618.js?c07ddd5b98c69450ebd8e255627f70b0";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <link rel="canonical" href="1550502442380.html"/>
+    <script src="../../msite.baidu.com/sdk/cb688.js?appid=1622832448885693"></script>
+    <script src="../static/plugins/jquery/jquery.min.js"></script>
+     <style>
+         @media screen and (max-width: 767px) {
+             .layui-layer-page {
+                 display: none;
+             }
+         }
+
+         .markdown-body.layui-layer-content {
+             padding: 20px;
+             /*background-image: url("/static/assets/img/long.png");*/
+         }
+         .markdown-body  .layui-layer-title{
+             background-color: #e4e4e400;
+         }
+         .markdown-body  .layui-layer{
+             background-color: #e4e4e4;
+             background-image: url("../static/assets/img/long.png") ;
+             background-size: 100% 100%;
+         }
+         .markdown-body .layui-layer-content {
+
+            padding: 20px;
+         }
+
+     </style>
+
+</head>
+<body class="animated fadeIn">
+
+<div class="wrapper" >
+    <header>
+    <div class="headtop"></div>
+    <div class="contenttop">
+        <div class="logo f_l"> Java码猿-书生个人博客</div>
+        <div class="search f_r">
+            <input name="keyboard"  id="bdcsMain" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+            <input name="Submit" class="input_submit" onclick="window.open('http://zhannei.baidu.com/cse/search?s=6583887351044514798&entry=1&q='+document.getElementById('bdcsMain').value)" value="搜索" type="button">
+            <!--<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=6583887351044514798' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>-->
+            <ul class="layui-nav" style="background-color: rgba(0,0,0,0);" >
+                
+                
+
+                <li  class="layui-nav-item"><a href="#"  style="color: #000;" onclick="goto()" title="QQ登入" class="iconfont icon-qq"></a>
+                </li>
+            </ul>
+
+
+        </div>
+        <div class="blank"></div>
+
+        <nav>
+            <div  class="navigation">
+                <ul class="menu">
+                    <li><a href="../index.html">网站首页</a></li>
+                    <li><a href="#">技术文章</a>
+                        <ul >
+                            <li><a  href="../pages748a.html?cateId=1">Spring系列</a></li>
+                            <li><a  href="../pages3c7b.html?cateId=6">前端开发</a></li>
+                            <li><a  href="../pages4ead.html?cateId=7">软件安装</a></li>
+                            <li><a  href="../pages8396.html?cateId=9">Java语法</a></li>
+                            <li><a  href="../pagesff6a.html?cateId=10">资源下载</a></li>
+                            <li><a  href="../pagesad9e.html?cateId=12">ORM框架</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="../note.html">我的日记</a> </li>
+                    <li><a href="../msg.html">给我留言</a> </li>
+                    <li><a href="../about.html">关于</a></li>
+                </ul>
+            </div>
+        </nav>
+        <SCRIPT type=text/javascript>
+            // Navigation Menu
+            $(function() {
+                $(".menu ul").css({display: "none"}); // Opera Fix
+                $(".menu li").hover(function(){
+                    $(this).find('ul:first').css({visibility: "visible",display: "none"}).slideDown("normal");
+                },function(){
+                    $(this).find('ul:first').css({visibility: "hidden"});
+                });
+            });
+
+            function  search() {
+                var s=$('#keyboard').val();
+                location.href = s === "" ? "/" : "/pages?searchStr=" + s;
+            };
+            function goto () {
+                var url = window.location.href;
+                var winObj = window.open('/api/qq?url=' + url, '_self');
+            }
+        </SCRIPT>
+
+    </div>
+</header>
+    <div class="jztop"></div>
+
+    <!--<bmy-article-page :alipay="params.alipay" :wechat="params.wechat_pay" :su="su">-->
+        <!--<div th:insert ="frontend/fragment/articlepage :: article"  slot="article"></div>-->
+        <!--<div  th:insert="frontend/fragment/comment :: comment" slot="post"></div>-->
+
+        <!--<bmy-comment-list slot="comment" :comments="comments" :tips="params.comment_notice"-->
+                          <!--:re="params.all_comment_open == 1 && article.commented"></bmy-comment-list>-->
+       <!--<bmy-search slot="search"></bmy-search>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相似文章'})" slot="similar"></div>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${lots},${'热度文章'})" slot="lot"></div>-->
+    <!--</bmy-article-page>-->
+
+    <div id="blog-body" class="layui-container">
+       <div class="layui-row layui-col-space10">
+           <div id="blog-info" class="layui-col-md12">
+                <div class="layui-collapse layui-panel layui-article photos" >
+
+                     <div  ><div class="layui-colla-item">
+                    <h2 class="nh1"><span>您现在的位置是：<a href="../index.html" target="_blank">网站首页</a>>><a href="#" target="_blank">信息浏览</a>
+                    </span><b>文章详情</b></h2>
+                          <div class="layui-colla-content layui-show layui-article">
+                                   <fieldset class="layui-elem-field layui-field-title layui-article-page-title">
+                                       <legend class="center-to-head" align="center">Java虚拟机的内存区域讲解</legend>
+                                      </fieldset>
+                                  <div class="layui-text layui-blog-body">
+                                           <div class="layui-row">
+                                                  <div class="layui-col-md6 layui-col-md-offset3 text-center blog-base-info">
+                                                           <span><i class="fa fa-clock-o" ></i>2019-02-18 23:07 </span>
+                                                           <span><i class="fa fa-user-o"></i> <span style="color: #FF5722;">我的电脑</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-renzhengkaobei"></use></svg></span>
+                                                          <span><i class="fa fa-comment-o"></i></span>
+                                                           <span><i class="fa fa-eye"></i> 1460</span>
+                                                       </div>
+                                               </div>
+                                      <!-- Baidu Button BEGIN -->
+                                           <!--<div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">-->
+                                                  <!--<span class="bds_more">分享到：</span>-->
+                                                  <!--<a class="bds_qzone"></a>-->
+                                                  <!--<a class="bds_tsina"></a>-->
+                                                  <!--<a class="bds_tqq"></a>-->
+                                                  <!--<a class="bds_renren"></a>-->
+                                                  <!--<a class="bds_t163"></a>-->
+                                                  <!--<a class="shareCount"></a>-->
+                                          <!--</div>-->
+                                          <!--<script type="text/javascript" id="bdshare_js" data="type=tools&uid=6701193" ></script>-->
+                                          <!--<script type="text/javascript" id="bdshell_js"></script>-->
+                                          <!--<script type="text/javascript">-->
+                                              <!--document.getElementById("bdshell_js").src = "https://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)-->
+                                          <!--</script>-->
+                                      <!-- Baidu Button END -->
+                                           <hr>
+                                           <div class="content detail markdown-body editormd-preview-container editormd-preview-active"><p>  对于Java来说不容易出现内存泄露和内存溢出的问题，是因为有虚拟机自动内存管理机制，但是一旦出现问题，不了解虚拟机是怎么用内存的，那么排除错误是一件艰难的工作。接下来从概念上了解虚拟机内存的各个区域</p>
+<p><strong>分区</strong></p>
+<blockquote>
+<p>java虚拟机在执行Java程序时，会把内存分为方法区，Java虚拟机栈，本地方法栈，Java堆，程序计数器。如图:</p>
+</blockquote>
+<p><a href="https://imgchr.com/i/kcsuE4"><img src="../../s2.ax1x.com/2019/02/18/kcsuE4.md.png" alt="kcsuE4.md.png"></a></p>
+<p><strong>程序计数器 </strong></p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pun">顾名思义就是记录当前线程执行到哪一步，等一下</span><span class="pln">CPU</span><span class="pun">回来时可以接着工作。由于单核</span><span class="typ">Java</span><span class="pun">虚拟机的多线程里是通过并发实现，在任何一个确定时刻，只会执行一条线程的指令，为了线程切换之后还能到正确的执行位置。程序计数器时每个线程都有的，不共享，互不影响。这类内存区域为</span><span class="str">"**线程私有**"</span><span class="pun">的内存</span></code></li></ol></pre><p><strong>Java虚拟机栈</strong></p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pun">与程序计数器一样，这也是**线程私有**的内存，它的生命周期和当前线程一样。它描述的是</span><span class="pln">java</span><span class="pun">方法执行的内存模型，每个方法执行的同时会创建一个**栈帧**用于存局部变量，操作数栈，动态链接等信息，每个方法从头到结束对应一个**栈帧**在</span><span class="typ">Java</span><span class="pun">虚拟机栈中入栈出栈的过程。经常我们说的栈和堆，而栈说的就是这个</span><span class="typ">Java</span><span class="pun">虚拟机栈。</span></code></li></ol></pre><p><strong>本地方法栈</strong></p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">  </span><span class="pun">这和</span><span class="typ">Java</span><span class="pun">虚拟机栈差不多，主要区别就是它是为</span><span class="typ">Native</span><span class="pun">方法服务，而</span><span class="typ">Java</span><span class="pun">虚拟机栈是</span><span class="typ">Java</span><span class="pun">方法服务。</span></code></li></ol></pre><p><strong>Java堆</strong></p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pun">对于这个大家应该都很熟悉了，这个一般是虚拟机管理的内存中是最大的一块。这块区域是所有线程共享的，主要是存放对象的实例，几乎所有的对象实例和数组都在这里分配内存，随着</span><span class="pln">JFT</span><span class="pun">的发展，所有对象都分配在堆上也不是那么绝对了。对于开题说到，</span><span class="pln">java</span><span class="pun">不容易出现内存泄漏和内存溢出，因为</span><span class="typ">Java</span><span class="pun">堆有垃圾收集器，所以这里也叫做</span><span class="str">"GC堆"</span><span class="pun">。现在垃圾收集器基本采用分代收集算法，所以</span><span class="typ">Java</span><span class="pun">堆还可以分为老年代和新生代。</span></code></li></ol></pre><p><strong>方法区</strong></p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln"> </span><span class="pun">方法区与</span><span class="pln">GC</span><span class="pun">堆一样，是所有线程共享的，它用来存被虚拟机加载的类信息，常量，静态变量，及时编译器编译后的代码等数据，其实它还有个名称</span><span class="str">"Non-Heap"</span><span class="pun">（非堆）。目的是与</span><span class="typ">Java</span><span class="pun">堆分开来。在</span><span class="typ">HOtSpot</span><span class="pun">虚拟机上也被叫做永生代，</span></code></li></ol></pre></div>
+                                      </div>
+                                   <div class="layui-row text-center layui-mt20">
+                                           
+                                           <div class="layui-btn layui-btn-danger" onclick="emotion()"><i class="fa fa-thumbs-o-up" id="za"> 赞 (164)</i></div>
+                                       </div>
+                                   <div class="layui-row layui-mt20">
+                                         <blockquote class="layui-elem-quote text-center " style="border: none;">
+                                                  <span class="layui-show-md-inline-block layui-hide"  >文章出处：书生个人博客</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                   <span class="layui-show-md-inline-block layui-hide" id="artiurl"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                  <span>转载注明下哦！o(≧v≦)o~~</span>
+                                           </blockquote>
+                                    </div>
+                                 <div class="layui-row layui-mt20">
+                                         <p class="blog-tags">
+                                              标签：
+                                                       <span >Java</span><span >原创</span><span >虚拟机内存区域</span>
+
+                                               </p>
+                                 </div>
+                                 <div class="layui-row layui-col-space20 layui-mt20 article-page-similar">
+                                           <p>相似文章：</p>
+                                            <hr>
+                                             <ul>
+                                                    <li><a href="1550763734503.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;垃圾收集器与内存分配策略</a> </li>
+                                                    <li><a href="1559531976400.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;深入理解5种单例模式以及对其的改造在多线程下的使用</a> </li>
+                                                    <li><a href="1561630938082.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;wait方法与sleep方法的区别与相似点</a> </li>
+                                                    <li><a href="1550247872963.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;看源码深入了解JDK动态代理</a> </li>
+                                                    <li><a href="1551802195459.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;java反射机制完成List&lt;map&gt;与List&lt;javabean&gt;,List&lt;对象&gt;之间的互相转换</a> </li>
+                                                    <li><a href="1566791860734.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Java报错：java.math.BigDecimal cannot be cast to java.lang.String</a> </li>
+                                                    <li><a href="1553956465889.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;从底层了解ArrayList和Vector的区别</a> </li>
+                                                    <li><a href="1548301531289.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;多线程的安全问题以及对volatile关键字的理解</a> </li>
+                                                    <li><a href="1548170146951.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;多线程基础知识总结与名词解释</a> </li>
+                                                    <li><a href="1567992407132.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;使用Hyperic-Sigar获取服务器设备信息（监控服务器）</a> </li>
+                                              </ul>
+                                    </div>
+                               </div>
+                      <script>
+                          $("#artiurl").html("文章地址："+location.href);
+
+
+                      </script>
+
+                       </div></div>
+
+                </div>
+
+               <div  >
+<div id="cta" class="layui-collapse layui-panel layui-article">
+       <div class="layui-colla-item">
+               <div class="layui-colla-content layui-show layui-article comment">
+                       <fieldset class="layui-elem-field layui-field-title">
+                               <legend>随便说两句</legend>
+                               <div class="layui-field-box">
+                                       <label for="comment-input"></label>
+                                           <textarea id="comment-input" style="display: none;"></textarea>
+                                  </div>
+                               
+                               <a class="layui-btn layui-btn-sm layui-btn-danger" style="float: right;width: 120px;"  href="#"  onclick="javascript:beforeLogin()" id="beforeLogin"><i class="fa fa-qq"></i> 请先登录</a>
+                           </fieldset>
+                   </div>
+           </div>
+    </div>
+</div>
+<script>
+    function beforeLogin() {
+        var url=window.location.href;
+        window.open('/api/qq?url='+url,'_self');
+    }
+
+</script>
+
+               <blockquote id="cccc" class="layui-elem-quote layui-mt20" style="border-left: 5px solid #F44336;"><span style="color:#FF5722;">遵守国家法律法规，请勿回复无意义内容，请不要回复嵌套过多的楼层！</span></blockquote>
+               <div class="comment-list">
+
+</div>
+
+
+
+
+           </div>
+               <!--<div class="layui-col-md3" id="article-app">-->
+                       <!--<div id="affix-side">-->
+                           <!--<div th:replace="frontend/fragment/callme :: callme" ></div>-->
+                           <!--&lt;!&ndash;<div class="layui-tab layui-tab-card layui-master-recommend" >&ndash;&gt;-->
+                               <!--&lt;!&ndash;<div class="layui-tab-content select-none">&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<h3 class="tit">时光悄然</h3>&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<div class="layui-inline" id="test22"></div>&ndash;&gt;-->
+                               <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--<div th:replace ="frontend/fragment/guidang" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/imageinfo" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/cate" ></div>-->
+                           <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相关文章'})" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/image :: image"></div>-->
+                           <!--</div>-->
+                   <!--</div>-->
+           </div>
+    </div>
+
+
+    <footer >
+    <div class="footer"><p>
+	<span><strong>友情链接:</strong><strong>&nbsp;</strong> &nbsp;&nbsp;</span><a class="ke-insertfile" href="https://www.layui.com/" target="_blank">layui</a><span>&nbsp;&nbsp;</span>&nbsp;<a class="ke-insertfile" href="http://www.shuyong.net/" target="_blank">舍力博客</a>&nbsp;&nbsp;<a class="ke-insertfile" href="javascript:;" id="friend">申请友链</a> 
+</p>
+<p>
+	2018-2019 nonelonely.com | 网站备案号：<a class="ke-insertfile" href="http://www.miitbeian.gov.cn/" target="_blank">闽ICP备18026034号-1</a> 
+</p>
+<p>
+	<br />
+</p></div>
+
+    <div class="layui-hide-xs" style="position: fixed;left: 100px; bottom: 100px; z-index: 999999;" id="robot" data-method="robot">
+        <div class="layui-layer-tips" ><div id="" class="layui-layer-content" style="background-color: rgb(114, 193, 236);width: 150px">Hi 我是小码，可以点击我问我笑话，天气，智能聊天，故事，查询备案等等。<i class="layui-layer-TipsG layui-layer-TipsT" style="border-right-color:rgb(114, 193, 236);"></i></div><span class="layui-layer-setwin"></span></div>
+        <a href="#" ><img src="../static/assets/img/robot.png" width="100px" alt="Hi 我是小码！" >
+        </a>
+    </div>
+
+
+</footer>
+<script src="../static/plugins/layui/layui.js"></script>
+
+<script>
+    layui.use([ 'layer'], function () {
+        var layer = layui.layer;
+        var $ = layui.jquery;
+        //触发事件
+        var active = {
+            robot: function(){
+                var that = this;
+                $("#robot").css('display','none');
+                //多窗口模式，层叠置顶
+                layer.open({
+                    type: 2,
+                    title:'智能小码',
+                    area: ['600px', '480px'],
+                    content: '/webrobot',
+                    end:function () {
+                        $("#robot").css('display','');
+                    }
+                });
+            },
+            friend: function () {
+                layer.open({
+                    title: '申请友链'
+                    ,content: '发送邮件至：admin@nonelonely.com<br>' +
+                        '邮件标题为：申请书生个人博客友链'
+                });
+            }
+        };
+
+        $('#robot').on('click', function(){
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+        $('#friend').on('click', function(){
+            var othis = $(this), method = 'friend';
+            active[method] ? active[method].call(this, othis) : '';
+        });
+
+
+        // var la;
+            // la = layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot',
+            //     {
+            //         tips: [1, '#3595CC'],
+            //         end: function () {
+            //             if($("#robot").is(":visible")) {
+            //                 la = layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot',
+            //                     {tips: [1, '#3595CC']})
+            //             }
+            //         }
+            //     });
+            // window.setInterval(" if($('#robot').is(':visible')) {la=layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot', { tips: [1, '#3595CC'],end : function(){ la=layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot', {tips: [1, '#3595CC']});}});}", 10000*6 );
+
+    });
+</script>
+
+</div>
+
+
+
+
+<script>
+    var articleId=1550502442380;
+    var su=null ;
+    $(function(){
+        $(".comment-list").addCommentList({data:[],add:""});
+        $("#comment").click(function(){
+            var obj = new Object();
+            obj.img="images/img.html";
+            obj.replyName="匿名";
+            obj.content=$("#content").val();
+            obj.browse="深圳";
+            obj.osname="win10";
+            obj.replyBody="";
+            $(".comment-list").addCommentList({data:[],add:obj});
+        });
+    })
+
+    var layer;
+    var layedit;
+    var index;
+    layui.use(['layedit', 'laypage', 'laydate', 'element','layer'], function () {
+        layer = layui.layer;
+        var element = layui.element;
+        layedit = layui.layedit;
+        // var laydate = layui.laydate;
+        // //不出现底部栏
+        // laydate.render({
+        //     elem: '#test22'
+        //     ,showBottom: false
+        //     ,position: 'static'
+        //     ,calendar: true
+        //     ,theme: '#a7a4a4'
+        // });
+
+       index= layedit.build('comment-input', {
+            tool: ['face', '|', 'left', 'center', 'right', 'link', 'unlink']
+            , height: 150
+        });
+        //相册
+        if($(window).width() > 750){
+            layer.photos({
+                photos: '.photos'
+                ,zIndex: 9999999999
+                ,anim: -1
+            });
+        } else {
+            $('body').on('click', '.photos img', function(){
+                window.open(this.src);
+            });
+        }
+
+            layer.open({
+                title: '目录',
+                type: 1,
+                offset: 'r',
+                shade: 0,
+                closeBtn: 2,
+                content: $(".markdown-toc")
+            });
+
+        // $('#affix-side').hcSticky({
+        //     stickTo: '#blog-body'
+        // });
+
+    });
+    function submit() {
+
+        var osname = detectOS();
+
+        var obj = new Object();
+        if (su) {
+           obj.img = su.avatar;
+           obj.replyName = su.nickname;
+        }
+        obj.content=layedit.getContent(index);
+        obj.browse=navigator.appName;
+        obj.osname=osname;
+        obj.time=new Date();
+        obj.replyBody="";
+
+        obj.comment= obj.content;
+        if(!obj.comment){
+            layer.msg('不能为空');
+            return false;
+        }
+        var indexc = layer.load();
+        obj.userId=su.id;
+        obj.user=su.id;
+        obj.articleId=articleId;
+        obj.enable=true;
+        obj.parentId=0;
+
+         obj.time =new Date();
+
+
+
+
+        $.post("/token/comment/sub",obj, function (resp) {
+            layer.close(indexc);
+            $(window.frames["LAY_layedit_1"].document).find("body").html('');
+            layer.msg(resp.message);
+            setTimeout(function () {
+                if (resp.code === 200) {
+                    $(".comment-list").addCommentList({data:[],add:obj});
+                }
+            }, 1000);
+        });
+
+    };
+
+    function emotion() {
+        var uid = "guest";
+        if (BMY.getCookie("article::" + 1550502442380 + "::" + uid) != null) {
+            layer.msg("近期您已经点过赞，感谢您的支持！");
+        } else {
+            $.post("/article/approve", {articleId: 1550502442380}, function (json) {
+                if (json.code === BMY.status.ok) {
+                    BMY.setCookie("article::" + 1550502442380+ "::" + uid, "noteblog system");
+                  //  that.approve++;
+                    $('#za').html('赞 (165)')
+                    layer.msg("谢谢您的支持！");
+                }
+            })
+        }
+    }
+    function money  (alipay, wechat) {
+        alipay = "#\/static\/assets\/img\/wechat.png";
+        wechat="#\/static\/assets\/img\/alipay.png";
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['640px', '300px'],
+            shadeClose: true,
+            skin: 'text-center',
+            content:
+                '<div class="layui-fluid">' +
+                '   <div class="layui-row layui-mt20">' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + wechat + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">微信</p>' +
+                '       </div>' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + alipay + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">支付宝</p>' +
+                '       </div>' +
+                '   </div> ' +
+                '</div>'
+        });
+    }
+
+
+
+
+</script>
+<script src="../static/assets/js/jquery.comment.js" ></script>
+</body>
+
+<!-- Mirrored from www.nonelonely.com/article/1550502442380 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:02:32 GMT -->
+</html>

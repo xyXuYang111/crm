@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Mirrored from www.nonelonely.com/article/1551890831917 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:04:28 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+
+    <title>JSP的EL表达式的使用- 书生个人博客</title>
+    <link href="../static/plugins/editormd/css/editormd.min.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+<meta name="baidu_union_verify" content="3e514e79dc5e7201b9bee186137e9562">
+<meta name="keywords" content="Java,原创">
+
+<meta name="description" content="JSP2.0最重要的特性之一就是表达式语言EL(ExpressionLanguage)，由于受到ECMAScript和XPath表达式语言的启发，EL也被设计成可以轻松地编写免脚本的JSP页面。使用EL表达式，JSP页面可以不再使用任何的JSP声明、脚本和表达式，就可以轻松地访问应用程序的数据，这使得JSP页面写起来更加简单。在许多JavaWeb应用程序中，EL还是会和JSTL配合使用。一.EL表达式">
+
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../static/plugins/layui/css/layui.css">
+<link rel="stylesheet" href="../static/plugins/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../static/assets/css/frontend/base.css">
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "../../hm.baidu.com/hm6618.js?c07ddd5b98c69450ebd8e255627f70b0";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <link rel="canonical" href="1551890831917.html"/>
+    <script src="../../msite.baidu.com/sdk/cb688.js?appid=1622832448885693"></script>
+    <script src="../static/plugins/jquery/jquery.min.js"></script>
+     <style>
+         @media screen and (max-width: 767px) {
+             .layui-layer-page {
+                 display: none;
+             }
+         }
+
+         .markdown-body.layui-layer-content {
+             padding: 20px;
+             /*background-image: url("/static/assets/img/long.png");*/
+         }
+         .markdown-body  .layui-layer-title{
+             background-color: #e4e4e400;
+         }
+         .markdown-body  .layui-layer{
+             background-color: #e4e4e4;
+             background-image: url("../static/assets/img/long.png") ;
+             background-size: 100% 100%;
+         }
+         .markdown-body .layui-layer-content {
+
+            padding: 20px;
+         }
+
+     </style>
+
+</head>
+<body class="animated fadeIn">
+
+<div class="wrapper" >
+    <header>
+    <div class="headtop"></div>
+    <div class="contenttop">
+        <div class="logo f_l"> Java码猿-书生个人博客</div>
+        <div class="search f_r">
+            <input name="keyboard"  id="bdcsMain" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+            <input name="Submit" class="input_submit" onclick="window.open('http://zhannei.baidu.com/cse/search?s=6583887351044514798&entry=1&q='+document.getElementById('bdcsMain').value)" value="搜索" type="button">
+            <!--<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=6583887351044514798' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>-->
+            <ul class="layui-nav" style="background-color: rgba(0,0,0,0);" >
+                
+                
+
+                <li  class="layui-nav-item"><a href="#"  style="color: #000;" onclick="goto()" title="QQ登入" class="iconfont icon-qq"></a>
+                </li>
+            </ul>
+
+
+        </div>
+        <div class="blank"></div>
+
+        <nav>
+            <div  class="navigation">
+                <ul class="menu">
+                    <li><a href="../index.html">网站首页</a></li>
+                    <li><a href="#">技术文章</a>
+                        <ul >
+                            <li><a  href="../pages748a.html?cateId=1">Spring系列</a></li>
+                            <li><a  href="../pages3c7b.html?cateId=6">前端开发</a></li>
+                            <li><a  href="../pages4ead.html?cateId=7">软件安装</a></li>
+                            <li><a  href="../pages8396.html?cateId=9">Java语法</a></li>
+                            <li><a  href="../pagesff6a.html?cateId=10">资源下载</a></li>
+                            <li><a  href="../pagesad9e.html?cateId=12">ORM框架</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="../note.html">我的日记</a> </li>
+                    <li><a href="../msg.html">给我留言</a> </li>
+                    <li><a href="../about.html">关于</a></li>
+                </ul>
+            </div>
+        </nav>
+        <SCRIPT type=text/javascript>
+            // Navigation Menu
+            $(function() {
+                $(".menu ul").css({display: "none"}); // Opera Fix
+                $(".menu li").hover(function(){
+                    $(this).find('ul:first').css({visibility: "visible",display: "none"}).slideDown("normal");
+                },function(){
+                    $(this).find('ul:first').css({visibility: "hidden"});
+                });
+            });
+
+            function  search() {
+                var s=$('#keyboard').val();
+                location.href = s === "" ? "/" : "/pages?searchStr=" + s;
+            };
+            function goto () {
+                var url = window.location.href;
+                var winObj = window.open('/api/qq?url=' + url, '_self');
+            }
+        </SCRIPT>
+
+    </div>
+</header>
+    <div class="jztop"></div>
+
+    <!--<bmy-article-page :alipay="params.alipay" :wechat="params.wechat_pay" :su="su">-->
+        <!--<div th:insert ="frontend/fragment/articlepage :: article"  slot="article"></div>-->
+        <!--<div  th:insert="frontend/fragment/comment :: comment" slot="post"></div>-->
+
+        <!--<bmy-comment-list slot="comment" :comments="comments" :tips="params.comment_notice"-->
+                          <!--:re="params.all_comment_open == 1 && article.commented"></bmy-comment-list>-->
+       <!--<bmy-search slot="search"></bmy-search>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相似文章'})" slot="similar"></div>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${lots},${'热度文章'})" slot="lot"></div>-->
+    <!--</bmy-article-page>-->
+
+    <div id="blog-body" class="layui-container">
+       <div class="layui-row layui-col-space10">
+           <div id="blog-info" class="layui-col-md12">
+                <div class="layui-collapse layui-panel layui-article photos" >
+
+                     <div  ><div class="layui-colla-item">
+                    <h2 class="nh1"><span>您现在的位置是：<a href="../index.html" target="_blank">网站首页</a>>><a href="#" target="_blank">信息浏览</a>
+                    </span><b>文章详情</b></h2>
+                          <div class="layui-colla-content layui-show layui-article">
+                                   <fieldset class="layui-elem-field layui-field-title layui-article-page-title">
+                                       <legend class="center-to-head" align="center">JSP的EL表达式的使用</legend>
+                                      </fieldset>
+                                  <div class="layui-text layui-blog-body">
+                                           <div class="layui-row">
+                                                  <div class="layui-col-md6 layui-col-md-offset3 text-center blog-base-info">
+                                                           <span><i class="fa fa-clock-o" ></i>2019-03-07 00:47 </span>
+                                                           <span><i class="fa fa-user-o"></i> <span style="color: #FF5722;">许多年以后</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-renzhengkaobei"></use></svg></span>
+                                                          <span><i class="fa fa-comment-o"></i></span>
+                                                           <span><i class="fa fa-eye"></i> 2017</span>
+                                                       </div>
+                                               </div>
+                                      <!-- Baidu Button BEGIN -->
+                                           <!--<div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">-->
+                                                  <!--<span class="bds_more">分享到：</span>-->
+                                                  <!--<a class="bds_qzone"></a>-->
+                                                  <!--<a class="bds_tsina"></a>-->
+                                                  <!--<a class="bds_tqq"></a>-->
+                                                  <!--<a class="bds_renren"></a>-->
+                                                  <!--<a class="bds_t163"></a>-->
+                                                  <!--<a class="shareCount"></a>-->
+                                          <!--</div>-->
+                                          <!--<script type="text/javascript" id="bdshare_js" data="type=tools&uid=6701193" ></script>-->
+                                          <!--<script type="text/javascript" id="bdshell_js"></script>-->
+                                          <!--<script type="text/javascript">-->
+                                              <!--document.getElementById("bdshell_js").src = "https://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)-->
+                                          <!--</script>-->
+                                      <!-- Baidu Button END -->
+                                           <hr>
+                                           <div class="content detail markdown-body editormd-preview-container editormd-preview-active"><blockquote>
+<p>JSP2.0最重要的特性之一就是表达式语言EL (Expression Language )，由于受到ECMAScript和XPath表达式语言的启发，EL也被设计成可以轻松地编写免脚本的JSP页面。使用EL表达式，JSP页面可以不再使用任何的JSP声明、脚本和表达式，就可以轻松地访问应用程序的<br>数据，这使得JSP页面写起来更加简单。在许多Java Web应用程序中，EL还是会和JSTL配合使用。</p>
+</blockquote>
+<p><strong>一.EL表达式的主要作用:</strong></p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pun">获取数据。</span><span class="pln">EL</span><span class="pun">表达式主要用于替换</span><span class="pln">JSP</span><span class="pun">页面中的脚本表达式，以从各种类型的</span><span class="typ">Web</span><span class="pun">作用域中检索</span><span class="typ">Java</span><span class="pun">对象，获取数据，包括访问</span><span class="typ">JavaBean</span><span class="pun">的属性、</span><span class="typ">List</span><span class="pun">集合、</span><span class="typ">Map</span><span class="pun">集合、数组等。</span></code></li><li class="L1"><code><span class="pun">执行运算。利用</span><span class="pln">EL</span><span class="pun">表达式可以在</span><span class="pln">JSP</span><span class="pun">页面中执行一些基本的关系运算、逻辑运算和算术运算，以在</span><span class="pln">JSP</span><span class="pun">页面中完成一些简单的逻辑操作。</span></code></li><li class="L2"><code><span class="pun">获取</span><span class="typ">Web</span><span class="pun">开发常用对。</span><span class="pln">EL</span><span class="pun">表达式定义了一些隐式对象，利用这些隐式对象，开发人员可以很轻松获得对</span><span class="typ">Web</span><span class="pun">常用对象的引用，从而获得这些对象中的数据。</span></code></li></ol></pre><p><strong>1.1.${expression}</strong><br>EL表达式以${开头，并以}结束。EL表达式的结构如下:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">$</span><span class="pun">{</span><span class="pln">expression</span><span class="pun">}</span></code></li></ol></pre><p>例如，表达式X+Y，可以写成:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">$</span><span class="pun">{</span><span class="pln">x</span><span class="pun">+</span><span class="pln">y</span><span class="pun">}</span></code></li></ol></pre><p>它也常用来连接两个表达式。对于一系列的表达式，它们的取值将是从左到右进行，计算结果的类型为String，并且连接在一起。<br>${表示是一个EL表达式的开头，如果需要的只是文本${，则需要在它前面加一个转义符，如\${。</p>
+<p><strong>1.2.[]和.运算符</strong><br>EL表达式可以返回任意类型的值。如果EL表达式的结果是一个带有属性的对象，以利用[]或者.运算符来访问其属性，即通过getter方法获取其属性。[]和.运算符类似， 访问对象的属性，可以使用以下任意一种形式:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">$</span><span class="pun">{</span><span class="kwd">object</span><span class="pun">[</span><span class="str">"propertyName"</span><span class="pun">]}</span></code></li><li class="L1"><code><span class="pln">$</span><span class="pun">{</span><span class="kwd">object</span><span class="pun">.</span><span class="pln">propertyName</span><span class="pun">}</span></code></li></ol></pre><p>如果propertyName不是有效的Java变量名，则只能使用[]运算符。例如，访问隐式对象标题中的HTTP的host:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">$</span><span class="pun">{</span><span class="pln">header</span><span class="pun">[</span><span class="str">"host”]}</span></code></li><li class="L1"><code><span class="str">${header.host}</span></code></li></ol></pre><p>但是，要想访问accept-language标题，只能使用[]运算符，因为accept-language不是一个合法的Java变量名。如果用.运算符访问它，将会导致异常。</p>
+<p><strong>1.3.取值规则</strong><br> EL表达式的取值是从左到右进行的。对于expr-a[expr-b]形式的表达式，其EL表达式的取值方法如下:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pun">(</span><span class="lit">1</span><span class="pun">)先计算</span><span class="pln">expr</span><span class="pun">-</span><span class="pln">a</span><span class="pun">得到</span><span class="pln">value</span><span class="pun">-</span><span class="pln">a </span><span class="pun">。</span></code></li><li class="L1"><code></code></li><li class="L2"><code><span class="pun">(</span><span class="lit">2</span><span class="pun">)如果</span><span class="pln">value</span><span class="pun">-</span><span class="pln">a</span><span class="pun">为</span><span class="kwd">null</span><span class="pun">，则返回</span><span class="kwd">null</span><span class="pln"> </span></code></li><li class="L3"><code><span class="pun">。</span></code></li><li class="L4"><code><span class="pun">(</span><span class="lit">3</span><span class="pun">)然后计算</span><span class="pln">expr</span><span class="pun">-</span><span class="pln">b</span><span class="pun">得到</span><span class="pln">value</span><span class="pun">-</span><span class="pln">b </span><span class="pun">。</span></code></li><li class="L5"><code></code></li><li class="L6"><code><span class="pun">(</span><span class="lit">4</span><span class="pun">)如果</span><span class="pln">value</span><span class="pun">一为</span><span class="kwd">null</span><span class="pun">，则返回</span><span class="kwd">null</span><span class="pln"> </span><span class="pun">。</span></code></li><li class="L7"><code></code></li><li class="L8"><code><span class="pun">(</span><span class="lit">5</span><span class="pun">)如果</span><span class="pln">value</span><span class="pun">-</span><span class="pln">a</span><span class="pun">为</span><span class="pln">java</span><span class="pun">.</span><span class="pln">uitl</span><span class="pun">.</span><span class="typ">List</span><span class="pun">，则要进行以下处理:</span></code></li><li class="L9"><code><span class="pln">    a</span><span class="pun">.强制</span><span class="pln">value</span><span class="pun">-</span><span class="pln">b</span><span class="pun">为</span><span class="kwd">int</span><span class="pun">，如果不是，则抛出异常。</span></code></li><li class="L0"><code><span class="pln">    b</span><span class="pun">.如果</span><span class="pln">value</span><span class="pun">-</span><span class="pln">a</span><span class="pun">.</span><span class="kwd">get</span><span class="pun">(</span><span class="pln">value</span><span class="pun">-</span><span class="pln">b</span><span class="pun">)抛出</span><span class="typ">IndexOutBoundsException</span><span class="pun">，则返回</span><span class="kwd">null</span><span class="pln"> </span><span class="pun">。</span></code></li><li class="L1"><code><span class="pln">    c</span><span class="pun">.返回</span><span class="pln">value</span><span class="pun">-</span><span class="pln">a</span><span class="pun">.</span><span class="kwd">get</span><span class="pun">(</span><span class="pln">value</span><span class="pun">-</span><span class="pln">b</span><span class="pun">)的值。</span></code></li><li class="L2"><code></code></li><li class="L3"><code><span class="pun">(</span><span class="lit">6</span><span class="pun">)如果</span><span class="pln">value</span><span class="pun">-</span><span class="pln">a</span><span class="pun">为</span><span class="pln">java</span><span class="pun">.</span><span class="pln">util</span><span class="pun">.</span><span class="typ">Map</span><span class="pun">，则会查看</span><span class="pln">value</span><span class="pun">-</span><span class="pln">b</span><span class="pun">是否为</span><span class="typ">Map</span><span class="pun">中的一个</span><span class="pln">key</span><span class="pun">。如果是，则返回</span><span class="pln">value</span><span class="pun">-</span><span class="pln">a</span><span class="pun">.</span><span class="kwd">get</span><span class="pun">(</span><span class="pln">value</span><span class="pun">-</span><span class="pln">b</span><span class="pun">)，如果不是，则返回</span><span class="kwd">null</span><span class="pun">。</span></code></li><li class="L4"><code></code></li><li class="L5"><code><span class="pun">(</span><span class="lit">7</span><span class="pun">)如果</span><span class="pln">value</span><span class="pun">-</span><span class="pln">a</span><span class="pun">不是一个集合，那么，</span><span class="pln">value</span><span class="pun">-</span><span class="pln">a</span><span class="pun">必须是一个</span><span class="typ">JavaBean</span><span class="pun">。在这种情况下，必须强制</span><span class="pln">value</span><span class="pun">-</span><span class="pln">b</span><span class="pun">为</span><span class="typ">String</span><span class="pun">类型。如果</span><span class="pln">value</span><span class="pun">-</span><span class="pln">b</span><span class="pun">是</span><span class="pln">value</span><span class="pun">-</span><span class="pln">a</span><span class="pun">的一个可读属性，则会调用该属性的</span><span class="pln">getter</span><span class="pun">方法返回值。如果</span><span class="pln">getter</span><span class="pun">方法抛出异常，则该表达式就是无效的。</span></code></li></ol></pre><p><strong>1.4.访问JavaBean</strong><br>EL最常用来访问JavaBean的属性，利用「l和.运算符都可以访问JavaBean的属性，示例代码如下:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">$</span><span class="pun">{</span><span class="pln">beanName</span><span class="pun">[</span><span class="str">"propertyName"</span><span class="pun">]}</span></code></li><li class="L1"><code><span class="pln">$</span><span class="pun">{</span><span class="pln">beanName</span><span class="pun">.</span><span class="pln">propertyName</span><span class="pun">}</span></code></li></ol></pre><p>如果JavaBean的属性是一个带属性的对象，那么同样也可以利用口或.运算符来访问第二个对象的属性。例如有一个employee对象，employee对象有一个dept对象，dept对象有一个name属性。示例代码如下</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">  $</span><span class="pun">{</span><span class="pln">employee </span><span class="pun">.</span><span class="pln">dept</span><span class="pun">.</span><span class="pln">name</span><span class="pun">}</span></code></li></ol></pre><p><strong>二.EL表达式的运算符</strong><br><strong>2.1.算术运算符有5种:</strong></p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pun">加法(+)</span></code></li><li class="L1"><code><span class="pun">减法(一)</span></code></li><li class="L2"><code><span class="pun">乘法(*)</span></code></li><li class="L3"><code><span class="pun">除法(/)</span></code></li><li class="L4"><code><span class="pun">取余/取模(%和</span><span class="pln">mod </span><span class="pun">)</span></code></li><li class="L5"><code><span class="pun">运算符是按优先级顺序排列的:</span></code></li><li class="L6"><code><span class="pun">*、/、%、</span><span class="pln">mod</span><span class="pun">优先级相同，+、一优先级相同。*、/、%、</span><span class="pln">mod</span><span class="pun">优先级高于+</span><span class="pln"> </span><span class="pun">、-</span></code></li></ol></pre><p><strong>2.2.逻辑运算符有3种:</strong></p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pun">和(&&和</span><span class="kwd">and</span><span class="pun">)</span></code></li><li class="L1"><code><span class="pun">或(||和</span><span class="kwd">or</span><span class="pun">)</span></code></li><li class="L2"><code><span class="pun">非(!和</span><span class="kwd">not</span><span class="pln"> </span><span class="pun">)</span></code></li></ol></pre><p><strong>2.3.关系运算符有如下几种:</strong></p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pun">等于(==和</span><span class="pln">eq</span><span class="pun">)</span></code></li><li class="L1"><code><span class="pun">不等于(!=和</span><span class="pln">ne</span><span class="pun">)</span></code></li><li class="L2"><code><span class="pun">大于(>和</span><span class="pln">gt</span><span class="pun">)</span></code></li><li class="L3"><code><span class="pun">大于或等于(>=和</span><span class="pln">ge</span><span class="pun">)</span></code></li><li class="L4"><code><span class="pun">小于(<和</span><span class="pln">lt </span><span class="pun">)》小于或等于(<=和</span><span class="pln">le </span><span class="pun">)</span></code></li></ol></pre><p>关系运算符返回的是Boolean值，例如，表达式${1==2}返回false,${2 < 3} 返回true 。<br>EL关系运算符的语法如下:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">$</span><span class="pun">{</span><span class="pln">s</span><span class="pun">七</span><span class="pln">atement</span><span class="pun">?</span><span class="pln">A</span><span class="pun">:</span><span class="pln">B</span><span class="pun">}</span></code></li></ol></pre><p>如果statement的计算结果为true，那么该表达式的输出结果是A，不然是B 例如，下面EL表达式可以判断用户是否登录。</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">$</span><span class="pun">{</span><span class="pln">sessionScope</span><span class="pun">.</span><span class="pln">user</span><span class="pun">.</span><span class="pln">username</span><span class="pun">==</span><span class="kwd">null</span><span class="pun">?</span><span class="str">'‘您己经登录”:”您还没有登录”}</span></code></li></ol></pre><p><strong>2.4.empty运算符</strong><br>empty运算符用来检查作用域中是否有该变量存在，然后再判断该变量是否为null或者空字符串。示例代码如下:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">$</span><span class="pun">{</span><span class="pln">empty username</span><span class="pun">}</span></code></li></ol></pre><p> 1) empty首选判断JSP的作用域中是否有username变量，如果没有，则表达式返回true.<br> 2) empty判断username变量是否为null或者一个长度为0的空字符串，如果是，则表达式返回true;如果username是一个空的集合或者数组，则表达式也返回true。否则表达式将返回false。</p>
+<p><strong>三.EL表达式的隐式对象</strong><br>在JSP页面中，可以利用JSP脚本访问JSP的对象。在EL中，提供了11个隐式对象用来访问Web开发中常用的JSP对象并获取数据。表列出了EL表达式的隐式对象。</p>
+<table>
+<thead>
+<tr>
+<th>隐式对象</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pageContext</td>
+<td>JSP页面的上下文对象。它可以访问JSP隐式对象，如请求、响应、会话、输出、servletContext等</td>
+</tr>
+<tr>
+<td>param</td>
+<td>一个包含所有请求参数，并用参数名作为key的Map。每个key的值就是指定名称的第一个参数值，表达式${param.name}相当于request.getParameter (name)</td>
+</tr>
+<tr>
+<td>paramValue</td>
+<td>一个包含所有请求参数，并用参数名作为key的Map。每个key的值是一个字符串数组，其中包含了指定参数名称的所有参数值。它与param隐式对象非常类似，但它检索一个字符串数组而不是单个值。表达式${paramvalues, name}相当于request.getParamterValues(name)</td>
+</tr>
+<tr>
+<td>header</td>
+<td>包含请求标题，并用标题名作为key的Map。每个key的值就是指定标题名称的第一个标题值。表达式$ {header.name}相当于request.getHeader(name)</td>
+</tr>
+<tr>
+<td>headerValues</td>
+<td>包含请求标题，并用标题名作为key的Map。每个key的值就是一个字符串数组，其中包含了指定标题名称的所有参数值。它与head隐式对象非常类似，但它检索一个字符串数组而不是单个值。表达式$ {headerUalues. name}相当request.getHeaderValues(name)</td>
+</tr>
+<tr>
+<td>cookie</td>
+<td>包含了当前请求对象中所有Cookie对象的Map 。 Cookie名称就是key名称，每个key都映射到一个Cookie对象。表达式${cookie. name .value}返回带有特定名称的第一个Cookie值</td>
+</tr>
+<tr>
+<td>initParam</td>
+<td>包含所有环境初始化参数，并用参数名作为key的Map。表达式${initParam. name}相当于ServletContext.getInitparameter (name)</td>
+</tr>
+<tr>
+<td>pageScope</td>
+<td>这是一个Map，其中包含了页面域内的所有属性(Attribute ) 。属性名称就是Map的lcey。表达式$ {pageScope.name}相当于pageContext.getAmibute(“name”)</td>
+</tr>
+<tr>
+<td>requestScope</td>
+<td>这是一个Map，其中包含了请求域内的所有属性(Aaribute ) 。属性名称就是Map的key。表达式${ requestScope.name}相当于request.getAttribute(“name”)</td>
+</tr>
+<tr>
+<td>sessionScope</td>
+<td>这是一个Map，其中包含了会话域内的所有属性(Attribute ) 。属性名称就是Map的key。表达式${ sessionScope.name}相当于session.getAttribute(“name”)</td>
+</tr>
+<tr>
+<td>applicationScope</td>
+<td>这是一个Map，其中包含了应用程序上下文域内的所有属性(Amibute ) 。属性名称就是Map的key。表达式${ applicationScope.name}相当于appiication.getAttribute(“name”)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>3.1.pageScope, requestScope, sessionScope和applicationScope</strong><br>    在JSP中，经常通过JSP的page, request, session和application 4个作用域对象获取存储在其中的属性值。而这4个对象用来取值的getAttribute(“name”)方法并不是一个标准的getter方法，其无法通过EL的对象获取存储的属性值。所以EL表达式提供了4个scope隐式对象，用于获取4个作用域中所存储的属性值，对应的4个作用域中的取值方法为getAttribute(“name”)。4个作用域的范围从小到大依次为:pageScope, requestScope,   sessionScope和applicationScope。假设4个作用域中都存在有名称为username的属性，则可以使用以下表达式:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">$</span><span class="pun">{</span><span class="pln">pageScope </span><span class="pun">.</span><span class="pln">username</span><span class="pun">}</span></code></li><li class="L1"><code><span class="pln">$</span><span class="pun">{</span><span class="pln">requestScope </span><span class="pun">.</span><span class="pln">username</span><span class="pun">}</span></code></li><li class="L2"><code><span class="pln">$</span><span class="pun">{</span><span class="pln">sessionScope </span><span class="pun">.</span><span class="pln">username</span><span class="pun">}</span></code></li><li class="L3"><code><span class="pln">$</span><span class="pun">{</span><span class="pln">applicationScope</span><span class="pun">.</span><span class="pln">username</span><span class="pun">}</span></code></li></ol></pre><p>EL表达式也支持默认访问，即省略scope对象，直接访问username变量，默认范围为从小到大取值。</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">$</span><span class="pun">{</span><span class="pln">username</span><span class="pun">}</span></code></li></ol></pre><p>即首先取pageScope 中的username，如果为null，则取requestScope中的username，依次类推。</p>
+</div>
+                                      </div>
+                                   <div class="layui-row text-center layui-mt20">
+                                           
+                                           <div class="layui-btn layui-btn-danger" onclick="emotion()"><i class="fa fa-thumbs-o-up" id="za"> 赞 (64)</i></div>
+                                       </div>
+                                   <div class="layui-row layui-mt20">
+                                         <blockquote class="layui-elem-quote text-center " style="border: none;">
+                                                  <span class="layui-show-md-inline-block layui-hide"  >文章出处：书生个人博客</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                   <span class="layui-show-md-inline-block layui-hide" id="artiurl"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                  <span>转载注明下哦！o(≧v≦)o~~</span>
+                                           </blockquote>
+                                    </div>
+                                 <div class="layui-row layui-mt20">
+                                         <p class="blog-tags">
+                                              标签：
+                                                       <span >Java</span><span >原创</span>
+
+                                               </p>
+                                 </div>
+                                 <div class="layui-row layui-col-space20 layui-mt20 article-page-similar">
+                                           <p>相似文章：</p>
+                                            <hr>
+                                             <ul>
+                                                    <li><a href="1551602648890.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Java用DateFormat，simpleDateFormat，DateTimeFormat格式化时间和日期</a> </li>
+                                                    <li><a href="1565848704511.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Java的文件操作：File类的使用说明</a> </li>
+                                                    <li><a href="1550247872963.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;看源码深入了解JDK动态代理</a> </li>
+                                                    <li><a href="1548814993331.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp; nested exception is java.lang.RuntimeException: java.lang.NullPointerException的修复</a> </li>
+                                                    <li><a href="1551890831917.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;JSP的EL表达式的使用</a> </li>
+                                                    <li><a href="1547605669187.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;JDK8特性二之Streams</a> </li>
+                                                    <li><a href="1553956465889.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;从底层了解ArrayList和Vector的区别</a> </li>
+                                                    <li><a href="1553949744282.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;从源码深入底层解析Java的数组列表ArrayList</a> </li>
+                                                    <li><a href="1566791860734.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Java报错：java.math.BigDecimal cannot be cast to java.lang.String</a> </li>
+                                                    <li><a href="1551711955457.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;CGLIB动态代理的用法</a> </li>
+                                              </ul>
+                                    </div>
+                               </div>
+                      <script>
+                          $("#artiurl").html("文章地址："+location.href);
+
+
+                      </script>
+
+                       </div></div>
+
+                </div>
+
+               <div  >
+<div id="cta" class="layui-collapse layui-panel layui-article">
+       <div class="layui-colla-item">
+               <div class="layui-colla-content layui-show layui-article comment">
+                       <fieldset class="layui-elem-field layui-field-title">
+                               <legend>随便说两句</legend>
+                               <div class="layui-field-box">
+                                       <label for="comment-input"></label>
+                                           <textarea id="comment-input" style="display: none;"></textarea>
+                                  </div>
+                               
+                               <a class="layui-btn layui-btn-sm layui-btn-danger" style="float: right;width: 120px;"  href="#"  onclick="javascript:beforeLogin()" id="beforeLogin"><i class="fa fa-qq"></i> 请先登录</a>
+                           </fieldset>
+                   </div>
+           </div>
+    </div>
+</div>
+<script>
+    function beforeLogin() {
+        var url=window.location.href;
+        window.open('/api/qq?url='+url,'_self');
+    }
+
+</script>
+
+               <blockquote id="cccc" class="layui-elem-quote layui-mt20" style="border-left: 5px solid #F44336;"><span style="color:#FF5722;">遵守国家法律法规，请勿回复无意义内容，请不要回复嵌套过多的楼层！</span></blockquote>
+               <div class="comment-list">
+
+</div>
+
+
+
+
+           </div>
+               <!--<div class="layui-col-md3" id="article-app">-->
+                       <!--<div id="affix-side">-->
+                           <!--<div th:replace="frontend/fragment/callme :: callme" ></div>-->
+                           <!--&lt;!&ndash;<div class="layui-tab layui-tab-card layui-master-recommend" >&ndash;&gt;-->
+                               <!--&lt;!&ndash;<div class="layui-tab-content select-none">&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<h3 class="tit">时光悄然</h3>&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<div class="layui-inline" id="test22"></div>&ndash;&gt;-->
+                               <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--<div th:replace ="frontend/fragment/guidang" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/imageinfo" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/cate" ></div>-->
+                           <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相关文章'})" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/image :: image"></div>-->
+                           <!--</div>-->
+                   <!--</div>-->
+           </div>
+    </div>
+
+
+    <footer >
+    <div class="footer"><p>
+	<span><strong>友情链接:</strong><strong>&nbsp;</strong> &nbsp;&nbsp;</span><a class="ke-insertfile" href="https://www.layui.com/" target="_blank">layui</a><span>&nbsp;&nbsp;</span>&nbsp;<a class="ke-insertfile" href="http://www.shuyong.net/" target="_blank">舍力博客</a>&nbsp;&nbsp;<a class="ke-insertfile" href="javascript:;" id="friend">申请友链</a> 
+</p>
+<p>
+	2018-2019 nonelonely.com | 网站备案号：<a class="ke-insertfile" href="http://www.miitbeian.gov.cn/" target="_blank">闽ICP备18026034号-1</a> 
+</p>
+<p>
+	<br />
+</p></div>
+
+    <div class="layui-hide-xs" style="position: fixed;left: 100px; bottom: 100px; z-index: 999999;" id="robot" data-method="robot">
+        <div class="layui-layer-tips" ><div id="" class="layui-layer-content" style="background-color: rgb(114, 193, 236);width: 150px">Hi 我是小码，可以点击我问我笑话，天气，智能聊天，故事，查询备案等等。<i class="layui-layer-TipsG layui-layer-TipsT" style="border-right-color:rgb(114, 193, 236);"></i></div><span class="layui-layer-setwin"></span></div>
+        <a href="#" ><img src="../static/assets/img/robot.png" width="100px" alt="Hi 我是小码！" >
+        </a>
+    </div>
+
+
+</footer>
+<script src="../static/plugins/layui/layui.js"></script>
+
+<script>
+    layui.use([ 'layer'], function () {
+        var layer = layui.layer;
+        var $ = layui.jquery;
+        //触发事件
+        var active = {
+            robot: function(){
+                var that = this;
+                $("#robot").css('display','none');
+                //多窗口模式，层叠置顶
+                layer.open({
+                    type: 2,
+                    title:'智能小码',
+                    area: ['600px', '480px'],
+                    content: '/webrobot',
+                    end:function () {
+                        $("#robot").css('display','');
+                    }
+                });
+            },
+            friend: function () {
+                layer.open({
+                    title: '申请友链'
+                    ,content: '发送邮件至：admin@nonelonely.com<br>' +
+                        '邮件标题为：申请书生个人博客友链'
+                });
+            }
+        };
+
+        $('#robot').on('click', function(){
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+        $('#friend').on('click', function(){
+            var othis = $(this), method = 'friend';
+            active[method] ? active[method].call(this, othis) : '';
+        });
+
+
+        // var la;
+            // la = layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot',
+            //     {
+            //         tips: [1, '#3595CC'],
+            //         end: function () {
+            //             if($("#robot").is(":visible")) {
+            //                 la = layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot',
+            //                     {tips: [1, '#3595CC']})
+            //             }
+            //         }
+            //     });
+            // window.setInterval(" if($('#robot').is(':visible')) {la=layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot', { tips: [1, '#3595CC'],end : function(){ la=layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot', {tips: [1, '#3595CC']});}});}", 10000*6 );
+
+    });
+</script>
+
+</div>
+
+
+
+
+<script>
+    var articleId=1551890831917;
+    var su=null ;
+    $(function(){
+        $(".comment-list").addCommentList({data:[],add:""});
+        $("#comment").click(function(){
+            var obj = new Object();
+            obj.img="images/img.html";
+            obj.replyName="匿名";
+            obj.content=$("#content").val();
+            obj.browse="深圳";
+            obj.osname="win10";
+            obj.replyBody="";
+            $(".comment-list").addCommentList({data:[],add:obj});
+        });
+    })
+
+    var layer;
+    var layedit;
+    var index;
+    layui.use(['layedit', 'laypage', 'laydate', 'element','layer'], function () {
+        layer = layui.layer;
+        var element = layui.element;
+        layedit = layui.layedit;
+        // var laydate = layui.laydate;
+        // //不出现底部栏
+        // laydate.render({
+        //     elem: '#test22'
+        //     ,showBottom: false
+        //     ,position: 'static'
+        //     ,calendar: true
+        //     ,theme: '#a7a4a4'
+        // });
+
+       index= layedit.build('comment-input', {
+            tool: ['face', '|', 'left', 'center', 'right', 'link', 'unlink']
+            , height: 150
+        });
+        //相册
+        if($(window).width() > 750){
+            layer.photos({
+                photos: '.photos'
+                ,zIndex: 9999999999
+                ,anim: -1
+            });
+        } else {
+            $('body').on('click', '.photos img', function(){
+                window.open(this.src);
+            });
+        }
+
+            layer.open({
+                title: '目录',
+                type: 1,
+                offset: 'r',
+                shade: 0,
+                closeBtn: 2,
+                content: $(".markdown-toc")
+            });
+
+        // $('#affix-side').hcSticky({
+        //     stickTo: '#blog-body'
+        // });
+
+    });
+    function submit() {
+
+        var osname = detectOS();
+
+        var obj = new Object();
+        if (su) {
+           obj.img = su.avatar;
+           obj.replyName = su.nickname;
+        }
+        obj.content=layedit.getContent(index);
+        obj.browse=navigator.appName;
+        obj.osname=osname;
+        obj.time=new Date();
+        obj.replyBody="";
+
+        obj.comment= obj.content;
+        if(!obj.comment){
+            layer.msg('不能为空');
+            return false;
+        }
+        var indexc = layer.load();
+        obj.userId=su.id;
+        obj.user=su.id;
+        obj.articleId=articleId;
+        obj.enable=true;
+        obj.parentId=0;
+
+         obj.time =new Date();
+
+
+
+
+        $.post("/token/comment/sub",obj, function (resp) {
+            layer.close(indexc);
+            $(window.frames["LAY_layedit_1"].document).find("body").html('');
+            layer.msg(resp.message);
+            setTimeout(function () {
+                if (resp.code === 200) {
+                    $(".comment-list").addCommentList({data:[],add:obj});
+                }
+            }, 1000);
+        });
+
+    };
+
+    function emotion() {
+        var uid = "guest";
+        if (BMY.getCookie("article::" + 1551890831917 + "::" + uid) != null) {
+            layer.msg("近期您已经点过赞，感谢您的支持！");
+        } else {
+            $.post("/article/approve", {articleId: 1551890831917}, function (json) {
+                if (json.code === BMY.status.ok) {
+                    BMY.setCookie("article::" + 1551890831917+ "::" + uid, "noteblog system");
+                  //  that.approve++;
+                    $('#za').html('赞 (65)')
+                    layer.msg("谢谢您的支持！");
+                }
+            })
+        }
+    }
+    function money  (alipay, wechat) {
+        alipay = "#\/static\/assets\/img\/wechat.png";
+        wechat="#\/static\/assets\/img\/alipay.png";
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['640px', '300px'],
+            shadeClose: true,
+            skin: 'text-center',
+            content:
+                '<div class="layui-fluid">' +
+                '   <div class="layui-row layui-mt20">' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + wechat + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">微信</p>' +
+                '       </div>' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + alipay + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">支付宝</p>' +
+                '       </div>' +
+                '   </div> ' +
+                '</div>'
+        });
+    }
+
+
+
+
+</script>
+<script src="../static/assets/js/jquery.comment.js" ></script>
+</body>
+
+<!-- Mirrored from www.nonelonely.com/article/1551890831917 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:04:28 GMT -->
+</html>

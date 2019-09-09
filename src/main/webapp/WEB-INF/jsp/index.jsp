@@ -19,6 +19,7 @@
     <div class="home-menu">
         <ul>
             <li><a href="/indexPage.do">首页</a></li>
+            <li><a href="/indexPage.do">主页</a></li>
             <li><a href="/fileIndex.do">文件</a></li>
             <li><a href="/messageIndex.do">点滴</a></li>
             <li><a href="/loggerIndex.do">日志</a></li>

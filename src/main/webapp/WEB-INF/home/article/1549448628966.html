@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Mirrored from www.nonelonely.com/article/1549448628966 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:02:15 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+
+    <title>《Java并发编程之美》 PDF免费下载- 书生个人博客</title>
+    <link href="../static/plugins/editormd/css/editormd.min.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+<meta name="baidu_union_verify" content="3e514e79dc5e7201b9bee186137e9562">
+<meta name="keywords" content="资源">
+
+<meta name="description" content="《Java并发编程之美》PDF免费下载免积分下载下载地址：百度云地址：https://pan.baidu.com/s/1Fmfh4p-dN8ejINRtwYyJ9w密码：3qnl电子版仅供预览，下载后24小时内务必删除，支持正版，喜欢的请购买正版书籍相关截图：简介：不像其他并发类书籍那样晦涩难懂，本书的特色之一是通俗易懂，对Java有一定基础的开发人员都可以看懂">
+
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../static/plugins/layui/css/layui.css">
+<link rel="stylesheet" href="../static/plugins/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../static/assets/css/frontend/base.css">
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "../../hm.baidu.com/hm6618.js?c07ddd5b98c69450ebd8e255627f70b0";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <link rel="canonical" href="1549448628966.html"/>
+    <script src="../../msite.baidu.com/sdk/cb688.js?appid=1622832448885693"></script>
+    <script src="../static/plugins/jquery/jquery.min.js"></script>
+     <style>
+         @media screen and (max-width: 767px) {
+             .layui-layer-page {
+                 display: none;
+             }
+         }
+
+         .markdown-body.layui-layer-content {
+             padding: 20px;
+             /*background-image: url("/static/assets/img/long.png");*/
+         }
+         .markdown-body  .layui-layer-title{
+             background-color: #e4e4e400;
+         }
+         .markdown-body  .layui-layer{
+             background-color: #e4e4e4;
+             background-image: url("../static/assets/img/long.png") ;
+             background-size: 100% 100%;
+         }
+         .markdown-body .layui-layer-content {
+
+            padding: 20px;
+         }
+
+     </style>
+
+</head>
+<body class="animated fadeIn">
+
+<div class="wrapper" >
+    <header>
+    <div class="headtop"></div>
+    <div class="contenttop">
+        <div class="logo f_l"> Java码猿-书生个人博客</div>
+        <div class="search f_r">
+            <input name="keyboard"  id="bdcsMain" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+            <input name="Submit" class="input_submit" onclick="window.open('http://zhannei.baidu.com/cse/search?s=6583887351044514798&entry=1&q='+document.getElementById('bdcsMain').value)" value="搜索" type="button">
+            <!--<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=6583887351044514798' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>-->
+            <ul class="layui-nav" style="background-color: rgba(0,0,0,0);" >
+                
+                
+
+                <li  class="layui-nav-item"><a href="#"  style="color: #000;" onclick="goto()" title="QQ登入" class="iconfont icon-qq"></a>
+                </li>
+            </ul>
+
+
+        </div>
+        <div class="blank"></div>
+
+        <nav>
+            <div  class="navigation">
+                <ul class="menu">
+                    <li><a href="../index.html">网站首页</a></li>
+                    <li><a href="#">技术文章</a>
+                        <ul >
+                            <li><a  href="../pages748a.html?cateId=1">Spring系列</a></li>
+                            <li><a  href="../pages3c7b.html?cateId=6">前端开发</a></li>
+                            <li><a  href="../pages4ead.html?cateId=7">软件安装</a></li>
+                            <li><a  href="../pages8396.html?cateId=9">Java语法</a></li>
+                            <li><a  href="../pagesff6a.html?cateId=10">资源下载</a></li>
+                            <li><a  href="../pagesad9e.html?cateId=12">ORM框架</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="../note.html">我的日记</a> </li>
+                    <li><a href="../msg.html">给我留言</a> </li>
+                    <li><a href="../about.html">关于</a></li>
+                </ul>
+            </div>
+        </nav>
+        <SCRIPT type=text/javascript>
+            // Navigation Menu
+            $(function() {
+                $(".menu ul").css({display: "none"}); // Opera Fix
+                $(".menu li").hover(function(){
+                    $(this).find('ul:first').css({visibility: "visible",display: "none"}).slideDown("normal");
+                },function(){
+                    $(this).find('ul:first').css({visibility: "hidden"});
+                });
+            });
+
+            function  search() {
+                var s=$('#keyboard').val();
+                location.href = s === "" ? "/" : "/pages?searchStr=" + s;
+            };
+            function goto () {
+                var url = window.location.href;
+                var winObj = window.open('/api/qq?url=' + url, '_self');
+            }
+        </SCRIPT>
+
+    </div>
+</header>
+    <div class="jztop"></div>
+
+    <!--<bmy-article-page :alipay="params.alipay" :wechat="params.wechat_pay" :su="su">-->
+        <!--<div th:insert ="frontend/fragment/articlepage :: article"  slot="article"></div>-->
+        <!--<div  th:insert="frontend/fragment/comment :: comment" slot="post"></div>-->
+
+        <!--<bmy-comment-list slot="comment" :comments="comments" :tips="params.comment_notice"-->
+                          <!--:re="params.all_comment_open == 1 && article.commented"></bmy-comment-list>-->
+       <!--<bmy-search slot="search"></bmy-search>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相似文章'})" slot="similar"></div>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${lots},${'热度文章'})" slot="lot"></div>-->
+    <!--</bmy-article-page>-->
+
+    <div id="blog-body" class="layui-container">
+       <div class="layui-row layui-col-space10">
+           <div id="blog-info" class="layui-col-md12">
+                <div class="layui-collapse layui-panel layui-article photos" >
+
+                     <div  ><div class="layui-colla-item">
+                    <h2 class="nh1"><span>您现在的位置是：<a href="../index.html" target="_blank">网站首页</a>>><a href="#" target="_blank">信息浏览</a>
+                    </span><b>文章详情</b></h2>
+                          <div class="layui-colla-content layui-show layui-article">
+                                   <fieldset class="layui-elem-field layui-field-title layui-article-page-title">
+                                       <legend class="center-to-head" align="center">《Java并发编程之美》 PDF免费下载</legend>
+                                      </fieldset>
+                                  <div class="layui-text layui-blog-body">
+                                           <div class="layui-row">
+                                                  <div class="layui-col-md6 layui-col-md-offset3 text-center blog-base-info">
+                                                           <span><i class="fa fa-clock-o" ></i>2019-02-06 18:23 </span>
+                                                           <span><i class="fa fa-user-o"></i> <span style="color: #FF5722;">许多年以后</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-renzhengkaobei"></use></svg></span>
+                                                          <span><i class="fa fa-comment-o"></i></span>
+                                                           <span><i class="fa fa-eye"></i> 3695</span>
+                                                       </div>
+                                               </div>
+                                      <!-- Baidu Button BEGIN -->
+                                           <!--<div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">-->
+                                                  <!--<span class="bds_more">分享到：</span>-->
+                                                  <!--<a class="bds_qzone"></a>-->
+                                                  <!--<a class="bds_tsina"></a>-->
+                                                  <!--<a class="bds_tqq"></a>-->
+                                                  <!--<a class="bds_renren"></a>-->
+                                                  <!--<a class="bds_t163"></a>-->
+                                                  <!--<a class="shareCount"></a>-->
+                                          <!--</div>-->
+                                          <!--<script type="text/javascript" id="bdshare_js" data="type=tools&uid=6701193" ></script>-->
+                                          <!--<script type="text/javascript" id="bdshell_js"></script>-->
+                                          <!--<script type="text/javascript">-->
+                                              <!--document.getElementById("bdshell_js").src = "https://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)-->
+                                          <!--</script>-->
+                                      <!-- Baidu Button END -->
+                                           <hr>
+                                           <div class="content detail markdown-body editormd-preview-container editormd-preview-active"><p>《Java并发编程之美》 PDF免费下载 免积分下载</p>
+<p>下载地址：<br>百度云地址：<a href="https://pan.baidu.com/s/1Fmfh4p-dN8ejINRtwYyJ9w">https://pan.baidu.com/s/1Fmfh4p-dN8ejINRtwYyJ9w</a>  密码：3qnl</p>
+<blockquote>
+<p>电子版仅供预览，下载后24小时内务必删除，支持正版，喜欢的请购买正版书籍</p>
+</blockquote>
+<p><strong>相关截图</strong>：<br><img src="../../s2.ax1x.com/2019/02/06/kYqEcT.jpg" alt="kYqEcT.jpg"><br><strong>简介：</strong><br>不像其他并发类书籍那样晦涩难懂，本书的特色之一是通俗易懂，对Java 有一定基础的开发人员都可以看懂。本书在基础篇专门讲解并发编程基础，笔者根据在项目实践中对这些知识的理解，总结了并发编程中常用的基础知识以及常用的概念，并通过图文结合的方式降低理解的难度，使用少量的代码讲解就可以让读者轻松掌握并发编程的基础知识，让读者逐步建立起自信。在高级篇主要讲解JUC 并发包下并发组件的实现原理，首先介绍JUC 里面最简单的原子类，让读者学会使用在基础篇里介绍的最简单的CAS 操作，再逐步加大难度让读者慢慢适应：比如一开始打算把并发List 放到锁后面讲解，因为并发List 里面使用了锁，但是锁的理解难度比List 大太多，所以最终还是坚持从易入难的原则，先讲解List，再讲解锁。在实践篇中首先讲解并发组件在开源框架或者项目中的运用，让读者不仅可以知道并发组件的原理，而且可以了解怎么使用这些组件。最后总结笔者在项目中或者其他同事在项目中经常遇到的并发编程问题，并对其进行分析，给出解决方案。<br>如果你只想使用并发包，那么可以阅读本书，因为本书在讲解代码时基本都是用的实例；如果你想研究源码却一筹莫展——不知道如何下手或者感觉吃力，也可以阅读本书，因为本书对核心代码进行了讲解；如果你想了解并发编程中的常见问题，增加对并发的认识，也可以阅读本书，因为本书对这类问题进行了总结。</p>
+<p><strong>目录</strong><br>第一部分 Java 并发编程基础篇</p>
+<p>第1章并发编程线程基础  2</p>
+<p>1.1  什么是线程  2</p>
+<p>1.2  线程创建与运行  3</p>
+<p>1.3  线程通知与等待  6</p>
+<p>1.4  等待线程执行终止的join 方法  16</p>
+<p>1.5  让线程睡眠的sleep 方法  19</p>
+<p>1.6  让出CPU 执行权的yield 方法 23</p>
+<p>1.7  线程中断  24</p>
+<p>1.8  理解线程上下文切换  30</p>
+<p>1.9  线程死锁  30</p>
+<p>1.9.1  什么是线程死锁 30</p>
+<p>1.9.2  如何避免线程死锁 33</p>
+<p>1.10  守护线程与用户线程  35</p>
+<p>1.11 ThreadLocal  39</p>
+<p>1.11.1 ThreadLocal 使用示例  40</p>
+<p>1.11.2 ThreadLocal 的实现原理  42</p>
+<p>1.11.3 ThreadLocal 不支持继承性  45</p>
+<p>1.11.4 InheritableThreadLocal 类  46</p>
+<p>第2章  并发编程的其他基础知识  50</p>
+<p>2.1  什么是多线程并发编程  50</p>
+<p>2.2  为什么要进行多线程并发编程  51</p>
+<p>2.3  Java 中的线程安全问题  51</p>
+<p>?2.4  Java 中共享变量的内存可见性问题  52</p>
+<p>2.5  Java 中的synchronized 关键字  54</p>
+<p>2.5.1 synchronized 关键字介绍  54</p>
+<p>2.5.2 synchronized 的内存语义  55</p>
+<p>2.6  Java 中的volatile 关键字  55</p>
+<p>2.7  Java 中的原子性操作  57</p>
+<p>2.8  Java 中的CAS 操作  59</p>
+<p>2.9  Unsafe 类  59</p>
+<p>2.9.1  Unsafe 类中的重要方法  59</p>
+<p>2.9.2  如何使用Unsafe 类  61</p>
+<p>2.10  Java 指令重排序  65</p>
+<p>2.11  伪共享  67</p>
+<p>2.11.1  什么是伪共享  67</p>
+<p>2.11.2  为何会出现伪共享  68</p>
+<p>2.11.3  如何避免伪共享  70</p>
+<p>2.11.4  小结  72</p>
+<p>2.12  锁的概述  72</p>
+<p>2.12.1  乐观锁与悲观锁  72</p>
+<p>2.12.2  公平锁与非公平锁  75</p>
+<p>2.12.3  独占锁与共享锁  75</p>
+<p>2.12.4  什么是可重入锁  76</p>
+<p>2.12.5  自旋锁  77</p>
+<p>2.13  总结  77</p>
+<p>第二部分 Java 并发编程高级篇</p>
+<p>第3章  Java 并发包中ThreadLocalRandom 类原理剖析  80</p>
+<p>3.1  Random 类及其局限性  80</p>
+<p>3.2 ThreadLocalRandom  82</p>
+<p>3.3  源码分析  84</p>
+<p>3.4  总结  87</p>
+<p>第4 章  Java 并发包中原子操作类原理剖析  88</p>
+<p>4.1  原子变量操作类  88</p>
+<p>4.2  JDK 8 新增的原子操作类LongAdder  93</p>
+<p>4.2.1 LongAdder 简单介绍  93</p>
+<p>4.2.2 LongAdder 代码分析  95</p>
+<p>4.2.3  小结  101</p>
+<p>4.3 LongAccumulator 类原理探究  102</p>
+<p>4.4  总结  104</p>
+<p>第5章  Java 并发包中并发List 源码剖析  105</p>
+<p>5.1  介绍  105</p>
+<p>5.2  主要方法源码解析  106</p>
+<p>5.2.1  初始化  106</p>
+<p>5.2.2  添加元素  106</p>
+<p>5.2.3  获取指定位置元素  108</p>
+<p>5.2.4  修改指定元素  109</p>
+<p>5.2.5  删除元素  110</p>
+<p>5.2.6  弱一致性的迭代器  111</p>
+<p>5.3  总结  114</p>
+<p>第6章  Java 并发包中锁原理剖析  115</p>
+<p>6.1 LockSupport 工具类  115</p>
+<p>6.2  抽象同步队列AQS 概述  122</p>
+<p>6.2.1  AQS——锁的底层支持  122</p>
+<p>6.2.2  AQS——条件变量的支持  128</p>
+<p>6.2.3  基于AQS 实现自定义同步器  131</p>
+<p>6.3  独占锁ReentrantLock 的原理  136</p>
+<p>6.3.1  类图结构  136</p>
+<p>6.3.2  获取锁  137</p>
+<p>6.3.3  释放锁  142</p>
+<p>6.3.4  案例介绍  143</p>
+<p>6.3.5  小结  145</p>
+<p>?6.4  读写锁ReentrantReadWriteLock 的原理  145</p>
+<p>6.4.1  类图结构  145</p>
+<p>6.4.2  写锁的获取与释放  147</p>
+<p>6.4.3  读锁的获取与释放  151</p>
+<p>6.4.4  案例介绍  156</p>
+<p>6.4.5  小结  158</p>
+<p>6.5  JDK 8 中新增的StampedLock 锁探究  158</p>
+<p>6.5.1  概述  158</p>
+<p>6.5.2  案例介绍  160</p>
+<p>6.5.3  小结  164</p>
+<p>第7章  Java 并发包中并发队列原理剖析  165</p>
+<p>7.1 ConcurrentLinkedQueue 原理探究  165</p>
+<p>7.1.1  类图结构  165</p>
+<p>7.1.2 ConcurrentLinkedQueue 原理介绍  166</p>
+<p>7.1.3  小结  181</p>
+<p>7.2 LinkedBlockingQueue 原理探究  182</p>
+<p>7.2.1  类图结构  182</p>
+<p>7.2.2 LinkedBlockingQueue 原理介绍  185</p>
+<p>7.2.3  小结  194</p>
+<p>7.3 ArrayBlockingQueue 原理探究  195</p>
+<p>7.3.1  类图结构  195</p>
+<p>7.3.2 ArrayBlockingQueue 原理介绍  197</p>
+<p>7.3.3  小结  202</p>
+<p>7.4 PriorityBlockingQueue 原理探究  203</p>
+<p>7.4.1  介绍  203</p>
+<p>7.4.2 PriorityBlockingQueue 类图结构  203</p>
+<p>7.4.3  原理介绍  205</p>
+<p>7.4.4  案例介绍  214</p>
+<p>7.4.5  小结  216</p>
+<p>7.5  DelayQueue原理探究  217</p>
+<p>7.5.1 DelayQueue 类图结构  217</p>
+<p>7.5.2  主要函数原理讲解  219</p>
+<p>7.5.3  案例介绍  222</p>
+<p>7.5.4  小结  224</p>
+<p>第8章  Java 并发包中线程池ThreadPoolExecutor 原理探究  225</p>
+<p>8.1  介绍  225</p>
+<p>8.2  类图介绍  225</p>
+<p>8.3  源码分析  230</p>
+<p>8.3.1  publicvoid execute(Runnable command)  230</p>
+<p>8.3.2  工作线程Worker 的执行  235</p>
+<p>8.3.3  shutdown操作  238</p>
+<p>8.3.4 shutdownNow 操作  240</p>
+<p>8.3.5 awaitTermination 操作  241</p>
+<p>8.4  总结  242</p>
+<p>第9章  Java 并发包中ScheduledThreadPoolExecutor 原理探究  243</p>
+<p>9.1  介绍  243</p>
+<p>9.2  类图介绍  243</p>
+<p>9.3  原理剖析  245</p>
+<p>9.3.1 schedule(Runnable command, long delay,TimeUnit unit) 方法  246</p>
+<p>9.3.2 scheduleWithFixedDelay(Runnable command,long initialDelay, longdelay,TimeUnit unit) 方法  252</p>
+<p>9.3.3 scheduleAtFixedRate(Runnable command,long initialDelay,longperiod,TimeUnit unit) 方法  254</p>
+<p>9.4  总结  255</p>
+<p>第10章  Java 并发包中线程同步器原理剖析  256</p>
+<p>10.1  CountDownLatch原理剖析  256</p>
+<p>10.1.1  案例介绍  256</p>
+<p>10.1.2  实现原理探究  259</p>
+<p>10.1.3  小结  263</p>
+<p>10.2  回环屏障CyclicBarrier 原理探究  264</p>
+<p>10.2.1  案例介绍  264</p>
+<p>10.2.2  实现原理探究  268</p>
+<p>10.2.3  小结  272</p>
+<p>?10.3  信号量Semaphore 原理探究  272</p>
+<p>10.3.1  案例介绍  272</p>
+<p>10.3.2  实现原理探究  276</p>
+<p>10.3.3  小结  281</p>
+<p>10.4  总结  281</p>
+<p>第三部分 Java 并发编程实践篇</p>
+<p>第11章  并发编程实践  284</p>
+<p>11.1 ArrayBlockingQueue 的使用  284</p>
+<p>11.1.1  异步日志打印模型概述  284</p>
+<p>11.1.2  异步日志与具体实现  285</p>
+<p>11.1.3  小结  293</p>
+<p>11.2  Tomcat 的NioEndPoint 中ConcurrentLinkedQueue 的使用  293</p>
+<p>11.2.1  生产者——Acceptor 线程  294</p>
+<p>11.2.2  消费者——Poller 线程  298</p>
+<p>11.2.3  小结  300</p>
+<p>11.3  并发组件ConcurrentHashMap 使用注意事项  300</p>
+<p>11.4 SimpleDateFormat 是线程不安全的  304</p>
+<p>11.4.1  问题复现  304</p>
+<p>11.4.2  问题分析  305</p>
+<p>11.4.3  小结  309</p>
+<p>11.5  使用Timer 时需要注意的事情  309</p>
+<p>11.5.1  问题的产生  309</p>
+<p>11.5.2  Timer 实现原理分析  310</p>
+<p>11.5.3  小结  313</p>
+<p>11.6  对需要复用但是会被下游修改的参数要进行深复制  314</p>
+<p>11.6.1  问题的产生  314</p>
+<p>11.6.2  问题分析  316</p>
+<p>11.6.3  小结  318</p>
+<p>11.7  创建线程和线程池时要指定与业务相关的名称  319</p>
+<p>11.7.1  创建线程需要有线程名  319</p>
+<p>11.7.2  创建线程池时也需要指定线程池的名称  321</p>
+<p>11.7.3  小结  325</p>
+<p>11.8  使用线程池的情况下当程序结束时记得调用shutdown 关闭线程池  325</p>
+<p>11.8.1  问题复现  325</p>
+<p>11.8.2  问题分析  327</p>
+<p>11.8.3  小结  329</p>
+<p>11.9  线程池使用FutureTask 时需要注意的事情  329</p>
+<p>11.9.1  问题复现  329</p>
+<p>11.9.2  问题分析  332</p>
+<p>11.9.3  小结  335</p>
+<p>11.10  使用ThreadLocal 不当可能会导致内存泄漏  336</p>
+<p>11.10.1  为何会出现内存泄漏  336</p>
+<p>11.10.2  在线程池中使用ThreadLocal 导致的内存泄漏  339</p>
+<p>11.10.3  在Tomcat 的Servlet 中使用ThreadLocal导致内存泄漏  341</p>
+<p>11.10.4  小结  344</p>
+<p>11.11  总结  344</p>
+</div>
+                                      </div>
+                                   <div class="layui-row text-center layui-mt20">
+                                           
+                                           <div class="layui-btn layui-btn-danger" onclick="emotion()"><i class="fa fa-thumbs-o-up" id="za"> 赞 (146)</i></div>
+                                       </div>
+                                   <div class="layui-row layui-mt20">
+                                         <blockquote class="layui-elem-quote text-center " style="border: none;">
+                                                  <span class="layui-show-md-inline-block layui-hide"  >文章出处：书生个人博客</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                   <span class="layui-show-md-inline-block layui-hide" id="artiurl"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                  <span>转载注明下哦！o(≧v≦)o~~</span>
+                                           </blockquote>
+                                    </div>
+                                 <div class="layui-row layui-mt20">
+                                         <p class="blog-tags">
+                                              标签：
+                                                       <span >资源</span>
+
+                                               </p>
+                                 </div>
+                                 <div class="layui-row layui-col-space20 layui-mt20 article-page-similar">
+                                           <p>相似文章：</p>
+                                            <hr>
+                                             <ul>
+                                                    <li><a href="1549357863921.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Spring Boot+Vue全栈开发实战 PDF免费下载 </a> </li>
+                                                    <li><a href="1550848275524.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Java EE互联网轻量级框架整合开发—SSM框架和Redis实现 完整pdf扫描版+源码免费下载</a> </li>
+                                                    <li><a href="1549791587930.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;第一行代码 Java(视频讲解版) 完整版 (李兴华/马云涛) 中文pdf扫描版免费下载</a> </li>
+                                                    <li><a href="1549266517217.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;《Java经典编程300例》PDF 免费下载 </a> </li>
+                                                    <li><a href="1549792035945.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;图解Java多线程设计模式 (结城浩著) 中文pdf扫描版免费下载</a> </li>
+                                                    <li><a href="1549448628966.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;《Java并发编程之美》 PDF免费下载</a> </li>
+                                                    <li><a href="1549605948817.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Java线程与并发编程实践 中文完整pdf扫描版免费下载</a> </li>
+                                                    <li><a href="1549533619096.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Spring5高级编程（第5版）PDF 下载</a> </li>
+                                                    <li><a href="1549792605089.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;精通Spring 4.X:企业应用开发实战 (陈雄华) 完整版 高清pdf扫描版免费下载</a> </li>
+                                                    <li><a href="1550667285971.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;访问谷歌的浏览器扩展应用</a> </li>
+                                              </ul>
+                                    </div>
+                               </div>
+                      <script>
+                          $("#artiurl").html("文章地址："+location.href);
+
+
+                      </script>
+
+                       </div></div>
+
+                </div>
+
+               <div  >
+<div id="cta" class="layui-collapse layui-panel layui-article">
+       <div class="layui-colla-item">
+               <div class="layui-colla-content layui-show layui-article comment">
+                       <fieldset class="layui-elem-field layui-field-title">
+                               <legend>随便说两句</legend>
+                               <div class="layui-field-box">
+                                       <label for="comment-input"></label>
+                                           <textarea id="comment-input" style="display: none;"></textarea>
+                                  </div>
+                               
+                               <a class="layui-btn layui-btn-sm layui-btn-danger" style="float: right;width: 120px;"  href="#"  onclick="javascript:beforeLogin()" id="beforeLogin"><i class="fa fa-qq"></i> 请先登录</a>
+                           </fieldset>
+                   </div>
+           </div>
+    </div>
+</div>
+<script>
+    function beforeLogin() {
+        var url=window.location.href;
+        window.open('/api/qq?url='+url,'_self');
+    }
+
+</script>
+
+               <blockquote id="cccc" class="layui-elem-quote layui-mt20" style="border-left: 5px solid #F44336;"><span style="color:#FF5722;">遵守国家法律法规，请勿回复无意义内容，请不要回复嵌套过多的楼层！</span></blockquote>
+               <div class="comment-list">
+
+</div>
+
+
+
+
+           </div>
+               <!--<div class="layui-col-md3" id="article-app">-->
+                       <!--<div id="affix-side">-->
+                           <!--<div th:replace="frontend/fragment/callme :: callme" ></div>-->
+                           <!--&lt;!&ndash;<div class="layui-tab layui-tab-card layui-master-recommend" >&ndash;&gt;-->
+                               <!--&lt;!&ndash;<div class="layui-tab-content select-none">&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<h3 class="tit">时光悄然</h3>&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<div class="layui-inline" id="test22"></div>&ndash;&gt;-->
+                               <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--<div th:replace ="frontend/fragment/guidang" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/imageinfo" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/cate" ></div>-->
+                           <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相关文章'})" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/image :: image"></div>-->
+                           <!--</div>-->
+                   <!--</div>-->
+           </div>
+    </div>
+
+
+    <footer >
+    <div class="footer"><p>
+	<span><strong>友情链接:</strong><strong>&nbsp;</strong> &nbsp;&nbsp;</span><a class="ke-insertfile" href="https://www.layui.com/" target="_blank">layui</a><span>&nbsp;&nbsp;</span>&nbsp;<a class="ke-insertfile" href="http://www.shuyong.net/" target="_blank">舍力博客</a>&nbsp;&nbsp;<a class="ke-insertfile" href="javascript:;" id="friend">申请友链</a> 
+</p>
+<p>
+	2018-2019 nonelonely.com | 网站备案号：<a class="ke-insertfile" href="http://www.miitbeian.gov.cn/" target="_blank">闽ICP备18026034号-1</a> 
+</p>
+<p>
+	<br />
+</p></div>
+
+    <div class="layui-hide-xs" style="position: fixed;left: 100px; bottom: 100px; z-index: 999999;" id="robot" data-method="robot">
+        <div class="layui-layer-tips" ><div id="" class="layui-layer-content" style="background-color: rgb(114, 193, 236);width: 150px">Hi 我是小码，可以点击我问我笑话，天气，智能聊天，故事，查询备案等等。<i class="layui-layer-TipsG layui-layer-TipsT" style="border-right-color:rgb(114, 193, 236);"></i></div><span class="layui-layer-setwin"></span></div>
+        <a href="#" ><img src="../static/assets/img/robot.png" width="100px" alt="Hi 我是小码！" >
+        </a>
+    </div>
+
+
+</footer>
+<script src="../static/plugins/layui/layui.js"></script>
+
+<script>
+    layui.use([ 'layer'], function () {
+        var layer = layui.layer;
+        var $ = layui.jquery;
+        //触发事件
+        var active = {
+            robot: function(){
+                var that = this;
+                $("#robot").css('display','none');
+                //多窗口模式，层叠置顶
+                layer.open({
+                    type: 2,
+                    title:'智能小码',
+                    area: ['600px', '480px'],
+                    content: '/webrobot',
+                    end:function () {
+                        $("#robot").css('display','');
+                    }
+                });
+            },
+            friend: function () {
+                layer.open({
+                    title: '申请友链'
+                    ,content: '发送邮件至：admin@nonelonely.com<br>' +
+                        '邮件标题为：申请书生个人博客友链'
+                });
+            }
+        };
+
+        $('#robot').on('click', function(){
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+        $('#friend').on('click', function(){
+            var othis = $(this), method = 'friend';
+            active[method] ? active[method].call(this, othis) : '';
+        });
+
+
+        // var la;
+            // la = layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot',
+            //     {
+            //         tips: [1, '#3595CC'],
+            //         end: function () {
+            //             if($("#robot").is(":visible")) {
+            //                 la = layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot',
+            //                     {tips: [1, '#3595CC']})
+            //             }
+            //         }
+            //     });
+            // window.setInterval(" if($('#robot').is(':visible')) {la=layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot', { tips: [1, '#3595CC'],end : function(){ la=layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot', {tips: [1, '#3595CC']});}});}", 10000*6 );
+
+    });
+</script>
+
+</div>
+
+
+
+
+<script>
+    var articleId=1549448628966;
+    var su=null ;
+    $(function(){
+        $(".comment-list").addCommentList({data:[],add:""});
+        $("#comment").click(function(){
+            var obj = new Object();
+            obj.img="images/img.html";
+            obj.replyName="匿名";
+            obj.content=$("#content").val();
+            obj.browse="深圳";
+            obj.osname="win10";
+            obj.replyBody="";
+            $(".comment-list").addCommentList({data:[],add:obj});
+        });
+    })
+
+    var layer;
+    var layedit;
+    var index;
+    layui.use(['layedit', 'laypage', 'laydate', 'element','layer'], function () {
+        layer = layui.layer;
+        var element = layui.element;
+        layedit = layui.layedit;
+        // var laydate = layui.laydate;
+        // //不出现底部栏
+        // laydate.render({
+        //     elem: '#test22'
+        //     ,showBottom: false
+        //     ,position: 'static'
+        //     ,calendar: true
+        //     ,theme: '#a7a4a4'
+        // });
+
+       index= layedit.build('comment-input', {
+            tool: ['face', '|', 'left', 'center', 'right', 'link', 'unlink']
+            , height: 150
+        });
+        //相册
+        if($(window).width() > 750){
+            layer.photos({
+                photos: '.photos'
+                ,zIndex: 9999999999
+                ,anim: -1
+            });
+        } else {
+            $('body').on('click', '.photos img', function(){
+                window.open(this.src);
+            });
+        }
+
+            layer.open({
+                title: '目录',
+                type: 1,
+                offset: 'r',
+                shade: 0,
+                closeBtn: 2,
+                content: $(".markdown-toc")
+            });
+
+        // $('#affix-side').hcSticky({
+        //     stickTo: '#blog-body'
+        // });
+
+    });
+    function submit() {
+
+        var osname = detectOS();
+
+        var obj = new Object();
+        if (su) {
+           obj.img = su.avatar;
+           obj.replyName = su.nickname;
+        }
+        obj.content=layedit.getContent(index);
+        obj.browse=navigator.appName;
+        obj.osname=osname;
+        obj.time=new Date();
+        obj.replyBody="";
+
+        obj.comment= obj.content;
+        if(!obj.comment){
+            layer.msg('不能为空');
+            return false;
+        }
+        var indexc = layer.load();
+        obj.userId=su.id;
+        obj.user=su.id;
+        obj.articleId=articleId;
+        obj.enable=true;
+        obj.parentId=0;
+
+         obj.time =new Date();
+
+
+
+
+        $.post("/token/comment/sub",obj, function (resp) {
+            layer.close(indexc);
+            $(window.frames["LAY_layedit_1"].document).find("body").html('');
+            layer.msg(resp.message);
+            setTimeout(function () {
+                if (resp.code === 200) {
+                    $(".comment-list").addCommentList({data:[],add:obj});
+                }
+            }, 1000);
+        });
+
+    };
+
+    function emotion() {
+        var uid = "guest";
+        if (BMY.getCookie("article::" + 1549448628966 + "::" + uid) != null) {
+            layer.msg("近期您已经点过赞，感谢您的支持！");
+        } else {
+            $.post("/article/approve", {articleId: 1549448628966}, function (json) {
+                if (json.code === BMY.status.ok) {
+                    BMY.setCookie("article::" + 1549448628966+ "::" + uid, "noteblog system");
+                  //  that.approve++;
+                    $('#za').html('赞 (147)')
+                    layer.msg("谢谢您的支持！");
+                }
+            })
+        }
+    }
+    function money  (alipay, wechat) {
+        alipay = "#\/static\/assets\/img\/wechat.png";
+        wechat="#\/static\/assets\/img\/alipay.png";
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['640px', '300px'],
+            shadeClose: true,
+            skin: 'text-center',
+            content:
+                '<div class="layui-fluid">' +
+                '   <div class="layui-row layui-mt20">' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + wechat + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">微信</p>' +
+                '       </div>' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + alipay + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">支付宝</p>' +
+                '       </div>' +
+                '   </div> ' +
+                '</div>'
+        });
+    }
+
+
+
+
+</script>
+<script src="../static/assets/js/jquery.comment.js" ></script>
+</body>
+
+<!-- Mirrored from www.nonelonely.com/article/1549448628966 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:02:15 GMT -->
+</html>

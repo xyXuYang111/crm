@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Mirrored from www.nonelonely.com/article/1556813069557 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:01:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+
+    <title>分享本网站的个人博客模板，程序员前端个人博客模板- 书生个人博客</title>
+    <link href="../static/plugins/editormd/css/editormd.min.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+<meta name="baidu_union_verify" content="3e514e79dc5e7201b9bee186137e9562">
+<meta name="keywords" content="个人博客模板,创建个人博客模板,前端个人博客模板">
+
+<meta name="description" content="由于前段时间有人叫我分享一下个人博客模板，于是我今天有空就整理了一波，分享出了4个主要页面，分别是主页，文章页，和留言页以及笔记页，还有多分享了多张古风墨水的图片。留言是树形结构，文章页支持亮字，是IT，程序员博客必备的个人博客模板。截图如下主页:文章页留言页笔记页下载地址:链">
+
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../static/plugins/layui/css/layui.css">
+<link rel="stylesheet" href="../static/plugins/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../static/assets/css/frontend/base.css">
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "../../hm.baidu.com/hm6618.js?c07ddd5b98c69450ebd8e255627f70b0";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <link rel="canonical" href="1556813069557.html"/>
+    <script src="../../msite.baidu.com/sdk/cb688.js?appid=1622832448885693"></script>
+    <script src="../static/plugins/jquery/jquery.min.js"></script>
+     <style>
+         @media screen and (max-width: 767px) {
+             .layui-layer-page {
+                 display: none;
+             }
+         }
+
+         .markdown-body.layui-layer-content {
+             padding: 20px;
+             /*background-image: url("/static/assets/img/long.png");*/
+         }
+         .markdown-body  .layui-layer-title{
+             background-color: #e4e4e400;
+         }
+         .markdown-body  .layui-layer{
+             background-color: #e4e4e4;
+             background-image: url("../static/assets/img/long.png") ;
+             background-size: 100% 100%;
+         }
+         .markdown-body .layui-layer-content {
+
+            padding: 20px;
+         }
+
+     </style>
+
+</head>
+<body class="animated fadeIn">
+
+<div class="wrapper" >
+    <header>
+    <div class="headtop"></div>
+    <div class="contenttop">
+        <div class="logo f_l"> Java码猿-书生个人博客</div>
+        <div class="search f_r">
+            <input name="keyboard"  id="bdcsMain" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+            <input name="Submit" class="input_submit" onclick="window.open('http://zhannei.baidu.com/cse/search?s=6583887351044514798&entry=1&q='+document.getElementById('bdcsMain').value)" value="搜索" type="button">
+            <!--<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=6583887351044514798' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>-->
+            <ul class="layui-nav" style="background-color: rgba(0,0,0,0);" >
+                
+                
+
+                <li  class="layui-nav-item"><a href="#"  style="color: #000;" onclick="goto()" title="QQ登入" class="iconfont icon-qq"></a>
+                </li>
+            </ul>
+
+
+        </div>
+        <div class="blank"></div>
+
+        <nav>
+            <div  class="navigation">
+                <ul class="menu">
+                    <li><a href="../index.html">网站首页</a></li>
+                    <li><a href="#">技术文章</a>
+                        <ul >
+                            <li><a  href="../pages748a.html?cateId=1">Spring系列</a></li>
+                            <li><a  href="../pages3c7b.html?cateId=6">前端开发</a></li>
+                            <li><a  href="../pages4ead.html?cateId=7">软件安装</a></li>
+                            <li><a  href="../pages8396.html?cateId=9">Java语法</a></li>
+                            <li><a  href="../pagesff6a.html?cateId=10">资源下载</a></li>
+                            <li><a  href="../pagesad9e.html?cateId=12">ORM框架</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="../note.html">我的日记</a> </li>
+                    <li><a href="../msg.html">给我留言</a> </li>
+                    <li><a href="../about.html">关于</a></li>
+                </ul>
+            </div>
+        </nav>
+        <SCRIPT type=text/javascript>
+            // Navigation Menu
+            $(function() {
+                $(".menu ul").css({display: "none"}); // Opera Fix
+                $(".menu li").hover(function(){
+                    $(this).find('ul:first').css({visibility: "visible",display: "none"}).slideDown("normal");
+                },function(){
+                    $(this).find('ul:first').css({visibility: "hidden"});
+                });
+            });
+
+            function  search() {
+                var s=$('#keyboard').val();
+                location.href = s === "" ? "/" : "/pages?searchStr=" + s;
+            };
+            function goto () {
+                var url = window.location.href;
+                var winObj = window.open('/api/qq?url=' + url, '_self');
+            }
+        </SCRIPT>
+
+    </div>
+</header>
+    <div class="jztop"></div>
+
+    <!--<bmy-article-page :alipay="params.alipay" :wechat="params.wechat_pay" :su="su">-->
+        <!--<div th:insert ="frontend/fragment/articlepage :: article"  slot="article"></div>-->
+        <!--<div  th:insert="frontend/fragment/comment :: comment" slot="post"></div>-->
+
+        <!--<bmy-comment-list slot="comment" :comments="comments" :tips="params.comment_notice"-->
+                          <!--:re="params.all_comment_open == 1 && article.commented"></bmy-comment-list>-->
+       <!--<bmy-search slot="search"></bmy-search>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相似文章'})" slot="similar"></div>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${lots},${'热度文章'})" slot="lot"></div>-->
+    <!--</bmy-article-page>-->
+
+    <div id="blog-body" class="layui-container">
+       <div class="layui-row layui-col-space10">
+           <div id="blog-info" class="layui-col-md12">
+                <div class="layui-collapse layui-panel layui-article photos" >
+
+                     <div  ><div class="layui-colla-item">
+                    <h2 class="nh1"><span>您现在的位置是：<a href="../index.html" target="_blank">网站首页</a>>><a href="#" target="_blank">信息浏览</a>
+                    </span><b>文章详情</b></h2>
+                          <div class="layui-colla-content layui-show layui-article">
+                                   <fieldset class="layui-elem-field layui-field-title layui-article-page-title">
+                                       <legend class="center-to-head" align="center">分享本网站的个人博客模板，程序员前端个人博客模板</legend>
+                                      </fieldset>
+                                  <div class="layui-text layui-blog-body">
+                                           <div class="layui-row">
+                                                  <div class="layui-col-md6 layui-col-md-offset3 text-center blog-base-info">
+                                                           <span><i class="fa fa-clock-o" ></i>2019-05-03 00:04 </span>
+                                                           <span><i class="fa fa-user-o"></i> <span style="color: #FF5722;">许多年以后</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-renzhengkaobei"></use></svg></span>
+                                                          <span><i class="fa fa-comment-o"></i></span>
+                                                           <span><i class="fa fa-eye"></i> 1290</span>
+                                                       </div>
+                                               </div>
+                                      <!-- Baidu Button BEGIN -->
+                                           <!--<div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">-->
+                                                  <!--<span class="bds_more">分享到：</span>-->
+                                                  <!--<a class="bds_qzone"></a>-->
+                                                  <!--<a class="bds_tsina"></a>-->
+                                                  <!--<a class="bds_tqq"></a>-->
+                                                  <!--<a class="bds_renren"></a>-->
+                                                  <!--<a class="bds_t163"></a>-->
+                                                  <!--<a class="shareCount"></a>-->
+                                          <!--</div>-->
+                                          <!--<script type="text/javascript" id="bdshare_js" data="type=tools&uid=6701193" ></script>-->
+                                          <!--<script type="text/javascript" id="bdshell_js"></script>-->
+                                          <!--<script type="text/javascript">-->
+                                              <!--document.getElementById("bdshell_js").src = "https://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)-->
+                                          <!--</script>-->
+                                      <!-- Baidu Button END -->
+                                           <hr>
+                                           <div class="content detail markdown-body editormd-preview-container editormd-preview-active"><blockquote>
+<p>由于前段时间有人叫我分享一下个人博客模板，于是我今天有空就整理了一波，分享出了4个主要页面，分别是主页，文章页，和留言页以及笔记页，还有多分享了多张古风墨水的图片。留言是树形结构，文章页支持亮字，是IT，程序员博客必备的个人博客模板。</p>
+</blockquote>
+<p><strong>截图如下</strong></p>
+<p><strong>主页:</strong><br><a href="#"><img src="../../s2.ax1x.com/2019/05/02/ENGMJx.md.png" alt="ENGMJx.md.png"></a><br><strong>文章页</strong><br><a href="#"><img src="../../s2.ax1x.com/2019/05/02/ENG1SK.md.png" alt="ENG1SK.md.png"></a><br><strong>留言页</strong><br><a href="#"><img src="../../s2.ax1x.com/2019/05/02/ENGKF1.md.png" alt="ENGKF1.md.png"></a><br><strong>笔记页</strong><br><a href="#"><img src="../../s2.ax1x.com/2019/08/02/ed6F8f.md.png" alt="ed6F8f.md.png"></a><br>下载地址:</p>
+<p>链接：<a href="https://pan.baidu.com/s/1_H7uWoyhZX1MK5TIgkdhIw">https://pan.baidu.com/s/1_H7uWoyhZX1MK5TIgkdhIw</a><br>提取码：89co </p>
+<p>如果对你有帮助，请你在下方留言，好让我知道，谢谢!</p>
+</div>
+                                      </div>
+                                   <div class="layui-row text-center layui-mt20">
+                                           
+                                           <div class="layui-btn layui-btn-danger" onclick="emotion()"><i class="fa fa-thumbs-o-up" id="za"> 赞 (43)</i></div>
+                                       </div>
+                                   <div class="layui-row layui-mt20">
+                                         <blockquote class="layui-elem-quote text-center " style="border: none;">
+                                                  <span class="layui-show-md-inline-block layui-hide"  >文章出处：书生个人博客</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                   <span class="layui-show-md-inline-block layui-hide" id="artiurl"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                  <span>转载注明下哦！o(≧v≦)o~~</span>
+                                           </blockquote>
+                                    </div>
+                                 <div class="layui-row layui-mt20">
+                                         <p class="blog-tags">
+                                              标签：
+                                                       <span >个人博客模板</span><span >创建个人博客模板</span><span >前端个人博客模板</span>
+
+                                               </p>
+                                 </div>
+                                 <div class="layui-row layui-col-space20 layui-mt20 article-page-similar">
+                                           <p>相似文章：</p>
+                                            <hr>
+                                             <ul>
+                                                    <li><a href="1551347280419.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;tomcat,nginx,SpringBoot中启动gzip压缩优化网站</a> </li>
+                                                    <li><a href="1566354006050.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;解决canvas的fillText绘制文本时无法清空上次文本造成重叠的问题</a> </li>
+                                                    <li><a href="1545894655813.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;win10运行vmware workstation14黑屏的完美解决方法</a> </li>
+                                                    <li><a href="1551716918682.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Nginx面试中最常见的18道题</a> </li>
+                                                    <li><a href="1544457036686.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;WIN10 自带功能拨号连接下开启移动热点</a> </li>
+                                                    <li><a href="1556185183575.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;在VMware Workstation虚拟机的linux系统和 CentOS系统配置动态网络IP和静态网络IP</a> </li>
+                                                    <li><a href="1550139661320.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;解决C:\Program Files\TortoiseSVN\bin\SendRpt.exe not found的问题</a> </li>
+                                                    <li><a href="1563978742701.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;javaScript 获取 当前时间 时间差 时间戳 倒计时的方法</a> </li>
+                                                    <li><a href="1556191655033.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Redis的下载和安装与集群的配置解决redis requiresRuby version &gt;= 2.2.2的问题</a> </li>
+                                                    <li><a href="1556167621636.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;linux的Centos系统开放特定端口，关闭防火墙，解决Centos7没有iptables的问题</a> </li>
+                                              </ul>
+                                    </div>
+                               </div>
+                      <script>
+                          $("#artiurl").html("文章地址："+location.href);
+
+
+                      </script>
+
+                       </div></div>
+
+                </div>
+
+               <div  >
+<div id="cta" class="layui-collapse layui-panel layui-article">
+       <div class="layui-colla-item">
+               <div class="layui-colla-content layui-show layui-article comment">
+                       <fieldset class="layui-elem-field layui-field-title">
+                               <legend>随便说两句</legend>
+                               <div class="layui-field-box">
+                                       <label for="comment-input"></label>
+                                           <textarea id="comment-input" style="display: none;"></textarea>
+                                  </div>
+                               
+                               <a class="layui-btn layui-btn-sm layui-btn-danger" style="float: right;width: 120px;"  href="#"  onclick="javascript:beforeLogin()" id="beforeLogin"><i class="fa fa-qq"></i> 请先登录</a>
+                           </fieldset>
+                   </div>
+           </div>
+    </div>
+</div>
+<script>
+    function beforeLogin() {
+        var url=window.location.href;
+        window.open('/api/qq?url='+url,'_self');
+    }
+
+</script>
+
+               <blockquote id="cccc" class="layui-elem-quote layui-mt20" style="border-left: 5px solid #F44336;"><span style="color:#FF5722;">遵守国家法律法规，请勿回复无意义内容，请不要回复嵌套过多的楼层！</span></blockquote>
+               <div class="comment-list">
+
+</div>
+
+
+
+
+           </div>
+               <!--<div class="layui-col-md3" id="article-app">-->
+                       <!--<div id="affix-side">-->
+                           <!--<div th:replace="frontend/fragment/callme :: callme" ></div>-->
+                           <!--&lt;!&ndash;<div class="layui-tab layui-tab-card layui-master-recommend" >&ndash;&gt;-->
+                               <!--&lt;!&ndash;<div class="layui-tab-content select-none">&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<h3 class="tit">时光悄然</h3>&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<div class="layui-inline" id="test22"></div>&ndash;&gt;-->
+                               <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--<div th:replace ="frontend/fragment/guidang" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/imageinfo" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/cate" ></div>-->
+                           <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相关文章'})" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/image :: image"></div>-->
+                           <!--</div>-->
+                   <!--</div>-->
+           </div>
+    </div>
+
+
+    <footer >
+    <div class="footer"><p>
+	<span><strong>友情链接:</strong><strong>&nbsp;</strong> &nbsp;&nbsp;</span><a class="ke-insertfile" href="https://www.layui.com/" target="_blank">layui</a><span>&nbsp;&nbsp;</span>&nbsp;<a class="ke-insertfile" href="http://www.shuyong.net/" target="_blank">舍力博客</a>&nbsp;&nbsp;<a class="ke-insertfile" href="javascript:;" id="friend">申请友链</a> 
+</p>
+<p>
+	2018-2019 nonelonely.com | 网站备案号：<a class="ke-insertfile" href="http://www.miitbeian.gov.cn/" target="_blank">闽ICP备18026034号-1</a> 
+</p>
+<p>
+	<br />
+</p></div>
+
+    <div class="layui-hide-xs" style="position: fixed;left: 100px; bottom: 100px; z-index: 999999;" id="robot" data-method="robot">
+        <div class="layui-layer-tips" ><div id="" class="layui-layer-content" style="background-color: rgb(114, 193, 236);width: 150px">Hi 我是小码，可以点击我问我笑话，天气，智能聊天，故事，查询备案等等。<i class="layui-layer-TipsG layui-layer-TipsT" style="border-right-color:rgb(114, 193, 236);"></i></div><span class="layui-layer-setwin"></span></div>
+        <a href="#" ><img src="../static/assets/img/robot.png" width="100px" alt="Hi 我是小码！" >
+        </a>
+    </div>
+
+
+</footer>
+<script src="../static/plugins/layui/layui.js"></script>
+
+<script>
+    layui.use([ 'layer'], function () {
+        var layer = layui.layer;
+        var $ = layui.jquery;
+        //触发事件
+        var active = {
+            robot: function(){
+                var that = this;
+                $("#robot").css('display','none');
+                //多窗口模式，层叠置顶
+                layer.open({
+                    type: 2,
+                    title:'智能小码',
+                    area: ['600px', '480px'],
+                    content: '/webrobot',
+                    end:function () {
+                        $("#robot").css('display','');
+                    }
+                });
+            },
+            friend: function () {
+                layer.open({
+                    title: '申请友链'
+                    ,content: '发送邮件至：admin@nonelonely.com<br>' +
+                        '邮件标题为：申请书生个人博客友链'
+                });
+            }
+        };
+
+        $('#robot').on('click', function(){
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+        $('#friend').on('click', function(){
+            var othis = $(this), method = 'friend';
+            active[method] ? active[method].call(this, othis) : '';
+        });
+
+
+        // var la;
+            // la = layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot',
+            //     {
+            //         tips: [1, '#3595CC'],
+            //         end: function () {
+            //             if($("#robot").is(":visible")) {
+            //                 la = layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot',
+            //                     {tips: [1, '#3595CC']})
+            //             }
+            //         }
+            //     });
+            // window.setInterval(" if($('#robot').is(':visible')) {la=layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot', { tips: [1, '#3595CC'],end : function(){ la=layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot', {tips: [1, '#3595CC']});}});}", 10000*6 );
+
+    });
+</script>
+
+</div>
+
+
+
+
+<script>
+    var articleId=1556813069557;
+    var su=null ;
+    $(function(){
+        $(".comment-list").addCommentList({data:[{"id":61,"parentId":0,"userId":1,"useredId":null,"content":"\u5F88\u68D2<img src=\"https:\/\/www.nonelonely.com\/static\/plugins\/layui\/images\/face\/56.gif\" alt=\"[\u8D5E]\">","img":"\/upfiles\/img\/2019-06-30\/fe3e1c19-d6a8-4f5b-9287-85a7ad93cb67.png","time":"2019-06-26T13:32:43.473","address":"\u4E2D\u56FD\u798F\u5EFA\u53A6\u95E8","beReplyName":"","replyName":"\u8BB8\u591A\u5E74\u4EE5\u540E","osname":" win10\u7CFB\u7EDF","browse":"Mozilla","replyBody":null},{"id":64,"parentId":0,"userId":46,"useredId":null,"content":"\u975E\u5E38\u559C\u6B22\u60A8\u7684\u8FD9\u4E2A\u535A\u5BA2\uFF0C\u80FD\u5206\u4EAB\u4E0B\u65E5\u8BB0\u7684\u9875\u9762\u5417","img":"https:\/\/thirdqq.qlogo.cn\/g?b=oidb\u0026k=VIolfQA0EIWSa7BMhF4MXw\u0026s=100\u0026t=1554117969","time":"2019-07-22T11:38:46.668","address":"\u4E2D\u56FD\u798F\u5EFA\u798F\u5DDE","beReplyName":"","replyName":"\u53F3\u7738\u261E","osname":" win10\u7CFB\u7EDF","browse":"Mozilla","replyBody":[{"id":65,"parentId":64,"userId":1,"useredId":46,"content":"\u53EF\u4EE5  \u665A\u4E0A\u6211\u56DE\u53BB\u91CD\u65B0\u6574\u7406\u4E00\u4EFD","img":"\/upfiles\/img\/2019-06-30\/fe3e1c19-d6a8-4f5b-9287-85a7ad93cb67.png","time":"2019-07-22T13:33:29.89","address":"\u4E2D\u56FD\u798F\u5EFA\u53A6\u95E8","beReplyName":"\u53F3\u7738\u261E","replyName":"\u8BB8\u591A\u5E74\u4EE5\u540E","osname":" win10\u7CFB\u7EDF","browse":"Mozilla","replyBody":null},{"id":66,"parentId":64,"userId":46,"useredId":1,"content":"\u611F\u8C22\uFF0C\u6211\u91CD\u65B0\u4E0B\u4E86\u4EFD\uFF0C\u597D\u50CF\u8FD8\u662F\u6CA1\u6709\u65E5\u8BB0\u9875\u9762\u7684\u4EE3\u7801","img":"https:\/\/thirdqq.qlogo.cn\/g?b=oidb\u0026k=VIolfQA0EIWSa7BMhF4MXw\u0026s=100\u0026t=1554117969","time":"2019-08-01T11:55:01.513","address":"\u4E2D\u56FD\u798F\u5EFA\u798F\u5DDE","beReplyName":"\u8BB8\u591A\u5E74\u4EE5\u540E","replyName":"\u53F3\u7738\u261E","osname":" win10\u7CFB\u7EDF","browse":"Mozilla","replyBody":null},{"id":67,"parentId":64,"userId":37,"useredId":46,"content":"\u554A\u554A\u554A  \u4E0D\u597D\u610F\u601D  \u516C\u53F8\u7F51\u4E0D\u80FD\u4E0A\u7F51\u76D8\uFF0C\u4ECA\u665A\u56DE\u53BB\u63D0\u4EA4 \uFF0C\u6211\u8FD8\u4F1A\u591A\u4E0A\u4F2010\u591A\u5F20\u53E4\u98CE\u58A8\u6C34\u7684\u56FE\u7247","img":"https:\/\/thirdqq.qlogo.cn\/g?b=oidb\u0026k=Cw5ZpeXibht9libZm50wS9OQ\u0026s=100","time":"2019-08-01T14:05:33.097","address":"\u4E2D\u56FD\u798F\u5EFA\u53A6\u95E8","beReplyName":"\u53F3\u7738\u261E","replyName":"\u6211\u7684\u7535\u8111","osname":" win10\u7CFB\u7EDF","browse":"Mozilla","replyBody":null},{"id":69,"parentId":64,"userId":1,"useredId":46,"content":"\u5DF2\u7ECF\u4E0A\u4F20\u4E86","img":"\/upfiles\/img\/2019-06-30\/fe3e1c19-d6a8-4f5b-9287-85a7ad93cb67.png","time":"2019-08-01T21:56:57.573","address":"\u672A\u77E5\u661F\u7403\u7684","beReplyName":"\u53F3\u7738\u261E","replyName":"\u8BB8\u591A\u5E74\u4EE5\u540E","osname":" win10\u7CFB\u7EDF","browse":"Mozilla","replyBody":null},{"id":70,"parentId":64,"userId":46,"useredId":1,"content":"\u6536\u5230\u3002\u611F\u8C22","img":"https:\/\/thirdqq.qlogo.cn\/g?b=oidb\u0026k=VIolfQA0EIWSa7BMhF4MXw\u0026s=100\u0026t=1554117969","time":"2019-08-02T09:16:03.103","address":"\u4E2D\u56FD\u798F\u5EFA\u798F\u5DDE","beReplyName":"\u8BB8\u591A\u5E74\u4EE5\u540E","replyName":"\u53F3\u7738\u261E","osname":" win10\u7CFB\u7EDF","browse":"Mozilla","replyBody":null},{"id":71,"parentId":64,"userId":46,"useredId":1,"content":"\u6536\u5230\u3002\u611F\u8C22","img":"https:\/\/thirdqq.qlogo.cn\/g?b=oidb\u0026k=VIolfQA0EIWSa7BMhF4MXw\u0026s=100\u0026t=1554117969","time":"2019-08-02T09:16:10.819","address":"\u672A\u77E5\u661F\u7403\u7684","beReplyName":"\u8BB8\u591A\u5E74\u4EE5\u540E","replyName":"\u53F3\u7738\u261E","osname":" win10\u7CFB\u7EDF","browse":"Mozilla","replyBody":null}]},{"id":72,"parentId":0,"userId":46,"useredId":null,"content":"<p>\u501F\u697C\u95EE\u4E2A\u95EE\u9898\uFF0C\u8FD9\u4E9B\u62A5\u9519\u4FE1\u606F\u524D\u53F0\u662F\u600E\u4E48\u63A5\u6536\u5230\u554A\uFF1F\u8868\u793A\u4E0D\u61C2\u540E\u53F0\u600E\u4E48\u4F20\u56DE\u5230\u9875\u9762<\/p><blockquote class=\"layui-elem-quote layui-bg-white\" style=\"text-align: center;\"><b>\u4EE3\u7801<\/b>\uFF1A401<\/blockquote><blockquote class=\"layui-elem-quote layui-bg-white\" style=\"text-align: center;\"><b>\u65F6\u95F4<\/b>\uFF1A2019-08-14T14:22:22.997<\/blockquote><blockquote class=\"layui-elem-quote layui-elip layui-bg-white\" style=\"text-align: center;\"><b>\u9519\u8BEF<\/b>\uFF1Ame.wuwenbin.noteblogv4.exception.UnauthorizedRoleException: \u8BE5\u8D44\u6E90\u672A\u6388\u6743\u7ED9\u5F53\u524D\u7528\u6237\u7684\u89D2\u8272\uFF0C\u65E0\u6CD5\u8BBF\u95EE\uFF01<\/blockquote><blockquote class=\"layui-elem-quote layui-elip layui-bg-white\" style=\"text-align: center;\"><b>\u4FE1\u606F<\/b>\uFF1A\u8BE5\u8D44\u6E90\u672A\u6388\u6743\u7ED9\u5F53\u524D\u7528\u6237\u7684\u89D2\u8272\uFF0C\u65E0\u6CD5\u8BBF\u95EE\uFF01<\/blockquote><blockquote class=\"layui-elem-quote layui-bg-white\" style=\"text-align: center;\"><b>\u8DEF\u5F84<\/b>\uFF1A<span>https:\/\/www.nonelonely.com\/management\/settings\/common<\/span><\/blockquote>","img":"https:\/\/thirdqq.qlogo.cn\/g?b=oidb\u0026k=VIolfQA0EIWSa7BMhF4MXw\u0026s=100\u0026t=1554117969","time":"2019-08-14T14:24:21.156","address":"\u4E2D\u56FD\u798F\u5EFA\u798F\u5DDE","beReplyName":"","replyName":"\u53F3\u7738\u261E","osname":" win10\u7CFB\u7EDF","browse":"Mozilla","replyBody":[{"id":73,"parentId":72,"userId":37,"useredId":46,"content":"\u9996\u5148\u8981\u770B\u4F60\u662F\u7528\u4EC0\u4E48\u8BED\u8A00\u5F00\u53D1\u7684\uFF0C\u6211\u8FD9\u4E2A\u662Fjava\uFF0C\u8FD9\u4E2A\u7528\u5230\u4E86\u5B89\u5168\u6846\u67B6spring security \uFF0C\u8BBF\u95EE\u9875\u9762\u65F6\u4F1A\u62E6\u622A\u8FDB\u884C\u6743\u9650\u5224\u65AD\uFF0C\u5982\u679C\u6CA1\u6709\u6743\u9650\uFF0C\u5C31\u662F\u629B\u51FA\u5F02\u5E38\uFF0C\u7136\u540E\u6211\u628A\u5F02\u5E38\u7B49\u4FE1\u606F\u8F6C\u53D1\u5230\u8FD9\u4E2A\u5C55\u793A\u7684\u9875\u9762\u5C31\u884C\u5C55\u793A\u3002","img":"https:\/\/thirdqq.qlogo.cn\/g?b=oidb\u0026k=Cw5ZpeXibht9libZm50wS9OQ\u0026s=100","time":"2019-08-14T23:35:23.364","address":"\u4E2D\u56FD\u798F\u5EFA\u53A6\u95E8","beReplyName":"\u53F3\u7738\u261E","replyName":"\u6211\u7684\u7535\u8111","osname":" win10\u7CFB\u7EDF","browse":"Mozilla","replyBody":null}]}],add:""});
+        $("#comment").click(function(){
+            var obj = new Object();
+            obj.img="images/img.html";
+            obj.replyName="匿名";
+            obj.content=$("#content").val();
+            obj.browse="深圳";
+            obj.osname="win10";
+            obj.replyBody="";
+            $(".comment-list").addCommentList({data:[],add:obj});
+        });
+    })
+
+    var layer;
+    var layedit;
+    var index;
+    layui.use(['layedit', 'laypage', 'laydate', 'element','layer'], function () {
+        layer = layui.layer;
+        var element = layui.element;
+        layedit = layui.layedit;
+        // var laydate = layui.laydate;
+        // //不出现底部栏
+        // laydate.render({
+        //     elem: '#test22'
+        //     ,showBottom: false
+        //     ,position: 'static'
+        //     ,calendar: true
+        //     ,theme: '#a7a4a4'
+        // });
+
+       index= layedit.build('comment-input', {
+            tool: ['face', '|', 'left', 'center', 'right', 'link', 'unlink']
+            , height: 150
+        });
+        //相册
+        if($(window).width() > 750){
+            layer.photos({
+                photos: '.photos'
+                ,zIndex: 9999999999
+                ,anim: -1
+            });
+        } else {
+            $('body').on('click', '.photos img', function(){
+                window.open(this.src);
+            });
+        }
+
+            layer.open({
+                title: '目录',
+                type: 1,
+                offset: 'r',
+                shade: 0,
+                closeBtn: 2,
+                content: $(".markdown-toc")
+            });
+
+        // $('#affix-side').hcSticky({
+        //     stickTo: '#blog-body'
+        // });
+
+    });
+    function submit() {
+
+        var osname = detectOS();
+
+        var obj = new Object();
+        if (su) {
+           obj.img = su.avatar;
+           obj.replyName = su.nickname;
+        }
+        obj.content=layedit.getContent(index);
+        obj.browse=navigator.appName;
+        obj.osname=osname;
+        obj.time=new Date();
+        obj.replyBody="";
+
+        obj.comment= obj.content;
+        if(!obj.comment){
+            layer.msg('不能为空');
+            return false;
+        }
+        var indexc = layer.load();
+        obj.userId=su.id;
+        obj.user=su.id;
+        obj.articleId=articleId;
+        obj.enable=true;
+        obj.parentId=0;
+
+         obj.time =new Date();
+
+
+
+
+        $.post("/token/comment/sub",obj, function (resp) {
+            layer.close(indexc);
+            $(window.frames["LAY_layedit_1"].document).find("body").html('');
+            layer.msg(resp.message);
+            setTimeout(function () {
+                if (resp.code === 200) {
+                    $(".comment-list").addCommentList({data:[],add:obj});
+                }
+            }, 1000);
+        });
+
+    };
+
+    function emotion() {
+        var uid = "guest";
+        if (BMY.getCookie("article::" + 1556813069557 + "::" + uid) != null) {
+            layer.msg("近期您已经点过赞，感谢您的支持！");
+        } else {
+            $.post("/article/approve", {articleId: 1556813069557}, function (json) {
+                if (json.code === BMY.status.ok) {
+                    BMY.setCookie("article::" + 1556813069557+ "::" + uid, "noteblog system");
+                  //  that.approve++;
+                    $('#za').html('赞 (44)')
+                    layer.msg("谢谢您的支持！");
+                }
+            })
+        }
+    }
+    function money  (alipay, wechat) {
+        alipay = "#\/static\/assets\/img\/wechat.png";
+        wechat="#\/static\/assets\/img\/alipay.png";
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['640px', '300px'],
+            shadeClose: true,
+            skin: 'text-center',
+            content:
+                '<div class="layui-fluid">' +
+                '   <div class="layui-row layui-mt20">' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + wechat + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">微信</p>' +
+                '       </div>' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + alipay + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">支付宝</p>' +
+                '       </div>' +
+                '   </div> ' +
+                '</div>'
+        });
+    }
+
+
+
+
+</script>
+<script src="../static/assets/js/jquery.comment.js" ></script>
+</body>
+
+<!-- Mirrored from www.nonelonely.com/article/1556813069557 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:01:49 GMT -->
+</html>

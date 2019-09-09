@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Mirrored from www.nonelonely.com/article/1551457724956 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:02:19 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+
+    <title>springMVC和springBoot使用MultipartFile上传文件- 书生个人博客</title>
+    <link href="../static/plugins/editormd/css/editormd.min.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+<meta name="baidu_union_verify" content="3e514e79dc5e7201b9bee186137e9562">
+<meta name="keywords" content="springboot系列,上传文件,原创">
+
+<meta name="description" content="springMVC和SpringBoot使用MultipartFile上传单文件和多个文件非常的容易，springMVC是在ApacheCommensFileUpload的技术上实现了一个MultipartResolver实现类，用到了MultipartFile类来接收参数。于是springMVC上传要ApacheCommensFileUpload的组件，及它的jar包。对于SpringBoot来说不用任何配置，只要在pom文件中添加依赖ApacheCommensFileUpload的组件的就行。但是s">
+
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../static/plugins/layui/css/layui.css">
+<link rel="stylesheet" href="../static/plugins/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../static/assets/css/frontend/base.css">
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "../../hm.baidu.com/hm6618.js?c07ddd5b98c69450ebd8e255627f70b0";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <link rel="canonical" href="1551457724956.html"/>
+    <script src="../../msite.baidu.com/sdk/cb688.js?appid=1622832448885693"></script>
+    <script src="../static/plugins/jquery/jquery.min.js"></script>
+     <style>
+         @media screen and (max-width: 767px) {
+             .layui-layer-page {
+                 display: none;
+             }
+         }
+
+         .markdown-body.layui-layer-content {
+             padding: 20px;
+             /*background-image: url("/static/assets/img/long.png");*/
+         }
+         .markdown-body  .layui-layer-title{
+             background-color: #e4e4e400;
+         }
+         .markdown-body  .layui-layer{
+             background-color: #e4e4e4;
+             background-image: url("../static/assets/img/long.png") ;
+             background-size: 100% 100%;
+         }
+         .markdown-body .layui-layer-content {
+
+            padding: 20px;
+         }
+
+     </style>
+
+</head>
+<body class="animated fadeIn">
+
+<div class="wrapper" >
+    <header>
+    <div class="headtop"></div>
+    <div class="contenttop">
+        <div class="logo f_l"> Java码猿-书生个人博客</div>
+        <div class="search f_r">
+            <input name="keyboard"  id="bdcsMain" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+            <input name="Submit" class="input_submit" onclick="window.open('http://zhannei.baidu.com/cse/search?s=6583887351044514798&entry=1&q='+document.getElementById('bdcsMain').value)" value="搜索" type="button">
+            <!--<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=6583887351044514798' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>-->
+            <ul class="layui-nav" style="background-color: rgba(0,0,0,0);" >
+                
+                
+
+                <li  class="layui-nav-item"><a href="#"  style="color: #000;" onclick="goto()" title="QQ登入" class="iconfont icon-qq"></a>
+                </li>
+            </ul>
+
+
+        </div>
+        <div class="blank"></div>
+
+        <nav>
+            <div  class="navigation">
+                <ul class="menu">
+                    <li><a href="../index.html">网站首页</a></li>
+                    <li><a href="#">技术文章</a>
+                        <ul >
+                            <li><a  href="../pages748a.html?cateId=1">Spring系列</a></li>
+                            <li><a  href="../pages3c7b.html?cateId=6">前端开发</a></li>
+                            <li><a  href="../pages4ead.html?cateId=7">软件安装</a></li>
+                            <li><a  href="../pages8396.html?cateId=9">Java语法</a></li>
+                            <li><a  href="../pagesff6a.html?cateId=10">资源下载</a></li>
+                            <li><a  href="../pagesad9e.html?cateId=12">ORM框架</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="../note.html">我的日记</a> </li>
+                    <li><a href="../msg.html">给我留言</a> </li>
+                    <li><a href="../about.html">关于</a></li>
+                </ul>
+            </div>
+        </nav>
+        <SCRIPT type=text/javascript>
+            // Navigation Menu
+            $(function() {
+                $(".menu ul").css({display: "none"}); // Opera Fix
+                $(".menu li").hover(function(){
+                    $(this).find('ul:first').css({visibility: "visible",display: "none"}).slideDown("normal");
+                },function(){
+                    $(this).find('ul:first').css({visibility: "hidden"});
+                });
+            });
+
+            function  search() {
+                var s=$('#keyboard').val();
+                location.href = s === "" ? "/" : "/pages?searchStr=" + s;
+            };
+            function goto () {
+                var url = window.location.href;
+                var winObj = window.open('/api/qq?url=' + url, '_self');
+            }
+        </SCRIPT>
+
+    </div>
+</header>
+    <div class="jztop"></div>
+
+    <!--<bmy-article-page :alipay="params.alipay" :wechat="params.wechat_pay" :su="su">-->
+        <!--<div th:insert ="frontend/fragment/articlepage :: article"  slot="article"></div>-->
+        <!--<div  th:insert="frontend/fragment/comment :: comment" slot="post"></div>-->
+
+        <!--<bmy-comment-list slot="comment" :comments="comments" :tips="params.comment_notice"-->
+                          <!--:re="params.all_comment_open == 1 && article.commented"></bmy-comment-list>-->
+       <!--<bmy-search slot="search"></bmy-search>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相似文章'})" slot="similar"></div>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${lots},${'热度文章'})" slot="lot"></div>-->
+    <!--</bmy-article-page>-->
+
+    <div id="blog-body" class="layui-container">
+       <div class="layui-row layui-col-space10">
+           <div id="blog-info" class="layui-col-md12">
+                <div class="layui-collapse layui-panel layui-article photos" >
+
+                     <div  ><div class="layui-colla-item">
+                    <h2 class="nh1"><span>您现在的位置是：<a href="../index.html" target="_blank">网站首页</a>>><a href="#" target="_blank">信息浏览</a>
+                    </span><b>文章详情</b></h2>
+                          <div class="layui-colla-content layui-show layui-article">
+                                   <fieldset class="layui-elem-field layui-field-title layui-article-page-title">
+                                       <legend class="center-to-head" align="center">springMVC和springBoot使用MultipartFile上传文件</legend>
+                                      </fieldset>
+                                  <div class="layui-text layui-blog-body">
+                                           <div class="layui-row">
+                                                  <div class="layui-col-md6 layui-col-md-offset3 text-center blog-base-info">
+                                                           <span><i class="fa fa-clock-o" ></i>2019-03-02 00:28 </span>
+                                                           <span><i class="fa fa-user-o"></i> <span style="color: #FF5722;">许多年以后</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-renzhengkaobei"></use></svg></span>
+                                                          <span><i class="fa fa-comment-o"></i></span>
+                                                           <span><i class="fa fa-eye"></i> 2736</span>
+                                                       </div>
+                                               </div>
+                                      <!-- Baidu Button BEGIN -->
+                                           <!--<div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">-->
+                                                  <!--<span class="bds_more">分享到：</span>-->
+                                                  <!--<a class="bds_qzone"></a>-->
+                                                  <!--<a class="bds_tsina"></a>-->
+                                                  <!--<a class="bds_tqq"></a>-->
+                                                  <!--<a class="bds_renren"></a>-->
+                                                  <!--<a class="bds_t163"></a>-->
+                                                  <!--<a class="shareCount"></a>-->
+                                          <!--</div>-->
+                                          <!--<script type="text/javascript" id="bdshare_js" data="type=tools&uid=6701193" ></script>-->
+                                          <!--<script type="text/javascript" id="bdshell_js"></script>-->
+                                          <!--<script type="text/javascript">-->
+                                              <!--document.getElementById("bdshell_js").src = "https://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)-->
+                                          <!--</script>-->
+                                      <!-- Baidu Button END -->
+                                           <hr>
+                                           <div class="content detail markdown-body editormd-preview-container editormd-preview-active"><p>springMVC和SpringBoot使用MultipartFile上传单文件和多个文件非常的容易，springMVC是在Apache Commens FileUpload的技术上实现了一个<strong>MultipartResolver</strong>实现类，用到了MultipartFile类来接收参数。于是springMVC上传要Apache Commens FileUpload的组件，及它的jar包。</p>
+<p>对于SpringBoot来说不用任何配置，只要在pom文件中添加依赖Apache Commens FileUpload的组件的就行。但是spring-boot也自带了org.springframework.web.multipart.MultipartFile，而且我们可以在application. properties配置文件限制上传文件的大小：<br><strong>application. properties文件</strong></p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="com"># 上传文件总的最大值</span></code></li><li class="L1"><code><span class="pln">spring</span><span class="pun">.</span><span class="pln">servlet</span><span class="pun">.</span><span class="pln">multipart</span><span class="pun">.</span><span class="pln">max</span><span class="pun">-</span><span class="pln">request</span><span class="pun">-</span><span class="pln">size</span><span class="pun">=</span><span class="lit">10MB</span></code></li><li class="L2"><code><span class="com"># 单个文件的最大值</span></code></li><li class="L3"><code><span class="pln">spring</span><span class="pun">.</span><span class="pln">servlet</span><span class="pun">.</span><span class="pln">multipart</span><span class="pun">.</span><span class="pln">max</span><span class="pun">-</span><span class="pln">file</span><span class="pun">-</span><span class="pln">size</span><span class="pun">=</span><span class="lit">10MB</span></code></li></ol></pre><p>当然我们可以用java配置来配置MultipartResolver</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="lit">@Bean</span></code></li><li class="L1"><code class="lang-java"><span class="pln">    </span><span class="kwd">public</span><span class="pln"> </span><span class="typ">MultipartResolver</span><span class="pln"> multipartResolver</span><span class="pun">{</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    commonsMultipartResolver multipartResolver</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> commonsMultipartResolver</span><span class="pun">();</span></code></li><li class="L3"><code class="lang-java"><span class="pln">    multipartResolver</span><span class="pun">.</span><span class="pln">setMaxUploadSize</span><span class="pun">(</span><span class="lit">100000</span><span class="pun">);</span><span class="com">//设置上传最大</span></code></li><li class="L4"><code class="lang-java"><span class="pln">    </span><span class="kwd">return</span><span class="pln"> multipartResolver</span><span class="pun">;</span></code></li><li class="L5"><code class="lang-java"></code></li><li class="L6"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<p><strong>因为不是SpringBoot,所以SpringMVC上下文中并没有默认装配MultipartResolver，所以我们要在MVC的配置文件中添加以下配置:</strong></p>
+<p><strong>springmvc-config.xml文件</strong></p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln"> </span><span class="tag">&lt;bean</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"org.springframework.web.multipart.commons.CommonsMultipartResolver"</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">"multipartResolver"</span><span class="tag">&gt;</span></code></li><li class="L1"><code><span class="pln">    </span><span class="com">&lt;!-- 上传文件大小上限，单位为字节（10MB） --&gt;</span></code></li><li class="L2"><code><span class="pln">    -</span><span class="tag">&lt;property</span><span class="pln"> </span><span class="atn">name</span><span class="pun">=</span><span class="atv">"maxUploadSize"</span><span class="tag">&gt;</span></code></li><li class="L3"><code><span class="pln">    </span><span class="tag">&lt;value&gt;</span><span class="pln">10485760</span><span class="tag">&lt;/value&gt;</span></code></li><li class="L4"><code><span class="pln">    </span><span class="tag">&lt;/property&gt;</span></code></li><li class="L5"><code><span class="pln">    </span><span class="com">&lt;!-- 请求的编码格式，必须和jSP的pageEncoding属性一致，以便正确读取表单的内容，默认为ISO-8859-1 --&gt;</span></code></li><li class="L6"><code><span class="pln">    </span><span class="tag">&lt;property</span><span class="pln"> </span><span class="atn">name</span><span class="pun">=</span><span class="atv">"defaultEncoding"</span><span class="tag">&gt;</span></code></li><li class="L7"><code><span class="pln">    </span><span class="tag">&lt;value&gt;</span><span class="pln">UTF-8</span><span class="tag">&lt;/value&gt;</span></code></li><li class="L8"><code><span class="pln">    </span><span class="tag">&lt;/property&gt;</span></code></li><li class="L9"><code><span class="pln">    </span><span class="tag">&lt;/bean&gt;</span></code></li></ol></pre><p>注意:记得添加commons-fileupload的jar包放到类路径下，也可以放在lib目录中。<br><strong>1.普通上传，SpringMVc上传实列:</strong><br>form表单</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pun">&lt;</span><span class="pln">form action</span><span class="pun">=</span><span class="str">"upload"</span><span class="pln"> enctype</span><span class="pun">=</span><span class="str">"multipart/form-data"</span><span class="pln"> method</span><span class="pun">=</span><span class="str">"post"</span><span class="pun">&gt;</span></code></li><li class="L1"><code class="lang-java"><span class="pln">        </span><span class="pun">&lt;</span><span class="pln">table</span><span class="pun">&gt;</span></code></li><li class="L2"><code class="lang-java"><span class="pln">            </span><span class="pun">&lt;</span><span class="pln">tr</span><span class="pun">&gt;</span></code></li><li class="L3"><code class="lang-java"><span class="pln">                </span><span class="pun">&lt;</span><span class="pln">td</span><span class="pun">&gt;文件描述:&lt;/</span><span class="pln">td</span><span class="pun">&gt;</span></code></li><li class="L4"><code class="lang-java"><span class="pln">                </span><span class="pun">&lt;</span><span class="pln">td</span><span class="pun">&gt;&lt;</span><span class="pln">input type</span><span class="pun">=</span><span class="str">"text"</span><span class="pln"> name</span><span class="pun">=</span><span class="str">"description"</span><span class="pun">&gt;&lt;/</span><span class="pln">td</span><span class="pun">&gt;</span></code></li><li class="L5"><code class="lang-java"><span class="pln">            </span><span class="pun">&lt;/</span><span class="pln">tr</span><span class="pun">&gt;</span></code></li><li class="L6"><code class="lang-java"><span class="pln">            </span><span class="pun">&lt;</span><span class="pln">tr</span><span class="pun">&gt;</span></code></li><li class="L7"><code class="lang-java"><span class="pln">                </span><span class="pun">&lt;</span><span class="pln">td</span><span class="pun">&gt;请选择文件:&lt;/</span><span class="pln">td</span><span class="pun">&gt;</span></code></li><li class="L8"><code class="lang-java"><span class="pln">                </span><span class="pun">&lt;</span><span class="pln">td</span><span class="pun">&gt;&lt;</span><span class="pln">input type</span><span class="pun">=</span><span class="str">"file"</span><span class="pln"> name</span><span class="pun">=</span><span class="str">"file"</span><span class="pun">&gt;&lt;/</span><span class="pln">td</span><span class="pun">&gt;</span></code></li><li class="L9"><code class="lang-java"><span class="pln">            </span><span class="pun">&lt;/</span><span class="pln">tr</span><span class="pun">&gt;</span></code></li><li class="L0"><code class="lang-java"><span class="pln">            </span><span class="pun">&lt;</span><span class="pln">tr</span><span class="pun">&gt;</span></code></li><li class="L1"><code class="lang-java"><span class="pln">                </span><span class="pun">&lt;</span><span class="pln">td</span><span class="pun">&gt;&lt;</span><span class="pln">input type</span><span class="pun">=</span><span class="str">"submit"</span><span class="pln"> value</span><span class="pun">=</span><span class="str">"上传"</span><span class="pun">&gt;&lt;/</span><span class="pln">td</span><span class="pun">&gt;</span></code></li><li class="L2"><code class="lang-java"><span class="pln">            </span><span class="pun">&lt;/</span><span class="pln">tr</span><span class="pun">&gt;</span></code></li><li class="L3"><code class="lang-java"><span class="pln">        </span><span class="pun">&lt;/</span><span class="pln">table</span><span class="pun">&gt;</span></code></li><li class="L4"><code class="lang-java"><span class="pln">    </span><span class="pun">&lt;/</span><span class="pln">form</span><span class="pun">&gt;</span></code></li></ol></pre>
+<p>控制层接收</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="lit">@Controller</span></code></li><li class="L1"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">FileUploadController</span><span class="pun">{</span></code></li><li class="L2"><code class="lang-java"></code></li><li class="L3"><code class="lang-java"><span class="pln">    </span><span class="com">// 上传文件会自动绑定到MultipartFile中</span></code></li><li class="L4"><code class="lang-java"><span class="pln">     </span><span class="lit">@RequestMapping</span><span class="pun">(</span><span class="pln">value</span><span class="pun">=</span><span class="str">"/upload"</span><span class="pun">,</span><span class="pln">method</span><span class="pun">=</span><span class="typ">RequestMethod</span><span class="pun">.</span><span class="pln">POST</span><span class="pun">)</span></code></li><li class="L5"><code class="lang-java"><span class="pln">     </span><span class="kwd">public</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> upload</span><span class="pun">(</span><span class="typ">HttpServletRequest</span><span class="pln"> request</span><span class="pun">,</span></code></li><li class="L6"><code class="lang-java"><span class="pln">            </span><span class="lit">@RequestParam</span><span class="pun">(</span><span class="str">"description"</span><span class="pun">)</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> description</span><span class="pun">,</span></code></li><li class="L7"><code class="lang-java"><span class="pln">            </span><span class="lit">@RequestParam</span><span class="pun">(</span><span class="str">"file"</span><span class="pun">)</span><span class="pln"> </span><span class="typ">MultipartFile</span><span class="pln"> file</span><span class="pun">)</span><span class="pln"> </span><span class="kwd">throws</span><span class="pln"> </span><span class="typ">Exception</span><span class="pun">{</span></code></li><li class="L8"><code class="lang-java"></code></li><li class="L9"><code class="lang-java"><span class="pln">        </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="pln">description</span><span class="pun">);</span></code></li><li class="L0"><code class="lang-java"><span class="pln">        </span><span class="com">// 如果文件不为空，写入上传路径</span></code></li><li class="L1"><code class="lang-java"><span class="pln">        </span><span class="kwd">if</span><span class="pun">(!</span><span class="pln">file</span><span class="pun">.</span><span class="pln">isEmpty</span><span class="pun">()){</span></code></li><li class="L2"><code class="lang-java"><span class="pln">            </span><span class="com">// 上传文件路径</span></code></li><li class="L3"><code class="lang-java"><span class="pln">            </span><span class="typ">String</span><span class="pln"> path </span><span class="pun">=</span><span class="pln"> request</span><span class="pun">.</span><span class="pln">getServletContext</span><span class="pun">().</span><span class="pln">getRealPath</span><span class="pun">(</span></code></li><li class="L4"><code class="lang-java"><span class="pln">                    </span><span class="str">"/images/"</span><span class="pun">);</span></code></li><li class="L5"><code class="lang-java"><span class="pln">            </span><span class="com">// 上传文件名</span></code></li><li class="L6"><code class="lang-java"><span class="pln">            </span><span class="typ">String</span><span class="pln"> filename </span><span class="pun">=</span><span class="pln"> file</span><span class="pun">.</span><span class="pln">getOriginalFilename</span><span class="pun">();</span></code></li><li class="L7"><code class="lang-java"><span class="pln">            </span><span class="typ">File</span><span class="pln"> filepath </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">File</span><span class="pun">(</span><span class="pln">path</span><span class="pun">,</span><span class="pln">filename</span><span class="pun">);</span></code></li><li class="L8"><code class="lang-java"><span class="pln">            </span><span class="com">// 判断路径是否存在，如果不存在就创建一个</span></code></li><li class="L9"><code class="lang-java"><span class="pln">            </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(!</span><span class="pln">filepath</span><span class="pun">.</span><span class="pln">getParentFile</span><span class="pun">().</span><span class="pln">exists</span><span class="pun">())</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span></code></li><li class="L0"><code class="lang-java"><span class="pln">                filepath</span><span class="pun">.</span><span class="pln">getParentFile</span><span class="pun">().</span><span class="pln">mkdirs</span><span class="pun">();</span></code></li><li class="L1"><code class="lang-java"><span class="pln">            </span><span class="pun">}</span></code></li><li class="L2"><code class="lang-java"><span class="pln">            </span><span class="com">// 将上传文件保存到一个目标文件当中</span></code></li><li class="L3"><code class="lang-java"><span class="pln">            file</span><span class="pun">.</span><span class="pln">transferTo</span><span class="pun">(</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">File</span><span class="pun">(</span><span class="pln">path</span><span class="pun">+</span><span class="typ">File</span><span class="pun">.</span><span class="pln">separator</span><span class="pun">+</span><span class="pln"> filename</span><span class="pun">));</span></code></li><li class="L4"><code class="lang-java"><span class="pln">            </span><span class="kwd">return</span><span class="pln"> </span><span class="str">"success"</span><span class="pun">;</span></code></li><li class="L5"><code class="lang-java"><span class="pln">        </span><span class="pun">}</span><span class="kwd">else</span><span class="pun">{</span></code></li><li class="L6"><code class="lang-java"><span class="pln">            </span><span class="kwd">return</span><span class="pln"> </span><span class="str">"error"</span><span class="pun">;</span></code></li><li class="L7"><code class="lang-java"><span class="pln">        </span><span class="pun">}</span></code></li><li class="L8"><code class="lang-java"></code></li><li class="L9"><code class="lang-java"><span class="pln">     </span><span class="pun">}</span></code></li><li class="L0"><code class="lang-java"></code></li><li class="L1"><code class="lang-java"></code></li><li class="L2"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<p>SpringMVC会将上传的文件绑定在MultipartFile的对象中，而MultipartFile对象提供各种方法操作文件，还可以用transferTo()方法将文件存在磁盘中。常用的方法:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="kwd">byte</span><span class="pun">[]</span><span class="pln"> getBytes</span><span class="pun">()获取文件数据</span></code></li><li class="L1"><code><span class="typ">String</span><span class="pln"> getContentType</span><span class="pun">()</span><span class="pln"> </span><span class="pun">获取</span><span class="pln">mime</span><span class="pun">信息，如</span><span class="pln">image</span><span class="pun">/</span><span class="pln">jpeg</span></code></li><li class="L2"><code><span class="typ">InputStream</span><span class="pln"> getInputStream </span><span class="pun">获取文件流</span></code></li><li class="L3"><code><span class="typ">String</span><span class="pln"> getName</span><span class="pun">()获取文件名</span></code></li><li class="L4"><code><span class="typ">String</span><span class="pln"> getOriginalFilename</span><span class="pun">()</span><span class="pln"> </span><span class="pun">获取文件原名</span></code></li><li class="L5"><code><span class="pln">transferTo</span><span class="pun">(</span><span class="typ">File</span><span class="pln"> to</span><span class="pun">)</span><span class="pln"> </span><span class="pun">将文件保存到目标文件中</span></code></li></ol></pre><p>注意:表单的method设置为post,enctype为multipart/form-data</p>
+<p><strong>2.当然我们也可以用对象来保存，这样更方便：</strong></p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pun">/</span><span class="pln"> </span><span class="pun">域对象，实现序列化接口</span></code></li><li class="L1"><code><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">User</span><span class="pln"> </span><span class="kwd">implements</span><span class="pln"> </span><span class="typ">Serializable</span><span class="pun">{</span></code></li><li class="L2"><code></code></li><li class="L3"><code><span class="pln">    </span><span class="kwd">private</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> description</span><span class="pun">;</span></code></li><li class="L4"><code><span class="pln">    </span><span class="kwd">private</span><span class="pln"> </span><span class="typ">MultipartFile</span><span class="pln"> file</span><span class="pun">;</span></code></li><li class="L5"><code><span class="pln">    </span><span class="com">//setting方法和getting方法</span></code></li><li class="L6"><code><span class="pun">}</span></code></li></ol></pre><pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="lit">@Controller</span></code></li><li class="L1"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">FileUploadController</span><span class="pun">{</span></code></li><li class="L2"><code class="lang-java"></code></li><li class="L3"><code class="lang-java"><span class="pln">     </span><span class="lit">@RequestMapping</span><span class="pun">(</span><span class="pln">value</span><span class="pun">=</span><span class="str">"/upload"</span><span class="pun">)</span></code></li><li class="L4"><code class="lang-java"><span class="pln">     </span><span class="kwd">public</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> </span><span class="kwd">register</span><span class="pun">(</span><span class="typ">HttpServletRequest</span><span class="pln"> request</span><span class="pun">,</span></code></li><li class="L5"><code class="lang-java"><span class="pln">             </span><span class="lit">@ModelAttribute</span><span class="pln"> </span><span class="typ">User</span><span class="pln"> user</span><span class="pun">,</span></code></li><li class="L6"><code class="lang-java"><span class="pln">             </span><span class="typ">Model</span><span class="pln"> model</span><span class="pun">)</span><span class="kwd">throws</span><span class="pln"> </span><span class="typ">Exception</span><span class="pun">{</span></code></li><li class="L7"><code class="lang-java"></code></li><li class="L8"><code class="lang-java"><span class="pln">        </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="pln">user</span><span class="pun">.</span><span class="pln">getDescription</span><span class="pun">());</span></code></li><li class="L9"><code class="lang-java"></code></li><li class="L0"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li><li class="L1"><code class="lang-java"></code></li><li class="L2"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<p>这样我们就可以把附件和描述保存在User对象中了。</p>
+<p><strong>3.多文件上传接收</strong><br>单文件的话只需要一个变量即，多文件上传的话就将MultipartFile改为数组，然后分别上传保存即可</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="tag">&lt;form</span><span class="pln"> </span><span class="atn">method</span><span class="pun">=</span><span class="atv">"post"</span><span class="pln"> </span><span class="atn">action</span><span class="pun">=</span><span class="atv">"/multiUpload"</span><span class="pln"> </span><span class="atn">enctype</span><span class="pun">=</span><span class="atv">"multipart/form-data"</span><span class="tag">&gt;</span></code></li><li class="L1"><code><span class="pln">    </span><span class="tag">&lt;input</span><span class="pln"> </span><span class="atn">type</span><span class="pun">=</span><span class="atv">"file"</span><span class="pln"> </span><span class="atn">name</span><span class="pun">=</span><span class="atv">"file"</span><span class="tag">&gt;&lt;br&gt;</span></code></li><li class="L2"><code><span class="pln">    </span><span class="tag">&lt;input</span><span class="pln"> </span><span class="atn">type</span><span class="pun">=</span><span class="atv">"file"</span><span class="pln"> </span><span class="atn">name</span><span class="pun">=</span><span class="atv">"file"</span><span class="tag">&gt;&lt;br&gt;</span></code></li><li class="L3"><code><span class="pln">    </span><span class="tag">&lt;input</span><span class="pln"> </span><span class="atn">type</span><span class="pun">=</span><span class="atv">"file"</span><span class="pln"> </span><span class="atn">name</span><span class="pun">=</span><span class="atv">"file"</span><span class="tag">&gt;&lt;br&gt;</span></code></li><li class="L4"><code><span class="pln">    </span><span class="tag">&lt;input</span><span class="pln"> </span><span class="atn">type</span><span class="pun">=</span><span class="atv">"submit"</span><span class="pln"> </span><span class="atn">value</span><span class="pun">=</span><span class="atv">"提交"</span><span class="tag">&gt;</span></code></li><li class="L5"><code><span class="tag">&lt;/form&gt;</span></code></li></ol></pre><pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="lit">@RequestMapping</span><span class="pun">(</span><span class="pln">value</span><span class="pun">=</span><span class="str">"/multiUpload"</span><span class="pun">,</span><span class="pln"> method</span><span class="pun">=</span><span class="typ">RequestMethod</span><span class="pun">.</span><span class="pln">POST </span><span class="pun">)</span></code></li><li class="L1"><code class="lang-java"><span class="pln">    </span><span class="kwd">public</span><span class="pln"> </span><span class="lit">@ResponseBody</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> multipleSave</span><span class="pun">(</span><span class="lit">@RequestParam</span><span class="pun">(</span><span class="str">"file"</span><span class="pun">)</span><span class="pln"> </span><span class="typ">MultipartFile</span><span class="pun">[]</span><span class="pln"> files</span><span class="pun">){</span></code></li><li class="L2"><code class="lang-java"><span class="pln">        </span><span class="typ">String</span><span class="pln"> fileName </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">;</span></code></li><li class="L3"><code class="lang-java"><span class="pln">        </span><span class="typ">String</span><span class="pln"> msg </span><span class="pun">=</span><span class="pln"> </span><span class="str">""</span><span class="pun">;</span></code></li><li class="L4"><code class="lang-java"><span class="pln">        </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">files </span><span class="pun">!=</span><span class="pln"> </span><span class="kwd">null</span><span class="pln"> </span><span class="pun">&amp;&amp;</span><span class="pln"> files</span><span class="pun">.</span><span class="pln">length </span><span class="pun">&gt;</span><span class="lit">0</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L5"><code class="lang-java"><span class="pln">            </span><span class="kwd">for</span><span class="pun">(</span><span class="kwd">int</span><span class="pln"> i </span><span class="pun">=</span><span class="lit">0</span><span class="pln"> </span><span class="pun">;</span><span class="pln">i</span><span class="pun">&lt;</span><span class="pln"> files</span><span class="pun">.</span><span class="pln">length</span><span class="pun">;</span><span class="pln"> i</span><span class="pun">++){</span></code></li><li class="L6"><code class="lang-java"><span class="pln">                </span><span class="kwd">try</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L7"><code class="lang-java"><span class="pln">                    fileName </span><span class="pun">=</span><span class="pln"> files</span><span class="pun">[</span><span class="pln">i</span><span class="pun">].</span><span class="pln">getOriginalFilename</span><span class="pun">();</span></code></li><li class="L8"><code class="lang-java"><span class="pln">                    </span><span class="kwd">byte</span><span class="pun">[]</span><span class="pln"> bytes </span><span class="pun">=</span><span class="pln"> files</span><span class="pun">[</span><span class="pln">i</span><span class="pun">].</span><span class="pln">getBytes</span><span class="pun">();</span></code></li><li class="L9"><code class="lang-java"><span class="pln">                    </span><span class="typ">BufferedOutputStream</span><span class="pln"> buffStream </span><span class="pun">=</span><span class="pln"> </span></code></li><li class="L0"><code class="lang-java"><span class="pln">                            </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">BufferedOutputStream</span><span class="pun">(</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">FileOutputStream</span><span class="pun">(</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">File</span><span class="pun">(</span><span class="str">"/tmp/"</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> fileName</span><span class="pun">)));</span></code></li><li class="L1"><code class="lang-java"><span class="pln">                    buffStream</span><span class="pun">.</span><span class="pln">write</span><span class="pun">(</span><span class="pln">bytes</span><span class="pun">);</span></code></li><li class="L2"><code class="lang-java"><span class="pln">                    buffStream</span><span class="pun">.</span><span class="pln">close</span><span class="pun">();</span></code></li><li class="L3"><code class="lang-java"><span class="pln">                    msg </span><span class="pun">+=</span><span class="pln"> </span><span class="str">"You have successfully uploaded "</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> fileName</span><span class="str">";</span></code></li><li class="L4"><code class="lang-java"><span class="pln">                </span><span class="pun">}</span><span class="pln"> </span><span class="kwd">catch</span><span class="pln"> </span><span class="pun">(</span><span class="typ">Exception</span><span class="pln"> e</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L5"><code class="lang-java"><span class="pln">                    </span><span class="kwd">return</span><span class="pln"> </span><span class="str">"You failed to upload "</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> fileName </span><span class="pun">+</span><span class="pln"> </span><span class="str">": "</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> e</span><span class="pun">.</span><span class="pln">getMessage</span><span class="pun">();</span></code></li><li class="L6"><code class="lang-java"><span class="pln">                </span><span class="pun">}</span></code></li><li class="L7"><code class="lang-java"><span class="pln">            </span><span class="pun">}</span></code></li><li class="L8"><code class="lang-java"><span class="pln">            </span><span class="kwd">return</span><span class="pln"> msg</span><span class="pun">;</span></code></li><li class="L9"><code class="lang-java"><span class="pln">        </span><span class="pun">}</span><span class="pln"> </span><span class="kwd">else</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L0"><code class="lang-java"><span class="pln">            </span><span class="kwd">return</span><span class="pln"> </span><span class="str">"Unable to upload. File is empty."</span><span class="pun">;</span></code></li><li class="L1"><code class="lang-java"><span class="pln">        </span><span class="pun">}</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li><li class="L3"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+</div>
+                                      </div>
+                                   <div class="layui-row text-center layui-mt20">
+                                           
+                                           <div class="layui-btn layui-btn-danger" onclick="emotion()"><i class="fa fa-thumbs-o-up" id="za"> 赞 (7)</i></div>
+                                       </div>
+                                   <div class="layui-row layui-mt20">
+                                         <blockquote class="layui-elem-quote text-center " style="border: none;">
+                                                  <span class="layui-show-md-inline-block layui-hide"  >文章出处：书生个人博客</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                   <span class="layui-show-md-inline-block layui-hide" id="artiurl"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                  <span>转载注明下哦！o(≧v≦)o~~</span>
+                                           </blockquote>
+                                    </div>
+                                 <div class="layui-row layui-mt20">
+                                         <p class="blog-tags">
+                                              标签：
+                                                       <span >springboot系列</span><span >上传文件</span><span >原创</span>
+
+                                               </p>
+                                 </div>
+                                 <div class="layui-row layui-col-space20 layui-mt20 article-page-similar">
+                                           <p>相似文章：</p>
+                                            <hr>
+                                             <ul>
+                                                    <li><a href="1553356568899.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot使用Quartz实现定时器功能</a> </li>
+                                                    <li><a href="1567612549318.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;springboot常见10道面试题</a> </li>
+                                                    <li><a href="1548057271567.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Thymeleaf 如何格式化LocalDate和LocalDatetime类型时间</a> </li>
+                                                    <li><a href="1553441211846.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;解决Could not connect to SMTP host: smtp.qq.com, port: 465,response: -1</a> </li>
+                                                    <li><a href="1563463749150.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot配置Cross解决跨域问题</a> </li>
+                                                    <li><a href="1556289630491.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp; SpringBoot整合Redis单机和整合Redis集群的完整例子</a> </li>
+                                                    <li><a href="1556875889954.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot整合MyBatis的使用</a> </li>
+                                                    <li><a href="1552469919154.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;javaweb的spi 的简单应用</a> </li>
+                                                    <li><a href="1546503121433.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot之@Component，@Bean与@Configuration配置</a> </li>
+                                                    <li><a href="1554548473306.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;开发自己IoC容器</a> </li>
+                                              </ul>
+                                    </div>
+                               </div>
+                      <script>
+                          $("#artiurl").html("文章地址："+location.href);
+
+
+                      </script>
+
+                       </div></div>
+
+                </div>
+
+               <div  >
+<div id="cta" class="layui-collapse layui-panel layui-article">
+       <div class="layui-colla-item">
+               <div class="layui-colla-content layui-show layui-article comment">
+                       <fieldset class="layui-elem-field layui-field-title">
+                               <legend>随便说两句</legend>
+                               <div class="layui-field-box">
+                                       <label for="comment-input"></label>
+                                           <textarea id="comment-input" style="display: none;"></textarea>
+                                  </div>
+                               
+                               <a class="layui-btn layui-btn-sm layui-btn-danger" style="float: right;width: 120px;"  href="#"  onclick="javascript:beforeLogin()" id="beforeLogin"><i class="fa fa-qq"></i> 请先登录</a>
+                           </fieldset>
+                   </div>
+           </div>
+    </div>
+</div>
+<script>
+    function beforeLogin() {
+        var url=window.location.href;
+        window.open('/api/qq?url='+url,'_self');
+    }
+
+</script>
+
+               <blockquote id="cccc" class="layui-elem-quote layui-mt20" style="border-left: 5px solid #F44336;"><span style="color:#FF5722;">遵守国家法律法规，请勿回复无意义内容，请不要回复嵌套过多的楼层！</span></blockquote>
+               <div class="comment-list">
+
+</div>
+
+
+
+
+           </div>
+               <!--<div class="layui-col-md3" id="article-app">-->
+                       <!--<div id="affix-side">-->
+                           <!--<div th:replace="frontend/fragment/callme :: callme" ></div>-->
+                           <!--&lt;!&ndash;<div class="layui-tab layui-tab-card layui-master-recommend" >&ndash;&gt;-->
+                               <!--&lt;!&ndash;<div class="layui-tab-content select-none">&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<h3 class="tit">时光悄然</h3>&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<div class="layui-inline" id="test22"></div>&ndash;&gt;-->
+                               <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--<div th:replace ="frontend/fragment/guidang" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/imageinfo" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/cate" ></div>-->
+                           <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相关文章'})" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/image :: image"></div>-->
+                           <!--</div>-->
+                   <!--</div>-->
+           </div>
+    </div>
+
+
+    <footer >
+    <div class="footer"><p>
+	<span><strong>友情链接:</strong><strong>&nbsp;</strong> &nbsp;&nbsp;</span><a class="ke-insertfile" href="https://www.layui.com/" target="_blank">layui</a><span>&nbsp;&nbsp;</span>&nbsp;<a class="ke-insertfile" href="http://www.shuyong.net/" target="_blank">舍力博客</a>&nbsp;&nbsp;<a class="ke-insertfile" href="javascript:;" id="friend">申请友链</a> 
+</p>
+<p>
+	2018-2019 nonelonely.com | 网站备案号：<a class="ke-insertfile" href="http://www.miitbeian.gov.cn/" target="_blank">闽ICP备18026034号-1</a> 
+</p>
+<p>
+	<br />
+</p></div>
+
+    <div class="layui-hide-xs" style="position: fixed;left: 100px; bottom: 100px; z-index: 999999;" id="robot" data-method="robot">
+        <div class="layui-layer-tips" ><div id="" class="layui-layer-content" style="background-color: rgb(114, 193, 236);width: 150px">Hi 我是小码，可以点击我问我笑话，天气，智能聊天，故事，查询备案等等。<i class="layui-layer-TipsG layui-layer-TipsT" style="border-right-color:rgb(114, 193, 236);"></i></div><span class="layui-layer-setwin"></span></div>
+        <a href="#" ><img src="../static/assets/img/robot.png" width="100px" alt="Hi 我是小码！" >
+        </a>
+    </div>
+
+
+</footer>
+<script src="../static/plugins/layui/layui.js"></script>
+
+<script>
+    layui.use([ 'layer'], function () {
+        var layer = layui.layer;
+        var $ = layui.jquery;
+        //触发事件
+        var active = {
+            robot: function(){
+                var that = this;
+                $("#robot").css('display','none');
+                //多窗口模式，层叠置顶
+                layer.open({
+                    type: 2,
+                    title:'智能小码',
+                    area: ['600px', '480px'],
+                    content: '/webrobot',
+                    end:function () {
+                        $("#robot").css('display','');
+                    }
+                });
+            },
+            friend: function () {
+                layer.open({
+                    title: '申请友链'
+                    ,content: '发送邮件至：admin@nonelonely.com<br>' +
+                        '邮件标题为：申请书生个人博客友链'
+                });
+            }
+        };
+
+        $('#robot').on('click', function(){
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+        $('#friend').on('click', function(){
+            var othis = $(this), method = 'friend';
+            active[method] ? active[method].call(this, othis) : '';
+        });
+
+
+        // var la;
+            // la = layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot',
+            //     {
+            //         tips: [1, '#3595CC'],
+            //         end: function () {
+            //             if($("#robot").is(":visible")) {
+            //                 la = layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot',
+            //                     {tips: [1, '#3595CC']})
+            //             }
+            //         }
+            //     });
+            // window.setInterval(" if($('#robot').is(':visible')) {la=layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot', { tips: [1, '#3595CC'],end : function(){ la=layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot', {tips: [1, '#3595CC']});}});}", 10000*6 );
+
+    });
+</script>
+
+</div>
+
+
+
+
+<script>
+    var articleId=1551457724956;
+    var su=null ;
+    $(function(){
+        $(".comment-list").addCommentList({data:[],add:""});
+        $("#comment").click(function(){
+            var obj = new Object();
+            obj.img="images/img.html";
+            obj.replyName="匿名";
+            obj.content=$("#content").val();
+            obj.browse="深圳";
+            obj.osname="win10";
+            obj.replyBody="";
+            $(".comment-list").addCommentList({data:[],add:obj});
+        });
+    })
+
+    var layer;
+    var layedit;
+    var index;
+    layui.use(['layedit', 'laypage', 'laydate', 'element','layer'], function () {
+        layer = layui.layer;
+        var element = layui.element;
+        layedit = layui.layedit;
+        // var laydate = layui.laydate;
+        // //不出现底部栏
+        // laydate.render({
+        //     elem: '#test22'
+        //     ,showBottom: false
+        //     ,position: 'static'
+        //     ,calendar: true
+        //     ,theme: '#a7a4a4'
+        // });
+
+       index= layedit.build('comment-input', {
+            tool: ['face', '|', 'left', 'center', 'right', 'link', 'unlink']
+            , height: 150
+        });
+        //相册
+        if($(window).width() > 750){
+            layer.photos({
+                photos: '.photos'
+                ,zIndex: 9999999999
+                ,anim: -1
+            });
+        } else {
+            $('body').on('click', '.photos img', function(){
+                window.open(this.src);
+            });
+        }
+
+            layer.open({
+                title: '目录',
+                type: 1,
+                offset: 'r',
+                shade: 0,
+                closeBtn: 2,
+                content: $(".markdown-toc")
+            });
+
+        // $('#affix-side').hcSticky({
+        //     stickTo: '#blog-body'
+        // });
+
+    });
+    function submit() {
+
+        var osname = detectOS();
+
+        var obj = new Object();
+        if (su) {
+           obj.img = su.avatar;
+           obj.replyName = su.nickname;
+        }
+        obj.content=layedit.getContent(index);
+        obj.browse=navigator.appName;
+        obj.osname=osname;
+        obj.time=new Date();
+        obj.replyBody="";
+
+        obj.comment= obj.content;
+        if(!obj.comment){
+            layer.msg('不能为空');
+            return false;
+        }
+        var indexc = layer.load();
+        obj.userId=su.id;
+        obj.user=su.id;
+        obj.articleId=articleId;
+        obj.enable=true;
+        obj.parentId=0;
+
+         obj.time =new Date();
+
+
+
+
+        $.post("/token/comment/sub",obj, function (resp) {
+            layer.close(indexc);
+            $(window.frames["LAY_layedit_1"].document).find("body").html('');
+            layer.msg(resp.message);
+            setTimeout(function () {
+                if (resp.code === 200) {
+                    $(".comment-list").addCommentList({data:[],add:obj});
+                }
+            }, 1000);
+        });
+
+    };
+
+    function emotion() {
+        var uid = "guest";
+        if (BMY.getCookie("article::" + 1551457724956 + "::" + uid) != null) {
+            layer.msg("近期您已经点过赞，感谢您的支持！");
+        } else {
+            $.post("/article/approve", {articleId: 1551457724956}, function (json) {
+                if (json.code === BMY.status.ok) {
+                    BMY.setCookie("article::" + 1551457724956+ "::" + uid, "noteblog system");
+                  //  that.approve++;
+                    $('#za').html('赞 (8)')
+                    layer.msg("谢谢您的支持！");
+                }
+            })
+        }
+    }
+    function money  (alipay, wechat) {
+        alipay = "#\/static\/assets\/img\/wechat.png";
+        wechat="#\/static\/assets\/img\/alipay.png";
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['640px', '300px'],
+            shadeClose: true,
+            skin: 'text-center',
+            content:
+                '<div class="layui-fluid">' +
+                '   <div class="layui-row layui-mt20">' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + wechat + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">微信</p>' +
+                '       </div>' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + alipay + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">支付宝</p>' +
+                '       </div>' +
+                '   </div> ' +
+                '</div>'
+        });
+    }
+
+
+
+
+</script>
+<script src="../static/assets/js/jquery.comment.js" ></script>
+</body>
+
+<!-- Mirrored from www.nonelonely.com/article/1551457724956 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:02:19 GMT -->
+</html>

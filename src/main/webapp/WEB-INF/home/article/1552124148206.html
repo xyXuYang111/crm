@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Mirrored from www.nonelonely.com/article/1552124148206 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:04:28 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+
+    <title>配置SpringMVC应用的过程和使用- 书生个人博客</title>
+    <link href="../static/plugins/editormd/css/editormd.min.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+<meta name="baidu_union_verify" content="3e514e79dc5e7201b9bee186137e9562">
+<meta name="keywords" content="springboot系列,原创">
+
+<meta name="description" content="由于Web应用是基于请求/响应架构的应用，所以不管哪个MVCWeb框架，都需要在web.xml中配置该框架的核心Servlet或Filter，这样才可以让该框架介入Web应用中。SpringMVC也提供了一个DispatcherServlet的Servlet充当前端控制器名为org.springframework.web.servlet.DispatcherServlet的Servlet,所有的请求驱动都围绕这个DispateherServlet来分派请求。1.配置web.xml文件">
+
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../static/plugins/layui/css/layui.css">
+<link rel="stylesheet" href="../static/plugins/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../static/assets/css/frontend/base.css">
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "../../hm.baidu.com/hm6618.js?c07ddd5b98c69450ebd8e255627f70b0";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <link rel="canonical" href="1552124148206.html"/>
+    <script src="../../msite.baidu.com/sdk/cb688.js?appid=1622832448885693"></script>
+    <script src="../static/plugins/jquery/jquery.min.js"></script>
+     <style>
+         @media screen and (max-width: 767px) {
+             .layui-layer-page {
+                 display: none;
+             }
+         }
+
+         .markdown-body.layui-layer-content {
+             padding: 20px;
+             /*background-image: url("/static/assets/img/long.png");*/
+         }
+         .markdown-body  .layui-layer-title{
+             background-color: #e4e4e400;
+         }
+         .markdown-body  .layui-layer{
+             background-color: #e4e4e4;
+             background-image: url("../static/assets/img/long.png") ;
+             background-size: 100% 100%;
+         }
+         .markdown-body .layui-layer-content {
+
+            padding: 20px;
+         }
+
+     </style>
+
+</head>
+<body class="animated fadeIn">
+
+<div class="wrapper" >
+    <header>
+    <div class="headtop"></div>
+    <div class="contenttop">
+        <div class="logo f_l"> Java码猿-书生个人博客</div>
+        <div class="search f_r">
+            <input name="keyboard"  id="bdcsMain" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+            <input name="Submit" class="input_submit" onclick="window.open('http://zhannei.baidu.com/cse/search?s=6583887351044514798&entry=1&q='+document.getElementById('bdcsMain').value)" value="搜索" type="button">
+            <!--<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=6583887351044514798' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>-->
+            <ul class="layui-nav" style="background-color: rgba(0,0,0,0);" >
+                
+                
+
+                <li  class="layui-nav-item"><a href="#"  style="color: #000;" onclick="goto()" title="QQ登入" class="iconfont icon-qq"></a>
+                </li>
+            </ul>
+
+
+        </div>
+        <div class="blank"></div>
+
+        <nav>
+            <div  class="navigation">
+                <ul class="menu">
+                    <li><a href="../index.html">网站首页</a></li>
+                    <li><a href="#">技术文章</a>
+                        <ul >
+                            <li><a  href="../pages748a.html?cateId=1">Spring系列</a></li>
+                            <li><a  href="../pages3c7b.html?cateId=6">前端开发</a></li>
+                            <li><a  href="../pages4ead.html?cateId=7">软件安装</a></li>
+                            <li><a  href="../pages8396.html?cateId=9">Java语法</a></li>
+                            <li><a  href="../pagesff6a.html?cateId=10">资源下载</a></li>
+                            <li><a  href="../pagesad9e.html?cateId=12">ORM框架</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="../note.html">我的日记</a> </li>
+                    <li><a href="../msg.html">给我留言</a> </li>
+                    <li><a href="../about.html">关于</a></li>
+                </ul>
+            </div>
+        </nav>
+        <SCRIPT type=text/javascript>
+            // Navigation Menu
+            $(function() {
+                $(".menu ul").css({display: "none"}); // Opera Fix
+                $(".menu li").hover(function(){
+                    $(this).find('ul:first').css({visibility: "visible",display: "none"}).slideDown("normal");
+                },function(){
+                    $(this).find('ul:first').css({visibility: "hidden"});
+                });
+            });
+
+            function  search() {
+                var s=$('#keyboard').val();
+                location.href = s === "" ? "/" : "/pages?searchStr=" + s;
+            };
+            function goto () {
+                var url = window.location.href;
+                var winObj = window.open('/api/qq?url=' + url, '_self');
+            }
+        </SCRIPT>
+
+    </div>
+</header>
+    <div class="jztop"></div>
+
+    <!--<bmy-article-page :alipay="params.alipay" :wechat="params.wechat_pay" :su="su">-->
+        <!--<div th:insert ="frontend/fragment/articlepage :: article"  slot="article"></div>-->
+        <!--<div  th:insert="frontend/fragment/comment :: comment" slot="post"></div>-->
+
+        <!--<bmy-comment-list slot="comment" :comments="comments" :tips="params.comment_notice"-->
+                          <!--:re="params.all_comment_open == 1 && article.commented"></bmy-comment-list>-->
+       <!--<bmy-search slot="search"></bmy-search>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相似文章'})" slot="similar"></div>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${lots},${'热度文章'})" slot="lot"></div>-->
+    <!--</bmy-article-page>-->
+
+    <div id="blog-body" class="layui-container">
+       <div class="layui-row layui-col-space10">
+           <div id="blog-info" class="layui-col-md12">
+                <div class="layui-collapse layui-panel layui-article photos" >
+
+                     <div  ><div class="layui-colla-item">
+                    <h2 class="nh1"><span>您现在的位置是：<a href="../index.html" target="_blank">网站首页</a>>><a href="#" target="_blank">信息浏览</a>
+                    </span><b>文章详情</b></h2>
+                          <div class="layui-colla-content layui-show layui-article">
+                                   <fieldset class="layui-elem-field layui-field-title layui-article-page-title">
+                                       <legend class="center-to-head" align="center">配置SpringMVC应用的过程和使用</legend>
+                                      </fieldset>
+                                  <div class="layui-text layui-blog-body">
+                                           <div class="layui-row">
+                                                  <div class="layui-col-md6 layui-col-md-offset3 text-center blog-base-info">
+                                                           <span><i class="fa fa-clock-o" ></i>2019-03-09 17:35 </span>
+                                                           <span><i class="fa fa-user-o"></i> <span style="color: #FF5722;">许多年以后</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-renzhengkaobei"></use></svg></span>
+                                                          <span><i class="fa fa-comment-o"></i></span>
+                                                           <span><i class="fa fa-eye"></i> 1709</span>
+                                                       </div>
+                                               </div>
+                                      <!-- Baidu Button BEGIN -->
+                                           <!--<div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">-->
+                                                  <!--<span class="bds_more">分享到：</span>-->
+                                                  <!--<a class="bds_qzone"></a>-->
+                                                  <!--<a class="bds_tsina"></a>-->
+                                                  <!--<a class="bds_tqq"></a>-->
+                                                  <!--<a class="bds_renren"></a>-->
+                                                  <!--<a class="bds_t163"></a>-->
+                                                  <!--<a class="shareCount"></a>-->
+                                          <!--</div>-->
+                                          <!--<script type="text/javascript" id="bdshare_js" data="type=tools&uid=6701193" ></script>-->
+                                          <!--<script type="text/javascript" id="bdshell_js"></script>-->
+                                          <!--<script type="text/javascript">-->
+                                              <!--document.getElementById("bdshell_js").src = "https://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)-->
+                                          <!--</script>-->
+                                      <!-- Baidu Button END -->
+                                           <hr>
+                                           <div class="content detail markdown-body editormd-preview-container editormd-preview-active"><blockquote>
+<p>由于Web应用是基于请求/响应架构的应用，所以不管哪个MVC Web框架，都需要在web.xml中配置该框架的核心Servlet或Filter，这样才可以让该框架介入Web应用中。Spring MVC也提供了一个DispatcherServlet的Servlet充当前端控制器名为org.springframework.web.servlet.DispatcherServlet的Servlet,所有的请求驱动都围绕这个DispateherServlet来分派请求。<br><img src="../../s2.ax1x.com/2019/03/10/A994ln.jpg" alt="A994ln.jpg"><br><strong>1.配置web.xml文件:</strong><br>DispateherServlet是一个Servlet(它继承自HttpServlet基类)，因此使用时需要把它配置在Web应用的部署描述符web.xml文件当中，配置信息如下:</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln"> </span><span class="tag">&lt;servlet&gt;</span></code></li><li class="L1"><code><span class="pln">          </span><span class="com">&lt;!--Servlet的名称--&gt;</span></code></li><li class="L2"><code><span class="pln">        </span><span class="tag">&lt;servlet-name&gt;</span><span class="pln">springmvc</span><span class="tag">&lt;/servlet-name&gt;</span></code></li><li class="L3"><code><span class="pln">        </span><span class="com">&lt;!--Servlet对应的java类--&gt;</span></code></li><li class="L4"><code><span class="pln">          </span><span class="tag">&lt;servlet-class&gt;</span></code></li><li class="L5"><code><span class="pln">            org.springframework.web.servlet.DispatcherServlet</span></code></li><li class="L6"><code><span class="pln">        </span><span class="tag">&lt;/servlet-class&gt;</span></code></li><li class="L7"><code><span class="pln">      </span><span class="com">&lt;!--当前Servlet的参数信息--&gt;</span></code></li><li class="L8"><code><span class="pln">        </span><span class="tag">&lt;init-param&gt;</span></code></li><li class="L9"><code><span class="pln">          </span><span class="com">&lt;!--contex七ConfigLocation是参数名称，该参数的值包含SpringMVC的配置文件路径--&gt;</span></code></li><li class="L0"><code><span class="pln">        </span><span class="tag">&lt;param-name&gt;</span><span class="pln">contextConfigLocation</span><span class="tag">&lt;/param-name&gt;</span></code></li><li class="L1"><code><span class="pln">        </span><span class="tag">&lt;param-value&gt;</span><span class="pln">/WEB-INF/springmvc-config.xml</span><span class="tag">&lt;/param-value&gt;</span></code></li><li class="L2"><code><span class="pln">        </span><span class="tag">&lt;/init-param&gt;</span></code></li><li class="L3"><code><span class="pln">      </span><span class="com">&lt;!--在Web应用启动时立即加载Servlet--&gt;</span></code></li><li class="L4"><code><span class="pln">        </span><span class="tag">&lt;load-on-startup&gt;</span><span class="pln">1</span><span class="tag">&lt;/load-on-startup&gt;</span></code></li><li class="L5"><code><span class="pln">    </span><span class="tag">&lt;/servlet&gt;</span></code></li><li class="L6"><code><span class="pln">    </span><span class="com">&lt;!--Servlet映射声明--&gt;</span></code></li><li class="L7"><code><span class="pln">    </span><span class="tag">&lt;servlet-mapping&gt;</span></code></li><li class="L8"><code><span class="pln">    </span><span class="com">&lt;!--请求对应的Servlet的名称--&gt;</span></code></li><li class="L9"><code><span class="pln">    </span><span class="tag">&lt;servlet-name&gt;</span><span class="pln">springmvc</span><span class="tag">&lt;/servlet-name&gt;</span></code></li><li class="L0"><code><span class="pln">    </span><span class="com">&lt;!--监听当前域的所有请求--&gt;</span></code></li><li class="L1"><code><span class="pln">      </span><span class="tag">&lt;url-pattern&gt;</span><span class="pln">/</span><span class="tag">&lt;/url-pattern&gt;</span></code></li><li class="L2"><code><span class="pln">    </span><span class="tag">&lt;/servlet-mapping&gt;</span></code></li></ol></pre><p>以上配置了一个DispatcherServlet，该Servlet在Web应用程序启动时立即加载，DispatcherServlet加载时会需要一个Spring MVC的配置文件，默认情况下，应用会去应用程序文件夹的WEB-INF下查找对应的[servlet- name]-servlet.xml文件，例如本例的&lt;servlet-name&gt;是springmvc，默认查找的就是/WEB-INF/springmvc-servlet.xml。也可以把Spring MVC的配置文件放到应用程序文件夹中的任何地方，用servlet元素的init-param子元素进行描述，本例的param-name元素的值contextConfigLocation表示参数名称，param-value元素的值/WEB-INF/springmvc-config.xml则表示Spring MVC的配置文件路径和名称。则DispatcherSemlet会查找/WEB-INF/springmvc-config.xinl文件，作为Spring MVC的配置文件，解析该文件内容并根据文件配置信息创建一个WebApplicationContext容器对象，也称为上下文环境。WebApplicationContext继承自ApplicationContext容器，它的初始化方式和BeanFactory, ApplicationContext有所区别，因为WebApplicationContext需要ServletContext实例，也就是说，它必须在拥有Web容器的前提下才能完成启动Spring Web应用上下文的工作。有了WebApplicationContext容器，开发者就可以很自然地使用Spring的IOC, AOP等其他功能了。</p>
+<p><strong>2.编写控制器</strong><br>        DispatcherServlet在Spring当中充当一个前端控制器的角色，它的核心功能是分发请求。请求会被分发给对应处理的Java类，Spring MVC中称为Handle。</p>
+<p><strong>2.1 基于Controller接口的控制器</strong><br>在Spring2.5版本以前，开发一个Handle的唯一方法是实现org. springframeworlc.web. servlet.mvc. Controller接口。Controller接口必须实现一个方法，该方法的签名如下:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="typ">ModelAndView</span><span class="pln"> handleRequest</span><span class="pun">(</span><span class="typ">HttpServletReques</span><span class="pln"> request</span><span class="pun">,</span><span class="pln"> </span><span class="typ">HttpServletResponse</span><span class="pln"> response</span><span class="pun">)</span><span class="pln"> </span><span class="kwd">throws</span><span class="pln"> </span><span class="typ">Exception</span></code></li></ol></pre><p><strong>第一步</strong><br>配置Spring MVC的配置文件:WebContent/WEB-INF/springmvc-config.xml，这个文件再配置web.xml文件中要用到</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pun">&lt;?</span><span class="pln">xml  version</span><span class="pun">=</span><span class="str">"1.0"</span><span class="pln"> encoding</span><span class="pun">=</span><span class="str">"UTF-8"</span><span class="pun">?&gt;</span></code></li><li class="L1"><code><span class="tag">&lt;beans</span><span class="pln"> </span><span class="atn">xmlns</span><span class="pun">=</span><span class="atv">"http://www.springframework.org/schema/beans"</span></code></li><li class="L2"><code><span class="atn">xmlns:xsi</span><span class="pun">=</span><span class="atv">"h七七p;//www.w3.org/2001/XMLSchema-instance"</span></code></li><li class="L3"><code><span class="atn">xsi:schemaLocation</span><span class="pun">=</span><span class="atv">"http://www，springframework.org/schema/beans</span></code></li><li class="L4"><code><span class="atv">http://www .springframework.org/schema/beans/spring-beans一4.2.xsd"</span><span class="tag">&gt;</span></code></li><li class="L5"><code><span class="pln">  </span><span class="com">&lt;!-- 配置Handle，映射”/hello”请求--&gt;</span></code></li><li class="L6"><code><span class="tag">&lt;bean</span><span class="pln"> </span><span class="atn">name</span><span class="pun">=</span><span class="atv">"/hello"</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"org.fkit.controller.He1loController"</span><span class="tag">&gt;&lt;/bean&gt;</span></code></li><li class="L7"><code><span class="com">&lt;!-- 处理映射器将bean的name作为url进行查找，需要在配置Handle时指定name(即url)--&gt;</span></code></li><li class="L8"><code><span class="tag">&lt;bean</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"org.springframework.web.serelet .handler.BeanNameUrlHandlerMapping"</span><span class="tag">&gt;&lt;/bean&gt;</span></code></li><li class="L9"><code><span class="pln">          </span><span class="com">&lt;!--SimpleControllerHandlerAdapter HandlerAdapter接口是一个处理器适配器，所有处理适配器都要实现--&gt;</span></code></li><li class="L0"><code><span class="tag">&lt;bean</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"org.springframework.web.servle七.mvc. SimpleControl工erHandlerAdapter"</span><span class="tag">&gt;&lt;/bean&gt;</span></code></li><li class="L1"><code><span class="pln">          </span><span class="com">&lt;!--视图解析器--&gt;</span></code></li><li class="L2"><code><span class="pln"> </span><span class="tag">&lt;bean</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"org.springframework.web.servlet.view.工nternalResourceViewResolver"</span><span class="tag">&gt;&lt;/bean&gt;</span></code></li><li class="L3"><code><span class="pln"> </span><span class="tag">&lt;/beans&gt;</span></code></li></ol></pre><p><strong>第二步</strong></p>
+<p>springmvc-config.xml文件声明了HelloController业务控制器类，并将其映射到/hello请求，此处还配置了一个处理映射器BeanNameUrlHandlerMapping，这样可以Bean的名称为url进行查找;同时配置了处理器适配器SimpleControllerHandlerAdapter，来完成对HelloController类的handleRequest方法的调用;最后配置了视图解析器InternalResourceViewResolver来解析视图，将View呈现给用户。需要注意的是，在Spring4.0之后，如果不配置处理映射器、处理器适配器和视图解析器，也会使用默认的完成Spring内部MVC工作，笔者在此处显示配置处理过程，是希望读者能够了解Spring MVC的每一个动作，之后则可以更好地理解SpringMVC的工作流程。</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">HelloController</span><span class="pln"> </span><span class="kwd">implements</span><span class="pln"> </span><span class="typ">Controlter</span><span class="pun">{</span></code></li><li class="L1"><code><span class="com">/**</span></code></li><li class="L2"><code><span class="com">*handleRequest是Controller接口必须实现的方法。</span></code></li><li class="L3"><code><span class="com">*该方法的参数是对应请求的HttpServletReque。和HttpServletResponse</span></code></li><li class="L4"><code><span class="com">*该方法必须返回一个包含视图名或视图名和模型的ModelAndView对象。</span></code></li><li class="L5"><code><span class="com"> */</span></code></li><li class="L6"><code><span class="lit">@Override</span></code></li><li class="L7"><code><span class="kwd">public</span><span class="pln"> </span><span class="typ">ModelAndView</span><span class="pln"> handleRequest</span><span class="pun">(</span><span class="typ">HttpServletRequest</span><span class="pln"> request</span><span class="pun">,</span></code></li><li class="L8"><code><span class="pln">        </span><span class="typ">HttpServletResponse</span><span class="pln"> response</span><span class="pun">)</span><span class="kwd">throws</span><span class="pln"> </span><span class="typ">Exception</span><span class="pun">{</span></code></li><li class="L9"><code></code></li><li class="L0"><code><span class="pln">    </span><span class="com">//创建准备返回的ModelAndView对象，该对象通常包含了返回视图名、模型的名称以及模型对象</span></code></li><li class="L1"><code><span class="pln">      </span><span class="typ">ModelAndView</span><span class="pln"> </span><span class="kwd">my</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">ModelAndView</span><span class="pun">();</span></code></li><li class="L2"><code><span class="pln">    </span><span class="com">//添加模型数据，可以是任意的POJO对象</span></code></li><li class="L3"><code><span class="pln">    mv</span><span class="pun">.</span><span class="pln">addObject</span><span class="pun">(</span><span class="str">"message"</span><span class="pun">，</span><span class="str">"Hello World!”);</span></code></li><li class="L4"><code><span class="str">    //设置逻辑视图名，视图解析器会根据该名字解析到具体的视图页面</span></code></li><li class="L5"><code><span class="str">my.se七ViewName("</span><span class="pun">/</span><span class="pln">WEB</span><span class="pun">一</span><span class="pln">INF</span><span class="pun">/</span><span class="pln">content</span><span class="pun">/</span><span class="pln">welcome</span><span class="pun">.</span><span class="pln">jsp </span><span class="pun">}}</span><span class="pln"> </span><span class="pun">)</span><span class="pln"> </span><span class="pun">;</span></code></li><li class="L6"><code><span class="com">//返回ModelAndView对象。</span></code></li><li class="L7"><code><span class="kwd">return</span><span class="pln"> mv</span><span class="pun">;</span></code></li><li class="L8"><code><span class="pun">}</span></code></li></ol></pre><p> }</p>
+<p> HelloController是一个实现Controller接口的控制器，它可以处理一个单一的请求动作。</p>
+<p><strong>2.2基于注解的控制器</strong><br>    Spring2.5版新增了可基于注解的控制器，也就是说控制器不用实现Controller接口，通过注释类型来描述。而且也不用再springmvc-config.xml配置文件中配置映射请求了</p>
+<p><strong>第一步</strong></p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="com">/**</span></code></li><li class="L1"><code class="lang-java"><span class="com">HelloController是一个基于注解的控制器</span></code></li><li class="L2"><code class="lang-java"><span class="com">可以同时处理多个请求动作，并且无须实现任何接口。</span></code></li><li class="L3"><code class="lang-java"><span class="com">org.springframework.stereotype.Controller注解用于指示该类是一个控制器</span></code></li><li class="L4"><code class="lang-java"><span class="com">**/</span></code></li><li class="L5"><code class="lang-java"><span class="pln"> </span><span class="lit">@Controller</span></code></li><li class="L6"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">HelloController</span><span class="pln"> </span><span class="kwd">implements</span><span class="pln"> </span><span class="typ">Controlter</span><span class="pun">{</span></code></li><li class="L7"><code class="lang-java"><span class="com">/**</span></code></li><li class="L8"><code class="lang-java"><span class="com">*handleRequest是Controller接口必须实现的方法。</span></code></li><li class="L9"><code class="lang-java"><span class="com">*该方法的参数是对应请求的HttpServletReque。和HttpServletResponse</span></code></li><li class="L0"><code class="lang-java"><span class="com">*该方法必须返回一个包含视图名或视图名和模型的ModelAndView对象。</span></code></li><li class="L1"><code class="lang-java"><span class="com">*/</span></code></li><li class="L2"><code class="lang-java"><span class="lit">@RequestMapping</span><span class="pun">(</span><span class="pln">value</span><span class="pun">=</span><span class="str">"/hello"</span><span class="pun">)</span></code></li><li class="L3"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="typ">ModelAndView</span><span class="pln"> handleRequest</span><span class="pun">(</span><span class="typ">HttpServletRequest</span><span class="pln"> request</span><span class="pun">,</span></code></li><li class="L4"><code class="lang-java"><span class="pln">                </span><span class="typ">HttpServletResponse</span><span class="pln"> response</span><span class="pun">)</span><span class="kwd">throws</span><span class="pln"> </span><span class="typ">Exception</span><span class="pun">{</span><span class="pln">          </span></code></li><li class="L5"><code class="lang-java"><span class="com">//创建准备返回的ModelAndView对象，该对象通常包含了返回视图名、模型的名称以及模型对象</span></code></li><li class="L6"><code class="lang-java"><span class="typ">ModelAndView</span><span class="pln"> my</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">ModelAndView</span><span class="pun">();</span></code></li><li class="L7"><code class="lang-java"><span class="com">//添加模型数据，可以是任意的POJO对象</span></code></li><li class="L8"><code class="lang-java"><span class="pln">mv</span><span class="pun">.</span><span class="pln">addObject</span><span class="pun">(</span><span class="str">"message"</span><span class="pun">，</span><span class="str">"</span><span class="typ">Hello</span><span class="pln"> </span><span class="typ">World</span><span class="pun">!”);</span></code></li><li class="L9"><code class="lang-java"><span class="com">//设置逻辑视图名，视图解析器会根据该名字解析到具体的视图页面</span></code></li><li class="L0"><code class="lang-java"><span class="pln">my</span><span class="pun">.</span><span class="pln">se</span><span class="pun">七</span><span class="typ">ViewName</span><span class="pun">(</span><span class="str">"</span><span class="pun">/</span><span class="pln">WEB</span><span class="pun">一</span><span class="pln">INF</span><span class="pun">/</span><span class="pln">content</span><span class="pun">/</span><span class="pln">welcome</span><span class="pun">.</span><span class="pln">jsp </span><span class="pun">}}</span><span class="pln"> </span><span class="pun">)</span><span class="pln"> </span><span class="pun">;</span></code></li><li class="L1"><code class="lang-java"><span class="com">//返回ModelAndView对象。</span></code></li><li class="L2"><code class="lang-java"><span class="kwd">return</span><span class="pln"> mv</span><span class="pun">;</span></code></li><li class="L3"><code class="lang-java"><span class="pln"> </span><span class="pun">}</span></code></li><li class="L4"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<p> HelloController是一个基于注解的控制器，org.springframework.stereotype.Controller注释类型用于指示Spring类的实例是一个控制器。org. springframework. web.bind. annotation.RequestMapping注释类型用来映射一个请求和请求的方法，value=”/hello’，表示请求由hello方法进行处理。方法返回一个包含视图名或视图名和模型的ModelAndView对象<br><strong>第二步 修改Spring MVC的配置文件</strong></p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pun">&lt;?</span><span class="pln">xml  version</span><span class="pun">=</span><span class="str">"1.0"</span><span class="pln"> encoding</span><span class="pun">=</span><span class="str">"UTF-8"</span><span class="pun">?&gt;</span></code></li><li class="L1"><code><span class="tag">&lt;beans</span><span class="pln"> </span><span class="atn">xmlns</span><span class="pun">=</span><span class="atv">"http://www.springframework.org/schema/beans"</span></code></li><li class="L2"><code><span class="pln">    </span><span class="atn">xmlns:xsi</span><span class="pun">=</span><span class="atv">"http://www.w3.org/2001/XMLSchema-instance"</span></code></li><li class="L3"><code><span class="pln">    </span><span class="atn">xmlns:mvc</span><span class="pun">=</span><span class="atv">"http://www.springframework.org/schema/mvc"</span></code></li><li class="L4"><code><span class="pln">    </span><span class="atn">xmlns:context</span><span class="pun">=</span><span class="atv">"httP://www.springframework.org/schema/context”</span></code></li><li class="L5"><code><span class="atv">    xsi:schemaLocation="</span></code></li><li class="L6"><code><span class="pln">        </span><span class="atn">http</span><span class="pln">:</span><span class="pun">//</span><span class="atn">www</span><span class="pln"> .</span><span class="atn">springframework</span><span class="pln">.</span><span class="atn">org</span><span class="pun">/</span><span class="atn">schema</span><span class="pun">/</span><span class="atn">beans</span></code></li><li class="L7"><code><span class="pln">        </span><span class="atn">http</span><span class="pln">:</span><span class="pun">//</span><span class="atn">www</span><span class="pln"> .</span><span class="atn">springframework</span><span class="pln">.</span><span class="atn">org</span><span class="pun">/</span><span class="atn">schema</span><span class="pun">/</span><span class="atn">beans</span><span class="pun">/</span><span class="atn">spring-beans-4</span><span class="pln">.2.</span><span class="atn">xsd</span></code></li><li class="L8"><code><span class="pln">        </span><span class="atn">http</span><span class="pln">:</span><span class="pun">//</span><span class="atn">www</span><span class="pln"> .</span><span class="atn">springframework</span><span class="pln">.</span><span class="atn">org</span><span class="pun">/</span><span class="atn">schema</span><span class="pun">/</span><span class="atn">mvc</span></code></li><li class="L9"><code><span class="pln">        </span><span class="atn">http</span><span class="pln">:</span><span class="pun">//</span><span class="atn">www</span><span class="pln">.</span><span class="atn">springframework</span><span class="pln">.</span><span class="atn">org</span><span class="pun">/</span><span class="atn">schema</span><span class="pun">/</span><span class="atn">mvc</span><span class="pun">/</span><span class="atn">spring-mvc-4</span><span class="pln">.2.</span><span class="atn">xsd</span></code></li><li class="L0"><code><span class="pln">        </span><span class="atn">httP</span><span class="pln">:</span><span class="pun">//</span><span class="atn">www</span><span class="pln"> .</span><span class="atn">springframework</span><span class="pln">.</span><span class="atn">org</span><span class="pun">/</span><span class="atn">schema</span><span class="pun">/</span><span class="atn">context</span></code></li><li class="L1"><code><span class="pln">        </span><span class="atn">http</span><span class="pln">:</span><span class="pun">//</span><span class="atn">www</span><span class="pln">.</span><span class="atn">springframework</span><span class="pln">.</span><span class="atn">org</span><span class="pun">/</span><span class="atn">schema</span><span class="pun">/</span><span class="atn">context</span><span class="pun">/</span><span class="atn">spring-context-4</span><span class="pln">.2.</span><span class="atn">xsd</span><span class="atv">"&gt;</span></code></li><li class="L2"><code><span class="com">&lt;!--spring可以自动去扫描base-pack下面的包或者子包下面的Java文件， 如果扫描到有Spring的相关注解的类，则把这些类注册为Spring的bean--&gt;</span></code></li><li class="L3"><code><span class="tag">&lt;context:component-scan</span><span class="pln"> </span><span class="atn">base-package</span><span class="pun">=</span><span class="atv">"org.fkit.controller"</span><span class="tag">&gt;&lt;/context:component&gt;</span></code></li><li class="L4"><code><span class="pln"> &lt;!一配置annotation类型的处理映射器一&gt;</span></code></li><li class="L5"><code><span class="tag">&lt;bean</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"</span><span class="tag">&gt;&lt;/bean&gt;</span></code></li><li class="L6"><code><span class="pln">&lt;!一配置annotation类型的处理器适配器一&gt;</span></code></li><li class="L7"><code><span class="pln">&lt;bean ciass="org.springframework.web.servlet.mvc.method.annotation.</span></code></li><li class="L8"><code><span class="pln"> </span><span class="com">&lt;!--视图解析器--&gt;</span></code></li><li class="L9"><code><span class="tag">&lt;bean</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"org.springframework.web.servlet.view.工nternalResourceViewResolver"</span><span class="tag">&gt;&lt;/bean&gt;</span></code></li><li class="L0"><code><span class="tag">&lt;/beans&gt;</span></code></li></ol></pre><p> 由于使用了注解类型，因此不需要再在配置文件中使用XNIL描述Beano Spring使用扫描机制查找应用程序中所有基于注解的控制器类。&lt;context:component-scan base-package="org.flcit.controller"&gt;&lt;/context:component&gt;指定需要Spring扫描。rg.fkit.controlle:包及其子包下面的所有Java文件。</p>
+<p><strong>3.需要的jar包</strong><br>为了让Web应用具有Spring支持的功能，将所有Spring框架的class文件的JAR包和Spring所依赖的comrnons-logging-1.2. j ar复制到Web应用的lib文件夹下<br><strong>4.总结:</strong><br>Controller接口的实现类只能处理一个单一请求动作，而Spring2.5之后新增的基于注解的控制器可以支持同时处理多个请求动作，并且无须实现任何接口，其更加好用。下一篇说明DispateherServlet又是如何分派请求的呢?</p>
+</div>
+                                      </div>
+                                   <div class="layui-row text-center layui-mt20">
+                                           
+                                           <div class="layui-btn layui-btn-danger" onclick="emotion()"><i class="fa fa-thumbs-o-up" id="za"> 赞 (122)</i></div>
+                                       </div>
+                                   <div class="layui-row layui-mt20">
+                                         <blockquote class="layui-elem-quote text-center " style="border: none;">
+                                                  <span class="layui-show-md-inline-block layui-hide"  >文章出处：书生个人博客</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                   <span class="layui-show-md-inline-block layui-hide" id="artiurl"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                  <span>转载注明下哦！o(≧v≦)o~~</span>
+                                           </blockquote>
+                                    </div>
+                                 <div class="layui-row layui-mt20">
+                                         <p class="blog-tags">
+                                              标签：
+                                                       <span >springboot系列</span><span >原创</span>
+
+                                               </p>
+                                 </div>
+                                 <div class="layui-row layui-col-space20 layui-mt20 article-page-similar">
+                                           <p>相似文章：</p>
+                                            <hr>
+                                             <ul>
+                                                    <li><a href="1563339259314.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot中集成Log4j2以及Log4j2的xml配置</a> </li>
+                                                    <li><a href="1552469919154.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;javaweb的spi 的简单应用</a> </li>
+                                                    <li><a href="1565238567917.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;springMVC接收zip文件和直接解析读取zip文件信息</a> </li>
+                                                    <li><a href="1547789396163.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot之认识Spring Data Jpa</a> </li>
+                                                    <li><a href="1562823806738.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Kaptcha的详细配置表以及在springboot中的整合和使用</a> </li>
+                                                    <li><a href="1547875444402.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot配置虚拟路径解决Not allowed to load local resource错误</a> </li>
+                                                    <li><a href="1551457724956.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;springMVC和springBoot使用MultipartFile上传文件</a> </li>
+                                                    <li><a href="1550049091199.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Spring Boot使用HandlerInterceptorAdapter和WebMvcConfigurerAdapter实现拦截器</a> </li>
+                                                    <li><a href="1555940707997.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Java对象的浅克隆和2种深克隆的使用</a> </li>
+                                                    <li><a href="1567612549318.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;springboot常见10道面试题</a> </li>
+                                              </ul>
+                                    </div>
+                               </div>
+                      <script>
+                          $("#artiurl").html("文章地址："+location.href);
+
+
+                      </script>
+
+                       </div></div>
+
+                </div>
+
+               <div  >
+<div id="cta" class="layui-collapse layui-panel layui-article">
+       <div class="layui-colla-item">
+               <div class="layui-colla-content layui-show layui-article comment">
+                       <fieldset class="layui-elem-field layui-field-title">
+                               <legend>随便说两句</legend>
+                               <div class="layui-field-box">
+                                       <label for="comment-input"></label>
+                                           <textarea id="comment-input" style="display: none;"></textarea>
+                                  </div>
+                               
+                               <a class="layui-btn layui-btn-sm layui-btn-danger" style="float: right;width: 120px;"  href="#"  onclick="javascript:beforeLogin()" id="beforeLogin"><i class="fa fa-qq"></i> 请先登录</a>
+                           </fieldset>
+                   </div>
+           </div>
+    </div>
+</div>
+<script>
+    function beforeLogin() {
+        var url=window.location.href;
+        window.open('/api/qq?url='+url,'_self');
+    }
+
+</script>
+
+               <blockquote id="cccc" class="layui-elem-quote layui-mt20" style="border-left: 5px solid #F44336;"><span style="color:#FF5722;">遵守国家法律法规，请勿回复无意义内容，请不要回复嵌套过多的楼层！</span></blockquote>
+               <div class="comment-list">
+
+</div>
+
+
+
+
+           </div>
+               <!--<div class="layui-col-md3" id="article-app">-->
+                       <!--<div id="affix-side">-->
+                           <!--<div th:replace="frontend/fragment/callme :: callme" ></div>-->
+                           <!--&lt;!&ndash;<div class="layui-tab layui-tab-card layui-master-recommend" >&ndash;&gt;-->
+                               <!--&lt;!&ndash;<div class="layui-tab-content select-none">&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<h3 class="tit">时光悄然</h3>&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<div class="layui-inline" id="test22"></div>&ndash;&gt;-->
+                               <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--<div th:replace ="frontend/fragment/guidang" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/imageinfo" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/cate" ></div>-->
+                           <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相关文章'})" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/image :: image"></div>-->
+                           <!--</div>-->
+                   <!--</div>-->
+           </div>
+    </div>
+
+
+    <footer >
+    <div class="footer"><p>
+	<span><strong>友情链接:</strong><strong>&nbsp;</strong> &nbsp;&nbsp;</span><a class="ke-insertfile" href="https://www.layui.com/" target="_blank">layui</a><span>&nbsp;&nbsp;</span>&nbsp;<a class="ke-insertfile" href="http://www.shuyong.net/" target="_blank">舍力博客</a>&nbsp;&nbsp;<a class="ke-insertfile" href="javascript:;" id="friend">申请友链</a> 
+</p>
+<p>
+	2018-2019 nonelonely.com | 网站备案号：<a class="ke-insertfile" href="http://www.miitbeian.gov.cn/" target="_blank">闽ICP备18026034号-1</a> 
+</p>
+<p>
+	<br />
+</p></div>
+
+    <div class="layui-hide-xs" style="position: fixed;left: 100px; bottom: 100px; z-index: 999999;" id="robot" data-method="robot">
+        <div class="layui-layer-tips" ><div id="" class="layui-layer-content" style="background-color: rgb(114, 193, 236);width: 150px">Hi 我是小码，可以点击我问我笑话，天气，智能聊天，故事，查询备案等等。<i class="layui-layer-TipsG layui-layer-TipsT" style="border-right-color:rgb(114, 193, 236);"></i></div><span class="layui-layer-setwin"></span></div>
+        <a href="#" ><img src="../static/assets/img/robot.png" width="100px" alt="Hi 我是小码！" >
+        </a>
+    </div>
+
+
+</footer>
+<script src="../static/plugins/layui/layui.js"></script>
+
+<script>
+    layui.use([ 'layer'], function () {
+        var layer = layui.layer;
+        var $ = layui.jquery;
+        //触发事件
+        var active = {
+            robot: function(){
+                var that = this;
+                $("#robot").css('display','none');
+                //多窗口模式，层叠置顶
+                layer.open({
+                    type: 2,
+                    title:'智能小码',
+                    area: ['600px', '480px'],
+                    content: '/webrobot',
+                    end:function () {
+                        $("#robot").css('display','');
+                    }
+                });
+            },
+            friend: function () {
+                layer.open({
+                    title: '申请友链'
+                    ,content: '发送邮件至：admin@nonelonely.com<br>' +
+                        '邮件标题为：申请书生个人博客友链'
+                });
+            }
+        };
+
+        $('#robot').on('click', function(){
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+        $('#friend').on('click', function(){
+            var othis = $(this), method = 'friend';
+            active[method] ? active[method].call(this, othis) : '';
+        });
+
+
+        // var la;
+            // la = layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot',
+            //     {
+            //         tips: [1, '#3595CC'],
+            //         end: function () {
+            //             if($("#robot").is(":visible")) {
+            //                 la = layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot',
+            //                     {tips: [1, '#3595CC']})
+            //             }
+            //         }
+            //     });
+            // window.setInterval(" if($('#robot').is(':visible')) {la=layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot', { tips: [1, '#3595CC'],end : function(){ la=layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot', {tips: [1, '#3595CC']});}});}", 10000*6 );
+
+    });
+</script>
+
+</div>
+
+
+
+
+<script>
+    var articleId=1552124148206;
+    var su=null ;
+    $(function(){
+        $(".comment-list").addCommentList({data:[],add:""});
+        $("#comment").click(function(){
+            var obj = new Object();
+            obj.img="images/img.html";
+            obj.replyName="匿名";
+            obj.content=$("#content").val();
+            obj.browse="深圳";
+            obj.osname="win10";
+            obj.replyBody="";
+            $(".comment-list").addCommentList({data:[],add:obj});
+        });
+    })
+
+    var layer;
+    var layedit;
+    var index;
+    layui.use(['layedit', 'laypage', 'laydate', 'element','layer'], function () {
+        layer = layui.layer;
+        var element = layui.element;
+        layedit = layui.layedit;
+        // var laydate = layui.laydate;
+        // //不出现底部栏
+        // laydate.render({
+        //     elem: '#test22'
+        //     ,showBottom: false
+        //     ,position: 'static'
+        //     ,calendar: true
+        //     ,theme: '#a7a4a4'
+        // });
+
+       index= layedit.build('comment-input', {
+            tool: ['face', '|', 'left', 'center', 'right', 'link', 'unlink']
+            , height: 150
+        });
+        //相册
+        if($(window).width() > 750){
+            layer.photos({
+                photos: '.photos'
+                ,zIndex: 9999999999
+                ,anim: -1
+            });
+        } else {
+            $('body').on('click', '.photos img', function(){
+                window.open(this.src);
+            });
+        }
+
+            layer.open({
+                title: '目录',
+                type: 1,
+                offset: 'r',
+                shade: 0,
+                closeBtn: 2,
+                content: $(".markdown-toc")
+            });
+
+        // $('#affix-side').hcSticky({
+        //     stickTo: '#blog-body'
+        // });
+
+    });
+    function submit() {
+
+        var osname = detectOS();
+
+        var obj = new Object();
+        if (su) {
+           obj.img = su.avatar;
+           obj.replyName = su.nickname;
+        }
+        obj.content=layedit.getContent(index);
+        obj.browse=navigator.appName;
+        obj.osname=osname;
+        obj.time=new Date();
+        obj.replyBody="";
+
+        obj.comment= obj.content;
+        if(!obj.comment){
+            layer.msg('不能为空');
+            return false;
+        }
+        var indexc = layer.load();
+        obj.userId=su.id;
+        obj.user=su.id;
+        obj.articleId=articleId;
+        obj.enable=true;
+        obj.parentId=0;
+
+         obj.time =new Date();
+
+
+
+
+        $.post("/token/comment/sub",obj, function (resp) {
+            layer.close(indexc);
+            $(window.frames["LAY_layedit_1"].document).find("body").html('');
+            layer.msg(resp.message);
+            setTimeout(function () {
+                if (resp.code === 200) {
+                    $(".comment-list").addCommentList({data:[],add:obj});
+                }
+            }, 1000);
+        });
+
+    };
+
+    function emotion() {
+        var uid = "guest";
+        if (BMY.getCookie("article::" + 1552124148206 + "::" + uid) != null) {
+            layer.msg("近期您已经点过赞，感谢您的支持！");
+        } else {
+            $.post("/article/approve", {articleId: 1552124148206}, function (json) {
+                if (json.code === BMY.status.ok) {
+                    BMY.setCookie("article::" + 1552124148206+ "::" + uid, "noteblog system");
+                  //  that.approve++;
+                    $('#za').html('赞 (123)')
+                    layer.msg("谢谢您的支持！");
+                }
+            })
+        }
+    }
+    function money  (alipay, wechat) {
+        alipay = "#\/static\/assets\/img\/wechat.png";
+        wechat="#\/static\/assets\/img\/alipay.png";
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['640px', '300px'],
+            shadeClose: true,
+            skin: 'text-center',
+            content:
+                '<div class="layui-fluid">' +
+                '   <div class="layui-row layui-mt20">' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + wechat + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">微信</p>' +
+                '       </div>' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + alipay + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">支付宝</p>' +
+                '       </div>' +
+                '   </div> ' +
+                '</div>'
+        });
+    }
+
+
+
+
+</script>
+<script src="../static/assets/js/jquery.comment.js" ></script>
+</body>
+
+<!-- Mirrored from www.nonelonely.com/article/1552124148206 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:04:28 GMT -->
+</html>

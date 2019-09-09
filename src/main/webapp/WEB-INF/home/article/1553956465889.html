@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Mirrored from www.nonelonely.com/article/1553956465889 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:05:36 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+
+    <title>从底层了解ArrayList和Vector的区别- 书生个人博客</title>
+    <link href="../static/plugins/editormd/css/editormd.preview.min.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+<meta name="baidu_union_verify" content="3e514e79dc5e7201b9bee186137e9562">
+<meta name="keywords" content="Java,原创">
+
+<meta name="description" content="ArrayList和Vector这二者都是封装了一个可变化，可扩容的动态数组，而Vector只要是关键性的操作，方法前面都加了synchronized关键字，来保证线程的安全性，其他2者都是差不多的。Vector的历史由于Vector是从jdk1.0开始就有了，那时候还没有集合框架，所以Vector里有些方法名是很长的，如addElenment(Objecto),而ArrayList是从Jdk1.2系统提供框架后出现的，">
+
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../static/plugins/layui/css/layui.css">
+<link rel="stylesheet" href="../static/plugins/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../static/assets/css/frontend/base.css">
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "../../hm.baidu.com/hm6618.js?c07ddd5b98c69450ebd8e255627f70b0";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+    <link rel="canonical" href="1553956465889.html"/>
+    <script src="../../msite.baidu.com/sdk/cb688.js?appid=1622832448885693"></script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://ziyuan.baidu.com/contexts/cambrian.jsonld",
+            "@id": "http://www.nonelonely.com/article/1553956465889",
+            "appid": "1622832448885693",
+            "title": "\u4ECE\u5E95\u5C42\u4E86\u89E3ArrayList\u548CVector\u7684\u533A\u522B-\u4E66\u751F\u4E2A\u4EBA\u535A\u5BA2",
+            "images": [
+                ""
+            ],
+            "pubDate": "2019-03-30T10:34:25"
+        }
+    </script>
+
+    <script src="../static/plugins/layui/layui.js"></script>
+<script src="../static/plugins/jquery/jquery.min.js"></script>
+<script src="../static/plugins/vue/vue.min.js"></script>
+<script src="../static/plugins/hc-sticky/hc-sticky.min.js"></script>
+<script src="../static/assets/js/BMY.js"></script>
+<script src="../static/assets/js/frontend/script.js"></script>
+<script src="../static/assets/js/BMY.vue.js"></script>
+<script src="../static/plugins/pushbar/pushbar.js"></script>
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+<script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+<script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+
+    <script src="../static/assets/js/frontend/svg.js"></script>
+    <script src="../static/plugins/editormd/lib/marked.min.js"></script>
+    <script src="../static/plugins/editormd/lib/prettify.min.js"></script>
+    <script src="../static/plugins/editormd/lib/raphael.min.js"></script>
+    <script src="../static/plugins/editormd/lib/underscore.min.js"></script>
+    <script src="../static/plugins/editormd/lib/flowchart.min.js"></script>
+    <script src="../static/plugins/editormd/lib/jquery.flowchart.min.js"></script>
+    <script src="../static/plugins/editormd/lib/sequence-diagram.min.js"></script>
+    <script src="../static/plugins/editormd/editormd.min.js"></script>
+    <style>
+        @media screen and (max-width: 767px) {
+            .layui-layer-page {
+                display: none;
+            }
+        }
+    </style>
+
+</head>
+<body class="animated fadeIn">
+<ul class="site-dir"><li><a href="#wz1"><cite>Vector的历史</cite></a></li>
+<li><a href="#wz2"><cite>二者区别</cite></a></li>
+ </ul>
+<div class="wrapper" id="article-app">
+    <header>
+    <div class="headtop"></div>
+    <div class="contenttop">
+        <div class="logo f_l"> Java码猿-书生个人博客</div>
+        <div class="search f_r">
+            <input name="keyboard"  id="bdcsMain" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+            <input name="Submit" class="input_submit" onclick="window.open('http://zhannei.baidu.com/cse/search?s=6583887351044514798&entry=1&q='+document.getElementById('bdcsMain').value)" value="搜索" type="button">
+            <!--<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=6583887351044514798' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>-->
+            <ul class="layui-nav" style="background-color: rgba(0,0,0,0);" >
+                
+                
+
+                <li  class="layui-nav-item"><a href="#"  style="color: #000;" onclick="goto()" title="QQ登入" class="iconfont icon-qq"></a>
+                </li>
+            </ul>
+
+
+        </div>
+        <div class="blank"></div>
+
+        <nav>
+            <div  class="navigation">
+                <ul class="menu">
+                    <li><a href="../index.html">网站首页</a></li>
+                    <li><a href="#">技术文章</a>
+                        <ul >
+                            <li><a  href="../pages748a.html?cateId=1">Spring系列</a></li>
+                            <li><a  href="../pages3c7b.html?cateId=6">前端开发</a></li>
+                            <li><a  href="../pages4ead.html?cateId=7">软件安装</a></li>
+                            <li><a  href="../pages8396.html?cateId=9">Java语法</a></li>
+                            <li><a  href="../pagesff6a.html?cateId=10">资源下载</a></li>
+                            <li><a  href="../pagesad9e.html?cateId=12">ORM框架</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="../note.html">我的日记</a> </li>
+                    <li><a href="../msg.html">给我留言</a> </li>
+                    <li><a href="../about.html">关于</a></li>
+                </ul>
+            </div>
+        </nav>
+        <SCRIPT type=text/javascript>
+            // Navigation Menu
+            $(function() {
+                $(".menu ul").css({display: "none"}); // Opera Fix
+                $(".menu li").hover(function(){
+                    $(this).find('ul:first').css({visibility: "visible",display: "none"}).slideDown("normal");
+                },function(){
+                    $(this).find('ul:first').css({visibility: "hidden"});
+                });
+            });
+
+            function  search() {
+                var s=$('#keyboard').val();
+                location.href = s === "" ? "/" : "/pages?searchStr=" + s;
+            };
+            function goto () {
+                var url = window.location.href;
+                var winObj = window.open('/api/qq?url=' + url, '_self');
+            }
+        </SCRIPT>
+
+    </div>
+</header>
+    <div class="jztop"></div>
+
+    <!--<bmy-article-page :alipay="params.alipay" :wechat="params.wechat_pay" :su="su">-->
+    <!--<div th:insert ="frontend/fragment/articlepage :: article"  slot="article"></div>-->
+    <!--<div  th:insert="frontend/fragment/comment :: comment" slot="post"></div>-->
+
+    <!--<bmy-comment-list slot="comment" :comments="comments" :tips="params.comment_notice"-->
+    <!--:re="params.all_comment_open == 1 && article.commented"></bmy-comment-list>-->
+    <!--<bmy-search slot="search"></bmy-search>-->
+    <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相似文章'})" slot="similar"></div>-->
+    <!--<div th:insert ="frontend/fragment/lot :: lot (${lots},${'热度文章'})" slot="lot"></div>-->
+    <!--</bmy-article-page>-->
+
+    <div id="blog-body" class="layui-container">
+        <div class="layui-row layui-col-space10">
+            <div id="blog-info" class="layui-col-md12">
+                <div class="layui-collapse layui-panel layui-article" >
+                     <div  ><div class="layui-colla-item">
+                    <h2 class="nh1"><span>您现在的位置是：<a href="../index.html" target="_blank">网站首页</a>>><a href="#" target="_blank">信息浏览</a>
+                    </span><b>文章详情</b></h2>
+                          <div class="layui-colla-content layui-show layui-article">
+                                   <fieldset class="layui-elem-field layui-field-title layui-article-page-title">
+                                       <legend class="center-to-head" align="center">从底层了解ArrayList和Vector的区别</legend>
+                                      </fieldset>
+                                  <div class="layui-text layui-blog-body">
+                                           <div class="layui-row">
+                                                  <div class="layui-col-md6 layui-col-md-offset3 text-center blog-base-info">
+                                                           <span><i class="fa fa-clock-o" ></i>2019-03-30 22:34 </span>
+                                                           <span><i class="fa fa-user-o"></i> <span style="color: #FF5722;">许多年以后</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-renzhengkaobei"></use></svg></span>
+                                                          <span><i class="fa fa-comment-o"></i></span>
+                                                           <span><i class="fa fa-eye"></i> 1337</span>
+                                                       </div>
+                                               </div>
+                                      <!-- Baidu Button BEGIN -->
+                                           <!--<div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">-->
+                                                  <!--<span class="bds_more">分享到：</span>-->
+                                                  <!--<a class="bds_qzone"></a>-->
+                                                  <!--<a class="bds_tsina"></a>-->
+                                                  <!--<a class="bds_tqq"></a>-->
+                                                  <!--<a class="bds_renren"></a>-->
+                                                  <!--<a class="bds_t163"></a>-->
+                                                  <!--<a class="shareCount"></a>-->
+                                          <!--</div>-->
+                                          <!--<script type="text/javascript" id="bdshare_js" data="type=tools&uid=6701193" ></script>-->
+                                          <!--<script type="text/javascript" id="bdshell_js"></script>-->
+                                          <!--<script type="text/javascript">-->
+                                              <!--document.getElementById("bdshell_js").src = "https://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)-->
+                                          <!--</script>-->
+                                      <!-- Baidu Button END -->
+                                           <hr>
+                                           <div class="content detail markdown-body editormd-preview-container editormd-preview-active"><blockquote>
+<p>ArrayList和Vector这二者都是封装了一个可变化，可扩容的动态数组，而Vector 只要是关键性的操作，方法前面都加了synchronized关键字，来保证线程的安全性，其他2者都是差不多的。</p>
+</blockquote>
+<p><div id="wz1"><strong>Vector的历史</strong></div><br>由于Vector是从jdk1.0开始就有了，那时候还没有集合框架，所以Vector里有些方法名是很长的，如addElenment(Object o),而ArrayList是从Jdk1.2系统提供框架后出现的，所以是add(),其实者2个方法是一样的。所以JDK1.2后，就将Vector改为实现了List接口，因为为了简写编程，所以改写了哪些方法名很长的方法，从而导致了Vector有一些方法是重复功能的。如：</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">   </span><span class="com">//原有的方法</span></code></li><li class="L1"><code class="lang-java"><span class="pln">   </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">synchronized</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> addElement</span><span class="pun">(</span><span class="pln">E obj</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L2"><code class="lang-java"><span class="pln">        modCount</span><span class="pun">++;</span></code></li><li class="L3"><code class="lang-java"><span class="pln">        ensureCapacityHelper</span><span class="pun">(</span><span class="pln">elementCount </span><span class="pun">+</span><span class="pln"> </span><span class="lit">1</span><span class="pun">);</span></code></li><li class="L4"><code class="lang-java"><span class="pln">        elementData</span><span class="pun">[</span><span class="pln">elementCount</span><span class="pun">++]</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> obj</span><span class="pun">;</span></code></li><li class="L5"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li><li class="L6"><code class="lang-java"><span class="pln">    </span><span class="com">//List接口的短名字方法</span></code></li><li class="L7"><code class="lang-java"><span class="pln">   </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">synchronized</span><span class="pln"> </span><span class="kwd">boolean</span><span class="pln"> add</span><span class="pun">(</span><span class="pln">E e</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L8"><code class="lang-java"><span class="pln">        modCount</span><span class="pun">++;</span></code></li><li class="L9"><code class="lang-java"><span class="pln">        ensureCapacityHelper</span><span class="pun">(</span><span class="pln">elementCount </span><span class="pun">+</span><span class="pln"> </span><span class="lit">1</span><span class="pun">);</span></code></li><li class="L0"><code class="lang-java"><span class="pln">        elementData</span><span class="pun">[</span><span class="pln">elementCount</span><span class="pun">++]</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> e</span><span class="pun">;</span></code></li><li class="L1"><code class="lang-java"><span class="pln">        </span><span class="kwd">return</span><span class="pln"> </span><span class="kwd">true</span><span class="pun">;</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li></ol></pre>
+<p><div id="wz2"><strong>二者区别</strong></div><br>1.由于Vector是线程安全的，所以Vector的性能比较低，最好不要用，如果要保证线程的安全，也可以<strong>用Collections工具类，也可以将ArrayList变成线程安全的</strong>。</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="com">//Vector的add</span></code></li><li class="L1"><code class="lang-java"><span class="pln">   </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">synchronized</span><span class="pln"> </span><span class="kwd">boolean</span><span class="pln"> add</span><span class="pun">(</span><span class="pln">E e</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L2"><code class="lang-java"><span class="pln">        modCount</span><span class="pun">++;</span></code></li><li class="L3"><code class="lang-java"><span class="pln">        ensureCapacityHelper</span><span class="pun">(</span><span class="pln">elementCount </span><span class="pun">+</span><span class="pln"> </span><span class="lit">1</span><span class="pun">);</span></code></li><li class="L4"><code class="lang-java"><span class="pln">        elementData</span><span class="pun">[</span><span class="pln">elementCount</span><span class="pun">++]</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> e</span><span class="pun">;</span></code></li><li class="L5"><code class="lang-java"><span class="pln">        </span><span class="kwd">return</span><span class="pln"> </span><span class="kwd">true</span><span class="pun">;</span></code></li><li class="L6"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li><li class="L7"><code class="lang-java"></code></li><li class="L8"><code class="lang-java"><span class="com">//ArrayList的add</span></code></li><li class="L9"><code class="lang-java"><span class="pln">   </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">boolean</span><span class="pln"> add</span><span class="pun">(</span><span class="pln">E e</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L0"><code class="lang-java"><span class="pln">        modCount</span><span class="pun">++;</span></code></li><li class="L1"><code class="lang-java"><span class="pln">        ensureCapacityHelper</span><span class="pun">(</span><span class="pln">elementCount </span><span class="pun">+</span><span class="pln"> </span><span class="lit">1</span><span class="pun">);</span></code></li><li class="L2"><code class="lang-java"><span class="pln">        elementData</span><span class="pun">[</span><span class="pln">elementCount</span><span class="pun">++]</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> e</span><span class="pun">;</span></code></li><li class="L3"><code class="lang-java"><span class="pln">        </span><span class="kwd">return</span><span class="pln"> </span><span class="kwd">true</span><span class="pun">;</span></code></li><li class="L4"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li></ol></pre>
+<p>所以Vector的实现逻辑是跟ArrayList是一样的，主要是多了synchronized关键字，当执行synchronized修饰的方法前，系统会对该方法加一把锁，方法执行完成后释放锁，加锁和释放锁的这个过程，在系统中是有开销的，因此，在单线程的环境中，Vector效率要差很多。你可以先了解ArrayList的源码—》》》》》<a href="1553949744282.html" title="从源码深入底层解析Java的数组列表ArrayList">从源码深入底层解析Java的数组列表ArrayList</a>看完这篇文章后就知道了。</p>
+</div>
+                                      </div>
+                                   <div class="layui-row text-center layui-mt20">
+                                           
+                                           <div class="layui-btn layui-btn-danger" onclick="emotion()"><i class="fa fa-thumbs-o-up" id="za"> 赞 (144)</i></div>
+                                       </div>
+                                   <div class="layui-row layui-mt20">
+                                         <blockquote class="layui-elem-quote text-center " style="border: none;">
+                                                  <span class="layui-show-md-inline-block layui-hide"  >文章出处：书生个人博客</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                   <span class="layui-show-md-inline-block layui-hide" id="artiurl"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                  <span>转载注明下哦！o(≧v≦)o~~</span>
+                                           </blockquote>
+                                    </div>
+                                 <div class="layui-row layui-mt20">
+                                         <p class="blog-tags">
+                                              标签：
+                                                       <span >Java</span><span >原创</span>
+
+                                               </p>
+                                 </div>
+                                 <div class="layui-row layui-col-space20 layui-mt20 article-page-similar">
+                                           <p>相似文章：</p>
+                                            <hr>
+                                             <ul>
+                                                    
+                                              </ul>
+                                    </div>
+                               </div>
+                      <script>
+                          $("#artiurl").html("文章地址："+location.href);
+
+
+                      </script>
+
+                       </div></div>
+                </div>
+
+                <div class="layui-collapse layui-panel layui-article" >
+                    <bmy-comment v-show="params.all_comment_open == 1 && commented" slot="post" :id="articleId"
+                                 :su="su"></bmy-comment>
+                    <bmy-comment-list :comments="comments" :tips="params.comment_notice"
+                                      :re="params.all_comment_open == 1 && commented"></bmy-comment-list>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <footer >
+    <div class="footer"><p>
+	<span><strong>友情链接:</strong><strong>&nbsp;</strong> &nbsp;&nbsp;</span><a class="ke-insertfile" href="https://www.layui.com/" target="_blank">layui</a><span>&nbsp;&nbsp;</span>&nbsp;<a class="ke-insertfile" href="http://www.shuyong.net/" target="_blank">舍力博客</a>&nbsp;&nbsp;<a class="ke-insertfile" href="javascript:;" id="friend">申请友链</a> 
+</p>
+<p>
+	2018-2019 nonelonely.com | 网站备案号：<a class="ke-insertfile" href="http://www.miitbeian.gov.cn/" target="_blank">闽ICP备18026034号-1</a> 
+</p>
+<p>
+	<br />
+</p></div>
+
+    <div class="layui-hide-xs" style="position: fixed;left: 100px; bottom: 100px; z-index: 999999;" id="robot" data-method="robot">
+        <div class="layui-layer-tips" ><div id="" class="layui-layer-content" style="background-color: rgb(114, 193, 236);width: 150px">Hi 我是小码，可以点击我问我笑话，天气，智能聊天，故事，查询备案等等。<i class="layui-layer-TipsG layui-layer-TipsT" style="border-right-color:rgb(114, 193, 236);"></i></div><span class="layui-layer-setwin"></span></div>
+        <a href="#" ><img src="../static/assets/img/robot.png" width="100px" alt="Hi 我是小码！" >
+        </a>
+    </div>
+
+
+</footer>
+</div>
+<script>
+    var layer;
+    layui.use(['layedit', 'laypage', 'code', 'element','layer'], function () {
+        layer = layui.layer;
+        var element = layui.element;
+        var layedit = layui.layedit;
+        layedit.build('comment-input', {
+            tool: ['face', '|', 'left', 'center', 'right', 'link', 'unlink']
+            , height: 150
+        });
+        layer.open({
+            title:'目录',
+            type: 1,
+            offset: ['200px', '100px'],
+            shade:0,
+            area: ['200px','500px'],
+            content: $(".site-dir")
+        });
+
+        BMY.articleVM = new Vue({
+            el: "#article-app",
+            data: {
+                params: {"website_logo_words":"111","comment_notice":"<span style=\"color:#FF5722;\">\u9075\u5B88\u56FD\u5BB6\u6CD5\u5F8B\u6CD5\u89C4\uFF0C\u8BF7\u52FF\u56DE\u590D\u65E0\u610F\u4E49\u5185\u5BB9\uFF0C\u8BF7\u4E0D\u8981\u56DE\u590D\u5D4C\u5957\u8FC7\u591A\u7684\u697C\u5C42\uFF01<\/span>","footer_words":"<p>\n\t<span><strong>\u53CB\u60C5\u94FE\u63A5:<\/strong><strong>\u0026nbsp;<\/strong> \u0026nbsp;\u0026nbsp;<\/span><a class=\"ke-insertfile\" href=\"https:\/\/www.layui.com\/\" target=\"_blank\">layui<\/a><span>\u0026nbsp;\u0026nbsp;<\/span>\u0026nbsp;<a class=\"ke-insertfile\" href=\"http:\/\/www.shuyong.net\" target=\"_blank\">\u820D\u529B\u535A\u5BA2<\/a>\u0026nbsp;\u0026nbsp;<a class=\"ke-insertfile\" href=\"javascript:;\" id=\"friend\">\u7533\u8BF7\u53CB\u94FE<\/a> \n<\/p>\n<p>\n\t2018-2019 nonelonely.com | \u7F51\u7AD9\u5907\u6848\u53F7\uFF1A<a class=\"ke-insertfile\" href=\"http:\/\/www.miitbeian.gov.cn\/\" target=\"_blank\">\u95FDICP\u590718026034\u53F7-1<\/a> \n<\/p>\n<p>\n\t<br \/>\n<\/p>","qiniu_domain":"","menu_home":"\u6559\u7A0B","index_style":"normal","index_div":" <div class=\"layui-col-md4\" >\n                           <div class=\"layui-tab layui-tab-card \"   >\n                               <div class=\"layui-tab-content select-none\">\n                                   <a href=\"\/pages?tagSearch=\u539F\u521B\">\n                                   <fieldset class=\"layui-elem-field layui-field-title\" style=\" border-color: rgb(193","web_keywords":"Java\u3001Java\u5B66\u4E60\u3001SpringBoot\u3001SpringBoot\u5B9E\u6218\u3001\u4E66\u751F\u3001\u4E2A\u4EBA\u535A\u5BA2\u3001\u4E66\u751F\u4E2A\u4EBA\u535A\u5BA2","qq_login":"1","menu_mine":"\u7559\u8A00","robot":"1","index_top_words":"\u6211\u7684\u6210\u957F\u7ECF\u5386","user_info":"<div class=\"gzwm\">\n\n            <div class=\"layui-inline\">\n                <img src=\"https:\/\/s2.ax1x.com\/2019\/03\/02\/kqNHb9.md.png\" alt=\"\u5934\u50CF.png\" width=\"100px\" class=\"layui-circle\"\/>\n            <\/div>\n            <div class=\"t-t\">\n                <a href=\"http:\/\/www.nonelonely.com\/\"  style=\"margin-top: 5px;font-size: 20px\" target=\"_blank\">www.nonelonely.com<\/a>\n                <p style=\"margin-top: 5px;font-size: 18px\">\u53EA\u6709\u8BA4\u771F\u4E86\uFF0C\u624D\u77E5\u9053\u4E00\u5207\u6765\u4E4B\u4E0D\u6613<\/p>\n                <span style=\"margin-top: 5px\"><i class=\"fa fa-map-marker\"><\/i>\u53A6\u95E8<\/span>\n            <\/div>\n            <div class=\"t-i\" style=\"font-size: 30px\">\n                <a href=\"https:\/\/weibo.com\/5310229542\/\" target=\"_blank\" rel=\"nofollow\"><i class=\"fa fa-weibo fa-fw\"><\/i><\/a>\n                <a href=\"http:\/\/wpa.qq.com\/msgrd?v=3\u0026uin=1343453657\u0026site=qq\u0026menu=yes\" rel=\"nofollow\" target=\"_blank\"><i class=\"fa fa-qq fa-fw\"><\/i><\/a>\n                <a href=\"mailto:admin@nonelonely.com\" rel=\"nofollow\"><i class=\"fa fa-envelope fa-fw\"><\/i><\/a>\n            <\/div>\n        <\/div>","menu_link_href":"","web_description":"\u8FD9\u662F\u8BB0\u5F55\u548C\u5206\u4EABJava\u3001SpringBoot\u548C\u591A\u7EBF\u7A0B\u4EE5\u53CA\u7CFB\u7EDF\u7EF4\u62A4\u77E5\u8BC6\u7684\u4E2A\u4EBA\u535A\u5BA2\u3002","menu_link_icon":"fa fa-code","wechat_pay":"\/static\/assets\/img\/wechat.png","website_title":"\u4E66\u751F\u4E2A\u4EBA\u535A\u5BA2","menu_search":"\u641C\u7D22","menu_link":"\u4EE3\u7801","alipay":"\/static\/assets\/img\/alipay.png","blog_index_page_size":"10","statistic_analysis":"0","info_panel_order":"1","menu_project_show":"1","menu_link_show":"0","menu_note_show":"1","menu_project":"\u4F5C\u54C1","info_label":"<audio class=\"audio\" src=\"https:\/\/music.163.com\/song\/media\/outer\/url?id=29567100.mp3\" controls=\"controls\" ><\/audio>\n","menu_note":"\u7B14\u8BB0","website_logo_small_words":"\u8FD9\u662F\u4E00\u4E2A\u5C0F\u6807\u9898","page_modern":"1","is_open_carousel":"1","menu_search_show":"1","imageurl":"https:\/\/s2.ax1x.com\/2019\/02\/16\/ks3AGn.jpg","is_open_message":"1","article_summary_words_length":"300","all_comment_open":"1","menu_mine_show":"1","message_panel_words":"\u6B22\u8FCE\u5927\u5BB6\u7559\u8A00\uFF0C\u6709\u4EC0\u4E48\u95EE\u9898\u3001\u5EFA\u8BAE\u3001\u610F\u89C1\u6216\u8005\u7591\u95EE\u53EF\u968F\u65F6\u63D0\u51FA\u3002<span style=\"color:red;\">\u7533\u8BF7\u53CB\u94FE\u7559\u8A00\u8BF7\u5148\u628Ahttp:\/\/www.nonelonely.com(\u4E66\u751F\u7684\u535A\u5BA2) \u653E\u5230\u60A8\u7F51\u7AD9\u7684\u5E95\u90E8\u53CB\u60C5\u94FE\u63A5\u4F4D\u7F6E\uFF01<\/span>"}
+                , commented: true
+                , st: true
+                , su: null
+                , showInfoLabel: false
+                , articleId: 1553956465889
+                , comments: []
+                , bodyId: "blog-body"
+                , elem: element
+            },
+            mounted: function () {
+                BMY.stickyIt();
+                BMY.affix = new hcSticky("#affix-side", {
+                    stickTo: '#blog-body'
+                    , queries: {980: {disable: true}}
+                    , top: 75
+                    , onStart: function () {
+                        if (!BMY.sticky()) {
+                            BMY.affix.destroy();
+                        }
+                    }
+                });
+                BMY.editor = layedit.build('comment-input', {
+                    tool: ['face', '|', 'left', 'center', 'right', 'link', 'unlink']
+                    , height: 150
+                });
+            }
+        });
+
+
+        BMY.laypage = layui.laypage;
+        // layui.code({about: false});
+        BMY.layedit = layui.layedit;
+        // BMY.laypage = layui.laypage;
+        // layui.code({
+        //     about: false
+        // });
+        BMY.editor = BMY.layedit.build('comment-input', {
+            tool: ['face', '|', 'left', 'center', 'right', 'link', 'unlink']
+            , height: 150
+        });
+
+
+        BMY.laypage.render({
+            elem: $(".comment-page")
+            , count: <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" type="text/css" href="../static/plugins/layui/css/layui.css">
+    
+    <title>出错了 - 500页面</title>
+    <style>
+        blockquote {
+            border-left: 5px solid rgba(244, 67, 54, 1) !important;
+        }
+    </style>
+</head>
+<body style="background: #f8f8f8;padding-top: 2rem;">
+<div class="layui-fluid">
+    <div class="layadmin-tips" style="text-align: center;">
+        <i class="layui-icon layui-icon-face-surprised" style="font-size: 10rem;"></i>
+        <div class="layui-text" style="font-size: 20px;margin-bottom: 2rem;">
+            好像出错了呢，<a target="_blank"
+                      href="/msg">点我反馈错误</a>
+        </div>
+        <div class="layui-container">
+            
+            <blockquote class="layui-elem-quote"><b>代码</b>：<span>500</span></blockquote>
+            
+            <blockquote class="layui-elem-quote"><b>时间</b>：<span>Mon Sep 09 13:01:31 CST 2019</span></blockquote>
+            
+            <blockquote class="layui-elem-quote layui-elip"><b>错误</b>：<span>Internal Server Error</span></blockquote>
+            
+            <blockquote class="layui-elem-quote layui-elip"><b>信息</b>：<span>Request processing failed; nested exception is org.thymeleaf.exceptions.TemplateInputException: An error happened during template parsing (template: &quot;class path resource [templates/frontend/content/article_simple.html]&quot;)</span></blockquote>
+            
+            <blockquote class="layui-elem-quote"><b>路径</b>：<span>/article/1553956465889</span></blockquote>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+
+
+
+

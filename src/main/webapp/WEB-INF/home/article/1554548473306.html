@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Mirrored from www.nonelonely.com/article/1554548473306 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:05:26 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+
+    <title>开发自己IoC容器- 书生个人博客</title>
+    <link href="../static/plugins/editormd/css/editormd.preview.min.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+<meta name="baidu_union_verify" content="3e514e79dc5e7201b9bee186137e9562">
+<meta name="keywords" content="IOC,dom4j,java反射机制">
+
+<meta name="description" content="一.IoC简介在平时的开发中，当我们正在编写的某一个类需要用到另外的一个类（组件）的时候，我们都需要通过new的关键来创建该类的实例，那么有没有更好的方式，可以不在我们的代码中直接去new这个类，就可以得到该实例呢？IoC的概念很好的帮助我们解决了这个问题，当我们需要在一个类中使用另外的类时，可以通过一些配置来得到该类的实现。IoC是Inver">
+
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../static/plugins/layui/css/layui.css">
+<link rel="stylesheet" href="../static/plugins/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../static/assets/css/frontend/base.css">
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "../../hm.baidu.com/hm6618.js?c07ddd5b98c69450ebd8e255627f70b0";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+    <link rel="canonical" href="1554548473306.html"/>
+    <script src="../../msite.baidu.com/sdk/cb688.js?appid=1622832448885693"></script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://ziyuan.baidu.com/contexts/cambrian.jsonld",
+            "@id": "http://www.nonelonely.com/article/1554548473306",
+            "appid": "1622832448885693",
+            "title": "\u5F00\u53D1\u81EA\u5DF1IoC\u5BB9\u5668-\u4E66\u751F\u4E2A\u4EBA\u535A\u5BA2",
+            "images": [
+                ""
+            ],
+            "pubDate": "2019-04-06T07:01:13"
+        }
+    </script>
+
+    <script src="../static/plugins/layui/layui.js"></script>
+<script src="../static/plugins/jquery/jquery.min.js"></script>
+<script src="../static/plugins/vue/vue.min.js"></script>
+<script src="../static/plugins/hc-sticky/hc-sticky.min.js"></script>
+<script src="../static/assets/js/BMY.js"></script>
+<script src="../static/assets/js/frontend/script.js"></script>
+<script src="../static/assets/js/BMY.vue.js"></script>
+<script src="../static/plugins/pushbar/pushbar.js"></script>
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+<script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+<script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+
+    <script src="../static/assets/js/frontend/svg.js"></script>
+    <script src="../static/plugins/editormd/lib/marked.min.js"></script>
+    <script src="../static/plugins/editormd/lib/prettify.min.js"></script>
+    <script src="../static/plugins/editormd/lib/raphael.min.js"></script>
+    <script src="../static/plugins/editormd/lib/underscore.min.js"></script>
+    <script src="../static/plugins/editormd/lib/flowchart.min.js"></script>
+    <script src="../static/plugins/editormd/lib/jquery.flowchart.min.js"></script>
+    <script src="../static/plugins/editormd/lib/sequence-diagram.min.js"></script>
+    <script src="../static/plugins/editormd/editormd.min.js"></script>
+    <style>
+        @media screen and (max-width: 767px) {
+            .layui-layer-page {
+                display: none;
+            }
+        }
+    </style>
+
+</head>
+<body class="animated fadeIn">
+<ul class="site-dir"><li><a href="#wz1"><cite>一.IoC简介</cite></a></li>
+<li><a href="#wz2"><cite>二.使用技术简介</cite></a></li>
+<ul style="margin-left: 15px;">
+<li><a href="#wz21">2.1 Java反射简介</a></li>
+<li><a href="#wz22">2.2 dom4j</a></li>
+</ul></ul>
+<div class="wrapper" id="article-app">
+    <header>
+    <div class="headtop"></div>
+    <div class="contenttop">
+        <div class="logo f_l"> Java码猿-书生个人博客</div>
+        <div class="search f_r">
+            <input name="keyboard"  id="bdcsMain" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+            <input name="Submit" class="input_submit" onclick="window.open('http://zhannei.baidu.com/cse/search?s=6583887351044514798&entry=1&q='+document.getElementById('bdcsMain').value)" value="搜索" type="button">
+            <!--<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=6583887351044514798' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>-->
+            <ul class="layui-nav" style="background-color: rgba(0,0,0,0);" >
+                
+                
+
+                <li  class="layui-nav-item"><a href="#"  style="color: #000;" onclick="goto()" title="QQ登入" class="iconfont icon-qq"></a>
+                </li>
+            </ul>
+
+
+        </div>
+        <div class="blank"></div>
+
+        <nav>
+            <div  class="navigation">
+                <ul class="menu">
+                    <li><a href="../index.html">网站首页</a></li>
+                    <li><a href="#">技术文章</a>
+                        <ul >
+                            <li><a  href="../pages748a.html?cateId=1">Spring系列</a></li>
+                            <li><a  href="../pages3c7b.html?cateId=6">前端开发</a></li>
+                            <li><a  href="../pages4ead.html?cateId=7">软件安装</a></li>
+                            <li><a  href="../pages8396.html?cateId=9">Java语法</a></li>
+                            <li><a  href="../pagesff6a.html?cateId=10">资源下载</a></li>
+                            <li><a  href="../pagesad9e.html?cateId=12">ORM框架</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="../note.html">我的日记</a> </li>
+                    <li><a href="../msg.html">给我留言</a> </li>
+                    <li><a href="../about.html">关于</a></li>
+                </ul>
+            </div>
+        </nav>
+        <SCRIPT type=text/javascript>
+            // Navigation Menu
+            $(function() {
+                $(".menu ul").css({display: "none"}); // Opera Fix
+                $(".menu li").hover(function(){
+                    $(this).find('ul:first').css({visibility: "visible",display: "none"}).slideDown("normal");
+                },function(){
+                    $(this).find('ul:first').css({visibility: "hidden"});
+                });
+            });
+
+            function  search() {
+                var s=$('#keyboard').val();
+                location.href = s === "" ? "/" : "/pages?searchStr=" + s;
+            };
+            function goto () {
+                var url = window.location.href;
+                var winObj = window.open('/api/qq?url=' + url, '_self');
+            }
+        </SCRIPT>
+
+    </div>
+</header>
+    <div class="jztop"></div>
+
+    <!--<bmy-article-page :alipay="params.alipay" :wechat="params.wechat_pay" :su="su">-->
+    <!--<div th:insert ="frontend/fragment/articlepage :: article"  slot="article"></div>-->
+    <!--<div  th:insert="frontend/fragment/comment :: comment" slot="post"></div>-->
+
+    <!--<bmy-comment-list slot="comment" :comments="comments" :tips="params.comment_notice"-->
+    <!--:re="params.all_comment_open == 1 && article.commented"></bmy-comment-list>-->
+    <!--<bmy-search slot="search"></bmy-search>-->
+    <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相似文章'})" slot="similar"></div>-->
+    <!--<div th:insert ="frontend/fragment/lot :: lot (${lots},${'热度文章'})" slot="lot"></div>-->
+    <!--</bmy-article-page>-->
+
+    <div id="blog-body" class="layui-container">
+        <div class="layui-row layui-col-space10">
+            <div id="blog-info" class="layui-col-md12">
+                <div class="layui-collapse layui-panel layui-article" >
+                     <div  ><div class="layui-colla-item">
+                    <h2 class="nh1"><span>您现在的位置是：<a href="../index.html" target="_blank">网站首页</a>>><a href="#" target="_blank">信息浏览</a>
+                    </span><b>文章详情</b></h2>
+                          <div class="layui-colla-content layui-show layui-article">
+                                   <fieldset class="layui-elem-field layui-field-title layui-article-page-title">
+                                       <legend class="center-to-head" align="center">开发自己IoC容器</legend>
+                                      </fieldset>
+                                  <div class="layui-text layui-blog-body">
+                                           <div class="layui-row">
+                                                  <div class="layui-col-md6 layui-col-md-offset3 text-center blog-base-info">
+                                                           <span><i class="fa fa-clock-o" ></i>2019-04-06 19:01 </span>
+                                                           <span><i class="fa fa-user-o"></i> <span style="color: #FF5722;">许多年以后</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-renzhengkaobei"></use></svg></span>
+                                                          <span><i class="fa fa-comment-o"></i></span>
+                                                           <span><i class="fa fa-eye"></i> 1473</span>
+                                                       </div>
+                                               </div>
+                                      <!-- Baidu Button BEGIN -->
+                                           <!--<div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">-->
+                                                  <!--<span class="bds_more">分享到：</span>-->
+                                                  <!--<a class="bds_qzone"></a>-->
+                                                  <!--<a class="bds_tsina"></a>-->
+                                                  <!--<a class="bds_tqq"></a>-->
+                                                  <!--<a class="bds_renren"></a>-->
+                                                  <!--<a class="bds_t163"></a>-->
+                                                  <!--<a class="shareCount"></a>-->
+                                          <!--</div>-->
+                                          <!--<script type="text/javascript" id="bdshare_js" data="type=tools&uid=6701193" ></script>-->
+                                          <!--<script type="text/javascript" id="bdshell_js"></script>-->
+                                          <!--<script type="text/javascript">-->
+                                              <!--document.getElementById("bdshell_js").src = "https://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)-->
+                                          <!--</script>-->
+                                      <!-- Baidu Button END -->
+                                           <hr>
+                                           <div class="content detail markdown-body editormd-preview-container editormd-preview-active"><p><div id="wz1"><strong>一 .IoC简介</strong></div> 
+
+</p>
+<p> 在平时的开发中，当我们正在编写的某一个类需要用到另外的一个类（组件）的时候，我们都需要通过 new 的关键来创建该类的实例，那么有没有更好的方式，可以不在我们的代码中直接去 new 这个类，就可以得到该实例呢？IoC 的概念很好的帮助我们解决了这个问题，当我们需要在一个类中使用另外的类时，可以通过一些配置来得到该类的实现。IoC 是 Inversion of Control 简称，又称控制反转，一个类需要另外一个类的实例，可以通过某个容器获得，而不在类的内部创建，得到什么样的实例，由容器去决定，而不是由该类决定。搞清楚了控制反转的概念后，我们再来了解什么叫依赖注入。依赖注入（Dependency Injection）与控制反转是同一个概念，我们创建某个类的实例由 IoC 容器完成，如果该类需要使用另外的类实例，那么可以在 IoC 容器中向该类注入需要被调用的实例。无论是控制反转还是依赖注入，采用这种方式来创建类的实例，可以使得我们的代码更加清晰明了，将各个类之间的依赖关系反映到 IoC 容器中，可以更动态、灵活和透明的管理各个对象。在 J2EE 领域<br>中使用 IoC 的概念，可以将各个功能不同的组件统一放到 IoC 容器中，程序员只需要关注各个组件的实现，而不需要关注各个组件的依赖的关系。常用的 IoC 容器有 Spring 的 IoC 容器、webwork 的 IoC 容器、google-guice，apache 的 HiveMind 等。</p>
+<p><div id="wz2"><strong>二 .使用技术简介</strong></div><br><div id="wz21">2.1 Java 的反射机制</div>
+
+</p>
+<p>在 Java 运行时环境中，如果我们需要得到某一个类的具体信息，那么就可以使用 Java 的反射机制，该机制可以让我们动态的得到某个类型的属性、构造器和方法。Java 的反射机制可以在运行时构造某一个类的实例，在运行时调用任意一个对象的方法。</p>
+<p><div id="wz22">2.2 dom4j</div>
+
+</p>
+<p>dom4j 是一个常用的 XML 解析项目，该项目是一个易用的开源项目，它应用于 Java 平台，支持使用 Dom、SAX 来解析 XML 文件。Dom4j 的使用非常简单，只需要使用该项目所提供的解析类，就可以轻松的读取到相应的 XML 文件，并可以得到这些 xml 的相关内容。</p>
+<p><strong>三 确定配置文件内容、编写DTD</strong><br>在编写 IoC 容器之前，我们需要编写 XML 文件，这些 XML 文件用来定义人们 IoC 容器的一些配置，例如声明我们需要创建哪些对象（bean），为这些对象（bean）提供名字和类名，让我们的 IoC 容器根据这些信息去创建相应的 bean。除了定义 bean 的名字和类名外，还需要定义一些其他的属性，例如该bean 是否为单态，是否需要延迟加载定。确定了配置文件的内容后，我们开始着手编写 DTD 文件。<br><strong>3.1 声明bean</strong><br>在整个 IoC 容器中，每一个 bean 代表具体的某个类，因此我们的根节点为 beans，beans 下有多个 bean，可以让我们配置具体的某个类。XML 文件的具体配置如下：</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="tag"><bean></span></code></li><li class="L1"><code><span class="tag"><bean></bean></span></code></li><li class="L2"><code><span class="pln">…</span></code></li><li class="L3"><code><span class="tag"></beans></span></code></li></ol></pre><p>定义好了 bean 节点好，我们需要为 bean 节点指定一个名字和类名，表示这个 bean 所对应的名称与类型，这些我们的 IoC 容器得到这些配置后，就可以帮我们创建这些类的实例。具体的配置如下：</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="tag"><beans></span></code></li><li class="L1"><code><span class="tag"><bean</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">”myDate”</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">”java.util.Date”</span><span class="tag">></bean></span></code></li><li class="L2"><code><span class="tag"></beans></span></code></li></ol></pre><p>以上的 bean 配置表示我们在 IoC 容器中创建了一个 myDate 的 bean，该 bean 的类型是java.util.Date。<br><strong>3.2 声明单态的bean</strong><br>定义一个 bean 除了需要显式声明该 bean 的名称和类型外，还需要告诉我们的 IoC 容器，该 bean是否为单态，如果该 bean 是单态的话，那么 IoC 容器在启动的时候，就只会为该 bean 创建一个实例，并将该实例缓存起来，如果该 bean 配置成非单态的话，那么就不进行缓存，每次请求这个 bean 的时候，就重新创建一个。我们为 bean 的配置添加一个 singleton 属性，用来声明 bean 是否为单态。</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="tag"><beans></span></code></li><li class="L1"><code><span class="tag"><bean</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">”myDate”</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">”java.util.Date”</span><span class="pln"> </span><span class="atn">singleton</span><span class="pun">=</span><span class="atv">”false”</span><span class="tag">></bean></span></code></li><li class="L2"><code><span class="tag"></beans></span></code></li></ol></pre><p>以上配置的黑体部分，我们配置了 myDate 这个 bean 为非单态，在一般的情况下，我们可以不指定 singleton 属性，让 singleton 属性在不显式声明的情况下的值为 true，给配置节点提供默认值<br><strong>3.3 声明延迟加载</strong><br>当 IoC 容器启动的时候，容器是否需要马上创建这个 bean，我们可以为配置文件提供一个属性，让容器知道我们在容器初始化的时候，是否需要创建。我们为 bean 提供一个 lazy-init 的属性：</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="tag"><bean</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">”</span><span class="pln"> </span><span class="atn">myDate</span><span class="pln">” </span><span class="atn">class</span><span class="pun">=</span><span class="atv">”</span><span class="pln"> </span><span class="atn">java</span><span class="pln">.</span><span class="atn">util</span><span class="pln">.</span><span class="atn">Date</span><span class="pln">” </span><span class="atn">lazy-init</span><span class="pun">=</span><span class="atv">”true”</span><span class="tag">></bean></span></code></li></ol></pre><p>以上的配置代码中，声明了 myDate 需要延迟加载，为 bean 节点加了这个属性后，beans 节点也可以提供一个 default-lazy-init 的属性，表示这份配置文件下的所有 bean，如果 lazy-init 属性的值为default 的时候，就使用 beans 节点（根节点）的 default-lazy-init 所配置的值：</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="tag"><beans</span><span class="pln"> </span><span class="atn">default-lazy-init</span><span class="pun">=</span><span class="atv">”true”</span><span class="tag">></span></code></li><li class="L1"><code><span class="tag"><bean</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">”myDate”</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">”java.util.Date”</span><span class="pln"> </span><span class="atn">lazy-init</span><span class="pun">=</span><span class="atv">”default”</span><span class="tag">></bean></span></code></li><li class="L2"><code><span class="tag"></beans></span></code></li></ol></pre><p>以上的配置，如果 myDate 的 bean 声明为 default 的话，那么就按照 beans 的 default-lazy-init 属性来决定是否需要延迟加载。如果对 bean 的 lazy-init 属性不指定值的话，那么就为这个 lazy-init 属性指定为 default，表示这个 bean 是否延迟加载取决于 beans 的配置，而 beans 的 default-lazy-init 属性不显式指定的话，可以使用 false 作为默认值。<br><strong>3.4 声明设值注入到bean的属性</strong><br>IoC容器除了可以帮我们创建bean之外，还可以帮助我们将对应的属性设置到该bean的实例里面，我们需要为每个 bean 注入一些属性，让该 bean 的实例得到这些属性，这些属性有可能是一些普通的值，也有可能是另外的定义的 bean。在这里我们使用设值注入，设值注入，就是创建了 bean 的实例后，再获得该 bean 配置的一些属性，通过该 bean 里面的 setter 方法，设值到该 bean 的实例中。</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="tag"><beans></span></code></li><li class="L1"><code><span class="pln"><!-定义一个 student 的 bean --></span></code></li><li class="L2"><code><span class="tag"><bean</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">"student"</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"org.crazyit.Student"</span><span class="tag">></span></code></li><li class="L3"><code><span class="pln"><!-为 Student 类中的 school 属性注入 school 的 bean --></span></code></li><li class="L4"><code><span class="tag"><property</span><span class="pln"> </span><span class="atn">name</span><span class="pun">=</span><span class="atv">"school"</span><span class="tag">></span></code></li><li class="L5"><code><span class="tag"><ref</span><span class="pln"> </span><span class="atn">bean</span><span class="pun">=</span><span class="atv">"school"</span><span class="tag">></ref></span></code></li><li class="L6"><code><span class="tag"></property></span></code></li><li class="L7"><code><span class="tag"></bean></span></code></li><li class="L8"><code><span class="tag"><bean</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">"school"</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"org.crazyit.School"</span><span class="tag">></bean></span></code></li><li class="L9"><code><span class="tag"></beans></span></code></li></ol></pre><p>以上的配置中的黑体部分，我们为 student 的 bean 注入了一个 school 的 bean，这样，school 和student 这两个 bean 就产生了依赖关系，这样的注入我们就叫依赖注入，以上的注入方式是依赖注入中的设值注入。那么我们的配置文件中需要为 bean 加入一个 property 的子节点，该节点里面有一个 name属性，property 节点下面有一个 ref 子节点，ref 子节点指向某一个容器中的 bean。除了注入另外定义<br>的 bean 外，还可以向 bean 中注入一些普通的属性：</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="tag"><bean</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">"student"</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"org.crazyit.Student"</span><span class="tag">></span></code></li><li class="L1"><code><span class="pln"><!-为 Student 类中的 school 属性注入 school 的 bean --></span></code></li><li class="L2"><code><span class="tag"><property</span><span class="pln"> </span><span class="atn">name</span><span class="pun">=</span><span class="atv">"age"</span><span class="tag">></span></code></li><li class="L3"><code><span class="tag"><value</span><span class="pln"> </span><span class="atn">type</span><span class="pun">=</span><span class="atv">"java.lang.Integer"</span><span class="tag">></span><span class="pln">18</span><span class="tag"></value></span></code></li><li class="L4"><code></code></li><li class="L5"><code><span class="tag"></property></span></code></li><li class="L6"><code><span class="tag"></bean></span></code></li></ol></pre><p>以上的配置表示向 student 这个 bean 中注入了一个 Integer 的值，对应 Student 的 age 属性。因此，property 节点下面可以出现 ref 节点和 value 节点，但是，每一个 property 只能出现一次 ref 节点或者value 节点，因为我们一个 property 只会设置一个属性。<br><strong>3.5 声明构造注入到bean的属性</strong><br>3.4 中，我们定义配置文件中为 bean 提供 property 节点进行设值注入，本小节我们定义构造注入的节点。构造注入，也就是通过 bean 中定义的构造参数，在创建这个 bean 的实例时，就将这些参数通过调用该 bean 的构造器，将这些配置的属性传递给该 bean。</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="tag"><bean</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">"student"</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"org.crazyit.Student"</span><span class="tag">></span></code></li><li class="L1"><code><span class="tag"><constructor-arg></span></code></li><li class="L2"><code><span class="tag"><ref</span><span class="pln"> </span><span class="atn">bean</span><span class="pun">=</span><span class="atv">"school"</span><span class="tag">></span></code></li><li class="L3"><code><span class="tag"></constructor-arg></span></code></li><li class="L4"><code><span class="tag"></bean></span></code></li></ol></pre><p>以上配置的黑体部分，声明了创建 student 这个 bean 的时候，我们需要为 Student 类提供一个构造器，构造器的参数为 School 类型，那么 IoC 容器在创建时，就会根据 constructor-arg 声明的属性，去调用 Student 的构造器。与 14.3.4 中的设值注入一样，除了可以提供 ref 元素外，还可以提供 value元素，构造注入一些另外的普通属性。</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="tag"><bean</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">"student"</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"org.crazyit.Student"</span><span class="tag">></span></code></li><li class="L1"><code><span class="tag"><constructor-arg></span></code></li><li class="L2"><code><span class="tag"><value</span><span class="pln"> </span><span class="atn">type</span><span class="pun">=</span><span class="atv">"java.lang.Integer"</span><span class="tag">></span><span class="pln">20</span><span class="tag"></value></span></code></li><li class="L3"><code><span class="tag"></constructor-arg></span></code></li><li class="L4"><code><span class="tag"></bean></span></code></li></ol></pre><p>这样的配置，我们就可以为 Student 进行构造注入，并在创建 bean 的实例时，提供一个 Integer类型的构造参数。<br><strong>3.6 自动装配</strong><br>自动装配，就是不需要指定 bean 的属性，从 IoC 容器中查找 bean 所需要的属性，将这些查找到的 bean 以设值注入的方式依赖注入到目标的 bean 中。</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="tag"><bean</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">"student"</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"org.crazyit.Student"</span><span class="pln"> </span><span class="atn">autowire</span><span class="pun">=</span><span class="atv">"byName"</span><span class="tag">></bean></span></code></li><li class="L1"><code><span class="tag"><bean</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">"school"</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"org.carayit.School"</span><span class="tag">></bean></span></code></li></ol></pre><p>以上的 student 提供了 autowire 属性，该属性值为 byName，表示根据 bean 的名称自动注入到student 中，如果 Student 类中有一个 setSchool 的 setter 方法，并且参数为 Schoold 对象，那么容器就需要自动的将 School 的 bean 通过设值注入设置到 Student 中。与延迟加载一样，也可以为 beans节点提供一个 default-autowire 属性，声明该 beans 根节点下面所有的 bean 节点，如果 autowire 的值为 default，那么就可以进行自动装配。</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="tag"><beans</span><span class="pln"> </span><span class="atn">autowire</span><span class="pun">=</span><span class="atv">"byName"</span><span class="tag">></span></code></li><li class="L1"><code><span class="tag"><bean</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">"student"</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"org.crazyit.Student"</span><span class="pln"> </span><span class="atn">autowire</span><span class="pun">=</span><span class="atv">"default"</span><span class="tag">></bean></span></code></li><li class="L2"><code><span class="tag"><bean</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">"school"</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"org.carayit.School"</span><span class="tag">></bean></span></code></li><li class="L3"><code><span class="tag"></beans></span></code></li></ol></pre><p>在本例中 autowire 的值我们定义为只允许为 no 或者 byName。如果 autowire 的值为 no 的话，表示不需要自动装配。bean 的autowire 属性默认值为 default。确定了 IoC 的配置文件需要配置的内容，那么接下来，我们就可以根据上述的配置内容，编写相关的约束文件（DTD）。</p>
+<p><strong>3.7 准备DTD文件</strong><br>文档定义类型（DTD）可以定义合法的 XML 文档构建模块，对我们所编写的一些 XML 文件进行约束，也就是说，当一份 XML 指定了某份 DTD 文件时，那么该 XML 文件就必须遵守该 DTD 文件的约束。简单的说，DTD 就是一种对 XML 文件定制的规范。当我们需要为一份 XML 定义某份 DTD 规范的时候，在 XML 文件头中声明：</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pun"><?</span><span class="pln">xml version</span><span class="pun">=</span><span class="str">"1.0"</span><span class="pln"> encoding</span><span class="pun">=</span><span class="str">"UTF-8"</span><span class="pun">?></span></code></li><li class="L1"><code><span class="dec"><!DOCTYPE beans PUBLIC "-//CRAZYIT//DTD BEAN//EN"</span></code></li><li class="L2"><code><span class="dec">"http://www.nonelonely.com/beans.dtd"></span></code></li></ol></pre><p>以上的XML文件头，声明了该份XML由<a href="../beans.html">http://www.nonelonely.com/beans.dtd这一份dtd来约束，每个元素都需要遵守该份DTD中所声明的文档结构。据</a> 3.1 到 3.6 里面定义的配置文件的内容，我们可以开始编写 DTD 文件。以下为我们的 IoC容器配置文件的 DTD 文件：</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="dec"><!ELEMENT beans (</span></code></li><li class="L1"><code><span class="dec">    bean*</span></code></li><li class="L2"><code><span class="dec">    )></span></code></li><li class="L3"><code><span class="pln">    </span><span class="dec"><!ATTLIST beans default-lazy-init (true | false) "false"></span></code></li><li class="L4"><code><span class="pln">    </span><span class="dec"><!ATTLIST beans default-autowire (no | byName) "no"></span></code></li><li class="L5"><code><span class="pln">    </span><span class="com"><!-- 指定 bean 元素的子元素 --></span></code></li><li class="L6"><code><span class="pln">    </span><span class="dec"><!ELEMENT bean (</span></code></li><li class="L7"><code><span class="dec">    (constructor-arg | property)*</span></code></li><li class="L8"><code><span class="dec">    )></span></code></li><li class="L9"><code><span class="pln">    </span><span class="com"><!-- 指定 bean 元素的属性值 --></span></code></li><li class="L0"><code><span class="pln">    </span><span class="dec"><!ATTLIST bean id CDATA #REQUIRED></span></code></li><li class="L1"><code><span class="pln">    </span><span class="dec"><!ATTLIST bean class CDATA #REQUIRED></span></code></li><li class="L2"><code><span class="pln">    </span><span class="dec"><!ATTLIST bean lazy-init (true | false | default) "default"></span></code></li><li class="L3"><code><span class="pln">    </span><span class="dec"><!ATTLIST bean singleton (true | false) "true"></span></code></li><li class="L4"><code><span class="pln">    </span><span class="dec"><!ATTLIST bean autowire (no | byName | default) "default"></span></code></li><li class="L5"><code><span class="pln">    </span><span class="com"><!-- 声明 constructor-arg 子元素 --></span></code></li><li class="L6"><code><span class="pln">    </span><span class="dec"><!ELEMENT constructor-arg (</span></code></li><li class="L7"><code><span class="dec">    (ref | value | null)</span></code></li><li class="L8"><code><span class="dec">    )></span></code></li><li class="L9"><code><span class="pln">    </span><span class="com"><!-- 声明 property 元素的子元素 --></span></code></li><li class="L0"><code><span class="pln">    </span><span class="dec"><!ELEMENT property (</span></code></li><li class="L1"><code><span class="dec">    (ref | value | null)?</span></code></li><li class="L2"><code><span class="dec">    )></span></code></li><li class="L3"><code><span class="pln">    </span><span class="com"><!-- 声明 property 的属性 --></span></code></li><li class="L4"><code><span class="pln">    </span><span class="dec"><!ATTLIST property name CDATA #REQUIRED></span></code></li><li class="L5"><code><span class="pln">    </span><span class="com"><!-- 声明 property 的属性 --></span></code></li><li class="L6"><code><span class="pln">    </span><span class="dec"><!ATTLIST value type CDATA #REQUIRED></span></code></li><li class="L7"><code><span class="pln">    </span><span class="com"><!-- 声明 ref 元素 --></span></code></li><li class="L8"><code><span class="pln">    </span><span class="dec"><!ELEMENT ref EMPTY></span></code></li><li class="L9"><code><span class="pln">    </span><span class="com"><!-- 声明 ref 的属性 --></span></code></li><li class="L0"><code><span class="pln">    </span><span class="dec"><!ATTLIST ref bean CDATA #REQUIRED></span></code></li><li class="L1"><code><span class="pln">    </span><span class="com"><!-- 声明 value 元素 --></span></code></li><li class="L2"><code><span class="pln">    </span><span class="dec"><!ELEMENT value (#PCDATA)></span></code></li></ol></pre><p>通过以上的代码，那么该份 DTD 的各个节点可以概括为如下几个：</p>
+<ol>
+<li><p>beans 节点：根节点为 beans，beans 的属性有 default-lazy-init 和 autowire，这两个属性的默认值（不需要显式提供）为 false 和 no。</p>
+</li><li><p>bean 节点：beans 下面有多个 bean 节点，bean 节点必须要显式提供 id 和 class 属性，可以不必显式提供 lazy-init，singleton 和 autowire 属性，lazy-init 的默认值为 default，表示该值由</p>
+</li><li>beans 的 default-lazy-init 来决定，singleton 的默认值为 true，而且只允许有 true 和 false 两个值，autowire 属性的默认值是 default，由 beans 的 default-autowire 来决定。</li><li>construct-arg 节点：ref、value 和 null 都可以作为该节点的子节点，该节点没有属性。</li><li>property 节点：ref、value 和 null 都可以作为该节点的子节点，property 节点有一个 name 属性，而且是必须指定的。</li><li>ref 节点：该节点没有子节点，只有一个必须指定的 bean 属性。</li><li>value 节点：value 节点只有一个 type 属性，用于指定该值的类型。编写完 DTD 文件后，那么我们可以在 XML 的文件头中声明 DTD。</li></ol>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pun"><?</span><span class="pln">xml version</span><span class="pun">=</span><span class="str">"1.0"</span><span class="pln"> encoding</span><span class="pun">=</span><span class="str">"UTF-8"</span><span class="pun">?></span></code></li><li class="L1"><code><span class="dec"><!DOCTYPE beans PUBLIC "-//CRAZYIT//DTD BEAN//EN"</span></code></li></ol></pre><p>“我们编写的 我们编写的 DTD  文件的绝对路径”>以上的 XML 文件头，表示我们使用某份 DTD 文件作为 XML 的约束，指定 DTD 文件路径时，我们暂时使用绝对路径，指向我们上面编写的那份 DTD 文件，在下面的中，将会讲解如何将绝对路径变成 url。</p>
+</div>
+                                      </div>
+                                   <div class="layui-row text-center layui-mt20">
+                                           
+                                           <div class="layui-btn layui-btn-danger" onclick="emotion()"><i class="fa fa-thumbs-o-up" id="za"> 赞 (147)</i></div>
+                                       </div>
+                                   <div class="layui-row layui-mt20">
+                                         <blockquote class="layui-elem-quote text-center " style="border: none;">
+                                                  <span class="layui-show-md-inline-block layui-hide"  >文章出处：书生个人博客</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                   <span class="layui-show-md-inline-block layui-hide" id="artiurl"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                  <span>转载注明下哦！o(≧v≦)o~~</span>
+                                           </blockquote>
+                                    </div>
+                                 <div class="layui-row layui-mt20">
+                                         <p class="blog-tags">
+                                              标签：
+                                                       <span >IOC</span><span >dom4j</span><span >java反射机制</span>
+
+                                               </p>
+                                 </div>
+                                 <div class="layui-row layui-col-space20 layui-mt20 article-page-similar">
+                                           <p>相似文章：</p>
+                                            <hr>
+                                             <ul>
+                                                    
+                                              </ul>
+                                    </div>
+                               </div>
+                      <script>
+                          $("#artiurl").html("文章地址："+location.href);
+
+
+                      </script>
+
+                       </div></div>
+                </div>
+
+                <div class="layui-collapse layui-panel layui-article" >
+                    <bmy-comment v-show="params.all_comment_open == 1 && commented" slot="post" :id="articleId"
+                                 :su="su"></bmy-comment>
+                    <bmy-comment-list :comments="comments" :tips="params.comment_notice"
+                                      :re="params.all_comment_open == 1 && commented"></bmy-comment-list>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <footer >
+    <div class="footer"><p>
+	<span><strong>友情链接:</strong><strong>&nbsp;</strong> &nbsp;&nbsp;</span><a class="ke-insertfile" href="https://www.layui.com/" target="_blank">layui</a><span>&nbsp;&nbsp;</span>&nbsp;<a class="ke-insertfile" href="http://www.shuyong.net/" target="_blank">舍力博客</a>&nbsp;&nbsp;<a class="ke-insertfile" href="javascript:;" id="friend">申请友链</a> 
+</p>
+<p>
+	2018-2019 nonelonely.com | 网站备案号：<a class="ke-insertfile" href="http://www.miitbeian.gov.cn/" target="_blank">闽ICP备18026034号-1</a> 
+</p>
+<p>
+	<br />
+</p></div>
+
+    <div class="layui-hide-xs" style="position: fixed;left: 100px; bottom: 100px; z-index: 999999;" id="robot" data-method="robot">
+        <div class="layui-layer-tips" ><div id="" class="layui-layer-content" style="background-color: rgb(114, 193, 236);width: 150px">Hi 我是小码，可以点击我问我笑话，天气，智能聊天，故事，查询备案等等。<i class="layui-layer-TipsG layui-layer-TipsT" style="border-right-color:rgb(114, 193, 236);"></i></div><span class="layui-layer-setwin"></span></div>
+        <a href="#" ><img src="../static/assets/img/robot.png" width="100px" alt="Hi 我是小码！" >
+        </a>
+    </div>
+
+
+</footer>
+</div>
+<script>
+    var layer;
+    layui.use(['layedit', 'laypage', 'code', 'element','layer'], function () {
+        layer = layui.layer;
+        var element = layui.element;
+        var layedit = layui.layedit;
+        layedit.build('comment-input', {
+            tool: ['face', '|', 'left', 'center', 'right', 'link', 'unlink']
+            , height: 150
+        });
+        layer.open({
+            title:'目录',
+            type: 1,
+            offset: ['200px', '100px'],
+            shade:0,
+            area: ['200px','500px'],
+            content: $(".site-dir")
+        });
+
+        BMY.articleVM = new Vue({
+            el: "#article-app",
+            data: {
+                params: {"website_logo_words":"111","comment_notice":"<span style=\"color:#FF5722;\">\u9075\u5B88\u56FD\u5BB6\u6CD5\u5F8B\u6CD5\u89C4\uFF0C\u8BF7\u52FF\u56DE\u590D\u65E0\u610F\u4E49\u5185\u5BB9\uFF0C\u8BF7\u4E0D\u8981\u56DE\u590D\u5D4C\u5957\u8FC7\u591A\u7684\u697C\u5C42\uFF01<\/span>","footer_words":"<p>\n\t<span><strong>\u53CB\u60C5\u94FE\u63A5:<\/strong><strong>\u0026nbsp;<\/strong> \u0026nbsp;\u0026nbsp;<\/span><a class=\"ke-insertfile\" href=\"https:\/\/www.layui.com\/\" target=\"_blank\">layui<\/a><span>\u0026nbsp;\u0026nbsp;<\/span>\u0026nbsp;<a class=\"ke-insertfile\" href=\"http:\/\/www.shuyong.net\" target=\"_blank\">\u820D\u529B\u535A\u5BA2<\/a>\u0026nbsp;\u0026nbsp;<a class=\"ke-insertfile\" href=\"javascript:;\" id=\"friend\">\u7533\u8BF7\u53CB\u94FE<\/a> \n<\/p>\n<p>\n\t2018-2019 nonelonely.com | \u7F51\u7AD9\u5907\u6848\u53F7\uFF1A<a class=\"ke-insertfile\" href=\"http:\/\/www.miitbeian.gov.cn\/\" target=\"_blank\">\u95FDICP\u590718026034\u53F7-1<\/a> \n<\/p>\n<p>\n\t<br \/>\n<\/p>","qiniu_domain":"","menu_home":"\u6559\u7A0B","index_style":"normal","index_div":" <div class=\"layui-col-md4\" >\n                           <div class=\"layui-tab layui-tab-card \"   >\n                               <div class=\"layui-tab-content select-none\">\n                                   <a href=\"\/pages?tagSearch=\u539F\u521B\">\n                                   <fieldset class=\"layui-elem-field layui-field-title\" style=\" border-color: rgb(193","web_keywords":"Java\u3001Java\u5B66\u4E60\u3001SpringBoot\u3001SpringBoot\u5B9E\u6218\u3001\u4E66\u751F\u3001\u4E2A\u4EBA\u535A\u5BA2\u3001\u4E66\u751F\u4E2A\u4EBA\u535A\u5BA2","qq_login":"1","menu_mine":"\u7559\u8A00","robot":"1","index_top_words":"\u6211\u7684\u6210\u957F\u7ECF\u5386","user_info":"<div class=\"gzwm\">\n\n            <div class=\"layui-inline\">\n                <img src=\"https:\/\/s2.ax1x.com\/2019\/03\/02\/kqNHb9.md.png\" alt=\"\u5934\u50CF.png\" width=\"100px\" class=\"layui-circle\"\/>\n            <\/div>\n            <div class=\"t-t\">\n                <a href=\"http:\/\/www.nonelonely.com\/\"  style=\"margin-top: 5px;font-size: 20px\" target=\"_blank\">www.nonelonely.com<\/a>\n                <p style=\"margin-top: 5px;font-size: 18px\">\u53EA\u6709\u8BA4\u771F\u4E86\uFF0C\u624D\u77E5\u9053\u4E00\u5207\u6765\u4E4B\u4E0D\u6613<\/p>\n                <span style=\"margin-top: 5px\"><i class=\"fa fa-map-marker\"><\/i>\u53A6\u95E8<\/span>\n            <\/div>\n            <div class=\"t-i\" style=\"font-size: 30px\">\n                <a href=\"https:\/\/weibo.com\/5310229542\/\" target=\"_blank\" rel=\"nofollow\"><i class=\"fa fa-weibo fa-fw\"><\/i><\/a>\n                <a href=\"http:\/\/wpa.qq.com\/msgrd?v=3\u0026uin=1343453657\u0026site=qq\u0026menu=yes\" rel=\"nofollow\" target=\"_blank\"><i class=\"fa fa-qq fa-fw\"><\/i><\/a>\n                <a href=\"mailto:admin@nonelonely.com\" rel=\"nofollow\"><i class=\"fa fa-envelope fa-fw\"><\/i><\/a>\n            <\/div>\n        <\/div>","menu_link_href":"","web_description":"\u8FD9\u662F\u8BB0\u5F55\u548C\u5206\u4EABJava\u3001SpringBoot\u548C\u591A\u7EBF\u7A0B\u4EE5\u53CA\u7CFB\u7EDF\u7EF4\u62A4\u77E5\u8BC6\u7684\u4E2A\u4EBA\u535A\u5BA2\u3002","menu_link_icon":"fa fa-code","wechat_pay":"\/static\/assets\/img\/wechat.png","website_title":"\u4E66\u751F\u4E2A\u4EBA\u535A\u5BA2","menu_search":"\u641C\u7D22","menu_link":"\u4EE3\u7801","alipay":"\/static\/assets\/img\/alipay.png","blog_index_page_size":"10","statistic_analysis":"0","info_panel_order":"1","menu_project_show":"1","menu_link_show":"0","menu_note_show":"1","menu_project":"\u4F5C\u54C1","info_label":"<audio class=\"audio\" src=\"https:\/\/music.163.com\/song\/media\/outer\/url?id=29567100.mp3\" controls=\"controls\" ><\/audio>\n","menu_note":"\u7B14\u8BB0","website_logo_small_words":"\u8FD9\u662F\u4E00\u4E2A\u5C0F\u6807\u9898","page_modern":"1","is_open_carousel":"1","menu_search_show":"1","imageurl":"https:\/\/s2.ax1x.com\/2019\/02\/16\/ks3AGn.jpg","is_open_message":"1","article_summary_words_length":"300","all_comment_open":"1","menu_mine_show":"1","message_panel_words":"\u6B22\u8FCE\u5927\u5BB6\u7559\u8A00\uFF0C\u6709\u4EC0\u4E48\u95EE\u9898\u3001\u5EFA\u8BAE\u3001\u610F\u89C1\u6216\u8005\u7591\u95EE\u53EF\u968F\u65F6\u63D0\u51FA\u3002<span style=\"color:red;\">\u7533\u8BF7\u53CB\u94FE\u7559\u8A00\u8BF7\u5148\u628Ahttp:\/\/www.nonelonely.com(\u4E66\u751F\u7684\u535A\u5BA2) \u653E\u5230\u60A8\u7F51\u7AD9\u7684\u5E95\u90E8\u53CB\u60C5\u94FE\u63A5\u4F4D\u7F6E\uFF01<\/span>"}
+                , commented: true
+                , st: true
+                , su: null
+                , showInfoLabel: false
+                , articleId: 1554548473306
+                , comments: []
+                , bodyId: "blog-body"
+                , elem: element
+            },
+            mounted: function () {
+                BMY.stickyIt();
+                BMY.affix = new hcSticky("#affix-side", {
+                    stickTo: '#blog-body'
+                    , queries: {980: {disable: true}}
+                    , top: 75
+                    , onStart: function () {
+                        if (!BMY.sticky()) {
+                            BMY.affix.destroy();
+                        }
+                    }
+                });
+                BMY.editor = layedit.build('comment-input', {
+                    tool: ['face', '|', 'left', 'center', 'right', 'link', 'unlink']
+                    , height: 150
+                });
+            }
+        });
+
+
+        BMY.laypage = layui.laypage;
+        // layui.code({about: false});
+        BMY.layedit = layui.layedit;
+        // BMY.laypage = layui.laypage;
+        // layui.code({
+        //     about: false
+        // });
+        BMY.editor = BMY.layedit.build('comment-input', {
+            tool: ['face', '|', 'left', 'center', 'right', 'link', 'unlink']
+            , height: 150
+        });
+
+
+        BMY.laypage.render({
+            elem: $(".comment-page")
+            , count: <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" type="text/css" href="../static/plugins/layui/css/layui.css">
+    
+    <title>出错了 - 500页面</title>
+    <style>
+        blockquote {
+            border-left: 5px solid rgba(244, 67, 54, 1) !important;
+        }
+    </style>
+</head>
+<body style="background: #f8f8f8;padding-top: 2rem;">
+<div class="layui-fluid">
+    <div class="layadmin-tips" style="text-align: center;">
+        <i class="layui-icon layui-icon-face-surprised" style="font-size: 10rem;"></i>
+        <div class="layui-text" style="font-size: 20px;margin-bottom: 2rem;">
+            好像出错了呢，<a target="_blank"
+                      href="/msg">点我反馈错误</a>
+        </div>
+        <div class="layui-container">
+            
+            <blockquote class="layui-elem-quote"><b>代码</b>：<span>500</span></blockquote>
+            
+            <blockquote class="layui-elem-quote"><b>时间</b>：<span>Mon Sep 09 13:01:21 CST 2019</span></blockquote>
+            
+            <blockquote class="layui-elem-quote layui-elip"><b>错误</b>：<span>Internal Server Error</span></blockquote>
+            
+            <blockquote class="layui-elem-quote layui-elip"><b>信息</b>：<span>Request processing failed; nested exception is org.thymeleaf.exceptions.TemplateInputException: An error happened during template parsing (template: &quot;class path resource [templates/frontend/content/article_simple.html]&quot;)</span></blockquote>
+            
+            <blockquote class="layui-elem-quote"><b>路径</b>：<span>/article/1554548473306</span></blockquote>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+
+
+
+

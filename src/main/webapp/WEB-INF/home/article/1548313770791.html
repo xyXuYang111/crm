@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Mirrored from www.nonelonely.com/article/1548313770791 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:02:32 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+
+    <title>SpringBoot整合JavaMail，配置JavaMailSender，邮件发送(模板，附件，HTML邮件发送)- 书生个人博客</title>
+    <link href="../static/plugins/editormd/css/editormd.min.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+<meta name="baidu_union_verify" content="3e514e79dc5e7201b9bee186137e9562">
+<meta name="keywords" content="springboot系列,原创">
+
+<meta name="description" content="为了不错过你们给我的留言，上线了邮箱系统，用到了JavaMailSenderImpl和JavaMailSender，本文讲解SpringBoot如何群发和单发邮件或者附件，模板，HTml,自动配置或者从数据库获取自己配置。pom文件引用jar包不管是JavaMailSenderImpl还是JavaMailSender，其实JavaMailSenderImpl继承了JavaMailSender，用来自己配置的&amp;lt;dependency&amp;gt;&amp;lt;groupId&amp;gt;org.springframewor">
+
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../static/plugins/layui/css/layui.css">
+<link rel="stylesheet" href="../static/plugins/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../static/assets/css/frontend/base.css">
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "../../hm.baidu.com/hm6618.js?c07ddd5b98c69450ebd8e255627f70b0";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <link rel="canonical" href="1548313770791.html"/>
+    <script src="../../msite.baidu.com/sdk/cb688.js?appid=1622832448885693"></script>
+    <script src="../static/plugins/jquery/jquery.min.js"></script>
+     <style>
+         @media screen and (max-width: 767px) {
+             .layui-layer-page {
+                 display: none;
+             }
+         }
+
+         .markdown-body.layui-layer-content {
+             padding: 20px;
+             /*background-image: url("/static/assets/img/long.png");*/
+         }
+         .markdown-body  .layui-layer-title{
+             background-color: #e4e4e400;
+         }
+         .markdown-body  .layui-layer{
+             background-color: #e4e4e4;
+             background-image: url("../static/assets/img/long.png") ;
+             background-size: 100% 100%;
+         }
+         .markdown-body .layui-layer-content {
+
+            padding: 20px;
+         }
+
+     </style>
+
+</head>
+<body class="animated fadeIn">
+
+<div class="wrapper" >
+    <header>
+    <div class="headtop"></div>
+    <div class="contenttop">
+        <div class="logo f_l"> Java码猿-书生个人博客</div>
+        <div class="search f_r">
+            <input name="keyboard"  id="bdcsMain" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+            <input name="Submit" class="input_submit" onclick="window.open('http://zhannei.baidu.com/cse/search?s=6583887351044514798&entry=1&q='+document.getElementById('bdcsMain').value)" value="搜索" type="button">
+            <!--<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=6583887351044514798' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>-->
+            <ul class="layui-nav" style="background-color: rgba(0,0,0,0);" >
+                
+                
+
+                <li  class="layui-nav-item"><a href="#"  style="color: #000;" onclick="goto()" title="QQ登入" class="iconfont icon-qq"></a>
+                </li>
+            </ul>
+
+
+        </div>
+        <div class="blank"></div>
+
+        <nav>
+            <div  class="navigation">
+                <ul class="menu">
+                    <li><a href="../index.html">网站首页</a></li>
+                    <li><a href="#">技术文章</a>
+                        <ul >
+                            <li><a  href="../pages748a.html?cateId=1">Spring系列</a></li>
+                            <li><a  href="../pages3c7b.html?cateId=6">前端开发</a></li>
+                            <li><a  href="../pages4ead.html?cateId=7">软件安装</a></li>
+                            <li><a  href="../pages8396.html?cateId=9">Java语法</a></li>
+                            <li><a  href="../pagesff6a.html?cateId=10">资源下载</a></li>
+                            <li><a  href="../pagesad9e.html?cateId=12">ORM框架</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="../note.html">我的日记</a> </li>
+                    <li><a href="../msg.html">给我留言</a> </li>
+                    <li><a href="../about.html">关于</a></li>
+                </ul>
+            </div>
+        </nav>
+        <SCRIPT type=text/javascript>
+            // Navigation Menu
+            $(function() {
+                $(".menu ul").css({display: "none"}); // Opera Fix
+                $(".menu li").hover(function(){
+                    $(this).find('ul:first').css({visibility: "visible",display: "none"}).slideDown("normal");
+                },function(){
+                    $(this).find('ul:first').css({visibility: "hidden"});
+                });
+            });
+
+            function  search() {
+                var s=$('#keyboard').val();
+                location.href = s === "" ? "/" : "/pages?searchStr=" + s;
+            };
+            function goto () {
+                var url = window.location.href;
+                var winObj = window.open('/api/qq?url=' + url, '_self');
+            }
+        </SCRIPT>
+
+    </div>
+</header>
+    <div class="jztop"></div>
+
+    <!--<bmy-article-page :alipay="params.alipay" :wechat="params.wechat_pay" :su="su">-->
+        <!--<div th:insert ="frontend/fragment/articlepage :: article"  slot="article"></div>-->
+        <!--<div  th:insert="frontend/fragment/comment :: comment" slot="post"></div>-->
+
+        <!--<bmy-comment-list slot="comment" :comments="comments" :tips="params.comment_notice"-->
+                          <!--:re="params.all_comment_open == 1 && article.commented"></bmy-comment-list>-->
+       <!--<bmy-search slot="search"></bmy-search>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相似文章'})" slot="similar"></div>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${lots},${'热度文章'})" slot="lot"></div>-->
+    <!--</bmy-article-page>-->
+
+    <div id="blog-body" class="layui-container">
+       <div class="layui-row layui-col-space10">
+           <div id="blog-info" class="layui-col-md12">
+                <div class="layui-collapse layui-panel layui-article photos" >
+
+                     <div  ><div class="layui-colla-item">
+                    <h2 class="nh1"><span>您现在的位置是：<a href="../index.html" target="_blank">网站首页</a>>><a href="#" target="_blank">信息浏览</a>
+                    </span><b>文章详情</b></h2>
+                          <div class="layui-colla-content layui-show layui-article">
+                                   <fieldset class="layui-elem-field layui-field-title layui-article-page-title">
+                                       <legend class="center-to-head" align="center">SpringBoot整合JavaMail，配置JavaMailSender，邮件发送(模板，附件，HTML邮件发送)</legend>
+                                      </fieldset>
+                                  <div class="layui-text layui-blog-body">
+                                           <div class="layui-row">
+                                                  <div class="layui-col-md6 layui-col-md-offset3 text-center blog-base-info">
+                                                           <span><i class="fa fa-clock-o" ></i>2019-01-24 15:09 </span>
+                                                           <span><i class="fa fa-user-o"></i> <span style="color: #FF5722;">许多年以后</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-renzhengkaobei"></use></svg></span>
+                                                          <span><i class="fa fa-comment-o"></i></span>
+                                                           <span><i class="fa fa-eye"></i> 1901</span>
+                                                       </div>
+                                               </div>
+                                      <!-- Baidu Button BEGIN -->
+                                           <!--<div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">-->
+                                                  <!--<span class="bds_more">分享到：</span>-->
+                                                  <!--<a class="bds_qzone"></a>-->
+                                                  <!--<a class="bds_tsina"></a>-->
+                                                  <!--<a class="bds_tqq"></a>-->
+                                                  <!--<a class="bds_renren"></a>-->
+                                                  <!--<a class="bds_t163"></a>-->
+                                                  <!--<a class="shareCount"></a>-->
+                                          <!--</div>-->
+                                          <!--<script type="text/javascript" id="bdshare_js" data="type=tools&uid=6701193" ></script>-->
+                                          <!--<script type="text/javascript" id="bdshell_js"></script>-->
+                                          <!--<script type="text/javascript">-->
+                                              <!--document.getElementById("bdshell_js").src = "https://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)-->
+                                          <!--</script>-->
+                                      <!-- Baidu Button END -->
+                                           <hr>
+                                           <div class="content detail markdown-body editormd-preview-container editormd-preview-active"><blockquote>
+<p>为了不错过你们给我的留言，上线了邮箱系统，用到了JavaMailSenderImpl和JavaMailSender，本文讲解SpringBoot如何群发和单发邮件或者附件，模板，HTml,自动配置或者从数据库获取自己配置。</p>
+</blockquote>
+<h3 id="h3-pom-jar-"><a name="pom文件引用jar包" class="reference-link"></a><span class="header-link octicon octicon-link"></span>pom文件引用jar包</h3><p>不管是JavaMailSenderImpl还是JavaMailSender，其实JavaMailSenderImpl继承了JavaMailSender，用来自己配置的</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-xml"><span class="tag">&lt;dependency&gt;</span></code></li><li class="L1"><code class="lang-xml"><span class="pln">   </span><span class="tag">&lt;groupId&gt;</span><span class="pln">org.springframework.boot</span><span class="tag">&lt;/groupId&gt;</span><span class="pln"> </span></code></li><li class="L2"><code class="lang-xml"><span class="pln">  </span><span class="tag">&lt;artifactId&gt;</span><span class="pln">spring-boot-starter-mail</span><span class="tag">&lt;/artifactId&gt;</span></code></li><li class="L3"><code class="lang-xml"><span class="tag">&lt;/dependency&gt;</span></code></li></ol></pre>
+<p>如其他自动化配置模块一样，在完成了依赖引入之后，只需要在 application.properties 中配置相应的属性内容。</p>
+<h4 id="h4-application-properties"><a name="application.properties" class="reference-link"></a><span class="header-link octicon octicon-link"></span>application.properties</h4><pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-xml"><span class="pln">spring.mail.host=smtp.qq.com  </span></code></li><li class="L1"><code class="lang-xml"><span class="pln">spring.mail.username=13XXXX657@qq.com  //发送方的邮箱</span></code></li><li class="L2"><code class="lang-xml"><span class="pln">spring.mail.password=密码  //对于qq邮箱而言 密码指的就是发送方的授权码</span></code></li><li class="L3"><code class="lang-xml"><span class="pln">spring.mail.properties.mail.smtp.auth=true  </span></code></li><li class="L4"><code class="lang-xml"><span class="pln">spring.mail.properties.mail.smtp.starttls.enable=true  </span></code></li><li class="L5"><code class="lang-xml"><span class="pln">spring.mail.properties.mail.smtp.starttls.required=true  </span></code></li><li class="L6"><code class="lang-xml"><span class="pln">注意：在spring.mail.password处的值是需要在邮箱设置里面生成的授权码，这个不是真实的密码。</span></code></li></ol></pre>
+<h4 id="h4-application-yml"><a name="application.yml" class="reference-link"></a><span class="header-link octicon octicon-link"></span>application.yml</h4><pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-yaml"><span class="pln">  mail</span><span class="pun">:</span></code></li><li class="L1"><code class="lang-yaml"><span class="pln">     host</span><span class="pun">:</span><span class="pln"> smtp</span><span class="pun">.</span><span class="pln">qq</span><span class="pun">.</span><span class="pln">com</span></code></li><li class="L2"><code class="lang-yaml"><span class="pln">     username</span><span class="pun">:</span><span class="pln"> </span><span class="lit">13XXXX657@qq</span><span class="pun">.</span><span class="pln">com  </span><span class="com">#发送方的邮箱</span></code></li><li class="L3"><code class="lang-yaml"><span class="pln">     password</span><span class="pun">:</span><span class="pln"> upzoczdyxbgdfhhd  </span><span class="com">#对于qq邮箱而言 密码指的就是发送方的授权码</span></code></li><li class="L4"><code class="lang-yaml"><span class="pln">     properties</span><span class="pun">:</span></code></li><li class="L5"><code class="lang-yaml"><span class="pln">           mail</span><span class="pun">:</span></code></li><li class="L6"><code class="lang-yaml"><span class="pln">                smtp</span><span class="pun">:</span></code></li><li class="L7"><code class="lang-yaml"><span class="pln">                   auth</span><span class="pun">:</span><span class="pln"> </span><span class="kwd">true</span></code></li><li class="L8"><code class="lang-yaml"><span class="pln">                   starttls</span><span class="pun">:</span></code></li><li class="L9"><code class="lang-yaml"><span class="pln">                       enable</span><span class="pun">:</span><span class="pln"> </span><span class="kwd">true</span></code></li><li class="L0"><code class="lang-yaml"><span class="pln">                       required</span><span class="pun">:</span><span class="pln"> </span><span class="kwd">true</span></code></li></ol></pre>
+<h3 id="h3-javamailsender"><a name="JavaMailSender" class="reference-link"></a><span class="header-link octicon octicon-link"></span>JavaMailSender</h3><p>这个我们只要在application.properties配置文件或者application.yml配置文件中配置以下信息，springboot会自动读取，会根据配置文件中的内容去创建 JavaMailSender 实例</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="lit">@RestController</span><span class="pln"> </span></code></li><li class="L1"><code class="lang-java"><span class="lit">@RequestMapping</span><span class="pun">(</span><span class="str">"mail"</span><span class="pun">)</span><span class="pln">  </span></code></li><li class="L2"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">Controller</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L3"><code class="lang-java"><span class="com">//由于Spring Boot的starter模块提供了自动化配置，所以在引入了 spring-boot-starter-mail 依赖之后，会根据配置文件中的内容去创建 JavaMailSender 实例，因此我们可以直接在需要使用的地方直接 @Autowired 来引入邮件发送对象。</span></code></li><li class="L4"><code class="lang-java"><span class="pln">    </span><span class="lit">@Autowired</span><span class="pln">  </span></code></li><li class="L5"><code class="lang-java"><span class="pln">    </span><span class="typ">JavaMailSender</span><span class="pln"> jms</span><span class="pun">;</span><span class="pln">  </span></code></li><li class="L6"><code class="lang-java"></code></li><li class="L7"><code class="lang-java"><span class="pln">    </span><span class="lit">@GetMapping</span><span class="pun">(</span><span class="str">"/send"</span><span class="pun">)</span><span class="pln">  </span></code></li><li class="L8"><code class="lang-java"><span class="pln">    </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> send</span><span class="pun">(){</span><span class="pln">  </span></code></li><li class="L9"><code class="lang-java"><span class="pln">        </span><span class="com">//建立邮件消息  </span></code></li><li class="L0"><code class="lang-java"><span class="pln">        </span><span class="typ">SimpleMailMessage</span><span class="pln"> mainMessage </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">SimpleMailMessage</span><span class="pun">();</span><span class="pln">  </span></code></li><li class="L1"><code class="lang-java"><span class="pln">        </span><span class="com">//发送者  </span></code></li><li class="L2"><code class="lang-java"><span class="pln">        mainMessage</span><span class="pun">.</span><span class="pln">setFrom</span><span class="pun">(</span><span class="str">"13XXXX657@qq.com"</span><span class="pun">);</span><span class="pln">  </span><span class="com">//要和配置中发送用户一样，或者会报错</span></code></li><li class="L3"><code class="lang-java"><span class="pln">        </span><span class="com">//接收者  </span></code></li><li class="L4"><code class="lang-java"><span class="pln">        mainMessage</span><span class="pun">.</span><span class="pln">setTo</span><span class="pun">(</span><span class="str">"xxxxxx"</span><span class="pun">);</span><span class="pln">  </span></code></li><li class="L5"><code class="lang-java"><span class="pln">        </span><span class="com">//发送的标题  </span></code></li><li class="L6"><code class="lang-java"><span class="pln">        mainMessage</span><span class="pun">.</span><span class="pln">setSubject</span><span class="pun">(</span><span class="str">"嗨喽"</span><span class="pun">);</span><span class="pln">  </span></code></li><li class="L7"><code class="lang-java"><span class="pln">        </span><span class="com">//发送的内容  </span></code></li><li class="L8"><code class="lang-java"><span class="pln">        mainMessage</span><span class="pun">.</span><span class="pln">setText</span><span class="pun">(</span><span class="str">"hello world"</span><span class="pun">);</span><span class="pln">  </span></code></li><li class="L9"><code class="lang-java"><span class="pln">        jms</span><span class="pun">.</span><span class="pln">send</span><span class="pun">(</span><span class="pln">mainMessage</span><span class="pun">);</span><span class="pln"> </span></code></li><li class="L0"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span><span class="pln">  </span></code></li><li class="L1"><code class="lang-java"></code></li><li class="L2"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<h3 id="h3-javamailsenderimpl-"><a name="JavaMailSenderImpl和群发" class="reference-link"></a><span class="header-link octicon octicon-link"></span>JavaMailSenderImpl和群发</h3><p>这个可以自己设置，从数据库中获取各项数据创建，不用在配置文件中配置</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="lit">@GetMapping</span><span class="pun">(</span><span class="str">"/mail"</span><span class="pun">)</span></code></li><li class="L1"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> sendSimpleMail</span><span class="pun">()</span><span class="pln"> </span><span class="kwd">throws</span><span class="pln"> </span><span class="typ">Exception</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    </span><span class="typ">JavaMailSenderImpl</span><span class="pln"> mailSender </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">JavaMailSenderImpl</span><span class="pun">();</span><span class="com">//直接生产一个实例</span></code></li><li class="L3"><code class="lang-java"><span class="pln">    </span><span class="typ">String</span><span class="pln"> users</span><span class="pun">[]</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="pun">{</span><span class="str">"xxxxx@qq.com"</span><span class="pun">,</span><span class="str">"xxxxx@126.com"</span><span class="pun">};</span><span class="pln"> </span><span class="com">//群发创建用户</span></code></li><li class="L4"><code class="lang-java"><span class="pln">    mailSender</span><span class="pun">.</span><span class="pln">setHost</span><span class="pun">(</span><span class="str">"smtp.126.com"</span><span class="pun">);</span></code></li><li class="L5"><code class="lang-java"><span class="pln">    mailSender</span><span class="pun">.</span><span class="pln">setPassword</span><span class="pun">(</span><span class="str">"xxxxx"</span><span class="pun">);</span></code></li><li class="L6"><code class="lang-java"><span class="pln">    mailSender</span><span class="pun">.</span><span class="pln">setPort</span><span class="pun">(</span><span class="lit">25</span><span class="pun">);</span></code></li><li class="L7"><code class="lang-java"><span class="pln">    mailSender</span><span class="pun">.</span><span class="pln">setProtocol</span><span class="pun">(</span><span class="str">"smtp"</span><span class="pun">);</span></code></li><li class="L8"><code class="lang-java"><span class="pln">    mailSender</span><span class="pun">.</span><span class="pln">setUsername</span><span class="pun">(</span><span class="str">"13XXXX657"</span><span class="pun">);</span><span class="com">//这里是13XXXX657@qq.com的前置，不是整个邮箱地址</span></code></li><li class="L9"><code class="lang-java"><span class="pln">    </span><span class="typ">SimpleMailMessage</span><span class="pln"> message </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">SimpleMailMessage</span><span class="pun">();</span></code></li><li class="L0"><code class="lang-java"><span class="pln">    message</span><span class="pun">.</span><span class="pln">setFrom</span><span class="pun">(</span><span class="str">"13XXXX657@qq.com"</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pln">    message</span><span class="pun">.</span><span class="pln">setTo</span><span class="pun">(</span><span class="pln">users</span><span class="pun">);</span><span class="pln"> </span><span class="com">// 群发</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    message</span><span class="pun">.</span><span class="pln">setSubject</span><span class="pun">(</span><span class="str">"羽毛球比赛"</span><span class="pun">);</span></code></li><li class="L3"><code class="lang-java"><span class="pln">    message</span><span class="pun">.</span><span class="pln">setText</span><span class="pun">(</span><span class="str">"报名参加羽毛球赛"</span><span class="pun">);</span></code></li><li class="L4"><code class="lang-java"><span class="pln">    mailSender</span><span class="pun">.</span><span class="pln">send</span><span class="pun">(</span><span class="pln">message</span><span class="pun">);</span></code></li><li class="L5"><code class="lang-java"></code></li><li class="L6"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li></ol></pre>
+<p>其中我们可以设置群发message.setTo(users); 它可以是个数组</p>
+<h3 id="h3-u53D1u9001u590Du6742u90AEu4EF6"><a name="发送复杂邮件" class="reference-link"></a><span class="header-link octicon octicon-link"></span>发送复杂邮件</h3><p>上面的例子用到是SimpleMailMessage，看名字就知道很简单的邮件了，我们要发复杂邮件就要用到MimeMessage 。</p>
+<h4 id="h4--"><a name="发送附件:" class="reference-link"></a><span class="header-link octicon octicon-link"></span>发送附件:</h4><pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> mimeEmail</span><span class="pun">()</span><span class="pln"> </span><span class="kwd">throws</span><span class="pln"> </span><span class="typ">MessagingException</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L1"><code class="lang-java"><span class="pln">    </span><span class="com">// MimeMessage 本身的 API 有些笨重，我们可以使用 MimeMessageHelper</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    </span><span class="typ">MimeMessage</span><span class="pln"> mimeMessage </span><span class="pun">=</span><span class="pln"> javaMailSender</span><span class="pun">.</span><span class="pln">createMimeMessage</span><span class="pun">();</span></code></li><li class="L3"><code class="lang-java"><span class="pln">    </span><span class="com">// 第二个参数是 true ，表明这个消息是 multipart类型的/</span></code></li><li class="L4"><code class="lang-java"><span class="pln">    </span><span class="typ">MimeMessageHelper</span><span class="pln"> mimeMessageHelper </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">MimeMessageHelper</span><span class="pun">(</span><span class="pln">mimeMessage</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">true</span><span class="pun">);</span></code></li><li class="L5"><code class="lang-java"><span class="pln">    mimeMessageHelper</span><span class="pun">.</span><span class="pln">setFrom</span><span class="pun">(</span><span class="str">"13XXXX657@qq.com"</span><span class="pun">);</span></code></li><li class="L6"><code class="lang-java"><span class="pln">    mimeMessageHelper</span><span class="pun">.</span><span class="pln">setTo</span><span class="pun">(</span><span class="str">"****@qianxx.com"</span><span class="pun">);</span></code></li><li class="L7"><code class="lang-java"><span class="pln">    mimeMessageHelper</span><span class="pun">.</span><span class="pln">setSubject</span><span class="pun">(</span><span class="str">"附件邮件主题"</span><span class="pun">);</span></code></li><li class="L8"><code class="lang-java"><span class="pln">    mimeMessageHelper</span><span class="pun">.</span><span class="pln">setText</span><span class="pun">(</span><span class="str">"附件邮件内容"</span><span class="pun">);</span></code></li><li class="L9"><code class="lang-java"><span class="pln">    </span><span class="com">//添加附件,第一个参数表示添加到 Email 中附件的名称，第二个参数是图片资源</span></code></li><li class="L0"><code class="lang-java"><span class="pln">    mimeMessageHelper</span><span class="pun">.</span><span class="pln">addAttachment</span><span class="pun">(</span><span class="str">"boot.png"</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">new</span><span class="pln">     </span><span class="typ">ClassPathResource</span><span class="pun">(</span><span class="str">"public/images/boot.png"</span><span class="pun">));</span></code></li><li class="L1"><code class="lang-java"><span class="pln">    javaMailSender</span><span class="pun">.</span><span class="pln">send</span><span class="pun">(</span><span class="pln">mimeMessage</span><span class="pun">);</span></code></li><li class="L2"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<h4 id="h4--html-"><a name="富文本（HTML）邮件发送" class="reference-link"></a><span class="header-link octicon octicon-link"></span>富文本（HTML）邮件发送</h4><pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln"> </span><span class="typ">Spring</span><span class="pln"> </span><span class="pun">的</span><span class="pln"> </span><span class="typ">Email</span><span class="pln"> </span><span class="pun">功能除了可以添加附件外，甚至可以使用</span><span class="pln"> HTML </span><span class="pun">来美化消息体的内容。发送富文本的</span><span class="pln"> </span><span class="typ">Email</span><span class="pln"> </span><span class="pun">与发送简单文本的</span><span class="pln"> </span><span class="typ">Email</span><span class="pln"> </span><span class="pun">并没有太大区别，关键是将</span><span class="pln">setText</span><span class="pun">()</span><span class="pln"> </span><span class="pun">方法的消息文本设置为</span><span class="pln"> HTML</span><span class="pun">，并将第二个参数设置为</span><span class="pln"> </span><span class="kwd">true</span><span class="pun">，表示这是</span><span class="pln"> HTML </span><span class="pun">的富文本。</span></code></li></ol></pre><pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> htmlEmail</span><span class="pun">()</span><span class="pln"> </span><span class="kwd">throws</span><span class="pln"> </span><span class="typ">MessagingException</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L1"><code class="lang-java"><span class="pln">    </span><span class="typ">MimeMessage</span><span class="pln"> mimeMessage </span><span class="pun">=</span><span class="pln"> javaMailSender</span><span class="pun">.</span><span class="pln">createMimeMessage</span><span class="pun">();</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    </span><span class="typ">MimeMessageHelper</span><span class="pln"> mimeMessageHelper </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">MimeMessageHelper</span><span class="pun">(</span><span class="pln">mimeMessage</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">true</span><span class="pun">);</span></code></li><li class="L3"><code class="lang-java"><span class="pln">    mimeMessageHelper</span><span class="pun">.</span><span class="pln">setFrom</span><span class="pun">(</span><span class="str">"13XXXX657@qq.com"</span><span class="pun">);</span></code></li><li class="L4"><code class="lang-java"><span class="pln">    mimeMessageHelper</span><span class="pun">.</span><span class="pln">setTo</span><span class="pun">(</span><span class="str">"****@qianxx.com"</span><span class="pun">);</span></code></li><li class="L5"><code class="lang-java"><span class="pln">    mimeMessageHelper</span><span class="pun">.</span><span class="pln">setSubject</span><span class="pun">(</span><span class="str">"富文本邮件主题"</span><span class="pun">);</span></code></li><li class="L6"><code class="lang-java"><span class="pln">    </span><span class="typ">String</span><span class="pln"> html </span><span class="pun">=</span><span class="pln"> </span><span class="str">"&lt;html&gt;&lt;body&gt;&lt;h4&gt;Hello,SpringBoot&lt;/h4&gt;&lt;img src='cid:boot' /&gt;&lt;/body&gt;&lt;/html&gt;"</span><span class="pun">;</span></code></li><li class="L7"><code class="lang-java"><span class="pln">    mimeMessageHelper</span><span class="pun">.</span><span class="pln">setText</span><span class="pun">(</span><span class="pln">html</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">true</span><span class="pun">);</span></code></li><li class="L8"><code class="lang-java"><span class="pln">    </span><span class="com">// 设置内嵌元素 cid，第一个参数表示内联图片的标识符，第二个参数标识资源引用</span></code></li><li class="L9"><code class="lang-java"></code></li><li class="L0"><code class="lang-java"><span class="pln">    mimeMessageHelper</span><span class="pun">.</span><span class="pln">addInline</span><span class="pun">(</span><span class="str">"boot"</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">ClassPathResource</span><span class="pun">(</span><span class="str">"public/images/boot.png"</span><span class="pun">));</span></code></li><li class="L1"><code class="lang-java"><span class="pln">     </span><span class="com">//添加附件,第一个参数表示添加到 Email 中附件的名称，第二个参数是图片资源</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    javaMailSender</span><span class="pun">.</span><span class="pln">send</span><span class="pun">(</span><span class="pln">mimeMessage</span><span class="pun">);</span></code></li><li class="L3"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<h4 id="h4--thymeleaf-"><a name="使用 Thymeleaf 模板" class="reference-link"></a><span class="header-link octicon octicon-link"></span>使用 Thymeleaf 模板</h4><h5 id="h5-thymeleaf-email-html"><a name="Thymeleaf 模板 —  email.html" class="reference-link"></a><span class="header-link octicon octicon-link"></span>Thymeleaf 模板 —  email.html</h5><pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-html"><span class="dec">&lt;!DOCTYPE html&gt;</span></code></li><li class="L1"><code class="lang-html"><span class="tag">&lt;html</span><span class="pln"> </span><span class="atn">lang</span><span class="pun">=</span><span class="atv">"en"</span><span class="pln"> </span><span class="atn">xmlns:th</span><span class="pun">=</span><span class="atv">"http://www.thymeleaf.org"</span><span class="tag">&gt;</span></code></li><li class="L2"><code class="lang-html"><span class="tag">&lt;head&gt;</span></code></li><li class="L3"><code class="lang-html"><span class="pln">    </span><span class="tag">&lt;meta</span><span class="pln"> </span><span class="atn">charset</span><span class="pun">=</span><span class="atv">"UTF-8"</span><span class="tag">&gt;</span></code></li><li class="L4"><code class="lang-html"><span class="pln">    </span><span class="tag">&lt;title&gt;</span><span class="pln">Email</span><span class="tag">&lt;/title&gt;</span></code></li><li class="L5"><code class="lang-html"><span class="tag">&lt;/head&gt;</span></code></li><li class="L6"><code class="lang-html"><span class="tag">&lt;body&gt;</span></code></li><li class="L7"><code class="lang-html"><span class="tag">&lt;img</span><span class="pln"> </span><span class="atn">src</span><span class="pun">=</span><span class="atv">'cid:boot'</span><span class="tag">&gt;</span></code></li><li class="L8"><code class="lang-html"><span class="tag">&lt;h4&gt;&lt;span</span><span class="pln"> </span><span class="atn">th:text</span><span class="pun">=</span><span class="atv">"${title}"</span><span class="tag">&gt;</span><span class="pln">Craig Walls</span><span class="tag">&lt;/span&gt;</span><span class="pln"> says... </span><span class="tag">&lt;/h4&gt;</span></code></li><li class="L9"><code class="lang-html"><span class="tag">&lt;i&gt;&lt;span</span><span class="pln"> </span><span class="atn">th:text</span><span class="pun">=</span><span class="atv">"${content}"</span><span class="tag">&gt;</span><span class="pln">Hello Boot!</span><span class="tag">&lt;/span&gt;&lt;/i&gt;</span></code></li><li class="L0"><code class="lang-html"><span class="tag">&lt;/body&gt;</span></code></li><li class="L1"><code class="lang-html"><span class="tag">&lt;/html&gt;</span></code></li></ol></pre>
+<h5 id="h5-u53D1u9001u6A21u677Fu90AEu4EF6"><a name="发送模板邮件" class="reference-link"></a><span class="header-link octicon octicon-link"></span>发送模板邮件</h5><pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> thymeleafEmail</span><span class="pun">()</span><span class="pln"> </span><span class="kwd">throws</span><span class="pln"> </span><span class="typ">MessagingException</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L1"><code class="lang-java"><span class="pln">       </span><span class="typ">MimeMessage</span><span class="pln"> mimeMessage </span><span class="pun">=</span><span class="pln"> javaMailSender</span><span class="pun">.</span><span class="pln">createMimeMessage</span><span class="pun">();</span></code></li><li class="L2"><code class="lang-java"><span class="pln">        </span><span class="typ">MimeMessageHelper</span><span class="pln"> mimeMessageHelper </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">MimeMessageHelper</span><span class="pun">(</span><span class="pln">mimeMessage</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">true</span><span class="pun">);</span></code></li><li class="L3"><code class="lang-java"><span class="pln">        mimeMessageHelper</span><span class="pun">.</span><span class="pln">setFrom</span><span class="pun">(</span><span class="str">"159****2662@163.com"</span><span class="pun">);</span></code></li><li class="L4"><code class="lang-java"><span class="pln">        mimeMessageHelper</span><span class="pun">.</span><span class="pln">setTo</span><span class="pun">(</span><span class="str">"****@qianxx.com"</span><span class="pun">);</span></code></li><li class="L5"><code class="lang-java"><span class="pln">        mimeMessageHelper</span><span class="pun">.</span><span class="pln">setSubject</span><span class="pun">(</span><span class="str">"ThymeLeaf 模板邮件"</span><span class="pun">);</span></code></li><li class="L6"><code class="lang-java"><span class="pln">        </span><span class="com">// 利用 Thymeleaf 模板构建 html 文本</span></code></li><li class="L7"><code class="lang-java"><span class="pln">        </span><span class="typ">Context</span><span class="pln"> ctx </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Context</span><span class="pun">();</span></code></li><li class="L8"><code class="lang-java"><span class="pln">        </span><span class="com">//给模板的参数的上下文</span></code></li><li class="L9"><code class="lang-java"><span class="pln">        ctx</span><span class="pun">.</span><span class="pln">setVariable</span><span class="pun">(</span><span class="str">"title"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"Craig Walls"</span><span class="pun">);</span></code></li><li class="L0"><code class="lang-java"><span class="pln">        ctx</span><span class="pun">.</span><span class="pln">setVariable</span><span class="pun">(</span><span class="str">"content"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"Hello Boot!"</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pln">        </span><span class="com">//执行模板引擎，执行模板引擎需要传入模板名、上下文对象</span></code></li><li class="L2"><code class="lang-java"><span class="pln">        </span><span class="typ">String</span><span class="pln"> emailText </span><span class="pun">=</span><span class="pln"> templateEngine</span><span class="pun">.</span><span class="pln">process</span><span class="pun">(</span><span class="str">"email/email"</span><span class="pun">,</span><span class="pln"> ctx</span><span class="pun">);</span></code></li><li class="L3"><code class="lang-java"><span class="pln">        mimeMessageHelper</span><span class="pun">.</span><span class="pln">setText</span><span class="pun">(</span><span class="pln">emailText</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">true</span><span class="pun">);</span></code></li><li class="L4"><code class="lang-java"></code></li><li class="L5"><code class="lang-java"><span class="pln">        mimeMessageHelper</span><span class="pun">.</span><span class="pln">addInline</span><span class="pun">(</span><span class="str">"boot"</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">ClassPathResource</span><span class="pun">(</span><span class="str">"/static/img/boot.png"</span><span class="pun">));</span></code></li><li class="L6"><code class="lang-java"><span class="pln">        javaMailSender</span><span class="pun">.</span><span class="pln">send</span><span class="pun">(</span><span class="pln">mimeMessage</span><span class="pun">);</span></code></li><li class="L7"><code class="lang-java"><span class="pln">        </span><span class="pun">}</span></code></li></ol></pre>
+</div>
+                                      </div>
+                                   <div class="layui-row text-center layui-mt20">
+                                           
+                                           <div class="layui-btn layui-btn-danger" onclick="emotion()"><i class="fa fa-thumbs-o-up" id="za"> 赞 (29)</i></div>
+                                       </div>
+                                   <div class="layui-row layui-mt20">
+                                         <blockquote class="layui-elem-quote text-center " style="border: none;">
+                                                  <span class="layui-show-md-inline-block layui-hide"  >文章出处：书生个人博客</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                   <span class="layui-show-md-inline-block layui-hide" id="artiurl"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                  <span>转载注明下哦！o(≧v≦)o~~</span>
+                                           </blockquote>
+                                    </div>
+                                 <div class="layui-row layui-mt20">
+                                         <p class="blog-tags">
+                                              标签：
+                                                       <span >springboot系列</span><span >原创</span>
+
+                                               </p>
+                                 </div>
+                                 <div class="layui-row layui-col-space20 layui-mt20 article-page-similar">
+                                           <p>相似文章：</p>
+                                            <hr>
+                                             <ul>
+                                                    <li><a href="1553332085352.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;springboot使用注解＠Async开启异步调用</a> </li>
+                                                    <li><a href="1563339259314.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot中集成Log4j2以及Log4j2的xml配置</a> </li>
+                                                    <li><a href="1556515641828.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot的数据缓存——基于Redis缓存技术的配置</a> </li>
+                                                    <li><a href="1547913714464.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot之一些小技巧的合集</a> </li>
+                                                    <li><a href="1551457724956.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;springMVC和springBoot使用MultipartFile上传文件</a> </li>
+                                                    <li><a href="1552469919154.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;javaweb的spi 的简单应用</a> </li>
+                                                    <li><a href="1553356568899.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot使用Quartz实现定时器功能</a> </li>
+                                                    <li><a href="1555940707997.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Java对象的浅克隆和2种深克隆的使用</a> </li>
+                                                    <li><a href="1556772837831.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot的数据缓存——基于Ehcache2.x缓存技术的配置</a> </li>
+                                                    <li><a href="1552124148206.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;配置SpringMVC应用的过程和使用</a> </li>
+                                              </ul>
+                                    </div>
+                               </div>
+                      <script>
+                          $("#artiurl").html("文章地址："+location.href);
+
+
+                      </script>
+
+                       </div></div>
+
+                </div>
+
+               <div  >
+<div id="cta" class="layui-collapse layui-panel layui-article">
+       <div class="layui-colla-item">
+               <div class="layui-colla-content layui-show layui-article comment">
+                       <fieldset class="layui-elem-field layui-field-title">
+                               <legend>随便说两句</legend>
+                               <div class="layui-field-box">
+                                       <label for="comment-input"></label>
+                                           <textarea id="comment-input" style="display: none;"></textarea>
+                                  </div>
+                               
+                               <a class="layui-btn layui-btn-sm layui-btn-danger" style="float: right;width: 120px;"  href="#"  onclick="javascript:beforeLogin()" id="beforeLogin"><i class="fa fa-qq"></i> 请先登录</a>
+                           </fieldset>
+                   </div>
+           </div>
+    </div>
+</div>
+<script>
+    function beforeLogin() {
+        var url=window.location.href;
+        window.open('/api/qq?url='+url,'_self');
+    }
+
+</script>
+
+               <blockquote id="cccc" class="layui-elem-quote layui-mt20" style="border-left: 5px solid #F44336;"><span style="color:#FF5722;">遵守国家法律法规，请勿回复无意义内容，请不要回复嵌套过多的楼层！</span></blockquote>
+               <div class="comment-list">
+
+</div>
+
+
+
+
+           </div>
+               <!--<div class="layui-col-md3" id="article-app">-->
+                       <!--<div id="affix-side">-->
+                           <!--<div th:replace="frontend/fragment/callme :: callme" ></div>-->
+                           <!--&lt;!&ndash;<div class="layui-tab layui-tab-card layui-master-recommend" >&ndash;&gt;-->
+                               <!--&lt;!&ndash;<div class="layui-tab-content select-none">&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<h3 class="tit">时光悄然</h3>&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<div class="layui-inline" id="test22"></div>&ndash;&gt;-->
+                               <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--<div th:replace ="frontend/fragment/guidang" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/imageinfo" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/cate" ></div>-->
+                           <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相关文章'})" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/image :: image"></div>-->
+                           <!--</div>-->
+                   <!--</div>-->
+           </div>
+    </div>
+
+
+    <footer >
+    <div class="footer"><p>
+	<span><strong>友情链接:</strong><strong>&nbsp;</strong> &nbsp;&nbsp;</span><a class="ke-insertfile" href="https://www.layui.com/" target="_blank">layui</a><span>&nbsp;&nbsp;</span>&nbsp;<a class="ke-insertfile" href="http://www.shuyong.net/" target="_blank">舍力博客</a>&nbsp;&nbsp;<a class="ke-insertfile" href="javascript:;" id="friend">申请友链</a> 
+</p>
+<p>
+	2018-2019 nonelonely.com | 网站备案号：<a class="ke-insertfile" href="http://www.miitbeian.gov.cn/" target="_blank">闽ICP备18026034号-1</a> 
+</p>
+<p>
+	<br />
+</p></div>
+
+    <div class="layui-hide-xs" style="position: fixed;left: 100px; bottom: 100px; z-index: 999999;" id="robot" data-method="robot">
+        <div class="layui-layer-tips" ><div id="" class="layui-layer-content" style="background-color: rgb(114, 193, 236);width: 150px">Hi 我是小码，可以点击我问我笑话，天气，智能聊天，故事，查询备案等等。<i class="layui-layer-TipsG layui-layer-TipsT" style="border-right-color:rgb(114, 193, 236);"></i></div><span class="layui-layer-setwin"></span></div>
+        <a href="#" ><img src="../static/assets/img/robot.png" width="100px" alt="Hi 我是小码！" >
+        </a>
+    </div>
+
+
+</footer>
+<script src="../static/plugins/layui/layui.js"></script>
+
+<script>
+    layui.use([ 'layer'], function () {
+        var layer = layui.layer;
+        var $ = layui.jquery;
+        //触发事件
+        var active = {
+            robot: function(){
+                var that = this;
+                $("#robot").css('display','none');
+                //多窗口模式，层叠置顶
+                layer.open({
+                    type: 2,
+                    title:'智能小码',
+                    area: ['600px', '480px'],
+                    content: '/webrobot',
+                    end:function () {
+                        $("#robot").css('display','');
+                    }
+                });
+            },
+            friend: function () {
+                layer.open({
+                    title: '申请友链'
+                    ,content: '发送邮件至：admin@nonelonely.com<br>' +
+                        '邮件标题为：申请书生个人博客友链'
+                });
+            }
+        };
+
+        $('#robot').on('click', function(){
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+        $('#friend').on('click', function(){
+            var othis = $(this), method = 'friend';
+            active[method] ? active[method].call(this, othis) : '';
+        });
+
+
+        // var la;
+            // la = layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot',
+            //     {
+            //         tips: [1, '#3595CC'],
+            //         end: function () {
+            //             if($("#robot").is(":visible")) {
+            //                 la = layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot',
+            //                     {tips: [1, '#3595CC']})
+            //             }
+            //         }
+            //     });
+            // window.setInterval(" if($('#robot').is(':visible')) {la=layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot', { tips: [1, '#3595CC'],end : function(){ la=layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot', {tips: [1, '#3595CC']});}});}", 10000*6 );
+
+    });
+</script>
+
+</div>
+
+
+
+
+<script>
+    var articleId=1548313770791;
+    var su=null ;
+    $(function(){
+        $(".comment-list").addCommentList({data:[],add:""});
+        $("#comment").click(function(){
+            var obj = new Object();
+            obj.img="images/img.html";
+            obj.replyName="匿名";
+            obj.content=$("#content").val();
+            obj.browse="深圳";
+            obj.osname="win10";
+            obj.replyBody="";
+            $(".comment-list").addCommentList({data:[],add:obj});
+        });
+    })
+
+    var layer;
+    var layedit;
+    var index;
+    layui.use(['layedit', 'laypage', 'laydate', 'element','layer'], function () {
+        layer = layui.layer;
+        var element = layui.element;
+        layedit = layui.layedit;
+        // var laydate = layui.laydate;
+        // //不出现底部栏
+        // laydate.render({
+        //     elem: '#test22'
+        //     ,showBottom: false
+        //     ,position: 'static'
+        //     ,calendar: true
+        //     ,theme: '#a7a4a4'
+        // });
+
+       index= layedit.build('comment-input', {
+            tool: ['face', '|', 'left', 'center', 'right', 'link', 'unlink']
+            , height: 150
+        });
+        //相册
+        if($(window).width() > 750){
+            layer.photos({
+                photos: '.photos'
+                ,zIndex: 9999999999
+                ,anim: -1
+            });
+        } else {
+            $('body').on('click', '.photos img', function(){
+                window.open(this.src);
+            });
+        }
+
+            layer.open({
+                title: '目录',
+                type: 1,
+                offset: 'r',
+                shade: 0,
+                closeBtn: 2,
+                content: $(".markdown-toc")
+            });
+
+        // $('#affix-side').hcSticky({
+        //     stickTo: '#blog-body'
+        // });
+
+    });
+    function submit() {
+
+        var osname = detectOS();
+
+        var obj = new Object();
+        if (su) {
+           obj.img = su.avatar;
+           obj.replyName = su.nickname;
+        }
+        obj.content=layedit.getContent(index);
+        obj.browse=navigator.appName;
+        obj.osname=osname;
+        obj.time=new Date();
+        obj.replyBody="";
+
+        obj.comment= obj.content;
+        if(!obj.comment){
+            layer.msg('不能为空');
+            return false;
+        }
+        var indexc = layer.load();
+        obj.userId=su.id;
+        obj.user=su.id;
+        obj.articleId=articleId;
+        obj.enable=true;
+        obj.parentId=0;
+
+         obj.time =new Date();
+
+
+
+
+        $.post("/token/comment/sub",obj, function (resp) {
+            layer.close(indexc);
+            $(window.frames["LAY_layedit_1"].document).find("body").html('');
+            layer.msg(resp.message);
+            setTimeout(function () {
+                if (resp.code === 200) {
+                    $(".comment-list").addCommentList({data:[],add:obj});
+                }
+            }, 1000);
+        });
+
+    };
+
+    function emotion() {
+        var uid = "guest";
+        if (BMY.getCookie("article::" + 1548313770791 + "::" + uid) != null) {
+            layer.msg("近期您已经点过赞，感谢您的支持！");
+        } else {
+            $.post("/article/approve", {articleId: 1548313770791}, function (json) {
+                if (json.code === BMY.status.ok) {
+                    BMY.setCookie("article::" + 1548313770791+ "::" + uid, "noteblog system");
+                  //  that.approve++;
+                    $('#za').html('赞 (30)')
+                    layer.msg("谢谢您的支持！");
+                }
+            })
+        }
+    }
+    function money  (alipay, wechat) {
+        alipay = "#\/static\/assets\/img\/wechat.png";
+        wechat="#\/static\/assets\/img\/alipay.png";
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['640px', '300px'],
+            shadeClose: true,
+            skin: 'text-center',
+            content:
+                '<div class="layui-fluid">' +
+                '   <div class="layui-row layui-mt20">' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + wechat + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">微信</p>' +
+                '       </div>' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + alipay + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">支付宝</p>' +
+                '       </div>' +
+                '   </div> ' +
+                '</div>'
+        });
+    }
+
+
+
+
+</script>
+<script src="../static/assets/js/jquery.comment.js" ></script>
+</body>
+
+<!-- Mirrored from www.nonelonely.com/article/1548313770791 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:02:32 GMT -->
+</html>

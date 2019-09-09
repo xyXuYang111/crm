@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Mirrored from www.nonelonely.com/msg by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:01:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="UTF-8">
+<meta name="baidu_union_verify" content="3e514e79dc5e7201b9bee186137e9562">
+
+<meta name="keywords" content="Java、Java学习、SpringBoot、SpringBoot实战、书生、个人博客、书生个人博客">
+
+<meta name="description" content="这是记录和分享Java、SpringBoot和多线程以及系统维护知识的个人博客。">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="static/plugins/layui/css/layui.css">
+<link rel="stylesheet" href="static/plugins/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="static/assets/css/frontend/base.css">
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "../hm.baidu.com/hm6618.js?c07ddd5b98c69450ebd8e255627f70b0";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+    <link href="static/plugins/layui-fly/css/global.css" rel="stylesheet" type="text/css">
+    <meta property="wb:webmaster" content="ba9ff005e151c9ad" />
+    <title>书生个人博客- 留言</title>
+    <script src="static/plugins/layui/layui.js"></script>
+<script src="static/plugins/jquery/jquery.min.js"></script>
+<script src="static/plugins/vue/vue.min.js"></script>
+<script src="static/plugins/hc-sticky/hc-sticky.min.js"></script>
+<script src="static/assets/js/BMY.js"></script>
+<script src="static/assets/js/frontend/script.js"></script>
+<script src="static/assets/js/BMY.vue.js"></script>
+<script src="static/plugins/pushbar/pushbar.js"></script>
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+<script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+<script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body class="animated fadeIn">
+<div id="message-app"class="wrapper">
+    <header>
+    <div class="headtop"></div>
+    <div class="contenttop">
+        <div class="logo f_l"> Java码猿-书生个人博客</div>
+        <div class="search f_r">
+            <input name="keyboard"  id="bdcsMain" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+            <input name="Submit" class="input_submit" onclick="window.open('http://zhannei.baidu.com/cse/search?s=6583887351044514798&entry=1&q='+document.getElementById('bdcsMain').value)" value="搜索" type="button">
+            <!--<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=6583887351044514798' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>-->
+            <ul class="layui-nav" style="background-color: rgba(0,0,0,0);" >
+                
+                
+
+                <li  class="layui-nav-item"><a href="#"  style="color: #000;" onclick="goto()" title="QQ登入" class="iconfont icon-qq"></a>
+                </li>
+            </ul>
+
+
+        </div>
+        <div class="blank"></div>
+
+        <nav>
+            <div  class="navigation">
+                <ul class="menu">
+                    <li><a href="index.html">网站首页</a></li>
+                    <li><a href="#">技术文章</a>
+                        <ul >
+                            <li><a  href="pages748a.html?cateId=1">Spring系列</a></li>
+                            <li><a  href="pages3c7b.html?cateId=6">前端开发</a></li>
+                            <li><a  href="pages4ead.html?cateId=7">软件安装</a></li>
+                            <li><a  href="pages8396.html?cateId=9">Java语法</a></li>
+                            <li><a  href="pagesff6a.html?cateId=10">资源下载</a></li>
+                            <li><a  href="pagesad9e.html?cateId=12">ORM框架</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="note.html">我的日记</a> </li>
+                    <li><a href="msg.html">给我留言</a> </li>
+                    <li><a href="about.html">关于</a></li>
+                </ul>
+            </div>
+        </nav>
+        <SCRIPT type=text/javascript>
+            // Navigation Menu
+            $(function() {
+                $(".menu ul").css({display: "none"}); // Opera Fix
+                $(".menu li").hover(function(){
+                    $(this).find('ul:first').css({visibility: "visible",display: "none"}).slideDown("normal");
+                },function(){
+                    $(this).find('ul:first').css({visibility: "hidden"});
+                });
+            });
+
+            function  search() {
+                var s=$('#keyboard').val();
+                location.href = s === "" ? "/" : "/pages?searchStr=" + s;
+            };
+            function goto () {
+                var url = window.location.href;
+                var winObj = window.open('/api/qq?url=' + url, '_self');
+            }
+        </SCRIPT>
+
+    </div>
+</header>
+    <div class="jztop"></div>
+    <div id="blog-body" class="layui-container">
+        <div class="layui-row layui-col-space10">
+            <div class="layui-colla-item">
+                <div class="layui-colla-content layui-show layui-article comment">
+                    <fieldset class="layui-elem-field layui-field-title">
+                        <legend>随便说两句</legend>
+                        <div class="layui-field-box">
+                            <label for="comment-input"></label>
+                            <textarea id="comment-input" style="display: none;"></textarea>
+                        </div>
+                        
+                        <a class="layui-btn-danger layui-btn layui-btn-sm" style="float: right;width: 120px;"  href="#"  onclick="javascript:beforeLogin()" id="beforeLogin"><i class="fa fa-qq"></i> 请先登录</a>
+                    </fieldset>
+                </div>
+            </div>  <blockquote id="cccc" class="layui-elem-quote layui-mt20" style="border-left: 5px solid #F44336;">欢迎大家留言，有什么问题、建议、意见或者疑问可随时提出。<span style="color:red;">申请友链留言请先把http://www.nonelonely.com(书生的博客) 放到您网站的底部友情链接位置！</span></blockquote>
+
+            <div class="comment-list" style="width: auto">
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="jzend"></div>
+    <footer >
+    <div class="footer"><p>
+	<span><strong>友情链接:</strong><strong>&nbsp;</strong> &nbsp;&nbsp;</span><a class="ke-insertfile" href="https://www.layui.com/" target="_blank">layui</a><span>&nbsp;&nbsp;</span>&nbsp;<a class="ke-insertfile" href="http://www.shuyong.net/" target="_blank">舍力博客</a>&nbsp;&nbsp;<a class="ke-insertfile" href="javascript:;" id="friend">申请友链</a> 
+</p>
+<p>
+	2018-2019 nonelonely.com | 网站备案号：<a class="ke-insertfile" href="http://www.miitbeian.gov.cn/" target="_blank">闽ICP备18026034号-1</a> 
+</p>
+<p>
+	<br />
+</p></div>
+
+    <div class="layui-hide-xs" style="position: fixed;left: 100px; bottom: 100px; z-index: 999999;" id="robot" data-method="robot">
+        <div class="layui-layer-tips" ><div id="" class="layui-layer-content" style="background-color: rgb(114, 193, 236);width: 150px">Hi 我是小码，可以点击我问我笑话，天气，智能聊天，故事，查询备案等等。<i class="layui-layer-TipsG layui-layer-TipsT" style="border-right-color:rgb(114, 193, 236);"></i></div><span class="layui-layer-setwin"></span></div>
+        <a href="#" ><img src="static/assets/img/robot.png" width="100px" alt="Hi 我是小码！" >
+        </a>
+    </div>
+
+
+</footer>
+<script src="static/plugins/layui/layui.js"></script>
+
+<script>
+    layui.use([ 'layer'], function () {
+        var layer = layui.layer;
+        var $ = layui.jquery;
+        //触发事件
+        var active = {
+            robot: function(){
+                var that = this;
+                $("#robot").css('display','none');
+                //多窗口模式，层叠置顶
+                layer.open({
+                    type: 2,
+                    title:'智能小码',
+                    area: ['600px', '480px'],
+                    content: '/webrobot',
+                    end:function () {
+                        $("#robot").css('display','');
+                    }
+                });
+            },
+            friend: function () {
+                layer.open({
+                    title: '申请友链'
+                    ,content: '发送邮件至：admin@nonelonely.com<br>' +
+                        '邮件标题为：申请书生个人博客友链'
+                });
+            }
+        };
+
+        $('#robot').on('click', function(){
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+        $('#friend').on('click', function(){
+            var othis = $(this), method = 'friend';
+            active[method] ? active[method].call(this, othis) : '';
+        });
+
+
+        // var la;
+            // la = layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot',
+            //     {
+            //         tips: [1, '#3595CC'],
+            //         end: function () {
+            //             if($("#robot").is(":visible")) {
+            //                 la = layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot',
+            //                     {tips: [1, '#3595CC']})
+            //             }
+            //         }
+            //     });
+            // window.setInterval(" if($('#robot').is(':visible')) {la=layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot', { tips: [1, '#3595CC'],end : function(){ la=layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot', {tips: [1, '#3595CC']});}});}", 10000*6 );
+
+    });
+</script>
+
+</div>
+
+<script>
+    var su=null ;
+    $(function(){
+        $(".comment-list").addCommentList({data:[{"id":4,"parentId":0,"userId":5,"useredId":null,"content":"<p><img src=\"https:\/\/www.nonelonely.com\/static\/plugins\/layui\/images\/face\/13.gif\" alt=\"[\u5077\u7B11]\"><\/p>","img":"https:\/\/thirdqq.qlogo.cn\/qqapp\/101529533\/923BD0CD296A8214840A9761D6D25755\/100","time":"2018-12-12T22:39:43.838","address":"\u4E2D\u56FD\u798F\u5EFA\u53A6\u95E8","beReplyName":"","replyName":"\u6211\u7684\u7535\u8111","osname":" win10\u7CFB\u7EDF","browse":"Mozilla","replyBody":null},{"id":5,"parentId":0,"userId":12,"useredId":null,"content":"<p>\u0026lt;script\u0026gt;alert(11111)\u0026lt;\/script\u0026gt;<\/p>","img":"https:\/\/thirdqq.qlogo.cn\/qqapp\/101529533\/21FE4D6E05998BDFE86A48C153F33B21\/100","time":"2019-01-10T15:45:12.45","address":"\u4E2D\u56FD\u9655\u897F\u897F\u5B89","beReplyName":"","replyName":"\u309B\u6728\u5B50\u67D0\u67D0\u00B0.","osname":" win10\u7CFB\u7EDF","browse":"Mozilla","replyBody":null},{"id":9,"parentId":0,"userId":13,"useredId":null,"content":"<p><p><span>\u0026lt;script\u0026gt;alert(11111)\u0026lt;\/script\u0026gt;<\/span><\/p><\/p>","img":"https:\/\/thirdqq.qlogo.cn\/qqapp\/101529533\/4CB59B00D6E5488102B2001C56774823\/100","time":"2019-01-14T16:02:55.619","address":"\u672A\u77E5\u661F\u7403\u7684","beReplyName":"","replyName":"L s","osname":" win10\u7CFB\u7EDF","browse":"Mozilla","replyBody":null},{"id":10,"parentId":0,"userId":13,"useredId":null,"content":"<p><p><span>\u0026lt;?php echo 1;exit; ?\u0026gt;<\/span><\/p><\/p>","img":"https:\/\/thirdqq.qlogo.cn\/qqapp\/101529533\/4CB59B00D6E5488102B2001C56774823\/100","time":"2019-01-14T16:03:10.062","address":"\u672A\u77E5\u661F\u7403\u7684","beReplyName":"","replyName":"L s","osname":" win10\u7CFB\u7EDF","browse":"Mozilla","replyBody":null},{"id":11,"parentId":0,"userId":14,"useredId":null,"content":"<p><p>\"+\u0026lt;script\u0026gt;alert('11111')\u0026lt;\/script\u0026gt;+\"<\/p><div><br><\/div><\/p>","img":"https:\/\/thirdqq.qlogo.cn\/qqapp\/101529533\/B0B2288343E5EF721999442B30357CF0\/100","time":"2019-01-14T17:21:26.05","address":"\u672A\u77E5\u661F\u7403\u7684","beReplyName":"","replyName":"jesse","osname":" win10\u7CFB\u7EDF","browse":"Mozilla","replyBody":null},{"id":13,"parentId":0,"userId":19,"useredId":null,"content":"<p><img src=\"https:\/\/www.nonelonely.com\/static\/plugins\/layui\/images\/face\/11.gif\" alt=\"[\u7231\u4F60]\"><\/p>","img":"https:\/\/thirdqq.qlogo.cn\/qqapp\/101529533\/C2BECA171551C3CF0C280467EA54CF47\/100","time":"2019-01-17T13:54:46.466","address":"\u4E2D\u56FD\u5E7F\u4E1C\u5E7F\u5DDE","beReplyName":"","replyName":"\u6D77\u68E0","osname":" win10\u7CFB\u7EDF","browse":"Mozilla","replyBody":[{"id":20,"parentId":13,"userId":5,"useredId":19,"content":"<p><img src=\"https:\/\/www.nonelonely.com\/static\/plugins\/layui\/images\/face\/14.gif\" alt=\"[\u4EB2\u4EB2]\"><\/p>","img":"https:\/\/thirdqq.qlogo.cn\/qqapp\/101529533\/923BD0CD296A8214840A9761D6D25755\/100","time":"2019-01-17T17:23:34.753","address":"\u672A\u77E5\u661F\u7403\u7684","beReplyName":"\u6D77\u68E0","replyName":"\u6211\u7684\u7535\u8111","osname":" win10\u7CFB\u7EDF","browse":"Mozilla","replyBody":null}]},{"id":21,"parentId":0,"userId":20,"useredId":null,"content":"<p>\u60A8\u597D\uFF0C\u53EF\u4EE5\u4E92\u6362\u4E0B\u53CB\u94FE\u4E48\uFF1F<\/p>","img":"https:\/\/thirdqq.qlogo.cn\/qqapp\/101529533\/722AF84A15B67BBB0A3E9ACF95FDF8D1\/100","time":"2019-01-22T13:52:18.458","address":"\u4E2D\u56FD\u5E7F\u4E1C\u6C55\u5934","beReplyName":"","replyName":"\u7F16\u7A0B\u4EE3\u7801\u7684\u5C0F\u5077","osname":" win10\u7CFB\u7EDF","browse":"Mozilla","replyBody":[{"id":22,"parentId":21,"userId":5,"useredId":20,"content":"<p>\u53EF\u4EE5\u554A<\/p>","img":"https:\/\/thirdqq.qlogo.cn\/qqapp\/101529533\/923BD0CD296A8214840A9761D6D25755\/100","time":"2019-01-23T17:25:25.38","address":"\u4E2D\u56FD\u798F\u5EFA\u53A6\u95E8","beReplyName":"\u7F16\u7A0B\u4EE3\u7801\u7684\u5C0F\u5077","replyName":"\u6211\u7684\u7535\u8111","osname":" win10\u7CFB\u7EDF","browse":"Mozilla","replyBody":null}]},{"id":57,"parentId":0,"userId":30,"useredId":null,"content":"<p>\u8D5E \u975E\u5E38\u559C\u6B22\u8FD9\u4E2A\u535A\u5BA2\u7684\u98CE\u683C<\/p>","img":"https:\/\/thirdqq.qlogo.cn\/g?b=oidb\u0026k=KmnVeM3MDLljblzKBY9Eqw\u0026s=100","time":"2019-04-16T11:17:58.111","address":"\u4E2D\u56FD\u5317\u4EAC\u5317\u4EAC","beReplyName":"","replyName":"\u6709\u5FD7\u8005\uFF0C\u4E8B\u7ADF\u6210","osname":" win10\u7CFB\u7EDF","browse":"Mozilla","replyBody":[{"id":58,"parentId":57,"userId":5,"useredId":30,"content":"<p><img src=\"https:\/\/www.nonelonely.com\/static\/plugins\/layui\/images\/face\/16.gif\" alt=\"[\u592A\u5F00\u5FC3]\"><\/p>","img":"https:\/\/thirdqq.qlogo.cn\/qqapp\/101529533\/923BD0CD296A8214840A9761D6D25755\/100","time":"2019-04-16T11:19:41.621","address":"\u4E2D\u56FD\u798F\u5EFA\u53A6\u95E8","beReplyName":"\u6709\u5FD7\u8005\uFF0C\u4E8B\u7ADF\u6210","replyName":"\u6211\u7684\u7535\u8111","osname":" win10\u7CFB\u7EDF","browse":"Mozilla","replyBody":null},{"id":59,"parentId":57,"userId":30,"useredId":5,"content":"<p>\u8BF7\u95EE\u5927\u4F6C\u60A8\u8FD9\u4E2A\u535A\u5BA2\u6E90\u7801\u5F00\u6E90\u561B\u60F3\u5B66\u4E60\u4E0B<\/p>","img":"https:\/\/thirdqq.qlogo.cn\/g?b=oidb\u0026k=KmnVeM3MDLljblzKBY9Eqw\u0026s=100","time":"2019-04-16T11:37:05.327","address":"\u4E2D\u56FD\u5317\u4EAC\u5317\u4EAC","beReplyName":"\u6211\u7684\u7535\u8111","replyName":"\u6709\u5FD7\u8005\uFF0C\u4E8B\u7ADF\u6210","osname":" win10\u7CFB\u7EDF","browse":"Mozilla","replyBody":null},{"id":60,"parentId":57,"userId":5,"useredId":30,"content":"<p>\u8FD9\u5468\u672B\u6211\u6574\u7406\u4E00\u4E0B\u5427\u0026nbsp; \u7136\u540E\u53D1\u5E03\u5230\u8FD9\u91CC<\/p>","img":"https:\/\/thirdqq.qlogo.cn\/qqapp\/101529533\/923BD0CD296A8214840A9761D6D25755\/100","time":"2019-04-16T11:41:20.799","address":"\u4E2D\u56FD\u798F\u5EFA\u53A6\u95E8","beReplyName":"\u6709\u5FD7\u8005\uFF0C\u4E8B\u7ADF\u6210","replyName":"\u6211\u7684\u7535\u8111","osname":" win10\u7CFB\u7EDF","browse":"Mozilla","replyBody":null}]},{"id":279,"parentId":0,"userId":48,"useredId":null,"content":"\u611F\u8C22\u5206\u4EAB\u8D44\u6E90","img":"https:\/\/thirdqq.qlogo.cn\/g?b=oidb\u0026k=5fJovuLymuTTdQbdLBZb0g\u0026s=100\u0026t=1557119305","time":"2019-08-05T14:30:16.797","address":"\u672A\u77E5\u661F\u7403\u7684","beReplyName":"","replyName":"\u300C  \u300D","osname":"Win7","browse":"Mozilla","replyBody":[{"id":280,"parentId":279,"userId":37,"useredId":48,"content":"\u54C8\u54C8  ","img":"https:\/\/thirdqq.qlogo.cn\/g?b=oidb\u0026k=Cw5ZpeXibht9libZm50wS9OQ\u0026s=100","time":"2019-08-05T22:58:46.306","address":"\u4E2D\u56FD\u798F\u5EFA\u53A6\u95E8","beReplyName":"\u300C  \u300D","replyName":"\u6211\u7684\u7535\u8111","osname":" win10\u7CFB\u7EDF","browse":"Mozilla","replyBody":null}]},{"id":281,"parentId":0,"userId":50,"useredId":null,"content":"\u60A8\u597D\uFF0C\u6211\u53D1\u73B0\u865A\u62DF\u673Asc query hcmo\u672A\u5B89\u88C5\uFF0C\u662F\u6574\u4E2AVM\u91CD\u88C5\u8FD8\u662F\u6709\u4E9B\u63D2\u4EF6\u53EF\u4EE5\u88C5","img":"https:\/\/thirdqq.qlogo.cn\/g?b=oidb\u0026k=ibndic5fcZVu44JQCo5licZGw\u0026s=100\u0026t=1557460968","time":"2019-09-08T20:00:33.93","address":"\u672A\u77E5\u661F\u7403\u7684","beReplyName":"","replyName":"\uFF1CMr.Zhang\u256D","osname":" win10\u7CFB\u7EDF","browse":"Mozilla","replyBody":[{"id":282,"parentId":281,"userId":37,"useredId":50,"content":"\u5BF9\u4E8Elinux\u7CFB\u7EDF\u6765\u8BF4  \u63D2\u4EF6\u53EF\u4EE5\u8054\u7F51\u5B89\u88C5\u7684","img":"https:\/\/thirdqq.qlogo.cn\/g?b=oidb\u0026k=Cw5ZpeXibht9libZm50wS9OQ\u0026s=100","time":"2019-09-09T09:11:57.206","address":"\u4E2D\u56FD\u798F\u5EFA\u53A6\u95E8","beReplyName":"\uFF1CMr.Zhang\u256D","replyName":"\u6211\u7684\u7535\u8111","osname":" win10\u7CFB\u7EDF","browse":"Mozilla","replyBody":null}]}],add:""});
+    })
+    var layer;
+    var layedit;
+    var index;
+    layui.use(['layedit', 'laypage', 'code'], function () {
+
+        layer = layui.layer;
+        var element = layui.element;
+        layedit = layui.layedit;
+        index= layedit.build('comment-input', {
+            tool: ['face', '|', 'left', 'center', 'right', 'link', 'unlink']
+            , height: 150
+        });
+        console.log(index);
+
+    });
+    function submit() {
+
+        var osname = detectOS();
+
+        var obj = new Object();
+        if (su) {
+            obj.img = su.avatar;
+            obj.replyName = su.nickname;
+        }
+        obj.content=layedit.getContent(index);
+        obj.browse=navigator.appName;
+        obj.osname=osname;
+        obj.time=new Date();
+        obj.replyBody="";
+        if(!obj.content){
+            layer.msg('不能为空');
+            return false;
+        }
+
+
+        var timestamp = (new Date()).valueOf();
+        var localTest = layui.data('messagetime');
+        if(localTest.time) {
+
+            if (Math.floor((timestamp - localTest.time) / 1000) < 60) {
+                //时间差超过60s
+                layer.msg('请不要频繁的留言');
+                return false;
+            }
+        }
+
+        layui.data('messagetime', {
+            key: 'time'
+            , value: timestamp
+        });
+        obj.comment= obj.content;
+        obj.userId=su.id;
+        obj.user=su.id;
+        obj.enable=true;
+        obj.parentId=0;
+
+        obj.time =new Date();
+
+        var indexc = layer.load();
+        $.post("/token/msg/sub",obj, function (resp) {
+            layer.close(indexc);
+            $(window.frames["LAY_layedit_1"].document).find("body").html('');
+            layer.msg(resp.message);
+            setTimeout(function () {
+                if (resp.code === 200) {
+                    $(".comment-list").addCommentList({data:[],add:obj});
+                }
+            }, 1000);
+        });
+
+    };
+    function beforeLogin() {
+        var url=window.location.href;
+        window.open('/api/qq?url='+url,'_self');
+    }
+</script>
+<script src="static/assets/js/jquery.message.js" ></script>
+<script>
+    layui.use(['element'], function () {
+        var element = layui.element;
+    });
+
+</script>
+</body>
+
+<!-- Mirrored from www.nonelonely.com/msg by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:01:44 GMT -->
+</html>

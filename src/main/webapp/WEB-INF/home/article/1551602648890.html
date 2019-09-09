@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Mirrored from www.nonelonely.com/article/1551602648890 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:05:39 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+
+    <title>Java用DateFormat，simpleDateFormat，DateTimeFormat格式化时间和日期- 书生个人博客</title>
+    <link href="../static/plugins/editormd/css/editormd.min.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+<meta name="baidu_union_verify" content="3e514e79dc5e7201b9bee186137e9562">
+<meta name="keywords" content="Java,原创">
+
+<meta name="description" content="在java中格式化时间和日期或者把字符串转换成日期和时间都可以用DateFormat，simpleDateFormat类，而且在JAVA8中还添加了DateTimeFormat格式化日期和时间，使这些转换越来越简单。使用DateFormat格式化时间或者日期1.时间或者日格式成字符串用format()DateFormat是一个抽象类，提供了这几种方法来获取DateFormat对象：DateFormat.getDateInstance():返回一">
+
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../static/plugins/layui/css/layui.css">
+<link rel="stylesheet" href="../static/plugins/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../static/assets/css/frontend/base.css">
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "../../hm.baidu.com/hm6618.js?c07ddd5b98c69450ebd8e255627f70b0";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <link rel="canonical" href="1551602648890.html"/>
+    <script src="../../msite.baidu.com/sdk/cb688.js?appid=1622832448885693"></script>
+    <script src="../static/plugins/jquery/jquery.min.js"></script>
+     <style>
+         @media screen and (max-width: 767px) {
+             .layui-layer-page {
+                 display: none;
+             }
+         }
+
+         .markdown-body.layui-layer-content {
+             padding: 20px;
+             /*background-image: url("/static/assets/img/long.png");*/
+         }
+         .markdown-body  .layui-layer-title{
+             background-color: #e4e4e400;
+         }
+         .markdown-body  .layui-layer{
+             background-color: #e4e4e4;
+             background-image: url("../static/assets/img/long.png") ;
+             background-size: 100% 100%;
+         }
+         .markdown-body .layui-layer-content {
+
+            padding: 20px;
+         }
+
+     </style>
+
+</head>
+<body class="animated fadeIn">
+
+<div class="wrapper" >
+    <header>
+    <div class="headtop"></div>
+    <div class="contenttop">
+        <div class="logo f_l"> Java码猿-书生个人博客</div>
+        <div class="search f_r">
+            <input name="keyboard"  id="bdcsMain" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+            <input name="Submit" class="input_submit" onclick="window.open('http://zhannei.baidu.com/cse/search?s=6583887351044514798&entry=1&q='+document.getElementById('bdcsMain').value)" value="搜索" type="button">
+            <!--<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=6583887351044514798' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>-->
+            <ul class="layui-nav" style="background-color: rgba(0,0,0,0);" >
+                
+                
+
+                <li  class="layui-nav-item"><a href="#"  style="color: #000;" onclick="goto()" title="QQ登入" class="iconfont icon-qq"></a>
+                </li>
+            </ul>
+
+
+        </div>
+        <div class="blank"></div>
+
+        <nav>
+            <div  class="navigation">
+                <ul class="menu">
+                    <li><a href="../index.html">网站首页</a></li>
+                    <li><a href="#">技术文章</a>
+                        <ul >
+                            <li><a  href="../pages748a.html?cateId=1">Spring系列</a></li>
+                            <li><a  href="../pages3c7b.html?cateId=6">前端开发</a></li>
+                            <li><a  href="../pages4ead.html?cateId=7">软件安装</a></li>
+                            <li><a  href="../pages8396.html?cateId=9">Java语法</a></li>
+                            <li><a  href="../pagesff6a.html?cateId=10">资源下载</a></li>
+                            <li><a  href="../pagesad9e.html?cateId=12">ORM框架</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="../note.html">我的日记</a> </li>
+                    <li><a href="../msg.html">给我留言</a> </li>
+                    <li><a href="../about.html">关于</a></li>
+                </ul>
+            </div>
+        </nav>
+        <SCRIPT type=text/javascript>
+            // Navigation Menu
+            $(function() {
+                $(".menu ul").css({display: "none"}); // Opera Fix
+                $(".menu li").hover(function(){
+                    $(this).find('ul:first').css({visibility: "visible",display: "none"}).slideDown("normal");
+                },function(){
+                    $(this).find('ul:first').css({visibility: "hidden"});
+                });
+            });
+
+            function  search() {
+                var s=$('#keyboard').val();
+                location.href = s === "" ? "/" : "/pages?searchStr=" + s;
+            };
+            function goto () {
+                var url = window.location.href;
+                var winObj = window.open('/api/qq?url=' + url, '_self');
+            }
+        </SCRIPT>
+
+    </div>
+</header>
+    <div class="jztop"></div>
+
+    <!--<bmy-article-page :alipay="params.alipay" :wechat="params.wechat_pay" :su="su">-->
+        <!--<div th:insert ="frontend/fragment/articlepage :: article"  slot="article"></div>-->
+        <!--<div  th:insert="frontend/fragment/comment :: comment" slot="post"></div>-->
+
+        <!--<bmy-comment-list slot="comment" :comments="comments" :tips="params.comment_notice"-->
+                          <!--:re="params.all_comment_open == 1 && article.commented"></bmy-comment-list>-->
+       <!--<bmy-search slot="search"></bmy-search>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相似文章'})" slot="similar"></div>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${lots},${'热度文章'})" slot="lot"></div>-->
+    <!--</bmy-article-page>-->
+
+    <div id="blog-body" class="layui-container">
+       <div class="layui-row layui-col-space10">
+           <div id="blog-info" class="layui-col-md12">
+                <div class="layui-collapse layui-panel layui-article photos" >
+
+                     <div  ><div class="layui-colla-item">
+                    <h2 class="nh1"><span>您现在的位置是：<a href="../index.html" target="_blank">网站首页</a>>><a href="#" target="_blank">信息浏览</a>
+                    </span><b>文章详情</b></h2>
+                          <div class="layui-colla-content layui-show layui-article">
+                                   <fieldset class="layui-elem-field layui-field-title layui-article-page-title">
+                                       <legend class="center-to-head" align="center">Java用DateFormat，simpleDateFormat，DateTimeFormat格式化时间和日期</legend>
+                                      </fieldset>
+                                  <div class="layui-text layui-blog-body">
+                                           <div class="layui-row">
+                                                  <div class="layui-col-md6 layui-col-md-offset3 text-center blog-base-info">
+                                                           <span><i class="fa fa-clock-o" ></i>2019-03-03 16:44 </span>
+                                                           <span><i class="fa fa-user-o"></i> <span style="color: #FF5722;">许多年以后</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-renzhengkaobei"></use></svg></span>
+                                                          <span><i class="fa fa-comment-o"></i></span>
+                                                           <span><i class="fa fa-eye"></i> 1768</span>
+                                                       </div>
+                                               </div>
+                                      <!-- Baidu Button BEGIN -->
+                                           <!--<div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">-->
+                                                  <!--<span class="bds_more">分享到：</span>-->
+                                                  <!--<a class="bds_qzone"></a>-->
+                                                  <!--<a class="bds_tsina"></a>-->
+                                                  <!--<a class="bds_tqq"></a>-->
+                                                  <!--<a class="bds_renren"></a>-->
+                                                  <!--<a class="bds_t163"></a>-->
+                                                  <!--<a class="shareCount"></a>-->
+                                          <!--</div>-->
+                                          <!--<script type="text/javascript" id="bdshare_js" data="type=tools&uid=6701193" ></script>-->
+                                          <!--<script type="text/javascript" id="bdshell_js"></script>-->
+                                          <!--<script type="text/javascript">-->
+                                              <!--document.getElementById("bdshell_js").src = "https://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)-->
+                                          <!--</script>-->
+                                      <!-- Baidu Button END -->
+                                           <hr>
+                                           <div class="content detail markdown-body editormd-preview-container editormd-preview-active"><blockquote>
+<p>在java中格式化时间和日期或者把字符串转换成日期和时间都可以用DateFormat，simpleDateFormat类，而且在JAVA8中还添加了DateTimeFormat格式化日期和时间，使这些转换越来越简单。</p>
+</blockquote>
+<p><strong>使用DateFormat格式化时间或者日期</strong><br><strong>1.时间或者日格式成字符串用format()</strong><br>DateFormat是一个抽象类，提供了这几种方法来获取DateFormat对象：</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="typ">DateFormat</span><span class="pun">.</span><span class="pln">getDateInstance</span><span class="pun">():返回一个日期格式器，它格式化后的字符串只有日期，没有时间，可以传入多个参数。</span></code></li><li class="L1"><code><span class="typ">DateFormat</span><span class="pun">.</span><span class="pln">getTimeInstance</span><span class="pun">():返回一个时问格式器，它格式化后的字符串只有时间，没有日期。</span></code></li><li class="L2"><code><span class="typ">DateFormat</span><span class="pun">.</span><span class="pln">getDateTimeInstance</span><span class="pun">():返回一个日期、时问格式器，它格式化后的字符串既有日期，也有时间。</span></code></li></ol></pre><p>上面3个方法可以指定日期，时间样式、它们是DateFormat的4个静态常量：FULL,LONG,MEDIUM,SHORT,通过4个样式参数可以控制生成的格式化字符串。如:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> test </span><span class="pun">{</span></code></li><li class="L1"><code class="lang-java"><span class="pln">    </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">static</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> main </span><span class="pun">(</span><span class="typ">String</span><span class="pln"> arg</span><span class="pun">[]){</span></code></li><li class="L2"><code class="lang-java"><span class="pln">        </span><span class="typ">Date</span><span class="pln"> date</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Date</span><span class="pun">();</span></code></li><li class="L3"><code class="lang-java"><span class="pln">       </span><span class="typ">Locale</span><span class="pun">[]</span><span class="pln"> locales</span><span class="pun">={</span><span class="typ">Locale</span><span class="pun">.</span><span class="pln">CANADA</span><span class="pun">,</span><span class="typ">Locale</span><span class="pun">.</span><span class="pln">US</span><span class="pun">};</span></code></li><li class="L4"><code class="lang-java"><span class="pln">       </span><span class="typ">DateFormat</span><span class="pun">[]</span><span class="pln"> das</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">DateFormat</span><span class="pun">[</span><span class="lit">10</span><span class="pun">];</span></code></li><li class="L5"><code class="lang-java"><span class="pln">        </span><span class="kwd">for</span><span class="pun">(</span><span class="kwd">int</span><span class="pln"> i</span><span class="pun">=</span><span class="lit">0</span><span class="pun">;</span><span class="pln">i</span><span class="pun"><</span><span class="pln">locales</span><span class="pun">.</span><span class="pln">length</span><span class="pun">;</span><span class="pln">i</span><span class="pun">++)</span></code></li><li class="L6"><code class="lang-java"><span class="pln">        </span><span class="pun">{</span></code></li><li class="L7"><code class="lang-java"><span class="pln">            </span><span class="com">//四种样式</span></code></li><li class="L8"><code class="lang-java"><span class="pln">            das</span><span class="pun">[</span><span class="pln">i</span><span class="pun">*</span><span class="lit">5</span><span class="pun">]=</span><span class="typ">DateFormat</span><span class="pun">.</span><span class="pln">getDateInstance</span><span class="pun">(</span><span class="typ">DateFormat</span><span class="pun">.</span><span class="pln">SHORT</span><span class="pun">,</span><span class="pln">locales</span><span class="pun">[</span><span class="pln">i</span><span class="pun">]);</span></code></li><li class="L9"><code class="lang-java"><span class="pln">            das</span><span class="pun">[</span><span class="pln">i</span><span class="pun">*</span><span class="lit">5</span><span class="pun">+</span><span class="lit">1</span><span class="pun">]=</span><span class="typ">DateFormat</span><span class="pun">.</span><span class="pln">getDateInstance</span><span class="pun">(</span><span class="typ">DateFormat</span><span class="pun">.</span><span class="pln">MEDIUM</span><span class="pun">,</span><span class="pln">locales</span><span class="pun">[</span><span class="pln">i</span><span class="pun">]);</span></code></li><li class="L0"><code class="lang-java"><span class="pln">            das</span><span class="pun">[</span><span class="pln">i</span><span class="pun">*</span><span class="lit">5</span><span class="pun">+</span><span class="lit">2</span><span class="pun">]=</span><span class="typ">DateFormat</span><span class="pun">.</span><span class="pln">getDateInstance</span><span class="pun">(</span><span class="typ">DateFormat</span><span class="pun">.</span><span class="pln">LONG</span><span class="pun">,</span><span class="pln">locales</span><span class="pun">[</span><span class="pln">i</span><span class="pun">]);</span></code></li><li class="L1"><code class="lang-java"><span class="pln">            das</span><span class="pun">[</span><span class="pln">i</span><span class="pun">*</span><span class="lit">5</span><span class="pun">+</span><span class="lit">3</span><span class="pun">]=</span><span class="typ">DateFormat</span><span class="pun">.</span><span class="pln">getDateInstance</span><span class="pun">(</span><span class="typ">DateFormat</span><span class="pun">.</span><span class="pln">FULL</span><span class="pun">,</span><span class="pln">locales</span><span class="pun">[</span><span class="pln">i</span><span class="pun">]);</span></code></li><li class="L2"><code class="lang-java"><span class="pln">             das</span><span class="pun">[</span><span class="pln">i</span><span class="pun">*</span><span class="lit">5</span><span class="pun">+</span><span class="lit">4</span><span class="pun">]=</span><span class="typ">DateFormat</span><span class="pun">.</span><span class="pln">getDateInstance</span><span class="pun">();</span></code></li><li class="L3"><code class="lang-java"><span class="pln">  </span><span class="pun">}</span></code></li><li class="L4"><code class="lang-java"><span class="pln">    </span><span class="kwd">for</span><span class="pun">(</span><span class="kwd">int</span><span class="pln"> i</span><span class="pun">=</span><span class="lit">0</span><span class="pun">;</span><span class="pln">i</span><span class="pun"><</span><span class="pln">locales</span><span class="pun">.</span><span class="pln">length</span><span class="pun">;</span><span class="pln">i</span><span class="pun">++)</span></code></li><li class="L5"><code class="lang-java"><span class="pln">    </span><span class="pun">{</span></code></li><li class="L6"><code class="lang-java"><span class="pln">        </span><span class="typ">String</span><span class="pln"> tip</span><span class="pun">=</span><span class="pln">i</span><span class="pun">==</span><span class="lit">0</span><span class="pun">?</span><span class="str">"------中国日期格式"</span><span class="pun">:</span><span class="str">"美国日期格式"</span><span class="pun">;</span></code></li><li class="L7"><code class="lang-java"><span class="pln">        </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="pln">tip</span><span class="pun">);</span></code></li><li class="L8"><code class="lang-java"><span class="pln">        </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"SHORT:"</span><span class="pun">+</span><span class="pln">das</span><span class="pun">[</span><span class="pln">i</span><span class="pun">*</span><span class="lit">5</span><span class="pun">].</span><span class="pln">format</span><span class="pun">(</span><span class="pln">date</span><span class="pun">));</span></code></li><li class="L9"><code class="lang-java"><span class="pln">        </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"MEDIUM:"</span><span class="pun">+</span><span class="pln">das</span><span class="pun">[</span><span class="pln">i</span><span class="pun">*</span><span class="lit">5</span><span class="pun">+</span><span class="lit">1</span><span class="pun">].</span><span class="pln">format</span><span class="pun">(</span><span class="pln">date</span><span class="pun">));</span></code></li><li class="L0"><code class="lang-java"><span class="pln">        </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"LONG:"</span><span class="pun">+</span><span class="pln">das</span><span class="pun">[</span><span class="pln">i</span><span class="pun">*</span><span class="lit">5</span><span class="pun">+</span><span class="lit">2</span><span class="pun">].</span><span class="pln">format</span><span class="pun">(</span><span class="pln">date</span><span class="pun">));</span></code></li><li class="L1"><code class="lang-java"><span class="pln">        </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"FULL:"</span><span class="pun">+</span><span class="pln">das</span><span class="pun">[</span><span class="pln">i</span><span class="pun">*</span><span class="lit">5</span><span class="pun">+</span><span class="lit">3</span><span class="pun">].</span><span class="pln">format</span><span class="pun">(</span><span class="pln">date</span><span class="pun">));</span></code></li><li class="L2"><code class="lang-java"><span class="pln">         </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"没有指定:"</span><span class="pun">+</span><span class="pln">das</span><span class="pun">[</span><span class="pln">i</span><span class="pun">*</span><span class="lit">5</span><span class="pun">+</span><span class="lit">4</span><span class="pun">].</span><span class="pln">format</span><span class="pun">(</span><span class="pln">date</span><span class="pun">));</span></code></li><li class="L3"><code class="lang-java"><span class="pln"> </span><span class="pun">}</span></code></li><li class="L4"><code class="lang-java"><span class="pun">}</span></code></li><li class="L5"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<p>结果是：<br><img src="../../s2.ax1x.com/2019/03/03/kL6VUO.png" alt="kL6VUO.png"></p>
+<p>这个例子创建的是日期的格式，分别指定了locale和日期输出的样式，创建DateFormat对象没有给它参数时，会用默认的。</p>
+<p><strong>2.字符串转换成日期或者时间</strong><br>DateFormat的parse()方法可以把一个字符串解析成Date对象，但它要求被解析的字符串必须符合日期期字符串的要求，否则可能抛出<br>ParseException异常</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"></code></li><li class="L1"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> test </span><span class="pun">{</span></code></li><li class="L2"><code class="lang-java"></code></li><li class="L3"><code class="lang-java"><span class="pln">    </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">static</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> main </span><span class="pun">(</span><span class="typ">String</span><span class="pln"> arg</span><span class="pun">[]){</span></code></li><li class="L4"><code class="lang-java"><span class="pln">      </span><span class="typ">String</span><span class="pln"> str1</span><span class="pun">=</span><span class="str">"2019-3-3"</span><span class="pun">;</span></code></li><li class="L5"><code class="lang-java"><span class="pln">      </span><span class="typ">String</span><span class="pln"> str2</span><span class="pun">=</span><span class="str">"2019年3月3日"</span><span class="pun">;</span></code></li><li class="L6"><code class="lang-java"><span class="pln">      </span><span class="kwd">try</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L7"><code class="lang-java"><span class="pln">            </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="typ">DateFormat</span><span class="pun">.</span><span class="pln">getDateInstance</span><span class="pun">().</span><span class="pln">parse</span><span class="pun">(</span><span class="pln">str1</span><span class="pun">));</span></code></li><li class="L8"><code class="lang-java"><span class="pln">        </span><span class="pun">}</span><span class="kwd">catch</span><span class="pln"> </span><span class="pun">(</span><span class="typ">ParseException</span><span class="pln"> ex</span><span class="pun">)</span></code></li><li class="L9"><code class="lang-java"><span class="pln">        </span><span class="pun">{</span></code></li><li class="L0"><code class="lang-java"><span class="pln">            </span><span class="com">//如果这个会抛出错误，从而执行这行</span></code></li><li class="L1"><code class="lang-java"><span class="pln">            </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"str1::"</span><span class="pun">+</span><span class="pln">ex</span><span class="pun">.</span><span class="pln">getMessage</span><span class="pun">());</span></code></li><li class="L2"><code class="lang-java"><span class="pln">        </span><span class="pun">}</span></code></li><li class="L3"><code class="lang-java"><span class="pln">        </span><span class="kwd">try</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L4"><code class="lang-java"></code></li><li class="L5"><code class="lang-java"><span class="pln">            </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="typ">DateFormat</span><span class="pun">.</span><span class="pln">getDateInstance</span><span class="pun">().</span><span class="pln">parse</span><span class="pun">(</span><span class="pln">str2</span><span class="pun">));</span></code></li><li class="L6"><code class="lang-java"><span class="pln">        </span><span class="pun">}</span><span class="kwd">catch</span><span class="pln"> </span><span class="pun">(</span><span class="typ">ParseException</span><span class="pln"> ex</span><span class="pun">)</span></code></li><li class="L7"><code class="lang-java"><span class="pln">        </span><span class="pun">{</span><span class="pln"> </span><span class="com">//如果这个会抛出错误，从而执行这行</span></code></li><li class="L8"><code class="lang-java"><span class="pln">            </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"str2::"</span><span class="pun">+</span><span class="pln">ex</span><span class="pun">.</span><span class="pln">getMessage</span><span class="pun">());</span></code></li><li class="L9"><code class="lang-java"><span class="pln">        </span><span class="pun">}</span></code></li><li class="L0"><code class="lang-java"></code></li><li class="L1"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li><li class="L2"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<p><strong>结果：</strong><br><img src="../../s2.ax1x.com/2019/03/03/kL6n8H.png" alt="kL6n8H.png"><br>由于第2个格式不对，所以抛出错误。</p>
+<p><strong>使用SimpleDateFormat格式化时间或者日期</strong><br>    前面介绍的DateFormat的parse()方法可以把字符串解析成Date寸象，但实际DateFormat的parse()方法不够灵活—它要求被解析的字符串必须满足特定的格式!为了更好地格式化日期、解析日期字符串，Java提供了SimpIeDateFormat类。SimpIeDateFormat是DateFormat的子类，正如它的名字所暗示的，它是“简单”的日期格式器，但是SimpIeDateFormat比DateFormat更简单，功能强大。</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln"> </span><span class="typ">SimpleDateFormat</span><span class="pun">函数语法：</span></code></li><li class="L1"><code></code></li><li class="L2"><code><span class="pln">  G </span><span class="pun">年代标志符</span></code></li><li class="L3"><code><span class="pln">  y </span><span class="pun">年</span></code></li><li class="L4"><code><span class="pln">  M </span><span class="pun">月</span></code></li><li class="L5"><code><span class="pln">  d </span><span class="pun">日</span></code></li><li class="L6"><code><span class="pln">  h </span><span class="pun">时</span><span class="pln"> </span><span class="pun">在上午或下午</span><span class="pln"> </span><span class="pun">(</span><span class="lit">1</span><span class="pun">~</span><span class="lit">12</span><span class="pun">)</span></code></li><li class="L7"><code><span class="pln">  H </span><span class="pun">时</span><span class="pln"> </span><span class="pun">在一天中</span><span class="pln"> </span><span class="pun">(</span><span class="lit">0</span><span class="pun">~</span><span class="lit">23</span><span class="pun">)</span></code></li><li class="L8"><code><span class="pln">  m </span><span class="pun">分</span></code></li><li class="L9"><code><span class="pln">  s </span><span class="pun">秒</span></code></li><li class="L0"><code><span class="pln">  S </span><span class="pun">毫秒</span></code></li><li class="L1"><code><span class="pln">  E </span><span class="pun">星期</span></code></li><li class="L2"><code><span class="pln">  D </span><span class="pun">一年中的第几天</span></code></li><li class="L3"><code><span class="pln">  F </span><span class="pun">一月中第几个星期几</span></code></li><li class="L4"><code><span class="pln">  w </span><span class="pun">一年中第几个星期</span></code></li><li class="L5"><code><span class="pln">  W </span><span class="pun">一月中第几个星期</span></code></li><li class="L6"><code><span class="pln">  a </span><span class="pun">上午</span><span class="pln"> </span><span class="pun">/</span><span class="pln"> </span><span class="pun">下午</span><span class="pln"> </span><span class="pun">标记符</span></code></li><li class="L7"><code><span class="pln">  k </span><span class="pun">时</span><span class="pln"> </span><span class="pun">在一天中</span><span class="pln"> </span><span class="pun">(</span><span class="lit">1</span><span class="pun">~</span><span class="lit">24</span><span class="pun">)</span></code></li><li class="L8"><code><span class="pln">  K </span><span class="pun">时</span><span class="pln"> </span><span class="pun">在上午或下午</span><span class="pln"> </span><span class="pun">(</span><span class="lit">0</span><span class="pun">~</span><span class="lit">11</span><span class="pun">)</span></code></li><li class="L9"><code><span class="pln">  z </span><span class="pun">时区</span></code></li></ol></pre><p>   创建SimpleDateFormat对象需要传入一个pattern字符串，这个pattern不是正则表达式，而是一个日期模板字符串。</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> test </span><span class="pun">{</span></code></li><li class="L1"><code class="lang-java"></code></li><li class="L2"><code class="lang-java"><span class="pln">    </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">static</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> main </span><span class="pun">(</span><span class="typ">String</span><span class="pln"> arg</span><span class="pun">[])</span><span class="kwd">throws</span><span class="pln">  </span><span class="typ">ParseException</span><span class="pun">{</span></code></li><li class="L3"><code class="lang-java"><span class="pln">     </span><span class="typ">Date</span><span class="pln"> d</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Date</span><span class="pun">();</span></code></li><li class="L4"><code class="lang-java"><span class="pln">        </span><span class="typ">SimpleDateFormat</span><span class="pln"> simpleDateFormat</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">SimpleDateFormat</span><span class="pun">(</span><span class="str">"Gyyyy年中第D天"</span><span class="pun">);</span></code></li><li class="L5"><code class="lang-java"></code></li><li class="L6"><code class="lang-java"><span class="pln">        </span><span class="typ">String</span><span class="pln"> dateStr</span><span class="pun">=</span><span class="pln">simpleDateFormat</span><span class="pun">.</span><span class="pln">format</span><span class="pun">(</span><span class="pln">d</span><span class="pun">);</span></code></li><li class="L7"><code class="lang-java"><span class="pln">        </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"把时间格式成字符串:"</span><span class="pun">+</span><span class="pln">dateStr</span><span class="pun">);</span></code></li><li class="L8"><code class="lang-java"></code></li><li class="L9"><code class="lang-java"><span class="pln">        </span><span class="typ">String</span><span class="pln"> str</span><span class="pun">=</span><span class="str">"14###三月##21"</span><span class="pun">;</span></code></li><li class="L0"><code class="lang-java"><span class="pln">        </span><span class="typ">SimpleDateFormat</span><span class="pln"> simpleDateFormat1</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">SimpleDateFormat</span><span class="pun">(</span><span class="str">"y###MMM##d"</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pln">        </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"把字符串格式成时间:"</span><span class="pun">+</span><span class="pln">simpleDateFormat1</span><span class="pun">.</span><span class="pln">parse</span><span class="pun">(</span><span class="pln">str</span><span class="pun">));</span></code></li><li class="L2"><code class="lang-java"></code></li><li class="L3"><code class="lang-java"><span class="pln">        </span><span class="com">//字符串转换成Date</span></code></li><li class="L4"><code class="lang-java"><span class="pln">        str</span><span class="pun">=</span><span class="str">"2019-03-23"</span><span class="pun">;</span></code></li><li class="L5"><code class="lang-java"><span class="pln">       </span><span class="typ">SimpleDateFormat</span><span class="pln"> sdf </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">SimpleDateFormat</span><span class="pun">(</span><span class="str">"yyyy-MM-dd"</span><span class="pun">);</span></code></li><li class="L6"><code class="lang-java"><span class="pln">        </span><span class="typ">Date</span><span class="pln"> data</span><span class="pun">=</span><span class="pln">sdf</span><span class="pun">.</span><span class="pln">parse</span><span class="pun">(</span><span class="pln">str</span><span class="pun">);</span></code></li><li class="L7"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li><li class="L8"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<p><strong>结果:</strong><br>    把时间格式成字符串:公元2019年中第62天<br>    把字符串格式成时间:Fri Mar 21 00:00:00 CST 2014</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="typ">Process</span><span class="pln"> finished </span><span class="kwd">with</span><span class="pln"> </span><span class="kwd">exit</span><span class="pln"> code </span><span class="lit">0</span></code></li></ol></pre><p>SimpleDateFormat可以自定义格式，更简单和方便。</p>
+<p><strong>使用DateTimeFormatter完成格式化</strong><br>使用DateTimeFormatter将日期、时间( LocalDate.  LocalDateTime,  LocalTime等实例)格式化为字符串可通过如下两种方式。</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pun">调用</span><span class="typ">DateTimeFormatter</span><span class="pun">的</span><span class="pln">format</span><span class="pun">(</span><span class="typ">TemporalAccessor</span><span class="pln"> temporal</span><span class="pun">)方法执行格式化，其中</span><span class="typ">LocalDate</span><span class="pun">.</span><span class="pln">  </span><span class="typ">LocalDateTime</span><span class="pun">,</span><span class="pln">  </span><span class="typ">LocalTime</span><span class="pun">等类都是</span><span class="typ">TemporalAccessor</span><span class="pun">接口的实现类。</span></code></li><li class="L1"><code><span class="pun">调用</span><span class="pln"> </span><span class="typ">LocalDate</span><span class="pun">,</span><span class="pln">  </span><span class="typ">LocalDateTime</span><span class="pun">,</span><span class="pln">  </span><span class="typ">LocalTime</span><span class="pun">等日期、时间对象的</span><span class="pln">format</span><span class="pun">(</span><span class="typ">DateTimeFormatter</span><span class="pln"> formatter</span><span class="pun">)方法执行格式化。</span></code></li></ol></pre><pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> test </span><span class="pun">{</span></code></li><li class="L1"><code class="lang-java"></code></li><li class="L2"><code class="lang-java"><span class="pln">    </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">static</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> main </span><span class="pun">(</span><span class="typ">String</span><span class="pln"> arg</span><span class="pun">[])</span><span class="kwd">throws</span><span class="pln">  </span><span class="typ">ParseException</span><span class="pun">{</span></code></li><li class="L3"><code class="lang-java"><span class="pln">        </span><span class="com">//创建5个DateTimeFormatter对象</span></code></li><li class="L4"><code class="lang-java"><span class="pln">        </span><span class="typ">DateTimeFormatter</span><span class="pun">[]</span><span class="pln"> formatters</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">DateTimeFormatter</span><span class="pun">[]{</span></code></li><li class="L5"><code class="lang-java"><span class="pln">                </span><span class="com">//使用常量创建对象</span></code></li><li class="L6"><code class="lang-java"><span class="pln">             </span><span class="typ">DateTimeFormatter</span><span class="pun">.</span><span class="pln">ISO_LOCAL_DATE</span><span class="pun">,</span></code></li><li class="L7"><code class="lang-java"><span class="pln">             </span><span class="typ">DateTimeFormatter</span><span class="pun">.</span><span class="pln">ISO_LOCAL_TIME</span><span class="pun">,</span></code></li><li class="L8"><code class="lang-java"><span class="pln">             </span><span class="typ">DateTimeFormatter</span><span class="pun">.</span><span class="pln">ISO_LOCAL_DATE_TIME</span><span class="pun">,</span></code></li><li class="L9"><code class="lang-java"><span class="pln">                </span><span class="com">//使用本地化风格创建</span></code></li><li class="L0"><code class="lang-java"><span class="pln">             </span><span class="typ">DateTimeFormatter</span><span class="pun">.</span><span class="pln">ofLocalizedDateTime</span><span class="pun">(</span><span class="typ">FormatStyle</span><span class="pun">.</span><span class="pln">LONG</span><span class="pun">),</span></code></li><li class="L1"><code class="lang-java"><span class="pln">                </span><span class="com">//自定义创建</span></code></li><li class="L2"><code class="lang-java"><span class="pln">             </span><span class="typ">DateTimeFormatter</span><span class="pun">.</span><span class="pln">ofPattern</span><span class="pun">(</span><span class="str">"Gyyyy%%MMM%%dd HH:mm:ss"</span><span class="pun">)</span></code></li><li class="L3"><code class="lang-java"><span class="pln">          </span><span class="pun">};</span></code></li><li class="L4"><code class="lang-java"><span class="pln">        </span><span class="typ">LocalDateTime</span><span class="pln"> dateTime</span><span class="pun">=</span><span class="typ">LocalDateTime</span><span class="pun">.</span><span class="pln">now</span><span class="pun">();</span></code></li><li class="L5"><code class="lang-java"></code></li><li class="L6"><code class="lang-java"><span class="pln">        </span><span class="kwd">for</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">int</span><span class="pln"> i</span><span class="pun">=</span><span class="lit">0</span><span class="pun">;</span><span class="pln">i</span><span class="pun"><</span><span class="pln">formatters</span><span class="pun">.</span><span class="pln">length</span><span class="pun">;</span><span class="pln">i</span><span class="pun">++)</span></code></li><li class="L7"><code class="lang-java"><span class="pln">        </span><span class="pun">{</span></code></li><li class="L8"><code class="lang-java"><span class="pln">            </span><span class="com">//这2行代码一样</span></code></li><li class="L9"><code class="lang-java"><span class="pln">            </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="pln">dateTime</span><span class="pun">.</span><span class="pln">format</span><span class="pun">(</span><span class="pln">formatters</span><span class="pun">[</span><span class="pln">i</span><span class="pun">]));</span></code></li><li class="L0"><code class="lang-java"><span class="pln">          </span><span class="com">//  System.out.println(formatters[i].format(dateTime));</span></code></li><li class="L1"><code class="lang-java"><span class="pln">        </span><span class="pun">}</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li><li class="L3"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<p><strong>结果:</strong></p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="lit">2019</span><span class="pun">-</span><span class="lit">03</span><span class="pun">-</span><span class="lit">03</span></code></li><li class="L1"><code><span class="lit">16</span><span class="pun">:</span><span class="lit">25</span><span class="pun">:</span><span class="lit">27.199</span></code></li><li class="L2"><code><span class="lit">2019</span><span class="pun">-</span><span class="lit">03</span><span class="pun">-</span><span class="lit">03T16</span><span class="pun">:</span><span class="lit">25</span><span class="pun">:</span><span class="lit">27.199</span></code></li><li class="L3"><code><span class="lit">2019</span><span class="pun">年</span><span class="lit">3</span><span class="pun">月</span><span class="lit">3</span><span class="pun">日</span><span class="pln"> </span><span class="pun">下午</span><span class="lit">04</span><span class="pun">时</span><span class="lit">25</span><span class="pun">分</span><span class="lit">27</span><span class="pun">秒</span></code></li><li class="L4"><code><span class="pun">公元</span><span class="lit">2019</span><span class="pun">%%三月%%</span><span class="lit">03</span><span class="pln"> </span><span class="lit">16</span><span class="pun">:</span><span class="lit">25</span><span class="pun">:</span><span class="lit">27</span></code></li><li class="L5"><code></code></li><li class="L6"><code><span class="typ">Process</span><span class="pln"> finished </span><span class="kwd">with</span><span class="pln"> </span><span class="kwd">exit</span><span class="pln"> code </span><span class="lit">0</span></code></li></ol></pre><p><strong>使用DateTimeFormatter解析字符串</strong><br>为了使用LocaIDateTime、DateTimeFormatter将指定格式的字符串解析成日期、时间对象(LocalDate ,LocalTime等实例)，可通过日期、I时间对象提供的parse(CharSequence text ,DateTimeFormatter formatter)方法进行解析。</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> test </span><span class="pun">{</span></code></li><li class="L1"><code class="lang-java"></code></li><li class="L2"><code class="lang-java"><span class="pln">    </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">static</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> main </span><span class="pun">(</span><span class="typ">String</span><span class="pln"> arg</span><span class="pun">[])</span><span class="kwd">throws</span><span class="pln">  </span><span class="typ">ParseException</span><span class="pun">{</span></code></li><li class="L3"><code class="lang-java"><span class="pln">        </span><span class="com">//定义一个任意格式的日期、l讨间字符串</span></code></li><li class="L4"><code class="lang-java"><span class="pln">        </span><span class="typ">String</span><span class="pln"> strl</span><span class="pun">=</span><span class="str">"2014-04-12 O1时06分09秒"</span><span class="pun">;</span></code></li><li class="L5"><code class="lang-java"><span class="com">//根据需要解析的日期、时间字符串定义解析所用的格式器</span></code></li><li class="L6"><code class="lang-java"><span class="pln">        </span><span class="typ">DateTimeFormatter</span><span class="pln">  fomatterl</span><span class="pun">=</span><span class="typ">DateTimeFormatter</span><span class="pun">.</span><span class="pln">ofPattern</span><span class="pun">(</span><span class="str">"yyyy-MM-dd HH时mm分ss秒"</span><span class="pun">);</span></code></li><li class="L7"><code class="lang-java"><span class="com">//执行解析</span></code></li><li class="L8"><code class="lang-java"><span class="pln">        </span><span class="typ">LocalDateTime</span><span class="pln"> dtl</span><span class="pun">=</span><span class="typ">LocalDateTime</span><span class="pun">.</span><span class="pln">parse</span><span class="pun">(</span><span class="pln">strl</span><span class="pun">,</span><span class="pln">fomatterl</span><span class="pun">);</span></code></li><li class="L9"><code class="lang-java"><span class="pln">        </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="pln">dtl</span><span class="pun">);</span><span class="com">//输出2014一04一12T01:06:09</span></code></li><li class="L0"><code class="lang-java"><span class="pln"> </span><span class="pun">}</span></code></li><li class="L1"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+</div>
+                                      </div>
+                                   <div class="layui-row text-center layui-mt20">
+                                           
+                                           <div class="layui-btn layui-btn-danger" onclick="emotion()"><i class="fa fa-thumbs-o-up" id="za"> 赞 (155)</i></div>
+                                       </div>
+                                   <div class="layui-row layui-mt20">
+                                         <blockquote class="layui-elem-quote text-center " style="border: none;">
+                                                  <span class="layui-show-md-inline-block layui-hide"  >文章出处：书生个人博客</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                   <span class="layui-show-md-inline-block layui-hide" id="artiurl"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                  <span>转载注明下哦！o(≧v≦)o~~</span>
+                                           </blockquote>
+                                    </div>
+                                 <div class="layui-row layui-mt20">
+                                         <p class="blog-tags">
+                                              标签：
+                                                       <span >Java</span><span >原创</span>
+
+                                               </p>
+                                 </div>
+                                 <div class="layui-row layui-col-space20 layui-mt20 article-page-similar">
+                                           <p>相似文章：</p>
+                                            <hr>
+                                             <ul>
+                                                    <li><a href="1550763734503.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;垃圾收集器与内存分配策略</a> </li>
+                                                    <li><a href="1548748295557.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Java自定义注解和解析注解</a> </li>
+                                                    <li><a href="1549088339266.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Java面试宝典之40个集合类面试题和答案</a> </li>
+                                                    <li><a href="1559531976400.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;深入理解5种单例模式以及对其的改造在多线程下的使用</a> </li>
+                                                    <li><a href="1566791860734.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Java报错：java.math.BigDecimal cannot be cast to java.lang.String</a> </li>
+                                                    <li><a href="1548301531289.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;多线程的安全问题以及对volatile关键字的理解</a> </li>
+                                                    <li><a href="1551711955457.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;CGLIB动态代理的用法</a> </li>
+                                                    <li><a href="1549036487797.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Java面试宝典之并发编程73道面试题及答案</a> </li>
+                                                    <li><a href="1559282468236.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Thread线程start方法的深入解析:模板设计模式的使用</a> </li>
+                                                    <li><a href="1550502442380.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Java虚拟机的内存区域讲解</a> </li>
+                                              </ul>
+                                    </div>
+                               </div>
+                      <script>
+                          $("#artiurl").html("文章地址："+location.href);
+
+
+                      </script>
+
+                       </div></div>
+
+                </div>
+
+               <div  >
+<div id="cta" class="layui-collapse layui-panel layui-article">
+       <div class="layui-colla-item">
+               <div class="layui-colla-content layui-show layui-article comment">
+                       <fieldset class="layui-elem-field layui-field-title">
+                               <legend>随便说两句</legend>
+                               <div class="layui-field-box">
+                                       <label for="comment-input"></label>
+                                           <textarea id="comment-input" style="display: none;"></textarea>
+                                  </div>
+                               
+                               <a class="layui-btn layui-btn-sm layui-btn-danger" style="float: right;width: 120px;"  href="#"  onclick="javascript:beforeLogin()" id="beforeLogin"><i class="fa fa-qq"></i> 请先登录</a>
+                           </fieldset>
+                   </div>
+           </div>
+    </div>
+</div>
+<script>
+    function beforeLogin() {
+        var url=window.location.href;
+        window.open('/api/qq?url='+url,'_self');
+    }
+
+</script>
+
+               <blockquote id="cccc" class="layui-elem-quote layui-mt20" style="border-left: 5px solid #F44336;"><span style="color:#FF5722;">遵守国家法律法规，请勿回复无意义内容，请不要回复嵌套过多的楼层！</span></blockquote>
+               <div class="comment-list">
+
+</div>
+
+
+
+
+           </div>
+               <!--<div class="layui-col-md3" id="article-app">-->
+                       <!--<div id="affix-side">-->
+                           <!--<div th:replace="frontend/fragment/callme :: callme" ></div>-->
+                           <!--&lt;!&ndash;<div class="layui-tab layui-tab-card layui-master-recommend" >&ndash;&gt;-->
+                               <!--&lt;!&ndash;<div class="layui-tab-content select-none">&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<h3 class="tit">时光悄然</h3>&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<div class="layui-inline" id="test22"></div>&ndash;&gt;-->
+                               <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--<div th:replace ="frontend/fragment/guidang" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/imageinfo" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/cate" ></div>-->
+                           <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相关文章'})" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/image :: image"></div>-->
+                           <!--</div>-->
+                   <!--</div>-->
+           </div>
+    </div>
+
+
+    <footer >
+    <div class="footer"><p>
+	<span><strong>友情链接:</strong><strong>&nbsp;</strong> &nbsp;&nbsp;</span><a class="ke-insertfile" href="https://www.layui.com/" target="_blank">layui</a><span>&nbsp;&nbsp;</span>&nbsp;<a class="ke-insertfile" href="http://www.shuyong.net/" target="_blank">舍力博客</a>&nbsp;&nbsp;<a class="ke-insertfile" href="javascript:;" id="friend">申请友链</a> 
+</p>
+<p>
+	2018-2019 nonelonely.com | 网站备案号：<a class="ke-insertfile" href="http://www.miitbeian.gov.cn/" target="_blank">闽ICP备18026034号-1</a> 
+</p>
+<p>
+	<br />
+</p></div>
+
+    <div class="layui-hide-xs" style="position: fixed;left: 100px; bottom: 100px; z-index: 999999;" id="robot" data-method="robot">
+        <div class="layui-layer-tips" ><div id="" class="layui-layer-content" style="background-color: rgb(114, 193, 236);width: 150px">Hi 我是小码，可以点击我问我笑话，天气，智能聊天，故事，查询备案等等。<i class="layui-layer-TipsG layui-layer-TipsT" style="border-right-color:rgb(114, 193, 236);"></i></div><span class="layui-layer-setwin"></span></div>
+        <a href="#" ><img src="../static/assets/img/robot.png" width="100px" alt="Hi 我是小码！" >
+        </a>
+    </div>
+
+
+</footer>
+<script src="../static/plugins/layui/layui.js"></script>
+
+<script>
+    layui.use([ 'layer'], function () {
+        var layer = layui.layer;
+        var $ = layui.jquery;
+        //触发事件
+        var active = {
+            robot: function(){
+                var that = this;
+                $("#robot").css('display','none');
+                //多窗口模式，层叠置顶
+                layer.open({
+                    type: 2,
+                    title:'智能小码',
+                    area: ['600px', '480px'],
+                    content: '/webrobot',
+                    end:function () {
+                        $("#robot").css('display','');
+                    }
+                });
+            },
+            friend: function () {
+                layer.open({
+                    title: '申请友链'
+                    ,content: '发送邮件至：admin@nonelonely.com<br>' +
+                        '邮件标题为：申请书生个人博客友链'
+                });
+            }
+        };
+
+        $('#robot').on('click', function(){
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+        $('#friend').on('click', function(){
+            var othis = $(this), method = 'friend';
+            active[method] ? active[method].call(this, othis) : '';
+        });
+
+
+        // var la;
+            // la = layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot',
+            //     {
+            //         tips: [1, '#3595CC'],
+            //         end: function () {
+            //             if($("#robot").is(":visible")) {
+            //                 la = layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot',
+            //                     {tips: [1, '#3595CC']})
+            //             }
+            //         }
+            //     });
+            // window.setInterval(" if($('#robot').is(':visible')) {la=layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot', { tips: [1, '#3595CC'],end : function(){ la=layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot', {tips: [1, '#3595CC']});}});}", 10000*6 );
+
+    });
+</script>
+
+</div>
+
+
+
+
+<script>
+    var articleId=1551602648890;
+    var su=null ;
+    $(function(){
+        $(".comment-list").addCommentList({data:[],add:""});
+        $("#comment").click(function(){
+            var obj = new Object();
+            obj.img="images/img.html";
+            obj.replyName="匿名";
+            obj.content=$("#content").val();
+            obj.browse="深圳";
+            obj.osname="win10";
+            obj.replyBody="";
+            $(".comment-list").addCommentList({data:[],add:obj});
+        });
+    })
+
+    var layer;
+    var layedit;
+    var index;
+    layui.use(['layedit', 'laypage', 'laydate', 'element','layer'], function () {
+        layer = layui.layer;
+        var element = layui.element;
+        layedit = layui.layedit;
+        // var laydate = layui.laydate;
+        // //不出现底部栏
+        // laydate.render({
+        //     elem: '#test22'
+        //     ,showBottom: false
+        //     ,position: 'static'
+        //     ,calendar: true
+        //     ,theme: '#a7a4a4'
+        // });
+
+       index= layedit.build('comment-input', {
+            tool: ['face', '|', 'left', 'center', 'right', 'link', 'unlink']
+            , height: 150
+        });
+        //相册
+        if($(window).width() > 750){
+            layer.photos({
+                photos: '.photos'
+                ,zIndex: 9999999999
+                ,anim: -1
+            });
+        } else {
+            $('body').on('click', '.photos img', function(){
+                window.open(this.src);
+            });
+        }
+
+            layer.open({
+                title: '目录',
+                type: 1,
+                offset: 'r',
+                shade: 0,
+                closeBtn: 2,
+                content: $(".markdown-toc")
+            });
+
+        // $('#affix-side').hcSticky({
+        //     stickTo: '#blog-body'
+        // });
+
+    });
+    function submit() {
+
+        var osname = detectOS();
+
+        var obj = new Object();
+        if (su) {
+           obj.img = su.avatar;
+           obj.replyName = su.nickname;
+        }
+        obj.content=layedit.getContent(index);
+        obj.browse=navigator.appName;
+        obj.osname=osname;
+        obj.time=new Date();
+        obj.replyBody="";
+
+        obj.comment= obj.content;
+        if(!obj.comment){
+            layer.msg('不能为空');
+            return false;
+        }
+        var indexc = layer.load();
+        obj.userId=su.id;
+        obj.user=su.id;
+        obj.articleId=articleId;
+        obj.enable=true;
+        obj.parentId=0;
+
+         obj.time =new Date();
+
+
+
+
+        $.post("/token/comment/sub",obj, function (resp) {
+            layer.close(indexc);
+            $(window.frames["LAY_layedit_1"].document).find("body").html('');
+            layer.msg(resp.message);
+            setTimeout(function () {
+                if (resp.code === 200) {
+                    $(".comment-list").addCommentList({data:[],add:obj});
+                }
+            }, 1000);
+        });
+
+    };
+
+    function emotion() {
+        var uid = "guest";
+        if (BMY.getCookie("article::" + 1551602648890 + "::" + uid) != null) {
+            layer.msg("近期您已经点过赞，感谢您的支持！");
+        } else {
+            $.post("/article/approve", {articleId: 1551602648890}, function (json) {
+                if (json.code === BMY.status.ok) {
+                    BMY.setCookie("article::" + 1551602648890+ "::" + uid, "noteblog system");
+                  //  that.approve++;
+                    $('#za').html('赞 (156)')
+                    layer.msg("谢谢您的支持！");
+                }
+            })
+        }
+    }
+    function money  (alipay, wechat) {
+        alipay = "#\/static\/assets\/img\/wechat.png";
+        wechat="#\/static\/assets\/img\/alipay.png";
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['640px', '300px'],
+            shadeClose: true,
+            skin: 'text-center',
+            content:
+                '<div class="layui-fluid">' +
+                '   <div class="layui-row layui-mt20">' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + wechat + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">微信</p>' +
+                '       </div>' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + alipay + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">支付宝</p>' +
+                '       </div>' +
+                '   </div> ' +
+                '</div>'
+        });
+    }
+
+
+
+
+</script>
+<script src="../static/assets/js/jquery.comment.js" ></script>
+</body>
+
+<!-- Mirrored from www.nonelonely.com/article/1551602648890 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:05:39 GMT -->
+</html>

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Mirrored from www.nonelonely.com/article/1555940707997 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:02:31 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+
+    <title>Java对象的浅克隆和2种深克隆的使用- 书生个人博客</title>
+    <link href="../static/plugins/editormd/css/editormd.min.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+<meta name="baidu_union_verify" content="3e514e79dc5e7201b9bee186137e9562">
+<meta name="keywords" content="Java,浅克隆,深克隆">
+
+<meta name="description" content="我们要获得一个对象的副本时，用new创建对象再对各个域赋值，还不如直接对象克隆。Java的对象克隆有浅克隆和深克隆之分。但是不管怎么样，我们都要实现Object类的clone()方法。Object类的clone()方法当需要克隆对象时,需要使用Object类的clone()方法，该方法的声明如下:protectednativeObjectclone()throwsCloneNotSupportedException;通常我们继承Clone">
+
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../static/plugins/layui/css/layui.css">
+<link rel="stylesheet" href="../static/plugins/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../static/assets/css/frontend/base.css">
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "../../hm.baidu.com/hm6618.js?c07ddd5b98c69450ebd8e255627f70b0";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <link rel="canonical" href="1555940707997.html"/>
+    <script src="../../msite.baidu.com/sdk/cb688.js?appid=1622832448885693"></script>
+    <script src="../static/plugins/jquery/jquery.min.js"></script>
+     <style>
+         @media screen and (max-width: 767px) {
+             .layui-layer-page {
+                 display: none;
+             }
+         }
+
+         .markdown-body.layui-layer-content {
+             padding: 20px;
+             /*background-image: url("/static/assets/img/long.png");*/
+         }
+         .markdown-body  .layui-layer-title{
+             background-color: #e4e4e400;
+         }
+         .markdown-body  .layui-layer{
+             background-color: #e4e4e4;
+             background-image: url("../static/assets/img/long.png") ;
+             background-size: 100% 100%;
+         }
+         .markdown-body .layui-layer-content {
+
+            padding: 20px;
+         }
+
+     </style>
+
+</head>
+<body class="animated fadeIn">
+
+<div class="wrapper" >
+    <header>
+    <div class="headtop"></div>
+    <div class="contenttop">
+        <div class="logo f_l"> Java码猿-书生个人博客</div>
+        <div class="search f_r">
+            <input name="keyboard"  id="bdcsMain" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+            <input name="Submit" class="input_submit" onclick="window.open('http://zhannei.baidu.com/cse/search?s=6583887351044514798&entry=1&q='+document.getElementById('bdcsMain').value)" value="搜索" type="button">
+            <!--<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=6583887351044514798' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>-->
+            <ul class="layui-nav" style="background-color: rgba(0,0,0,0);" >
+                
+                
+
+                <li  class="layui-nav-item"><a href="#"  style="color: #000;" onclick="goto()" title="QQ登入" class="iconfont icon-qq"></a>
+                </li>
+            </ul>
+
+
+        </div>
+        <div class="blank"></div>
+
+        <nav>
+            <div  class="navigation">
+                <ul class="menu">
+                    <li><a href="../index.html">网站首页</a></li>
+                    <li><a href="#">技术文章</a>
+                        <ul >
+                            <li><a  href="../pages748a.html?cateId=1">Spring系列</a></li>
+                            <li><a  href="../pages3c7b.html?cateId=6">前端开发</a></li>
+                            <li><a  href="../pages4ead.html?cateId=7">软件安装</a></li>
+                            <li><a  href="../pages8396.html?cateId=9">Java语法</a></li>
+                            <li><a  href="../pagesff6a.html?cateId=10">资源下载</a></li>
+                            <li><a  href="../pagesad9e.html?cateId=12">ORM框架</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="../note.html">我的日记</a> </li>
+                    <li><a href="../msg.html">给我留言</a> </li>
+                    <li><a href="../about.html">关于</a></li>
+                </ul>
+            </div>
+        </nav>
+        <SCRIPT type=text/javascript>
+            // Navigation Menu
+            $(function() {
+                $(".menu ul").css({display: "none"}); // Opera Fix
+                $(".menu li").hover(function(){
+                    $(this).find('ul:first').css({visibility: "visible",display: "none"}).slideDown("normal");
+                },function(){
+                    $(this).find('ul:first').css({visibility: "hidden"});
+                });
+            });
+
+            function  search() {
+                var s=$('#keyboard').val();
+                location.href = s === "" ? "/" : "/pages?searchStr=" + s;
+            };
+            function goto () {
+                var url = window.location.href;
+                var winObj = window.open('/api/qq?url=' + url, '_self');
+            }
+        </SCRIPT>
+
+    </div>
+</header>
+    <div class="jztop"></div>
+
+    <!--<bmy-article-page :alipay="params.alipay" :wechat="params.wechat_pay" :su="su">-->
+        <!--<div th:insert ="frontend/fragment/articlepage :: article"  slot="article"></div>-->
+        <!--<div  th:insert="frontend/fragment/comment :: comment" slot="post"></div>-->
+
+        <!--<bmy-comment-list slot="comment" :comments="comments" :tips="params.comment_notice"-->
+                          <!--:re="params.all_comment_open == 1 && article.commented"></bmy-comment-list>-->
+       <!--<bmy-search slot="search"></bmy-search>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相似文章'})" slot="similar"></div>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${lots},${'热度文章'})" slot="lot"></div>-->
+    <!--</bmy-article-page>-->
+
+    <div id="blog-body" class="layui-container">
+       <div class="layui-row layui-col-space10">
+           <div id="blog-info" class="layui-col-md12">
+                <div class="layui-collapse layui-panel layui-article photos" >
+
+                     <div  ><div class="layui-colla-item">
+                    <h2 class="nh1"><span>您现在的位置是：<a href="../index.html" target="_blank">网站首页</a>>><a href="#" target="_blank">信息浏览</a>
+                    </span><b>文章详情</b></h2>
+                          <div class="layui-colla-content layui-show layui-article">
+                                   <fieldset class="layui-elem-field layui-field-title layui-article-page-title">
+                                       <legend class="center-to-head" align="center">Java对象的浅克隆和2种深克隆的使用</legend>
+                                      </fieldset>
+                                  <div class="layui-text layui-blog-body">
+                                           <div class="layui-row">
+                                                  <div class="layui-col-md6 layui-col-md-offset3 text-center blog-base-info">
+                                                           <span><i class="fa fa-clock-o" ></i>2019-04-22 21:45 </span>
+                                                           <span><i class="fa fa-user-o"></i> <span style="color: #FF5722;">许多年以后</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-renzhengkaobei"></use></svg></span>
+                                                          <span><i class="fa fa-comment-o"></i></span>
+                                                           <span><i class="fa fa-eye"></i> 1479</span>
+                                                       </div>
+                                               </div>
+                                      <!-- Baidu Button BEGIN -->
+                                           <!--<div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">-->
+                                                  <!--<span class="bds_more">分享到：</span>-->
+                                                  <!--<a class="bds_qzone"></a>-->
+                                                  <!--<a class="bds_tsina"></a>-->
+                                                  <!--<a class="bds_tqq"></a>-->
+                                                  <!--<a class="bds_renren"></a>-->
+                                                  <!--<a class="bds_t163"></a>-->
+                                                  <!--<a class="shareCount"></a>-->
+                                          <!--</div>-->
+                                          <!--<script type="text/javascript" id="bdshare_js" data="type=tools&uid=6701193" ></script>-->
+                                          <!--<script type="text/javascript" id="bdshell_js"></script>-->
+                                          <!--<script type="text/javascript">-->
+                                              <!--document.getElementById("bdshell_js").src = "https://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)-->
+                                          <!--</script>-->
+                                      <!-- Baidu Button END -->
+                                           <hr>
+                                           <div class="content detail markdown-body editormd-preview-container editormd-preview-active"><blockquote>
+<p>我们要获得一个对象的副本时，用new创建对象再对各个域赋值，还不如直接对象克隆。Java的对象克隆有浅克隆和深克隆之分。但是不管怎么样，我们都要实现Object类的clone()方法。</p>
+</blockquote>
+<p><strong>Object类的clone()方法</strong></p>
+<p>当需要克隆对象时,需要使用Object类的clone()方法，该方法的声明如下:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln"> </span><span class="kwd">protected</span><span class="pln"> </span><span class="kwd">native</span><span class="pln"> </span><span class="typ">Object</span><span class="pln"> clone</span><span class="pun">()</span><span class="pln"> </span><span class="kwd">throws</span><span class="pln"> </span><span class="typ">CloneNotSupportedException</span><span class="pun">;</span></code></li></ol></pre><p>通常我们继承Cloneable接口实现这个方法，我们要把这个方法的权限变成<strong>public</strong>。</p>
+<p><strong>浅克隆</strong><br>我们编写2个类，分别是Dog和Cat，在Cat中声明Dog,然后我们克隆Cat，发现Dog没有被克隆，这就是浅克隆，不能克隆引用对象。<br>代码:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">Dog</span><span class="pln">  </span><span class="pun">{</span></code></li><li class="L1"><code class="lang-java"><span class="pln">     </span><span class="kwd">static</span><span class="pln"> </span><span class="kwd">final</span><span class="pln"> </span><span class="kwd">long</span><span class="pln"> serialVersionUID </span><span class="pun">=</span><span class="pln"> </span><span class="lit">1L</span><span class="pun">;</span></code></li><li class="L2"><code class="lang-java"><span class="pln">     </span><span class="kwd">private</span><span class="pln">  </span><span class="typ">String</span><span class="pln"> name</span><span class="pun">;</span></code></li><li class="L3"><code class="lang-java"><span class="pln">     </span><span class="kwd">private</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> age</span><span class="pun">;</span></code></li><li class="L4"><code class="lang-java"></code></li><li class="L5"><code class="lang-java"><span class="pln">    </span><span class="kwd">public</span><span class="pln"> </span><span class="typ">Dog</span><span class="pun">(</span><span class="typ">String</span><span class="pln"> name</span><span class="pun">,</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> age</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L6"><code class="lang-java"><span class="pln">        </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">name </span><span class="pun">=</span><span class="pln"> name</span><span class="pun">;</span></code></li><li class="L7"><code class="lang-java"><span class="pln">        </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">age </span><span class="pun">=</span><span class="pln"> age</span><span class="pun">;</span></code></li><li class="L8"><code class="lang-java"><span class="pln">   </span><span class="pun">}</span></code></li><li class="L9"><code class="lang-java"><span class="com">//.....set和get方法</span></code></li><li class="L0"><code class="lang-java"></code></li><li class="L1"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<p>Cat：</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">Cat</span><span class="pln"> </span><span class="kwd">implements</span><span class="pln"> </span><span class="typ">Cloneable</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L1"><code class="lang-java"></code></li><li class="L2"><code class="lang-java"><span class="pln">    </span><span class="kwd">private</span><span class="pln"> </span><span class="typ">Dog</span><span class="pln"> d</span><span class="pun">;</span></code></li><li class="L3"><code class="lang-java"><span class="pln">    </span><span class="kwd">private</span><span class="pln">  </span><span class="typ">String</span><span class="pln"> name</span><span class="pun">;</span></code></li><li class="L4"><code class="lang-java"></code></li><li class="L5"><code class="lang-java"><span class="pln">    </span><span class="kwd">public</span><span class="pln"> </span><span class="typ">Cat</span><span class="pun">(</span><span class="typ">Dog</span><span class="pln"> d</span><span class="pun">,</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> name</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L6"><code class="lang-java"><span class="pln">        </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">d </span><span class="pun">=</span><span class="pln"> d</span><span class="pun">;</span></code></li><li class="L7"><code class="lang-java"><span class="pln">        </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">name </span><span class="pun">=</span><span class="pln"> name</span><span class="pun">;</span></code></li><li class="L8"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li><li class="L9"><code class="lang-java"><span class="com">//.....set和get方法</span></code></li><li class="L0"><code class="lang-java"><span class="pln">     </span><span class="lit">@Override</span></code></li><li class="L1"><code class="lang-java"><span class="pln">    </span><span class="kwd">public</span><span class="pln"> </span><span class="typ">Cat</span><span class="pln"> clone</span><span class="pun">(){</span></code></li><li class="L2"><code class="lang-java"><span class="pln">     </span><span class="typ">Cat</span><span class="pln"> cat</span><span class="pun">=</span><span class="kwd">null</span><span class="pun">;</span></code></li><li class="L3"><code class="lang-java"><span class="pln">     </span><span class="kwd">try</span><span class="pun">{</span></code></li><li class="L4"><code class="lang-java"><span class="pln">        cat</span><span class="pun">=(</span><span class="pln"> </span><span class="typ">Cat</span><span class="pun">)</span><span class="kwd">super</span><span class="pun">.</span><span class="pln">clone</span><span class="pun">();</span></code></li><li class="L5"><code class="lang-java"></code></li><li class="L6"><code class="lang-java"><span class="pln">     </span><span class="pun">}</span><span class="kwd">catch</span><span class="pln"> </span><span class="pun">(</span><span class="typ">Exception</span><span class="pln"> e</span><span class="pun">){</span></code></li><li class="L7"><code class="lang-java"><span class="pln">         e</span><span class="pun">.</span><span class="pln">printStackTrace</span><span class="pun">();</span></code></li><li class="L8"><code class="lang-java"><span class="pln">     </span><span class="pun">}</span></code></li><li class="L9"><code class="lang-java"><span class="pln">      </span><span class="kwd">return</span><span class="pln"> cat</span><span class="pun">;</span></code></li><li class="L0"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li><li class="L1"><code class="lang-java"></code></li><li class="L2"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<p>测试:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> test  </span><span class="pun">{</span></code></li><li class="L1"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">static</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> main </span><span class="pun">(</span><span class="typ">String</span><span class="pln"> arg</span><span class="pun">[])</span><span class="pln"> </span><span class="kwd">throws</span><span class="pln">  </span><span class="typ">Exception</span><span class="pun">{</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    </span><span class="typ">Dog</span><span class="pln"> d</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Dog</span><span class="pun">(</span><span class="str">"xiao"</span><span class="pun">,</span><span class="str">"16"</span><span class="pun">);</span></code></li><li class="L3"><code class="lang-java"><span class="pln">    </span><span class="typ">Cat</span><span class="pln"> c</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Cat</span><span class="pun">(</span><span class="pln">d</span><span class="pun">,</span><span class="str">"ming"</span><span class="pun">);</span></code></li><li class="L4"><code class="lang-java"><span class="pln">    </span><span class="typ">Cat</span><span class="pln"> c1</span><span class="pun">=</span><span class="pln">c</span><span class="pun">.</span><span class="pln">clone</span><span class="pun">();</span></code></li><li class="L5"><code class="lang-java"><span class="pln">    </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"2个对象是否相同:"</span><span class="pun">);</span></code></li><li class="L6"><code class="lang-java"><span class="pln">    </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="pln">c1</span><span class="pun">==</span><span class="pln">c</span><span class="pun">);</span></code></li><li class="L7"><code class="lang-java"><span class="pln">    </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"改变c1,看看会影响c对象吗?"</span><span class="pun">);</span></code></li><li class="L8"><code class="lang-java"><span class="pln">    c1</span><span class="pun">.</span><span class="pln">setName</span><span class="pun">(</span><span class="str">"c1的ming"</span><span class="pun">);</span></code></li><li class="L9"><code class="lang-java"><span class="pln">    c1</span><span class="pun">.</span><span class="pln">getD</span><span class="pun">().</span><span class="pln">setAge</span><span class="pun">(</span><span class="str">"c1的16"</span><span class="pun">);</span></code></li><li class="L0"><code class="lang-java"><span class="pln">    </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"输出c:"</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pln">    </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"name："</span><span class="pun">+</span><span class="pln">c</span><span class="pun">.</span><span class="pln">getName</span><span class="pun">());</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"Dog的age："</span><span class="pun">+</span><span class="pln">c</span><span class="pun">.</span><span class="pln">getD</span><span class="pun">().</span><span class="pln">getAge</span><span class="pun">());</span></code></li><li class="L3"><code class="lang-java"></code></li><li class="L4"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li><li class="L5"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<p>结果:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="lit">2</span><span class="pun">个对象是否相同:</span></code></li><li class="L1"><code class="lang-java"><span class="kwd">false</span></code></li><li class="L2"><code class="lang-java"><span class="pun">改变</span><span class="pln">c1</span><span class="pun">,看看会影响</span><span class="pln">c</span><span class="pun">对象吗?</span></code></li><li class="L3"><code class="lang-java"><span class="pun">输出</span><span class="pln">c</span><span class="pun">:</span></code></li><li class="L4"><code class="lang-java"><span class="pln">name</span><span class="pun">：</span><span class="pln">ming</span></code></li><li class="L5"><code class="lang-java"><span class="typ">Dog</span><span class="pun">的</span><span class="pln">age</span><span class="pun">：</span><span class="pln">c1</span><span class="pun">的</span><span class="lit">16</span></code></li></ol></pre>
+<blockquote>
+<p>我们从结果看出:这2个对象是不一样的，改变克隆对象的name不能改变c的对象，说明c1和c对象的name不一样，但是我们改变c1的Dog，也改变了c的Dog对象，说明克隆对象中的引用对象和被克隆对象中的引用对象是同一个。<strong>则这就是浅克隆，只能克隆除了基本类型和String的域，而引用对象还是同一个</strong>。</p>
+</blockquote>
+<p><strong>Java对象的深克隆</strong><br>正如浅克隆不能克隆引用对象，如果连引用对象都能克隆，这就是深克隆。对于深克隆，我们有2种方法，分别:将引用类型也进行克隆或者用序列化反序列化进行克隆。</p>
+<p><strong>将引用类型也进行深克隆</strong></p>
+<p>对于上面的浅克隆，我们只要将Dog也克隆就行<br>Dog类</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">Dog</span><span class="pln">  </span><span class="kwd">implements</span><span class="pln"> </span><span class="typ">Cloneable</span><span class="pun">{</span></code></li><li class="L1"><code class="lang-java"></code></li><li class="L2"><code class="lang-java"><span class="pln">     </span><span class="kwd">private</span><span class="pln">  </span><span class="typ">String</span><span class="pln"> name</span><span class="pun">;</span></code></li><li class="L3"><code class="lang-java"><span class="pln">     </span><span class="kwd">private</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> age</span><span class="pun">;</span></code></li><li class="L4"><code class="lang-java"></code></li><li class="L5"><code class="lang-java"><span class="pln">    </span><span class="kwd">public</span><span class="pln"> </span><span class="typ">Dog</span><span class="pun">(</span><span class="typ">String</span><span class="pln"> name</span><span class="pun">,</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> age</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L6"><code class="lang-java"><span class="pln">        </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">name </span><span class="pun">=</span><span class="pln"> name</span><span class="pun">;</span></code></li><li class="L7"><code class="lang-java"><span class="pln">        </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">age </span><span class="pun">=</span><span class="pln"> age</span><span class="pun">;</span></code></li><li class="L8"><code class="lang-java"><span class="pln">   </span><span class="pun">}</span></code></li><li class="L9"><code class="lang-java"><span class="com">//.....set和get方法</span></code></li><li class="L0"><code class="lang-java"><span class="pln">    </span><span class="lit">@Override</span></code></li><li class="L1"><code class="lang-java"><span class="pln">    </span><span class="kwd">public</span><span class="pln"> </span><span class="typ">Dog</span><span class="pln"> clone</span><span class="pun">(){</span></code></li><li class="L2"><code class="lang-java"><span class="pln">        </span><span class="typ">Dog</span><span class="pln"> dog</span><span class="pun">=</span><span class="kwd">null</span><span class="pun">;</span></code></li><li class="L3"><code class="lang-java"><span class="pln">        </span><span class="kwd">try</span><span class="pun">{</span></code></li><li class="L4"><code class="lang-java"><span class="pln">            dog</span><span class="pun">=(</span><span class="pln"> </span><span class="typ">Dog</span><span class="pun">)</span><span class="kwd">super</span><span class="pun">.</span><span class="pln">clone</span><span class="pun">();</span></code></li><li class="L5"><code class="lang-java"></code></li><li class="L6"><code class="lang-java"><span class="pln">        </span><span class="pun">}</span><span class="kwd">catch</span><span class="pln"> </span><span class="pun">(</span><span class="typ">Exception</span><span class="pln"> e</span><span class="pun">){</span></code></li><li class="L7"><code class="lang-java"><span class="pln">            e</span><span class="pun">.</span><span class="pln">printStackTrace</span><span class="pun">();</span></code></li><li class="L8"><code class="lang-java"><span class="pln">        </span><span class="pun">}</span></code></li><li class="L9"><code class="lang-java"><span class="pln">        </span><span class="kwd">return</span><span class="pln"> dog</span><span class="pun">;</span></code></li><li class="L0"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li><li class="L1"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<p>Cat类:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"></code></li><li class="L1"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">Cat</span><span class="pln"> </span><span class="kwd">implements</span><span class="pln"> </span><span class="typ">Cloneable</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L2"><code class="lang-java"></code></li><li class="L3"><code class="lang-java"><span class="pln">    </span><span class="kwd">private</span><span class="pln"> </span><span class="typ">Dog</span><span class="pln"> d</span><span class="pun">;</span></code></li><li class="L4"><code class="lang-java"><span class="pln">    </span><span class="kwd">private</span><span class="pln">  </span><span class="typ">String</span><span class="pln"> name</span><span class="pun">;</span></code></li><li class="L5"><code class="lang-java"></code></li><li class="L6"><code class="lang-java"><span class="pln">    </span><span class="kwd">public</span><span class="pln"> </span><span class="typ">Cat</span><span class="pun">(</span><span class="typ">Dog</span><span class="pln"> d</span><span class="pun">,</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> name</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L7"><code class="lang-java"><span class="pln">        </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">d </span><span class="pun">=</span><span class="pln"> d</span><span class="pun">;</span></code></li><li class="L8"><code class="lang-java"><span class="pln">        </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">name </span><span class="pun">=</span><span class="pln"> name</span><span class="pun">;</span></code></li><li class="L9"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li><li class="L0"><code class="lang-java"><span class="com">//.....set和get方法</span></code></li><li class="L1"><code class="lang-java"><span class="pln">     </span><span class="lit">@Override</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    </span><span class="kwd">public</span><span class="pln"> </span><span class="typ">Cat</span><span class="pln"> clone</span><span class="pun">(){</span></code></li><li class="L3"><code class="lang-java"><span class="pln">     </span><span class="typ">Cat</span><span class="pln"> cat</span><span class="pun">=</span><span class="kwd">null</span><span class="pun">;</span></code></li><li class="L4"><code class="lang-java"><span class="pln">     </span><span class="kwd">try</span><span class="pun">{</span></code></li><li class="L5"><code class="lang-java"><span class="pln">        cat</span><span class="pun">=(</span><span class="pln"> </span><span class="typ">Cat</span><span class="pun">)</span><span class="kwd">super</span><span class="pun">.</span><span class="pln">clone</span><span class="pun">();</span></code></li><li class="L6"><code class="lang-java"><span class="pln">        cat</span><span class="pun">.</span><span class="pln">d</span><span class="pun">=</span><span class="pln"> d</span><span class="pun">.</span><span class="pln">clone</span><span class="pun">();</span></code></li><li class="L7"><code class="lang-java"><span class="pln">     </span><span class="pun">}</span><span class="kwd">catch</span><span class="pln"> </span><span class="pun">(</span><span class="typ">Exception</span><span class="pln"> e</span><span class="pun">){</span></code></li><li class="L8"><code class="lang-java"><span class="pln">         e</span><span class="pun">.</span><span class="pln">printStackTrace</span><span class="pun">();</span></code></li><li class="L9"><code class="lang-java"><span class="pln">     </span><span class="pun">}</span></code></li><li class="L0"><code class="lang-java"><span class="pln">      </span><span class="kwd">return</span><span class="pln"> cat</span><span class="pun">;</span></code></li><li class="L1"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li><li class="L2"><code class="lang-java"></code></li><li class="L3"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<p>测试:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> test  </span><span class="pun">{</span></code></li><li class="L1"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">static</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> main </span><span class="pun">(</span><span class="typ">String</span><span class="pln"> arg</span><span class="pun">[])</span><span class="pln"> </span><span class="kwd">throws</span><span class="pln">  </span><span class="typ">Exception</span><span class="pun">{</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    </span><span class="typ">Dog</span><span class="pln"> d</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Dog</span><span class="pun">(</span><span class="str">"xiao"</span><span class="pun">,</span><span class="str">"16"</span><span class="pun">);</span></code></li><li class="L3"><code class="lang-java"><span class="pln">    </span><span class="typ">Cat</span><span class="pln"> c</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Cat</span><span class="pun">(</span><span class="pln">d</span><span class="pun">,</span><span class="str">"ming"</span><span class="pun">);</span></code></li><li class="L4"><code class="lang-java"><span class="pln">    </span><span class="typ">Cat</span><span class="pln"> c1</span><span class="pun">=</span><span class="pln">c</span><span class="pun">.</span><span class="pln">clone</span><span class="pun">();</span></code></li><li class="L5"><code class="lang-java"><span class="pln">    </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"2个对象是否相同:"</span><span class="pun">);</span></code></li><li class="L6"><code class="lang-java"><span class="pln">    </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="pln">c1</span><span class="pun">==</span><span class="pln">c</span><span class="pun">);</span></code></li><li class="L7"><code class="lang-java"><span class="pln">    </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"改变c1,看看会影响c对象吗?"</span><span class="pun">);</span></code></li><li class="L8"><code class="lang-java"><span class="pln">    c1</span><span class="pun">.</span><span class="pln">setName</span><span class="pun">(</span><span class="str">"c1的ming"</span><span class="pun">);</span></code></li><li class="L9"><code class="lang-java"><span class="pln">    c1</span><span class="pun">.</span><span class="pln">getD</span><span class="pun">().</span><span class="pln">setAge</span><span class="pun">(</span><span class="str">"c1的16"</span><span class="pun">);</span></code></li><li class="L0"><code class="lang-java"><span class="pln">    </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"输出c:"</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pln">    </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"name："</span><span class="pun">+</span><span class="pln">c</span><span class="pun">.</span><span class="pln">getName</span><span class="pun">());</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"Dog的age："</span><span class="pun">+</span><span class="pln">c</span><span class="pun">.</span><span class="pln">getD</span><span class="pun">().</span><span class="pln">getAge</span><span class="pun">());</span></code></li><li class="L3"><code class="lang-java"></code></li><li class="L4"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li><li class="L5"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<p>结果:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="lit">2</span><span class="pun">个对象是否相同:</span></code></li><li class="L1"><code class="lang-java"><span class="kwd">false</span></code></li><li class="L2"><code class="lang-java"><span class="pun">改变</span><span class="pln">c1</span><span class="pun">,看看会影响</span><span class="pln">c</span><span class="pun">对象吗?</span></code></li><li class="L3"><code class="lang-java"><span class="pun">输出</span><span class="pln">c</span><span class="pun">:</span></code></li><li class="L4"><code class="lang-java"><span class="pln">name</span><span class="pun">：</span><span class="pln">ming</span></code></li><li class="L5"><code class="lang-java"><span class="typ">Dog</span><span class="pun">的</span><span class="pln">age</span><span class="pun">：</span><span class="lit">16</span></code></li></ol></pre>
+<blockquote>
+<p>我们从结果看出:这2个对象是不一样的，重点在于我们改变了c1的Dog的值没有影响c的Dog。如果引用类型中还有可变的引用类型域的话，则该域也是需要克隆的，如Cat类的d,也是要克隆的。</p>
+</blockquote>
+<p><strong>用序列化反序列化进行深克隆</strong><br>对于上面的深克隆方法来说，如果一二个引用对象并不复杂，但是如果很多引用对象，就要一 一的克隆，这就很麻烦了，于是有了序列化反序列化进行深克隆。</p>
+<p>序列化可以把对象变成二进制流写入文件中，然后用反序列化读出对象就是一个新的对象了。当然对于克隆我们不需要保存，所以我们保存在二进制流数组中就行了。对于序列化和反序列化的文章可以看这篇:<a href="1555589128980.html" title="Java序列化和反序列化与transient关键字">Java序列化和反序列化与transient关键字</a></p>
+<p>代码:<br>Dog：</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">Dog</span><span class="pln">  </span><span class="kwd">implements</span><span class="pln"> </span><span class="typ">Serializable</span><span class="pun">{</span></code></li><li class="L1"><code class="lang-java"><span class="pln">   </span><span class="kwd">private</span><span class="pln">  </span><span class="kwd">static</span><span class="pln"> </span><span class="kwd">final</span><span class="pln">  </span><span class="kwd">long</span><span class="pln"> serialVersionUID </span><span class="pun">=</span><span class="pln"> </span><span class="lit">42L</span><span class="pun">;</span></code></li><li class="L2"><code class="lang-java"><span class="pln">     </span><span class="kwd">private</span><span class="pln">  </span><span class="typ">String</span><span class="pln"> name</span><span class="pun">;</span></code></li><li class="L3"><code class="lang-java"><span class="pln">     </span><span class="kwd">private</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> age</span><span class="pun">;</span></code></li><li class="L4"><code class="lang-java"></code></li><li class="L5"><code class="lang-java"><span class="pln">    </span><span class="kwd">public</span><span class="pln"> </span><span class="typ">Dog</span><span class="pun">(</span><span class="typ">String</span><span class="pln"> name</span><span class="pun">,</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> age</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L6"><code class="lang-java"><span class="pln">        </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">name </span><span class="pun">=</span><span class="pln"> name</span><span class="pun">;</span></code></li><li class="L7"><code class="lang-java"><span class="pln">        </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">age </span><span class="pun">=</span><span class="pln"> age</span><span class="pun">;</span></code></li><li class="L8"><code class="lang-java"><span class="pln">   </span><span class="pun">}</span></code></li><li class="L9"><code class="lang-java"><span class="com">//.....set和get方法</span></code></li><li class="L0"><code class="lang-java"></code></li><li class="L1"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<p>Cat:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">Cat</span><span class="pln"> </span><span class="kwd">implements</span><span class="pln"> </span><span class="typ">Cloneable</span><span class="pun">,</span><span class="pln"> </span><span class="typ">Serializable</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L1"><code class="lang-java"><span class="pln">    </span><span class="kwd">private</span><span class="pln">  </span><span class="kwd">static</span><span class="pln"> </span><span class="kwd">final</span><span class="pln">  </span><span class="kwd">long</span><span class="pln"> serialVersionUID </span><span class="pun">=</span><span class="pln"> </span><span class="lit">42L</span><span class="pun">;</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    </span><span class="kwd">private</span><span class="pln"> </span><span class="typ">Dog</span><span class="pln"> d</span><span class="pun">;</span></code></li><li class="L3"><code class="lang-java"><span class="pln">    </span><span class="kwd">private</span><span class="pln">  </span><span class="typ">String</span><span class="pln"> name</span><span class="pun">;</span></code></li><li class="L4"><code class="lang-java"></code></li><li class="L5"><code class="lang-java"><span class="pln">    </span><span class="kwd">public</span><span class="pln"> </span><span class="typ">Cat</span><span class="pun">(</span><span class="typ">Dog</span><span class="pln"> d</span><span class="pun">,</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> name</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L6"><code class="lang-java"><span class="pln">        </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">d </span><span class="pun">=</span><span class="pln"> d</span><span class="pun">;</span></code></li><li class="L7"><code class="lang-java"><span class="pln">        </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">name </span><span class="pun">=</span><span class="pln"> name</span><span class="pun">;</span></code></li><li class="L8"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li><li class="L9"><code class="lang-java"><span class="com">//.....set和get方法</span></code></li><li class="L0"><code class="lang-java"><span class="pln">     </span><span class="lit">@Override</span></code></li><li class="L1"><code class="lang-java"><span class="pln">    </span><span class="kwd">public</span><span class="pln"> </span><span class="typ">Cat</span><span class="pln"> clone</span><span class="pun">(){</span></code></li><li class="L2"><code class="lang-java"><span class="pln">     </span><span class="typ">Cat</span><span class="pln"> cat</span><span class="pun">=</span><span class="kwd">null</span><span class="pun">;</span></code></li><li class="L3"><code class="lang-java"><span class="pln">         </span><span class="typ">ByteArrayOutputStream</span><span class="pln"> bs</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">ByteArrayOutputStream</span><span class="pun">();</span></code></li><li class="L4"><code class="lang-java"></code></li><li class="L5"><code class="lang-java"><span class="pln">     </span><span class="kwd">try</span><span class="pun">{</span></code></li><li class="L6"><code class="lang-java"><span class="pln">         </span><span class="typ">ObjectOutputStream</span><span class="pln"> out</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">ObjectOutputStream</span><span class="pun">(</span><span class="pln">bs</span><span class="pun">);</span></code></li><li class="L7"><code class="lang-java"><span class="pln">         out</span><span class="pun">.</span><span class="pln">writeObject</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">);</span></code></li><li class="L8"><code class="lang-java"><span class="pln">         out</span><span class="pun">.</span><span class="pln">close</span><span class="pun">();</span></code></li><li class="L9"><code class="lang-java"><span class="pln">     </span><span class="pun">}</span><span class="kwd">catch</span><span class="pln"> </span><span class="pun">(</span><span class="typ">Exception</span><span class="pln"> e</span><span class="pun">){</span></code></li><li class="L0"><code class="lang-java"><span class="pln">         e</span><span class="pun">.</span><span class="pln">printStackTrace</span><span class="pun">();</span></code></li><li class="L1"><code class="lang-java"><span class="pln">     </span><span class="pun">}</span></code></li><li class="L2"><code class="lang-java"><span class="pln">     </span><span class="typ">ByteArrayInputStream</span><span class="pln"> is</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">ByteArrayInputStream</span><span class="pun">(</span><span class="pln">bs</span><span class="pun">.</span><span class="pln">toByteArray</span><span class="pun">());</span></code></li><li class="L3"><code class="lang-java"><span class="pln">         </span><span class="kwd">try</span><span class="pun">{</span></code></li><li class="L4"><code class="lang-java"><span class="pln">            </span><span class="typ">ObjectInputStream</span><span class="pln"> in</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">ObjectInputStream</span><span class="pun">(</span><span class="pln">is</span><span class="pun">);</span></code></li><li class="L5"><code class="lang-java"><span class="pln">             cat</span><span class="pun">=(</span><span class="typ">Cat</span><span class="pun">)</span><span class="pln"> in</span><span class="pun">.</span><span class="pln">readObject</span><span class="pun">();</span></code></li><li class="L6"><code class="lang-java"><span class="pln">             in</span><span class="pun">.</span><span class="pln">close</span><span class="pun">();</span></code></li><li class="L7"><code class="lang-java"></code></li><li class="L8"><code class="lang-java"><span class="pln">         </span><span class="pun">}</span><span class="kwd">catch</span><span class="pln"> </span><span class="pun">(</span><span class="typ">Exception</span><span class="pln"> e</span><span class="pun">){</span></code></li><li class="L9"><code class="lang-java"><span class="pln">             e</span><span class="pun">.</span><span class="pln">printStackTrace</span><span class="pun">();</span></code></li><li class="L0"><code class="lang-java"><span class="pln">         </span><span class="pun">}</span></code></li><li class="L1"><code class="lang-java"></code></li><li class="L2"><code class="lang-java"><span class="pln">      </span><span class="kwd">return</span><span class="pln"> cat</span><span class="pun">;</span></code></li><li class="L3"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li><li class="L4"><code class="lang-java"></code></li><li class="L5"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<p>测试:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> test  </span><span class="pun">{</span></code></li><li class="L1"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">static</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> main </span><span class="pun">(</span><span class="typ">String</span><span class="pln"> arg</span><span class="pun">[])</span><span class="pln"> </span><span class="kwd">throws</span><span class="pln">  </span><span class="typ">Exception</span><span class="pun">{</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    </span><span class="typ">Dog</span><span class="pln"> d</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Dog</span><span class="pun">(</span><span class="str">"xiao"</span><span class="pun">,</span><span class="str">"16"</span><span class="pun">);</span></code></li><li class="L3"><code class="lang-java"><span class="pln">    </span><span class="typ">Cat</span><span class="pln"> c</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Cat</span><span class="pun">(</span><span class="pln">d</span><span class="pun">,</span><span class="str">"ming"</span><span class="pun">);</span></code></li><li class="L4"><code class="lang-java"><span class="pln">    </span><span class="typ">Cat</span><span class="pln"> c1</span><span class="pun">=</span><span class="pln">c</span><span class="pun">.</span><span class="pln">clone</span><span class="pun">();</span></code></li><li class="L5"><code class="lang-java"><span class="pln">    </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"2个对象是否相同:"</span><span class="pun">);</span></code></li><li class="L6"><code class="lang-java"><span class="pln">    </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="pln">c1</span><span class="pun">==</span><span class="pln">c</span><span class="pun">);</span></code></li><li class="L7"><code class="lang-java"><span class="pln">    </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"改变c1,看看会影响c对象吗?"</span><span class="pun">);</span></code></li><li class="L8"><code class="lang-java"><span class="pln">    c1</span><span class="pun">.</span><span class="pln">setName</span><span class="pun">(</span><span class="str">"c1的ming"</span><span class="pun">);</span></code></li><li class="L9"><code class="lang-java"><span class="pln">    c1</span><span class="pun">.</span><span class="pln">getD</span><span class="pun">().</span><span class="pln">setAge</span><span class="pun">(</span><span class="str">"c1的16"</span><span class="pun">);</span></code></li><li class="L0"><code class="lang-java"><span class="pln">    </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"输出c:"</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pln">    </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"name："</span><span class="pun">+</span><span class="pln">c</span><span class="pun">.</span><span class="pln">getName</span><span class="pun">());</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    </span><span class="typ">System</span><span class="pun">.</span><span class="pln">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"Dog的age："</span><span class="pun">+</span><span class="pln">c</span><span class="pun">.</span><span class="pln">getD</span><span class="pun">().</span><span class="pln">getAge</span><span class="pun">());</span></code></li><li class="L3"><code class="lang-java"></code></li><li class="L4"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li><li class="L5"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<p>结果:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="lit">2</span><span class="pun">个对象是否相同:</span></code></li><li class="L1"><code class="lang-java"><span class="kwd">false</span></code></li><li class="L2"><code class="lang-java"><span class="pun">改变</span><span class="pln">c1</span><span class="pun">,看看会影响</span><span class="pln">c</span><span class="pun">对象吗?</span></code></li><li class="L3"><code class="lang-java"><span class="pun">输出</span><span class="pln">c</span><span class="pun">:</span></code></li><li class="L4"><code class="lang-java"><span class="pln">name</span><span class="pun">：</span><span class="pln">ming</span></code></li><li class="L5"><code class="lang-java"><span class="typ">Dog</span><span class="pun">的</span><span class="pln">age</span><span class="pun">：</span><span class="lit">16</span></code></li></ol></pre>
+<blockquote>
+<p>我们从结果看出:这2个对象是不一样的，重点在于我们改变了c1的Dog的值没有影响c的Dog。对于任何一个序列化的对象，都是要求实现Serializable接口，如果该对象中还有引用对象，这个引用对象也要实现Serializable接口，但是这个方法会比上面的方法慢。</p>
+</blockquote>
+</div>
+                                      </div>
+                                   <div class="layui-row text-center layui-mt20">
+                                           
+                                           <div class="layui-btn layui-btn-danger" onclick="emotion()"><i class="fa fa-thumbs-o-up" id="za"> 赞 (81)</i></div>
+                                       </div>
+                                   <div class="layui-row layui-mt20">
+                                         <blockquote class="layui-elem-quote text-center " style="border: none;">
+                                                  <span class="layui-show-md-inline-block layui-hide"  >文章出处：书生个人博客</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                   <span class="layui-show-md-inline-block layui-hide" id="artiurl"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                  <span>转载注明下哦！o(≧v≦)o~~</span>
+                                           </blockquote>
+                                    </div>
+                                 <div class="layui-row layui-mt20">
+                                         <p class="blog-tags">
+                                              标签：
+                                                       <span >Java</span><span >浅克隆</span><span >深克隆</span>
+
+                                               </p>
+                                 </div>
+                                 <div class="layui-row layui-col-space20 layui-mt20 article-page-similar">
+                                           <p>相似文章：</p>
+                                            <hr>
+                                             <ul>
+                                                    <li><a href="1546506242654.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot配置整合第三方QQ登陆以及返回登陆前的页面</a> </li>
+                                                    <li><a href="1554548473306.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;开发自己IoC容器</a> </li>
+                                                    <li><a href="1556515641828.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot的数据缓存——基于Redis缓存技术的配置</a> </li>
+                                                    <li><a href="1563339259314.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot中集成Log4j2以及Log4j2的xml配置</a> </li>
+                                                    <li><a href="1546503121433.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot之@Component，@Bean与@Configuration配置</a> </li>
+                                                    <li><a href="1553356568899.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot使用Quartz实现定时器功能</a> </li>
+                                                    <li><a href="1565238567917.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;springMVC接收zip文件和直接解析读取zip文件信息</a> </li>
+                                                    <li><a href="1550049091199.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Spring Boot使用HandlerInterceptorAdapter和WebMvcConfigurerAdapter实现拦截器</a> </li>
+                                                    <li><a href="1553332085352.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;springboot使用注解＠Async开启异步调用</a> </li>
+                                                    <li><a href="1552210800270.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;通过源码看SpringMVC的DispatcherServlet</a> </li>
+                                              </ul>
+                                    </div>
+                               </div>
+                      <script>
+                          $("#artiurl").html("文章地址："+location.href);
+
+
+                      </script>
+
+                       </div></div>
+
+                </div>
+
+               <div  >
+<div id="cta" class="layui-collapse layui-panel layui-article">
+       <div class="layui-colla-item">
+               <div class="layui-colla-content layui-show layui-article comment">
+                       <fieldset class="layui-elem-field layui-field-title">
+                               <legend>随便说两句</legend>
+                               <div class="layui-field-box">
+                                       <label for="comment-input"></label>
+                                           <textarea id="comment-input" style="display: none;"></textarea>
+                                  </div>
+                               
+                               <a class="layui-btn layui-btn-sm layui-btn-danger" style="float: right;width: 120px;"  href="#"  onclick="javascript:beforeLogin()" id="beforeLogin"><i class="fa fa-qq"></i> 请先登录</a>
+                           </fieldset>
+                   </div>
+           </div>
+    </div>
+</div>
+<script>
+    function beforeLogin() {
+        var url=window.location.href;
+        window.open('/api/qq?url='+url,'_self');
+    }
+
+</script>
+
+               <blockquote id="cccc" class="layui-elem-quote layui-mt20" style="border-left: 5px solid #F44336;"><span style="color:#FF5722;">遵守国家法律法规，请勿回复无意义内容，请不要回复嵌套过多的楼层！</span></blockquote>
+               <div class="comment-list">
+
+</div>
+
+
+
+
+           </div>
+               <!--<div class="layui-col-md3" id="article-app">-->
+                       <!--<div id="affix-side">-->
+                           <!--<div th:replace="frontend/fragment/callme :: callme" ></div>-->
+                           <!--&lt;!&ndash;<div class="layui-tab layui-tab-card layui-master-recommend" >&ndash;&gt;-->
+                               <!--&lt;!&ndash;<div class="layui-tab-content select-none">&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<h3 class="tit">时光悄然</h3>&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<div class="layui-inline" id="test22"></div>&ndash;&gt;-->
+                               <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--<div th:replace ="frontend/fragment/guidang" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/imageinfo" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/cate" ></div>-->
+                           <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相关文章'})" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/image :: image"></div>-->
+                           <!--</div>-->
+                   <!--</div>-->
+           </div>
+    </div>
+
+
+    <footer >
+    <div class="footer"><p>
+	<span><strong>友情链接:</strong><strong>&nbsp;</strong> &nbsp;&nbsp;</span><a class="ke-insertfile" href="https://www.layui.com/" target="_blank">layui</a><span>&nbsp;&nbsp;</span>&nbsp;<a class="ke-insertfile" href="http://www.shuyong.net/" target="_blank">舍力博客</a>&nbsp;&nbsp;<a class="ke-insertfile" href="javascript:;" id="friend">申请友链</a> 
+</p>
+<p>
+	2018-2019 nonelonely.com | 网站备案号：<a class="ke-insertfile" href="http://www.miitbeian.gov.cn/" target="_blank">闽ICP备18026034号-1</a> 
+</p>
+<p>
+	<br />
+</p></div>
+
+    <div class="layui-hide-xs" style="position: fixed;left: 100px; bottom: 100px; z-index: 999999;" id="robot" data-method="robot">
+        <div class="layui-layer-tips" ><div id="" class="layui-layer-content" style="background-color: rgb(114, 193, 236);width: 150px">Hi 我是小码，可以点击我问我笑话，天气，智能聊天，故事，查询备案等等。<i class="layui-layer-TipsG layui-layer-TipsT" style="border-right-color:rgb(114, 193, 236);"></i></div><span class="layui-layer-setwin"></span></div>
+        <a href="#" ><img src="../static/assets/img/robot.png" width="100px" alt="Hi 我是小码！" >
+        </a>
+    </div>
+
+
+</footer>
+<script src="../static/plugins/layui/layui.js"></script>
+
+<script>
+    layui.use([ 'layer'], function () {
+        var layer = layui.layer;
+        var $ = layui.jquery;
+        //触发事件
+        var active = {
+            robot: function(){
+                var that = this;
+                $("#robot").css('display','none');
+                //多窗口模式，层叠置顶
+                layer.open({
+                    type: 2,
+                    title:'智能小码',
+                    area: ['600px', '480px'],
+                    content: '/webrobot',
+                    end:function () {
+                        $("#robot").css('display','');
+                    }
+                });
+            },
+            friend: function () {
+                layer.open({
+                    title: '申请友链'
+                    ,content: '发送邮件至：admin@nonelonely.com<br>' +
+                        '邮件标题为：申请书生个人博客友链'
+                });
+            }
+        };
+
+        $('#robot').on('click', function(){
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+        $('#friend').on('click', function(){
+            var othis = $(this), method = 'friend';
+            active[method] ? active[method].call(this, othis) : '';
+        });
+
+
+        // var la;
+            // la = layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot',
+            //     {
+            //         tips: [1, '#3595CC'],
+            //         end: function () {
+            //             if($("#robot").is(":visible")) {
+            //                 la = layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot',
+            //                     {tips: [1, '#3595CC']})
+            //             }
+            //         }
+            //     });
+            // window.setInterval(" if($('#robot').is(':visible')) {la=layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot', { tips: [1, '#3595CC'],end : function(){ la=layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot', {tips: [1, '#3595CC']});}});}", 10000*6 );
+
+    });
+</script>
+
+</div>
+
+
+
+
+<script>
+    var articleId=1555940707997;
+    var su=null ;
+    $(function(){
+        $(".comment-list").addCommentList({data:[],add:""});
+        $("#comment").click(function(){
+            var obj = new Object();
+            obj.img="images/img.html";
+            obj.replyName="匿名";
+            obj.content=$("#content").val();
+            obj.browse="深圳";
+            obj.osname="win10";
+            obj.replyBody="";
+            $(".comment-list").addCommentList({data:[],add:obj});
+        });
+    })
+
+    var layer;
+    var layedit;
+    var index;
+    layui.use(['layedit', 'laypage', 'laydate', 'element','layer'], function () {
+        layer = layui.layer;
+        var element = layui.element;
+        layedit = layui.layedit;
+        // var laydate = layui.laydate;
+        // //不出现底部栏
+        // laydate.render({
+        //     elem: '#test22'
+        //     ,showBottom: false
+        //     ,position: 'static'
+        //     ,calendar: true
+        //     ,theme: '#a7a4a4'
+        // });
+
+       index= layedit.build('comment-input', {
+            tool: ['face', '|', 'left', 'center', 'right', 'link', 'unlink']
+            , height: 150
+        });
+        //相册
+        if($(window).width() > 750){
+            layer.photos({
+                photos: '.photos'
+                ,zIndex: 9999999999
+                ,anim: -1
+            });
+        } else {
+            $('body').on('click', '.photos img', function(){
+                window.open(this.src);
+            });
+        }
+
+            layer.open({
+                title: '目录',
+                type: 1,
+                offset: 'r',
+                shade: 0,
+                closeBtn: 2,
+                content: $(".markdown-toc")
+            });
+
+        // $('#affix-side').hcSticky({
+        //     stickTo: '#blog-body'
+        // });
+
+    });
+    function submit() {
+
+        var osname = detectOS();
+
+        var obj = new Object();
+        if (su) {
+           obj.img = su.avatar;
+           obj.replyName = su.nickname;
+        }
+        obj.content=layedit.getContent(index);
+        obj.browse=navigator.appName;
+        obj.osname=osname;
+        obj.time=new Date();
+        obj.replyBody="";
+
+        obj.comment= obj.content;
+        if(!obj.comment){
+            layer.msg('不能为空');
+            return false;
+        }
+        var indexc = layer.load();
+        obj.userId=su.id;
+        obj.user=su.id;
+        obj.articleId=articleId;
+        obj.enable=true;
+        obj.parentId=0;
+
+         obj.time =new Date();
+
+
+
+
+        $.post("/token/comment/sub",obj, function (resp) {
+            layer.close(indexc);
+            $(window.frames["LAY_layedit_1"].document).find("body").html('');
+            layer.msg(resp.message);
+            setTimeout(function () {
+                if (resp.code === 200) {
+                    $(".comment-list").addCommentList({data:[],add:obj});
+                }
+            }, 1000);
+        });
+
+    };
+
+    function emotion() {
+        var uid = "guest";
+        if (BMY.getCookie("article::" + 1555940707997 + "::" + uid) != null) {
+            layer.msg("近期您已经点过赞，感谢您的支持！");
+        } else {
+            $.post("/article/approve", {articleId: 1555940707997}, function (json) {
+                if (json.code === BMY.status.ok) {
+                    BMY.setCookie("article::" + 1555940707997+ "::" + uid, "noteblog system");
+                  //  that.approve++;
+                    $('#za').html('赞 (82)')
+                    layer.msg("谢谢您的支持！");
+                }
+            })
+        }
+    }
+    function money  (alipay, wechat) {
+        alipay = "#\/static\/assets\/img\/wechat.png";
+        wechat="#\/static\/assets\/img\/alipay.png";
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['640px', '300px'],
+            shadeClose: true,
+            skin: 'text-center',
+            content:
+                '<div class="layui-fluid">' +
+                '   <div class="layui-row layui-mt20">' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + wechat + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">微信</p>' +
+                '       </div>' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + alipay + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">支付宝</p>' +
+                '       </div>' +
+                '   </div> ' +
+                '</div>'
+        });
+    }
+
+
+
+
+</script>
+<script src="../static/assets/js/jquery.comment.js" ></script>
+</body>
+
+<!-- Mirrored from www.nonelonely.com/article/1555940707997 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:02:32 GMT -->
+</html>

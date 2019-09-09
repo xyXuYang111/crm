@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Mirrored from www.nonelonely.com/article/1552475062917 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:05:32 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+
+    <title>深入了解WebApplicationInitializer是如何消除web.xml和springMVC的配置文件- 书生个人博客</title>
+    <link href="../static/plugins/editormd/css/editormd.min.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+<meta name="baidu_union_verify" content="3e514e79dc5e7201b9bee186137e9562">
+<meta name="keywords" content="springboot系列,原创">
+
+<meta name="description" content="SpringMVC提供了DispatcherServlet来开发web应用,在这篇配置SpringMVC应用的过程和使用，我们有用到web.xml和springmvc-config.xml,，而然springboot也是用到springMVC，那它怎么没有这些配置文件呢。其实servlet3.0后springMVC提供了WebApplicationInitializer接口替代了Web.xml。而JavaConfig的方式替代了springmvc-config.xml。ServletContainerI">
+
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../static/plugins/layui/css/layui.css">
+<link rel="stylesheet" href="../static/plugins/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../static/assets/css/frontend/base.css">
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "../../hm.baidu.com/hm6618.js?c07ddd5b98c69450ebd8e255627f70b0";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <link rel="canonical" href="1552475062917.html"/>
+    <script src="../../msite.baidu.com/sdk/cb688.js?appid=1622832448885693"></script>
+    <script src="../static/plugins/jquery/jquery.min.js"></script>
+     <style>
+         @media screen and (max-width: 767px) {
+             .layui-layer-page {
+                 display: none;
+             }
+         }
+
+         .markdown-body.layui-layer-content {
+             padding: 20px;
+             /*background-image: url("/static/assets/img/long.png");*/
+         }
+         .markdown-body  .layui-layer-title{
+             background-color: #e4e4e400;
+         }
+         .markdown-body  .layui-layer{
+             background-color: #e4e4e4;
+             background-image: url("../static/assets/img/long.png") ;
+             background-size: 100% 100%;
+         }
+         .markdown-body .layui-layer-content {
+
+            padding: 20px;
+         }
+
+     </style>
+
+</head>
+<body class="animated fadeIn">
+
+<div class="wrapper" >
+    <header>
+    <div class="headtop"></div>
+    <div class="contenttop">
+        <div class="logo f_l"> Java码猿-书生个人博客</div>
+        <div class="search f_r">
+            <input name="keyboard"  id="bdcsMain" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+            <input name="Submit" class="input_submit" onclick="window.open('http://zhannei.baidu.com/cse/search?s=6583887351044514798&entry=1&q='+document.getElementById('bdcsMain').value)" value="搜索" type="button">
+            <!--<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=6583887351044514798' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>-->
+            <ul class="layui-nav" style="background-color: rgba(0,0,0,0);" >
+                
+                
+
+                <li  class="layui-nav-item"><a href="#"  style="color: #000;" onclick="goto()" title="QQ登入" class="iconfont icon-qq"></a>
+                </li>
+            </ul>
+
+
+        </div>
+        <div class="blank"></div>
+
+        <nav>
+            <div  class="navigation">
+                <ul class="menu">
+                    <li><a href="../index.html">网站首页</a></li>
+                    <li><a href="#">技术文章</a>
+                        <ul >
+                            <li><a  href="../pages748a.html?cateId=1">Spring系列</a></li>
+                            <li><a  href="../pages3c7b.html?cateId=6">前端开发</a></li>
+                            <li><a  href="../pages4ead.html?cateId=7">软件安装</a></li>
+                            <li><a  href="../pages8396.html?cateId=9">Java语法</a></li>
+                            <li><a  href="../pagesff6a.html?cateId=10">资源下载</a></li>
+                            <li><a  href="../pagesad9e.html?cateId=12">ORM框架</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="../note.html">我的日记</a> </li>
+                    <li><a href="../msg.html">给我留言</a> </li>
+                    <li><a href="../about.html">关于</a></li>
+                </ul>
+            </div>
+        </nav>
+        <SCRIPT type=text/javascript>
+            // Navigation Menu
+            $(function() {
+                $(".menu ul").css({display: "none"}); // Opera Fix
+                $(".menu li").hover(function(){
+                    $(this).find('ul:first').css({visibility: "visible",display: "none"}).slideDown("normal");
+                },function(){
+                    $(this).find('ul:first').css({visibility: "hidden"});
+                });
+            });
+
+            function  search() {
+                var s=$('#keyboard').val();
+                location.href = s === "" ? "/" : "/pages?searchStr=" + s;
+            };
+            function goto () {
+                var url = window.location.href;
+                var winObj = window.open('/api/qq?url=' + url, '_self');
+            }
+        </SCRIPT>
+
+    </div>
+</header>
+    <div class="jztop"></div>
+
+    <!--<bmy-article-page :alipay="params.alipay" :wechat="params.wechat_pay" :su="su">-->
+        <!--<div th:insert ="frontend/fragment/articlepage :: article"  slot="article"></div>-->
+        <!--<div  th:insert="frontend/fragment/comment :: comment" slot="post"></div>-->
+
+        <!--<bmy-comment-list slot="comment" :comments="comments" :tips="params.comment_notice"-->
+                          <!--:re="params.all_comment_open == 1 && article.commented"></bmy-comment-list>-->
+       <!--<bmy-search slot="search"></bmy-search>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相似文章'})" slot="similar"></div>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${lots},${'热度文章'})" slot="lot"></div>-->
+    <!--</bmy-article-page>-->
+
+    <div id="blog-body" class="layui-container">
+       <div class="layui-row layui-col-space10">
+           <div id="blog-info" class="layui-col-md12">
+                <div class="layui-collapse layui-panel layui-article photos" >
+
+                     <div  ><div class="layui-colla-item">
+                    <h2 class="nh1"><span>您现在的位置是：<a href="../index.html" target="_blank">网站首页</a>>><a href="#" target="_blank">信息浏览</a>
+                    </span><b>文章详情</b></h2>
+                          <div class="layui-colla-content layui-show layui-article">
+                                   <fieldset class="layui-elem-field layui-field-title layui-article-page-title">
+                                       <legend class="center-to-head" align="center">深入了解WebApplicationInitializer是如何消除web.xml和springMVC的配置文件</legend>
+                                      </fieldset>
+                                  <div class="layui-text layui-blog-body">
+                                           <div class="layui-row">
+                                                  <div class="layui-col-md6 layui-col-md-offset3 text-center blog-base-info">
+                                                           <span><i class="fa fa-clock-o" ></i>2019-03-13 19:04 </span>
+                                                           <span><i class="fa fa-user-o"></i> <span style="color: #FF5722;">许多年以后</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-renzhengkaobei"></use></svg></span>
+                                                          <span><i class="fa fa-comment-o"></i></span>
+                                                           <span><i class="fa fa-eye"></i> 2378</span>
+                                                       </div>
+                                               </div>
+                                      <!-- Baidu Button BEGIN -->
+                                           <!--<div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">-->
+                                                  <!--<span class="bds_more">分享到：</span>-->
+                                                  <!--<a class="bds_qzone"></a>-->
+                                                  <!--<a class="bds_tsina"></a>-->
+                                                  <!--<a class="bds_tqq"></a>-->
+                                                  <!--<a class="bds_renren"></a>-->
+                                                  <!--<a class="bds_t163"></a>-->
+                                                  <!--<a class="shareCount"></a>-->
+                                          <!--</div>-->
+                                          <!--<script type="text/javascript" id="bdshare_js" data="type=tools&uid=6701193" ></script>-->
+                                          <!--<script type="text/javascript" id="bdshell_js"></script>-->
+                                          <!--<script type="text/javascript">-->
+                                              <!--document.getElementById("bdshell_js").src = "https://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)-->
+                                          <!--</script>-->
+                                      <!-- Baidu Button END -->
+                                           <hr>
+                                           <div class="content detail markdown-body editormd-preview-container editormd-preview-active"><blockquote>
+<p>SpringMVC提供了DispatcherServlet来开发web应用,在这篇<a href="1552124148206.html" title="配置SpringMVC应用的过程和使用">配置SpringMVC应用的过程和使用</a>，我们有用到<strong>web.xml</strong>和<strong>springmvc-config.xml</strong>,，而然springboot也是用到springMVC，那它怎么没有这些配置文件呢。其实servlet3.0后springMVC提供了WebApplicationInitializer接口替代了Web.xml。而JavaConfig的方式替代了springmvc-config.xml。</p>
+</blockquote>
+<p><strong>ServletContainerInitializer接口</strong><br>这个接口是在在Javax.servlet下的。官方的解释：为了支持可以不使用web.xml。提供了ServletContainerInitializer，它可以通过SPI机制，当启动web容器的时候，会自动到添加的相应jar包下找到META-INF/services下以ServletContainerInitializer的全路径名称命名的文件，它的内容为ServletContainerInitializer实现类的全路径，将它们实例化。</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"></code></li><li class="L1"><code class="lang-java"><span class="kwd">package</span><span class="pln"> javax</span><span class="pun">.</span><span class="pln">servlet</span><span class="pun">;</span></code></li><li class="L2"><code class="lang-java"></code></li><li class="L3"><code class="lang-java"><span class="kwd">import</span><span class="pln"> java</span><span class="pun">.</span><span class="pln">util</span><span class="pun">.</span><span class="typ">Set</span><span class="pun">;</span></code></li><li class="L4"><code class="lang-java"></code></li><li class="L5"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">interface</span><span class="pln"> </span><span class="typ">ServletContainerInitializer</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L6"><code class="lang-java"><span class="pln">    </span><span class="kwd">void</span><span class="pln"> onStartup</span><span class="pun">(</span><span class="typ">Set</span><span class="pun">&lt;</span><span class="typ">Class</span><span class="pun">&lt;?&gt;&gt;</span><span class="pln"> var1</span><span class="pun">,</span><span class="pln"> </span><span class="typ">ServletContext</span><span class="pln"> var2</span><span class="pun">)</span><span class="pln"> </span><span class="kwd">throws</span><span class="pln"> </span><span class="typ">ServletException</span><span class="pun">;</span></code></li><li class="L7"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<p>注意:什么时SPI机制?可以看这篇博客:<a href="1552469919154.html" title="javaweb的spi 的简单应用">javaweb的spi 的简单应用</a></p>
+<p><strong>SpringServletContainerInitializer实现类</strong><br>由于官方提供了接口，所以spring那边写了SpringServletContainerInitializer类实现了ServletContainerInitializer接口，为了就是支持可以不使用web.xml</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="kwd">package</span><span class="pln"> org</span><span class="pun">.</span><span class="pln">springframework</span><span class="pun">.</span><span class="pln">web</span><span class="pun">;</span></code></li><li class="L1"><code class="lang-java"></code></li><li class="L2"><code class="lang-java"><span class="kwd">import</span><span class="pln"> java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="pln">reflect</span><span class="pun">.</span><span class="typ">Modifier</span><span class="pun">;</span></code></li><li class="L3"><code class="lang-java"><span class="kwd">import</span><span class="pln"> java</span><span class="pun">.</span><span class="pln">util</span><span class="pun">.</span><span class="typ">Iterator</span><span class="pun">;</span></code></li><li class="L4"><code class="lang-java"><span class="kwd">import</span><span class="pln"> java</span><span class="pun">.</span><span class="pln">util</span><span class="pun">.</span><span class="typ">LinkedList</span><span class="pun">;</span></code></li><li class="L5"><code class="lang-java"><span class="kwd">import</span><span class="pln"> java</span><span class="pun">.</span><span class="pln">util</span><span class="pun">.</span><span class="typ">List</span><span class="pun">;</span></code></li><li class="L6"><code class="lang-java"><span class="kwd">import</span><span class="pln"> java</span><span class="pun">.</span><span class="pln">util</span><span class="pun">.</span><span class="typ">Set</span><span class="pun">;</span></code></li><li class="L7"><code class="lang-java"><span class="kwd">import</span><span class="pln"> javax</span><span class="pun">.</span><span class="pln">servlet</span><span class="pun">.</span><span class="typ">ServletContainerInitializer</span><span class="pun">;</span></code></li><li class="L8"><code class="lang-java"><span class="kwd">import</span><span class="pln"> javax</span><span class="pun">.</span><span class="pln">servlet</span><span class="pun">.</span><span class="typ">ServletContext</span><span class="pun">;</span></code></li><li class="L9"><code class="lang-java"><span class="kwd">import</span><span class="pln"> javax</span><span class="pun">.</span><span class="pln">servlet</span><span class="pun">.</span><span class="typ">ServletException</span><span class="pun">;</span></code></li><li class="L0"><code class="lang-java"><span class="kwd">import</span><span class="pln"> javax</span><span class="pun">.</span><span class="pln">servlet</span><span class="pun">.</span><span class="pln">annotation</span><span class="pun">.</span><span class="typ">HandlesTypes</span><span class="pun">;</span></code></li><li class="L1"><code class="lang-java"><span class="kwd">import</span><span class="pln"> org</span><span class="pun">.</span><span class="pln">springframework</span><span class="pun">.</span><span class="pln">core</span><span class="pun">.</span><span class="pln">annotation</span><span class="pun">.</span><span class="typ">AnnotationAwareOrderComparator</span><span class="pun">;</span></code></li><li class="L2"><code class="lang-java"></code></li><li class="L3"><code class="lang-java"><span class="lit">@HandlesTypes</span><span class="pun">({</span><span class="typ">WebApplicationInitializer</span><span class="pun">.</span><span class="kwd">class</span><span class="pun">})</span></code></li><li class="L4"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">SpringServletContainerInitializer</span><span class="pln"> </span><span class="kwd">implements</span><span class="pln"> </span><span class="typ">ServletContainerInitializer</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L5"><code class="lang-java"><span class="pln">    </span><span class="kwd">public</span><span class="pln"> </span><span class="typ">SpringServletContainerInitializer</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L6"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li><li class="L7"><code class="lang-java"></code></li><li class="L8"><code class="lang-java"><span class="pln">    </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> onStartup</span><span class="pun">(</span><span class="typ">Set</span><span class="pun">&lt;</span><span class="typ">Class</span><span class="pun">&lt;?&gt;&gt;</span><span class="pln"> webAppInitializerClasses</span><span class="pun">,</span><span class="pln"> </span><span class="typ">ServletContext</span><span class="pln"> servletContext</span><span class="pun">)</span><span class="pln"> </span><span class="kwd">throws</span><span class="pln"> </span><span class="typ">ServletException</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L9"><code class="lang-java"><span class="pln">        </span><span class="typ">List</span><span class="pun">&lt;</span><span class="typ">WebApplicationInitializer</span><span class="pun">&gt;</span><span class="pln"> initializers </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">LinkedList</span><span class="pun">();</span></code></li><li class="L0"><code class="lang-java"><span class="pln">        </span><span class="typ">Iterator</span><span class="pln"> var4</span><span class="pun">;</span></code></li><li class="L1"><code class="lang-java"><span class="pln">        </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">webAppInitializerClasses </span><span class="pun">!=</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L2"><code class="lang-java"><span class="pln">            var4 </span><span class="pun">=</span><span class="pln"> webAppInitializerClasses</span><span class="pun">.</span><span class="pln">iterator</span><span class="pun">();</span></code></li><li class="L3"><code class="lang-java"></code></li><li class="L4"><code class="lang-java"><span class="pln">            </span><span class="kwd">while</span><span class="pun">(</span><span class="pln">var4</span><span class="pun">.</span><span class="pln">hasNext</span><span class="pun">())</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L5"><code class="lang-java"><span class="pln">                </span><span class="typ">Class</span><span class="pun">&lt;?&gt;</span><span class="pln"> waiClass </span><span class="pun">=</span><span class="pln"> </span><span class="pun">(</span><span class="typ">Class</span><span class="pun">)</span><span class="pln">var4</span><span class="pun">.</span><span class="pln">next</span><span class="pun">();</span></code></li><li class="L6"><code class="lang-java"><span class="pln">                </span><span class="kwd">if</span><span class="pun">(!</span><span class="pln">waiClass</span><span class="pun">.</span><span class="pln">isInterface</span><span class="pun">()</span><span class="pln"> </span><span class="pun">&amp;&amp;</span><span class="pln"> </span><span class="pun">!</span><span class="typ">Modifier</span><span class="pun">.</span><span class="pln">isAbstract</span><span class="pun">(</span><span class="pln">waiClass</span><span class="pun">.</span><span class="pln">getModifiers</span><span class="pun">())</span><span class="pln"> </span><span class="pun">&amp;&amp;</span><span class="pln"> </span><span class="typ">WebApplicationInitializer</span><span class="pun">.</span><span class="kwd">class</span><span class="pun">.</span><span class="pln">isAssignableFrom</span><span class="pun">(</span><span class="pln">waiClass</span><span class="pun">))</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L7"><code class="lang-java"><span class="pln">                    </span><span class="kwd">try</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L8"><code class="lang-java"><span class="pln">                        initializers</span><span class="pun">.</span><span class="pln">add</span><span class="pun">((</span><span class="typ">WebApplicationInitializer</span><span class="pun">)</span><span class="pln">waiClass</span><span class="pun">.</span><span class="pln">newInstance</span><span class="pun">());</span></code></li><li class="L9"><code class="lang-java"><span class="pln">                    </span><span class="pun">}</span><span class="pln"> </span><span class="kwd">catch</span><span class="pln"> </span><span class="pun">(</span><span class="typ">Throwable</span><span class="pln"> var7</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L0"><code class="lang-java"><span class="pln">                        </span><span class="kwd">throw</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">ServletException</span><span class="pun">(</span><span class="str">"Failed to instantiate WebApplicationInitializer class"</span><span class="pun">,</span><span class="pln"> var7</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pln">                    </span><span class="pun">}</span></code></li><li class="L2"><code class="lang-java"><span class="pln">                </span><span class="pun">}</span></code></li><li class="L3"><code class="lang-java"><span class="pln">            </span><span class="pun">}</span></code></li><li class="L4"><code class="lang-java"><span class="pln">        </span><span class="pun">}</span></code></li><li class="L5"><code class="lang-java"></code></li><li class="L6"><code class="lang-java"><span class="pln">        </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">initializers</span><span class="pun">.</span><span class="pln">isEmpty</span><span class="pun">())</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L7"><code class="lang-java"><span class="pln">            servletContext</span><span class="pun">.</span><span class="pln">log</span><span class="pun">(</span><span class="str">"No Spring WebApplicationInitializer types detected on classpath"</span><span class="pun">);</span></code></li><li class="L8"><code class="lang-java"><span class="pln">        </span><span class="pun">}</span><span class="pln"> </span><span class="kwd">else</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L9"><code class="lang-java"><span class="pln">            servletContext</span><span class="pun">.</span><span class="pln">log</span><span class="pun">(</span><span class="pln">initializers</span><span class="pun">.</span><span class="pln">size</span><span class="pun">()</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> </span><span class="str">" Spring WebApplicationInitializers detected on classpath"</span><span class="pun">);</span></code></li><li class="L0"><code class="lang-java"><span class="pln">            </span><span class="typ">AnnotationAwareOrderComparator</span><span class="pun">.</span><span class="pln">sort</span><span class="pun">(</span><span class="pln">initializers</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pln">            var4 </span><span class="pun">=</span><span class="pln"> initializers</span><span class="pun">.</span><span class="pln">iterator</span><span class="pun">();</span></code></li><li class="L2"><code class="lang-java"></code></li><li class="L3"><code class="lang-java"><span class="pln">            </span><span class="kwd">while</span><span class="pun">(</span><span class="pln">var4</span><span class="pun">.</span><span class="pln">hasNext</span><span class="pun">())</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L4"><code class="lang-java"><span class="pln">                </span><span class="typ">WebApplicationInitializer</span><span class="pln"> initializer </span><span class="pun">=</span><span class="pln"> </span><span class="pun">(</span><span class="typ">WebApplicationInitializer</span><span class="pun">)</span><span class="pln">var4</span><span class="pun">.</span><span class="pln">next</span><span class="pun">();</span></code></li><li class="L5"><code class="lang-java"><span class="pln">                initializer</span><span class="pun">.</span><span class="pln">onStartup</span><span class="pun">(</span><span class="pln">servletContext</span><span class="pun">);</span></code></li><li class="L6"><code class="lang-java"><span class="pln">            </span><span class="pun">}</span></code></li><li class="L7"><code class="lang-java"></code></li><li class="L8"><code class="lang-java"><span class="pln">        </span><span class="pun">}</span></code></li><li class="L9"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li><li class="L0"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<p>这个先判断webAppInitializerClasses这个Set是否为空。如果不为空的话，找到这个set中不是接口，不是抽象类，并且是<br>WebApplicationInitializer接口实现类的类，将它们保存到list中。当这个list为空的时候，抛出异常。不为空的话就按照一定的顺序排序，并将它们按照一定的顺序实例化，调用其onStartup方法执行。</p>
+<p><strong>WebApplicationInitializer</strong><br>经过上面的几步，最终到了这个接口，所以我们只要实现在这个接口，就可以不用写web.xml文件了</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">MyWebAppInitializer</span><span class="pln"> </span><span class="kwd">implements</span><span class="pln"> </span><span class="typ">WebApplicationInitializer</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L1"><code class="lang-java"></code></li><li class="L2"><code class="lang-java"><span class="pln">      </span><span class="lit">@Override</span></code></li><li class="L3"><code class="lang-java"><span class="pln">      </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> onStartup</span><span class="pun">(</span><span class="typ">ServletContext</span><span class="pln"> container</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L4"><code class="lang-java"><span class="pln">        </span><span class="com">//实用xml的方式配置SpringMVC</span></code></li><li class="L5"><code class="lang-java"><span class="pln">        </span><span class="typ">XmlWebApplicationContext</span><span class="pln"> appContext </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">XmlWebApplicationContext</span><span class="pun">();</span></code></li><li class="L6"><code class="lang-java"><span class="pln">        </span><span class="com">//设置配置文件的位置</span></code></li><li class="L7"><code class="lang-java"><span class="pln">        appContext</span><span class="pun">.</span><span class="pln">setConfigLocation</span><span class="pun">(</span><span class="str">"/WEB-INF/spring/springmvc-config.xml"</span><span class="pun">);</span></code></li><li class="L8"><code class="lang-java"></code></li><li class="L9"><code class="lang-java"><span class="pln">        </span><span class="com">//将DispatcherServlet实例添加到容器</span></code></li><li class="L0"><code class="lang-java"><span class="pln">        </span><span class="typ">ServletRegistration</span><span class="pun">.</span><span class="typ">Dynamic</span><span class="pln"> dispatcher </span><span class="pun">=</span></code></li><li class="L1"><code class="lang-java"><span class="pln">          container</span><span class="pun">.</span><span class="pln">addServlet</span><span class="pun">(</span><span class="str">"dispatcher"</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">DispatcherServlet</span><span class="pun">(</span><span class="pln">appContext</span><span class="pun">));</span></code></li><li class="L2"><code class="lang-java"><span class="pln">        </span><span class="com">//设置启动顺序</span></code></li><li class="L3"><code class="lang-java"><span class="pln">        dispatcher</span><span class="pun">.</span><span class="pln">setLoadOnStartup</span><span class="pun">(</span><span class="lit">1</span><span class="pun">);</span></code></li><li class="L4"><code class="lang-java"><span class="pln">        </span><span class="com">//设置映射路径</span></code></li><li class="L5"><code class="lang-java"><span class="pln">        dispatcher</span><span class="pun">.</span><span class="pln">addMapping</span><span class="pun">(</span><span class="str">"/"</span><span class="pun">);</span></code></li><li class="L6"><code class="lang-java"><span class="pln">      </span><span class="pun">}</span></code></li><li class="L7"><code class="lang-java"><span class="pln">   </span><span class="pun">}</span></code></li></ol></pre>
+<p>这里去除了web.xml文件，但是SpringMVC的配置文件还在，因为我们用XmlWebApplicationContext来加载配置，但是spring提供了AnnotationConfigWebApplicationContext 注解的方式加载配置文件，所以可以这样:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">MyWebAppInitializer</span><span class="pln"> </span><span class="kwd">implements</span><span class="pln"> </span><span class="typ">WebApplicationInitializer</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L1"><code class="lang-java"></code></li><li class="L2"><code class="lang-java"><span class="pln">      </span><span class="lit">@Override</span></code></li><li class="L3"><code class="lang-java"><span class="pln">      </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> onStartup</span><span class="pun">(</span><span class="typ">ServletContext</span><span class="pln"> container</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L4"><code class="lang-java"><span class="pln">        </span><span class="com">// 创建Spring的root配置环境</span></code></li><li class="L5"><code class="lang-java"><span class="pln">        </span><span class="typ">AnnotationConfigWebApplicationContext</span><span class="pln"> rootContext </span><span class="pun">=</span></code></li><li class="L6"><code class="lang-java"><span class="pln">          </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">AnnotationConfigWebApplicationContext</span><span class="pun">();</span></code></li><li class="L7"><code class="lang-java"><span class="pln">        rootContext</span><span class="pun">.</span><span class="kwd">register</span><span class="pun">(</span><span class="typ">MyMvcConfig</span><span class="pun">.</span><span class="kwd">class</span><span class="pun">);</span></code></li><li class="L8"><code class="lang-java"></code></li><li class="L9"><code class="lang-java"><span class="pln">        </span><span class="com">// 将Spring的配置添加为listener</span></code></li><li class="L0"><code class="lang-java"><span class="pln">        container</span><span class="pun">.</span><span class="pln">addListener</span><span class="pun">(</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">ContextLoaderListener</span><span class="pun">(</span><span class="pln">rootContext</span><span class="pun">));</span></code></li><li class="L1"><code class="lang-java"></code></li><li class="L2"><code class="lang-java"><span class="pln">        </span><span class="com">// 创建SpringMVC的分发器</span></code></li><li class="L3"><code class="lang-java"><span class="pln">        </span><span class="typ">AnnotationConfigWebApplicationContext</span><span class="pln"> dispatcherContext </span><span class="pun">=</span></code></li><li class="L4"><code class="lang-java"><span class="pln">          </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">AnnotationConfigWebApplicationContext</span><span class="pun">();</span></code></li><li class="L5"><code class="lang-java"><span class="pln">        dispatcherContext</span><span class="pun">.</span><span class="kwd">register</span><span class="pun">(</span><span class="typ">DispatcherConfig</span><span class="pun">.</span><span class="kwd">class</span><span class="pun">);</span></code></li><li class="L6"><code class="lang-java"></code></li><li class="L7"><code class="lang-java"><span class="pln">        </span><span class="com">// 注册请求分发器</span></code></li><li class="L8"><code class="lang-java"><span class="pln">        </span><span class="typ">ServletRegistration</span><span class="pun">.</span><span class="typ">Dynamic</span><span class="pln"> dispatcher </span><span class="pun">=</span></code></li><li class="L9"><code class="lang-java"><span class="pln">          container</span><span class="pun">.</span><span class="pln">addServlet</span><span class="pun">(</span><span class="str">"dispatcher"</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">DispatcherServlet</span><span class="pun">(</span><span class="pln">dispatcherContext</span><span class="pun">));</span></code></li><li class="L0"><code class="lang-java"><span class="pln">        dispatcher</span><span class="pun">.</span><span class="pln">setLoadOnStartup</span><span class="pun">(</span><span class="lit">1</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pln">        dispatcher</span><span class="pun">.</span><span class="pln">addMapping</span><span class="pun">(</span><span class="str">"/"</span><span class="pun">);</span></code></li><li class="L2"><code class="lang-java"><span class="pln">      </span><span class="pun">}</span></code></li><li class="L3"><code class="lang-java"></code></li><li class="L4"><code class="lang-java"><span class="pln">   </span><span class="pun">}</span></code></li></ol></pre>
+<p>在这里的MyMvcConfig.class是一个JavaConfig的方式:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="lit">@Configuration</span></code></li><li class="L1"><code class="lang-java"><span class="lit">@EnableWebMvc</span></code></li><li class="L2"><code class="lang-java"><span class="lit">@ComponentScan</span></code></li><li class="L3"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">MyMvcConfig</span><span class="pun">{</span></code></li><li class="L4"><code class="lang-java"></code></li><li class="L5"><code class="lang-java"><span class="pln">    </span><span class="lit">@Bean</span></code></li><li class="L6"><code class="lang-java"><span class="pln">    </span><span class="kwd">public</span><span class="pln"> </span><span class="typ">InternalResourceViewResolver</span><span class="pln"> viewResolver </span><span class="pun">{</span></code></li><li class="L7"><code class="lang-java"><span class="pln">        </span><span class="typ">InternalResourceViewResolver</span><span class="pln"> viewResolver</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">InternalResourceViewResolver</span><span class="pun">();</span></code></li><li class="L8"><code class="lang-java"><span class="pln">        viewResolver</span><span class="pun">.</span><span class="pln">setPrefix</span><span class="pun">(</span><span class="str">"/WEB-INF/classes/views"</span><span class="pun">);</span></code></li><li class="L9"><code class="lang-java"><span class="pln">        viewResolver</span><span class="pun">.</span><span class="pln">setSuffix</span><span class="pun">(</span><span class="str">".jsp"</span><span class="pun">);</span></code></li><li class="L0"><code class="lang-java"><span class="pln">        </span><span class="kwd">return</span><span class="pln"> viewResolver</span><span class="pun">;</span></code></li><li class="L1"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li><li class="L2"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<p>JavaConfig的方式可以看这篇博客:<a href="1546503121433.html" title="SpringBoot之@Component，@Bean与@Configuration配置">SpringBoot之@Component，@Bean与@Configuration配置</a></p>
+</div>
+                                      </div>
+                                   <div class="layui-row text-center layui-mt20">
+                                           
+                                           <div class="layui-btn layui-btn-danger" onclick="emotion()"><i class="fa fa-thumbs-o-up" id="za"> 赞 (148)</i></div>
+                                       </div>
+                                   <div class="layui-row layui-mt20">
+                                         <blockquote class="layui-elem-quote text-center " style="border: none;">
+                                                  <span class="layui-show-md-inline-block layui-hide"  >文章出处：书生个人博客</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                   <span class="layui-show-md-inline-block layui-hide" id="artiurl"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                  <span>转载注明下哦！o(≧v≦)o~~</span>
+                                           </blockquote>
+                                    </div>
+                                 <div class="layui-row layui-mt20">
+                                         <p class="blog-tags">
+                                              标签：
+                                                       <span >springboot系列</span><span >原创</span>
+
+                                               </p>
+                                 </div>
+                                 <div class="layui-row layui-col-space20 layui-mt20 article-page-similar">
+                                           <p>相似文章：</p>
+                                            <hr>
+                                             <ul>
+                                                    <li><a href="1551367255238.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringMVC和SpringBoot如何接收参数或者绑定参数</a> </li>
+                                                    <li><a href="1562823806738.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Kaptcha的详细配置表以及在springboot中的整合和使用</a> </li>
+                                                    <li><a href="1563339259314.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot中集成Log4j2以及Log4j2的xml配置</a> </li>
+                                                    <li><a href="1547875444402.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot配置虚拟路径解决Not allowed to load local resource错误</a> </li>
+                                                    <li><a href="1553332085352.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;springboot使用注解＠Async开启异步调用</a> </li>
+                                                    <li><a href="1550049091199.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Spring Boot使用HandlerInterceptorAdapter和WebMvcConfigurerAdapter实现拦截器</a> </li>
+                                                    <li><a href="1553356568899.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot使用Quartz实现定时器功能</a> </li>
+                                                    <li><a href="1546583611687.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot之WebSocket消息推送</a> </li>
+                                                    <li><a href="1563463749150.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot配置Cross解决跨域问题</a> </li>
+                                                    <li><a href="1556515641828.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;SpringBoot的数据缓存——基于Redis缓存技术的配置</a> </li>
+                                              </ul>
+                                    </div>
+                               </div>
+                      <script>
+                          $("#artiurl").html("文章地址："+location.href);
+
+
+                      </script>
+
+                       </div></div>
+
+                </div>
+
+               <div  >
+<div id="cta" class="layui-collapse layui-panel layui-article">
+       <div class="layui-colla-item">
+               <div class="layui-colla-content layui-show layui-article comment">
+                       <fieldset class="layui-elem-field layui-field-title">
+                               <legend>随便说两句</legend>
+                               <div class="layui-field-box">
+                                       <label for="comment-input"></label>
+                                           <textarea id="comment-input" style="display: none;"></textarea>
+                                  </div>
+                               
+                               <a class="layui-btn layui-btn-sm layui-btn-danger" style="float: right;width: 120px;"  href="#"  onclick="javascript:beforeLogin()" id="beforeLogin"><i class="fa fa-qq"></i> 请先登录</a>
+                           </fieldset>
+                   </div>
+           </div>
+    </div>
+</div>
+<script>
+    function beforeLogin() {
+        var url=window.location.href;
+        window.open('/api/qq?url='+url,'_self');
+    }
+
+</script>
+
+               <blockquote id="cccc" class="layui-elem-quote layui-mt20" style="border-left: 5px solid #F44336;"><span style="color:#FF5722;">遵守国家法律法规，请勿回复无意义内容，请不要回复嵌套过多的楼层！</span></blockquote>
+               <div class="comment-list">
+
+</div>
+
+
+
+
+           </div>
+               <!--<div class="layui-col-md3" id="article-app">-->
+                       <!--<div id="affix-side">-->
+                           <!--<div th:replace="frontend/fragment/callme :: callme" ></div>-->
+                           <!--&lt;!&ndash;<div class="layui-tab layui-tab-card layui-master-recommend" >&ndash;&gt;-->
+                               <!--&lt;!&ndash;<div class="layui-tab-content select-none">&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<h3 class="tit">时光悄然</h3>&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<div class="layui-inline" id="test22"></div>&ndash;&gt;-->
+                               <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--<div th:replace ="frontend/fragment/guidang" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/imageinfo" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/cate" ></div>-->
+                           <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相关文章'})" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/image :: image"></div>-->
+                           <!--</div>-->
+                   <!--</div>-->
+           </div>
+    </div>
+
+
+    <footer >
+    <div class="footer"><p>
+	<span><strong>友情链接:</strong><strong>&nbsp;</strong> &nbsp;&nbsp;</span><a class="ke-insertfile" href="https://www.layui.com/" target="_blank">layui</a><span>&nbsp;&nbsp;</span>&nbsp;<a class="ke-insertfile" href="http://www.shuyong.net/" target="_blank">舍力博客</a>&nbsp;&nbsp;<a class="ke-insertfile" href="javascript:;" id="friend">申请友链</a> 
+</p>
+<p>
+	2018-2019 nonelonely.com | 网站备案号：<a class="ke-insertfile" href="http://www.miitbeian.gov.cn/" target="_blank">闽ICP备18026034号-1</a> 
+</p>
+<p>
+	<br />
+</p></div>
+
+    <div class="layui-hide-xs" style="position: fixed;left: 100px; bottom: 100px; z-index: 999999;" id="robot" data-method="robot">
+        <div class="layui-layer-tips" ><div id="" class="layui-layer-content" style="background-color: rgb(114, 193, 236);width: 150px">Hi 我是小码，可以点击我问我笑话，天气，智能聊天，故事，查询备案等等。<i class="layui-layer-TipsG layui-layer-TipsT" style="border-right-color:rgb(114, 193, 236);"></i></div><span class="layui-layer-setwin"></span></div>
+        <a href="#" ><img src="../static/assets/img/robot.png" width="100px" alt="Hi 我是小码！" >
+        </a>
+    </div>
+
+
+</footer>
+<script src="../static/plugins/layui/layui.js"></script>
+
+<script>
+    layui.use([ 'layer'], function () {
+        var layer = layui.layer;
+        var $ = layui.jquery;
+        //触发事件
+        var active = {
+            robot: function(){
+                var that = this;
+                $("#robot").css('display','none');
+                //多窗口模式，层叠置顶
+                layer.open({
+                    type: 2,
+                    title:'智能小码',
+                    area: ['600px', '480px'],
+                    content: '/webrobot',
+                    end:function () {
+                        $("#robot").css('display','');
+                    }
+                });
+            },
+            friend: function () {
+                layer.open({
+                    title: '申请友链'
+                    ,content: '发送邮件至：admin@nonelonely.com<br>' +
+                        '邮件标题为：申请书生个人博客友链'
+                });
+            }
+        };
+
+        $('#robot').on('click', function(){
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+        $('#friend').on('click', function(){
+            var othis = $(this), method = 'friend';
+            active[method] ? active[method].call(this, othis) : '';
+        });
+
+
+        // var la;
+            // la = layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot',
+            //     {
+            //         tips: [1, '#3595CC'],
+            //         end: function () {
+            //             if($("#robot").is(":visible")) {
+            //                 la = layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot',
+            //                     {tips: [1, '#3595CC']})
+            //             }
+            //         }
+            //     });
+            // window.setInterval(" if($('#robot').is(':visible')) {la=layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot', { tips: [1, '#3595CC'],end : function(){ la=layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot', {tips: [1, '#3595CC']});}});}", 10000*6 );
+
+    });
+</script>
+
+</div>
+
+
+
+
+<script>
+    var articleId=1552475062917;
+    var su=null ;
+    $(function(){
+        $(".comment-list").addCommentList({data:[],add:""});
+        $("#comment").click(function(){
+            var obj = new Object();
+            obj.img="images/img.html";
+            obj.replyName="匿名";
+            obj.content=$("#content").val();
+            obj.browse="深圳";
+            obj.osname="win10";
+            obj.replyBody="";
+            $(".comment-list").addCommentList({data:[],add:obj});
+        });
+    })
+
+    var layer;
+    var layedit;
+    var index;
+    layui.use(['layedit', 'laypage', 'laydate', 'element','layer'], function () {
+        layer = layui.layer;
+        var element = layui.element;
+        layedit = layui.layedit;
+        // var laydate = layui.laydate;
+        // //不出现底部栏
+        // laydate.render({
+        //     elem: '#test22'
+        //     ,showBottom: false
+        //     ,position: 'static'
+        //     ,calendar: true
+        //     ,theme: '#a7a4a4'
+        // });
+
+       index= layedit.build('comment-input', {
+            tool: ['face', '|', 'left', 'center', 'right', 'link', 'unlink']
+            , height: 150
+        });
+        //相册
+        if($(window).width() > 750){
+            layer.photos({
+                photos: '.photos'
+                ,zIndex: 9999999999
+                ,anim: -1
+            });
+        } else {
+            $('body').on('click', '.photos img', function(){
+                window.open(this.src);
+            });
+        }
+
+            layer.open({
+                title: '目录',
+                type: 1,
+                offset: 'r',
+                shade: 0,
+                closeBtn: 2,
+                content: $(".markdown-toc")
+            });
+
+        // $('#affix-side').hcSticky({
+        //     stickTo: '#blog-body'
+        // });
+
+    });
+    function submit() {
+
+        var osname = detectOS();
+
+        var obj = new Object();
+        if (su) {
+           obj.img = su.avatar;
+           obj.replyName = su.nickname;
+        }
+        obj.content=layedit.getContent(index);
+        obj.browse=navigator.appName;
+        obj.osname=osname;
+        obj.time=new Date();
+        obj.replyBody="";
+
+        obj.comment= obj.content;
+        if(!obj.comment){
+            layer.msg('不能为空');
+            return false;
+        }
+        var indexc = layer.load();
+        obj.userId=su.id;
+        obj.user=su.id;
+        obj.articleId=articleId;
+        obj.enable=true;
+        obj.parentId=0;
+
+         obj.time =new Date();
+
+
+
+
+        $.post("/token/comment/sub",obj, function (resp) {
+            layer.close(indexc);
+            $(window.frames["LAY_layedit_1"].document).find("body").html('');
+            layer.msg(resp.message);
+            setTimeout(function () {
+                if (resp.code === 200) {
+                    $(".comment-list").addCommentList({data:[],add:obj});
+                }
+            }, 1000);
+        });
+
+    };
+
+    function emotion() {
+        var uid = "guest";
+        if (BMY.getCookie("article::" + 1552475062917 + "::" + uid) != null) {
+            layer.msg("近期您已经点过赞，感谢您的支持！");
+        } else {
+            $.post("/article/approve", {articleId: 1552475062917}, function (json) {
+                if (json.code === BMY.status.ok) {
+                    BMY.setCookie("article::" + 1552475062917+ "::" + uid, "noteblog system");
+                  //  that.approve++;
+                    $('#za').html('赞 (149)')
+                    layer.msg("谢谢您的支持！");
+                }
+            })
+        }
+    }
+    function money  (alipay, wechat) {
+        alipay = "#\/static\/assets\/img\/wechat.png";
+        wechat="#\/static\/assets\/img\/alipay.png";
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['640px', '300px'],
+            shadeClose: true,
+            skin: 'text-center',
+            content:
+                '<div class="layui-fluid">' +
+                '   <div class="layui-row layui-mt20">' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + wechat + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">微信</p>' +
+                '       </div>' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + alipay + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">支付宝</p>' +
+                '       </div>' +
+                '   </div> ' +
+                '</div>'
+        });
+    }
+
+
+
+
+</script>
+<script src="../static/assets/js/jquery.comment.js" ></script>
+</body>
+
+<!-- Mirrored from www.nonelonely.com/article/1552475062917 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:05:32 GMT -->
+</html>

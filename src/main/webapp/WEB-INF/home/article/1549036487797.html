@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Mirrored from www.nonelonely.com/article/1549036487797 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:05:49 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+
+    <title>Java面试宝典之并发编程73道面试题及答案- 书生个人博客</title>
+    <link href="../static/plugins/editormd/css/editormd.min.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+<meta name="baidu_union_verify" content="3e514e79dc5e7201b9bee186137e9562">
+<meta name="keywords" content="多线程,面试">
+
+<meta name="description" content="1、在java中守护线程和本地线程区别？java中的线程分为两种：守护线程（Daemon）和用户线程（User）。任何线程都可以设置为守护线程和用户线程，通过方法Thread.setDaemon(boolon)；true则把该线程设置为守护线程，反之则为用户线程。Thread.setDaemon()必须在Thread.start()之前调用，否则运行时会抛出异常。两者的区别：唯一的区别是判断虚拟机(JVM)何">
+
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../static/plugins/layui/css/layui.css">
+<link rel="stylesheet" href="../static/plugins/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../static/assets/css/frontend/base.css">
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "../../hm.baidu.com/hm6618.js?c07ddd5b98c69450ebd8e255627f70b0";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <link rel="canonical" href="1549036487797.html"/>
+    <script src="../../msite.baidu.com/sdk/cb688.js?appid=1622832448885693"></script>
+    <script src="../static/plugins/jquery/jquery.min.js"></script>
+     <style>
+         @media screen and (max-width: 767px) {
+             .layui-layer-page {
+                 display: none;
+             }
+         }
+
+         .markdown-body.layui-layer-content {
+             padding: 20px;
+             /*background-image: url("/static/assets/img/long.png");*/
+         }
+         .markdown-body  .layui-layer-title{
+             background-color: #e4e4e400;
+         }
+         .markdown-body  .layui-layer{
+             background-color: #e4e4e4;
+             background-image: url("../static/assets/img/long.png") ;
+             background-size: 100% 100%;
+         }
+         .markdown-body .layui-layer-content {
+
+            padding: 20px;
+         }
+
+     </style>
+
+</head>
+<body class="animated fadeIn">
+
+<div class="wrapper" >
+    <header>
+    <div class="headtop"></div>
+    <div class="contenttop">
+        <div class="logo f_l"> Java码猿-书生个人博客</div>
+        <div class="search f_r">
+            <input name="keyboard"  id="bdcsMain" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+            <input name="Submit" class="input_submit" onclick="window.open('http://zhannei.baidu.com/cse/search?s=6583887351044514798&entry=1&q='+document.getElementById('bdcsMain').value)" value="搜索" type="button">
+            <!--<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=6583887351044514798' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>-->
+            <ul class="layui-nav" style="background-color: rgba(0,0,0,0);" >
+                
+                
+
+                <li  class="layui-nav-item"><a href="#"  style="color: #000;" onclick="goto()" title="QQ登入" class="iconfont icon-qq"></a>
+                </li>
+            </ul>
+
+
+        </div>
+        <div class="blank"></div>
+
+        <nav>
+            <div  class="navigation">
+                <ul class="menu">
+                    <li><a href="../index.html">网站首页</a></li>
+                    <li><a href="#">技术文章</a>
+                        <ul >
+                            <li><a  href="../pages748a.html?cateId=1">Spring系列</a></li>
+                            <li><a  href="../pages3c7b.html?cateId=6">前端开发</a></li>
+                            <li><a  href="../pages4ead.html?cateId=7">软件安装</a></li>
+                            <li><a  href="../pages8396.html?cateId=9">Java语法</a></li>
+                            <li><a  href="../pagesff6a.html?cateId=10">资源下载</a></li>
+                            <li><a  href="../pagesad9e.html?cateId=12">ORM框架</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="../note.html">我的日记</a> </li>
+                    <li><a href="../msg.html">给我留言</a> </li>
+                    <li><a href="../about.html">关于</a></li>
+                </ul>
+            </div>
+        </nav>
+        <SCRIPT type=text/javascript>
+            // Navigation Menu
+            $(function() {
+                $(".menu ul").css({display: "none"}); // Opera Fix
+                $(".menu li").hover(function(){
+                    $(this).find('ul:first').css({visibility: "visible",display: "none"}).slideDown("normal");
+                },function(){
+                    $(this).find('ul:first').css({visibility: "hidden"});
+                });
+            });
+
+            function  search() {
+                var s=$('#keyboard').val();
+                location.href = s === "" ? "/" : "/pages?searchStr=" + s;
+            };
+            function goto () {
+                var url = window.location.href;
+                var winObj = window.open('/api/qq?url=' + url, '_self');
+            }
+        </SCRIPT>
+
+    </div>
+</header>
+    <div class="jztop"></div>
+
+    <!--<bmy-article-page :alipay="params.alipay" :wechat="params.wechat_pay" :su="su">-->
+        <!--<div th:insert ="frontend/fragment/articlepage :: article"  slot="article"></div>-->
+        <!--<div  th:insert="frontend/fragment/comment :: comment" slot="post"></div>-->
+
+        <!--<bmy-comment-list slot="comment" :comments="comments" :tips="params.comment_notice"-->
+                          <!--:re="params.all_comment_open == 1 && article.commented"></bmy-comment-list>-->
+       <!--<bmy-search slot="search"></bmy-search>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相似文章'})" slot="similar"></div>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${lots},${'热度文章'})" slot="lot"></div>-->
+    <!--</bmy-article-page>-->
+
+    <div id="blog-body" class="layui-container">
+       <div class="layui-row layui-col-space10">
+           <div id="blog-info" class="layui-col-md12">
+                <div class="layui-collapse layui-panel layui-article photos" >
+
+                     <div  ><div class="layui-colla-item">
+                    <h2 class="nh1"><span>您现在的位置是：<a href="../index.html" target="_blank">网站首页</a>>><a href="#" target="_blank">信息浏览</a>
+                    </span><b>文章详情</b></h2>
+                          <div class="layui-colla-content layui-show layui-article">
+                                   <fieldset class="layui-elem-field layui-field-title layui-article-page-title">
+                                       <legend class="center-to-head" align="center">Java面试宝典之并发编程73道面试题及答案</legend>
+                                      </fieldset>
+                                  <div class="layui-text layui-blog-body">
+                                           <div class="layui-row">
+                                                  <div class="layui-col-md6 layui-col-md-offset3 text-center blog-base-info">
+                                                           <span><i class="fa fa-clock-o" ></i>2019-02-01 23:54 </span>
+                                                           <span><i class="fa fa-user-o"></i> <span style="color: #FF5722;">许多年以后</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-renzhengkaobei"></use></svg></span>
+                                                          <span><i class="fa fa-comment-o"></i></span>
+                                                           <span><i class="fa fa-eye"></i> 1257</span>
+                                                       </div>
+                                               </div>
+                                      <!-- Baidu Button BEGIN -->
+                                           <!--<div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">-->
+                                                  <!--<span class="bds_more">分享到：</span>-->
+                                                  <!--<a class="bds_qzone"></a>-->
+                                                  <!--<a class="bds_tsina"></a>-->
+                                                  <!--<a class="bds_tqq"></a>-->
+                                                  <!--<a class="bds_renren"></a>-->
+                                                  <!--<a class="bds_t163"></a>-->
+                                                  <!--<a class="shareCount"></a>-->
+                                          <!--</div>-->
+                                          <!--<script type="text/javascript" id="bdshare_js" data="type=tools&uid=6701193" ></script>-->
+                                          <!--<script type="text/javascript" id="bdshell_js"></script>-->
+                                          <!--<script type="text/javascript">-->
+                                              <!--document.getElementById("bdshell_js").src = "https://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)-->
+                                          <!--</script>-->
+                                      <!-- Baidu Button END -->
+                                           <hr>
+                                           <div class="content detail markdown-body editormd-preview-container editormd-preview-active"><p><strong>1、在java中守护线程和本地线程区别？</strong></p>
+<p>java中的线程分为两种：守护线程（Daemon）和用户线程（User）。</p>
+<p>任何线程都可以设置为守护线程和用户线程，通过方法Thread.setDaemon(bool on)；true则把该线程设置为守护线程，反之则为用户线程。Thread.setDaemon()必须在Thread.start()之前调用，否则运行时会抛出异常。</p>
+<p>两者的区别：<br>唯一的区别是判断虚拟机(JVM)何时离开，Daemon是为其他线程提供服务，如果全部的User Thread已经撤离，Daemon 没有可服务的线程，JVM撤离。也可以理解为守护线程是JVM自动创建的线程（但不一定），用户线程是程序创建的线程；比如JVM的垃圾回收线程是一个守护线程，当所有线程已经撤离，不再产生垃圾，守护线程自然就没事可干了，当垃圾回收线程是Java虚拟机上仅剩的线程时，Java虚拟机会自动离开。</p>
+<p>扩展：Thread Dump打印出来的线程信息，含有daemon字样的线程即为守护进程，可能会有：服务守护进程、编译守护进程、windows下的监听Ctrl+break的守护进程、Finalizer守护进程、引用处理守护进程、GC守护进程。</p>
+<p><strong>2、线程与进程的区别？</strong></p>
+<p>进程是操作系统分配资源的最小单元，线程是操作系统调度的最小单元。</p>
+<p>一个程序至少有一个进程,一个进程至少有一个线程。</p>
+<p><strong>3、什么是多线程中的上下文切换？</strong></p>
+<p>多线程会共同使用一组计算机上的CPU，而线程数大于给程序分配的CPU数量时，为了让各个线程都有执行的机会，就需要轮转使用CPU。不同的线程切换使用CPU发生的切换数据等就是上下文切换。</p>
+<p><strong>4、死锁与活锁的区别，死锁与饥饿的区别？</strong></p>
+<p>死锁：是指两个或两个以上的进程（或线程）在执行过程中，因争夺资源而造成的一种互相等待的现象，若无外力作用，它们都将无法推进下去。 </p>
+<p>产生死锁的必要条件： </p>
+<ol>
+<li><p>互斥条件：所谓互斥就是进程在某一时间内独占资源。</p>
+</li><li><p>请求与保持条件：一个进程因请求资源而阻塞时，对已获得的资源保持不放。 </p>
+</li><li><p>不剥夺条件:进程已获得资源，在末使用完之前，不能强行剥夺。  </p>
+</li><li><p>循环等待条件:若干进程之间形成一种头尾相接的循环等待资源关系</p>
+</li></ol>
+<p>活锁：任务或者执行者没有被阻塞，由于某些条件没有满足，导致一直重复尝试，失败，尝试，失败。</p>
+<p>活锁和死锁的区别在于，处于活锁的实体是在不断的改变状态，所谓的“活”， 而处于死锁的实体表现为等待；活锁有可能自行解开，死锁则不能。</p>
+<p>饥饿：一个或者多个线程因为种种原因无法获得所需要的资源，导致一直无法执行的状态。 </p>
+<p>Java中导致饥饿的原因： </p>
+<ol>
+<li><p>高优先级线程吞噬所有的低优先级线程的CPU时间。 </p>
+</li><li><p>线程被永久堵塞在一个等待进入同步块的状态，因为其他线程总是能在它之前持续地对该同步块进行访问。 </p>
+</li><li><p>线程在等待一个本身也处于永久等待完成的对象(比如调用这个对象的wait方法)，因为其他线程总是被持续地获得唤醒</p>
+</li></ol>
+<p><strong>5、Java中用到的线程调度算法是什么？</strong></p>
+<p>采用时间片轮转的方式。可以设置线程的优先级，会映射到下层的系统上面的优先级上，如非特别需要，尽量不要用，防止线程饥饿。</p>
+<p><strong>6、什么是线程组，为什么在Java中不推荐使用？</strong></p>
+<p>ThreadGroup类，可以把线程归属到某一个线程组中，线程组中可以有线程对象，也可以有线程组，组中还可以有线程，这样的组织结构有点类似于树的形式。</p>
+<p>为什么不推荐使用？因为使用有很多的安全隐患吧，没有具体追究，如果需要使用，推荐使用线程池。</p>
+<p><strong>7、为什么使用Executor框架？</strong></p>
+<ol>
+<li><p>每次执行任务创建线程 new Thread()比较消耗性能，创建一个线程是比较耗时、耗资源的。</p>
+</li><li><p>调用 new Thread()创建的线程缺乏管理，被称为野线程，而且可以无限制的创建，线程之间的相互竞争会导致过多占用系统资源而导致系统瘫痪，还有线程之间的频繁交替也会消耗很多系统资源。</p>
+</li><li><p>接使用new Thread() 启动的线程不利于扩展，比如定时执行、定期执行、定时定期执行、线程中断等都不便实现。</p>
+</li></ol>
+<p><strong>8、在Java中Executor和Executors的区别？</strong></p>
+<p>Executors 工具类的不同方法按照我们的需求创建了不同的线程池，来满足业务的需求。 </p>
+<p>Executor 接口对象能执行我们的线程任务。 </p>
+<p>ExecutorService接口继承了Executor接口并进行了扩展，提供了更多的方法我们能获得任务执行的状态并且可以获取任务的返回值。 </p>
+<p>使用ThreadPoolExecutor 可以创建自定义线程池。 </p>
+<p>Future 表示异步计算的结果，他提供了检查计算是否完成的方法，以等待计算的完成，并可以使用get()方法获取计算的结果。</p>
+<p><strong>9、什么是原子操作？在Java Concurrency API中有哪些原子类(atomic classes)？</strong></p>
+<p>原子操作（atomic operation）意为”不可被中断的一个或一系列操作” 。 </p>
+<p>处理器使用基于对缓存加锁或总线加锁的方式来实现多处理器之间的原子操作。 </p>
+<p>在Java中可以通过锁和循环CAS的方式来实现原子操作。 CAS操作——Compare &amp; Set，或是 Compare &amp; Swap，现在几乎所有的CPU指令都支持CAS的原子操作。</p>
+<p>原子操作是指一个不受其他操作影响的操作任务单元。原子操作是在多线程环境下避免数据不一致必须的手段。 </p>
+<p>int++并不是一个原子操作，所以当一个线程读取它的值并加1时，另外一个线程有可能会读到之前的值，这就会引发错误。 </p>
+<p>为了解决这个问题，必须保证增加操作是原子的，在JDK1.5之前我们可以使用同步技术来做到这一点。到JDK1.5，java.util.concurrent.atomic包提供了int和long类型的原子包装类，它们可以自动的保证对于他们的操作是原子的并且不需要使用同步。</p>
+<p>java.util.concurrent这个包里面提供了一组原子类。其基本的特性就是在多线程环境下，当有多个线程同时执行这些类的实例包含的方法时，具有排他性，即当某个线程进入方法，执行其中的指令时，不会被其他线程打断，而别的线程就像自旋锁一样，一直等到该方法执行完成，才由JVM从等待队列中选择一个另一个线程进入，这只是一种逻辑上的理解。</p>
+<p>原子类：AtomicBoolean，AtomicInteger，AtomicLong，AtomicReference<br>原子数组：AtomicIntegerArray，AtomicLongArray，AtomicReferenceArray<br>原子属性更新器：AtomicLongFieldUpdater，AtomicIntegerFieldUpdater，AtomicReferenceFieldUpdater<br>解决ABA问题的原子类：AtomicMarkableReference（通过引入一个boolean来反映中间有没有变过），AtomicStampedReference（通过引入一个int来累加来反映中间有没有变过）</p>
+<p><strong>10、Java Concurrency API中的Lock接口(Lock interface)是什么？对比同步它有什么优势？</strong><br>Lock接口比同步方法和同步块提供了更具扩展性的锁操作。 </p>
+<p>他们允许更灵活的结构，可以具有完全不同的性质，并且可以支持多个相关类的条件对象。</p>
+<p>它的优势有：</p>
+<ol>
+<li>可以使锁更公平</li><li>可以使线程在等待锁的时候响应中断</li><li>可以让线程尝试获取锁，并在无法获取锁的时候立即返回或者等待一段时间</li><li>可以在不同的范围，以不同的顺序获取和释放锁</li></ol>
+<p>整体上来说Lock是synchronized的扩展版，Lock提供了无条件的、可轮询的(tryLock方法)、定时的(tryLock带参方法)、可中断的(lockInterruptibly)、可多条件队列的(newCondition方法)锁操作。另外Lock的实现类基本都支持非公平锁(默认)和公平锁，synchronized只支持非公平锁，当然，在大部分情况下，非公平锁是高效的选择。</p>
+<p><strong>11、什么是Executors框架？</strong></p>
+<p>Executor框架是一个根据一组执行策略调用，调度，执行和控制的异步任务的框架。</p>
+<p>无限制的创建线程会引起应用程序内存溢出。所以创建一个线程池是个更好的的解决方案，因为可以限制线程的数量并且可以回收再利用这些线程。利用Executors框架可以非常方便的创建一个线程池。</p>
+<p><strong>12、什么是阻塞队列？阻塞队列的实现原理是什么？如何使用阻塞队列来实现生产者-消费者模型？</strong></p>
+<p>阻塞队列（BlockingQueue）是一个支持两个附加操作的队列。</p>
+<p>这两个附加的操作是：在队列为空时，获取元素的线程会等待队列变为非空。当队列满时，存储元素的线程会等待队列可用。</p>
+<p>阻塞队列常用于生产者和消费者的场景，生产者是往队列里添加元素的线程，消费者是从队列里拿元素的线程。阻塞队列就是生产者存放元素的容器，而消费者也只从容器里拿元素。</p>
+<p>JDK7提供了7个阻塞队列。分别是：<br>ArrayBlockingQueue ：一个由数组结构组成的有界阻塞队列。<br>LinkedBlockingQueue ：一个由链表结构组成的有界阻塞队列。<br>PriorityBlockingQueue ：一个支持优先级排序的无界阻塞队列。<br>DelayQueue：一个使用优先级队列实现的无界阻塞队列。<br>SynchronousQueue：一个不存储元素的阻塞队列。<br>LinkedTransferQueue：一个由链表结构组成的无界阻塞队列。<br>LinkedBlockingDeque：一个由链表结构组成的双向阻塞队列。<br>Java 5之前实现同步存取时，可以使用普通的一个集合，然后在使用线程的协作和线程同步可以实现生产者，消费者模式，主要的技术就是用好，wait ,notify,notifyAll,sychronized这些关键字。而在java 5之后，可以使用阻塞队列来实现，此方式大大简少了代码量，使得多线程编程更加容易，安全方面也有保障。 </p>
+<p>BlockingQueue接口是Queue的子接口，它的主要用途并不是作为容器，而是作为线程同步的的工具，因此他具有一个很明显的特性，当生产者线程试图向BlockingQueue放入元素时，如果队列已满，则线程被阻塞，当消费者线程试图从中取出一个元素时，如果队列为空，则该线程会被阻塞，正是因为它所具有这个特性，所以在程序中多个线程交替向BlockingQueue中放入元素，取出元素，它可以很好的控制线程之间的通信。</p>
+<p>阻塞队列使用最经典的场景就是socket客户端数据的读取和解析，读取数据的线程不断将数据放入队列，然后解析线程不断从队列取数据解析。</p>
+<p><strong>13、什么是Callable和Future?</strong></p>
+<p>Callable接口类似于Runnable，从名字就可以看出来了，但是Runnable不会返回结果，并且无法抛出返回结果的异常，而Callable功能更强大一些，被线程执行后，可以返回值，这个返回值可以被Future拿到，也就是说，Future可以拿到异步执行任务的返回值。 </p>
+<p>可以认为是带有回调的Runnable。</p>
+<p>Future接口表示异步任务，是还没有完成的任务给出的未来结果。所以说Callable用于产生结果，Future用于获取结果。</p>
+<p><strong>14、什么是FutureTask?使用ExecutorService启动任务</strong>。</p>
+<p>在Java并发程序中FutureTask表示一个可以取消的异步运算。它有启动和取消运算、查询运算是否完成和取回运算结果等方法。只有当运算完成的时候结果才能取回，如果运算尚未完成get方法将会阻塞。一个FutureTask对象可以对调用了Callable和Runnable的对象进行包装，由于FutureTask也是调用了Runnable接口所以它可以提交给Executor来执行。<br><strong><br>15、什么是并发容器的实现？</strong></p>
+<p>何为同步容器：可以简单地理解为通过synchronized来实现同步的容器，如果有多个线程调用同步容器的方法，它们将会串行执行。比如Vector，Hashtable，以及Collections.synchronizedSet，synchronizedList等方法返回的容器。 </p>
+<p>可以通过查看Vector，Hashtable等这些同步容器的实现代码，可以看到这些容器实现线程安全的方式就是将它们的状态封装起来，并在需要同步的方法上加上关键字synchronized。</p>
+<p>并发容器使用了与同步容器完全不同的加锁策略来提供更高的并发性和伸缩性，例如在ConcurrentHashMap中采用了一种粒度更细的加锁机制，可以称为分段锁，在这种锁机制下，允许任意数量的读线程并发地访问map，并且执行读操作的线程和写操作的线程也可以并发的访问map，同时允许一定数量的写操作线程并发地修改map，所以它可以在并发环境下实现更高的吞吐量。</p>
+<p><strong>16、多线程同步和互斥有几种实现方法，都是什么？</strong></p>
+<p>线程同步是指线程之间所具有的一种制约关系，一个线程的执行依赖另一个线程的消息，当它没有得到另一个线程的消息时应等待，直到消息到达时才被唤醒。 </p>
+<p>线程互斥是指对于共享的进程系统资源，在各单个线程访问时的排它性。当有若干个线程都要使用某一共享资源时，任何时刻最多只允许一个线程去使用，其它要使用该资源的线程必须等待，直到占用资源者释放该资源。线程互斥可以看成是一种特殊的线程同步。</p>
+<p>线程间的同步方法大体可分为两类：用户模式和内核模式。顾名思义，内核模式就是指利用系统内核对象的单一性来进行同步，使用时需要切换内核态与用户态，而用户模式就是不需要切换到内核态，只在用户态完成操作。 </p>
+<p>用户模式下的方法有：原子操作（例如一个单一的全局变量），临界区。内核模式下的方法有：事件，信号量，互斥量。<br><strong><br>17、什么是竞争条件？你怎样发现和解决竞争？</strong></p>
+<p>当多个进程都企图对共享数据进行某种处理，而最后的结果又取决于进程运行的顺序时，则我们认为这发生了竞争条件（race condition）。</p>
+<p><strong>18、你将如何使用thread dump？你将如何分析Thread dump</strong></p>
+<h4 id="h4--new-"><a name="- 新建状态（New）" class="reference-link"></a><span class="header-link octicon octicon-link"></span>- 新建状态（New）</h4><p>用new语句创建的线程处于新建状态，此时它和其他Java对象一样，仅仅在堆区中被分配了内存。</p>
+<h4 id="h4--runnable-"><a name="就绪状态（Runnable）" class="reference-link"></a><span class="header-link octicon octicon-link"></span>就绪状态（Runnable）</h4><p>当一个线程对象创建后，其他线程调用它的start()方法，该线程就进入就绪状态，Java虚拟机会为它创建方法调用栈和程序计数器。处于这个状态的线程位于可运行池中，等待获得CPU的使用权。</p>
+<h4 id="h4--running-"><a name="运行状态（Running）" class="reference-link"></a><span class="header-link octicon octicon-link"></span>运行状态（Running）</h4><p>处于这个状态的线程占用CPU，执行程序代码。只有处于就绪状态的线程才有机会转到运行状态。</p>
+<h4 id="h4--blocked-"><a name="阻塞状态（Blocked）" class="reference-link"></a><span class="header-link octicon octicon-link"></span>阻塞状态（Blocked）</h4><p>阻塞状态是指线程因为某些原因放弃CPU，暂时停止运行。当线程处于阻塞状态时，Java虚拟机不会给线程分配CPU。直到线程重新进入就绪状态，它才有机会转到运行状态。 </p>
+<h4 id="h4--3-"><a name="阻塞状态可分为以下3种：" class="reference-link"></a><span class="header-link octicon octicon-link"></span>阻塞状态可分为以下3种：</h4><p>① 位于对象等待池中的阻塞状态（Blocked in object’s wait pool）：当线程处于运行状态时，如果执行了某个对象的wait()方法，Java虚拟机就会把线程放到这个对象的等待池中，这涉及到“线程通信”的内容。</p>
+<p>② 位于对象锁池中的阻塞状态（Blocked in object’s lock pool）：当线程处于运行状态时，试图获得某个对象的同步锁时，如果该对象的同步锁已经被其他线程占用，Java虚拟机就会把这个线程放到这个对象的锁池中，这涉及到“线程同步”的内容。</p>
+<p>③ 其他阻塞状态（Otherwise Blocked）：当前线程执行了sleep()方法，或者调用了其他线程的join()方法，或者发出了I/O请求时，就会进入这个状态。</p>
+<p>死亡状态（Dead）<br>当线程退出run()方法时，就进入死亡状态，该线程结束生命周期。</p>
+<p>我们运行之前的那个死锁代码SimpleDeadLock.java，然后尝试输出信息(/<em>这是注释，作者自己加的</em>/)：</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="com">/* 时间，jvm信息 */</span></code></li><li class="L1"><code class="lang-java"><span class="lit">2017</span><span class="pun">-</span><span class="lit">11</span><span class="pun">-</span><span class="lit">01</span><span class="pln"> </span><span class="lit">17</span><span class="pun">:</span><span class="lit">36</span><span class="pun">:</span><span class="lit">28</span></code></li><li class="L2"><code class="lang-java"><span class="typ">Full</span><span class="pln"> thread dump </span><span class="typ">Java</span><span class="pln"> </span><span class="typ">HotSpot</span><span class="pun">(</span><span class="pln">TM</span><span class="pun">)</span><span class="pln"> </span><span class="lit">64</span><span class="pun">-</span><span class="typ">Bit</span><span class="pln"> </span><span class="typ">Server</span><span class="pln"> VM </span><span class="pun">(</span><span class="lit">25.144</span><span class="pun">-</span><span class="pln">b01 mixed mode</span><span class="pun">):</span></code></li><li class="L3"><code class="lang-java"></code></li><li class="L4"><code class="lang-java"><span class="com">/* 线程名称：DestroyJavaVM</span></code></li><li class="L5"><code class="lang-java"><span class="com">编号：#13</span></code></li><li class="L6"><code class="lang-java"><span class="com">优先级：5</span></code></li><li class="L7"><code class="lang-java"><span class="com">系统优先级：0</span></code></li><li class="L8"><code class="lang-java"><span class="com">jvm内部线程id：0x0000000001c88800</span></code></li><li class="L9"><code class="lang-java"><span class="com">对应系统线程id（NativeThread ID）：0x1c18</span></code></li><li class="L0"><code class="lang-java"><span class="com">线程状态： waiting on condition [0x0000000000000000]  （等待某个条件）</span></code></li><li class="L1"><code class="lang-java"><span class="com">线程详细状态：java.lang.Thread.State: RUNNABLE  及之后所有*/</span></code></li><li class="L2"><code class="lang-java"><span class="str">"DestroyJavaVM"</span><span class="pln"> </span><span class="pun">#</span><span class="lit">13</span><span class="pln"> prio</span><span class="pun">=</span><span class="lit">5</span><span class="pln"> os_prio</span><span class="pun">=</span><span class="lit">0</span><span class="pln"> tid</span><span class="pun">=</span><span class="lit">0x0000000001c88800</span><span class="pln"> nid</span><span class="pun">=</span><span class="lit">0x1c18</span><span class="pln"> waiting on condition </span><span class="pun">[</span><span class="lit">0x0000000000000000</span><span class="pun">]</span></code></li><li class="L3"><code class="lang-java"><span class="pln">   java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="typ">Thread</span><span class="pun">.</span><span class="typ">State</span><span class="pun">:</span><span class="pln"> RUNNABLE</span></code></li><li class="L4"><code class="lang-java"></code></li><li class="L5"><code class="lang-java"><span class="str">"Thread-1"</span><span class="pln"> </span><span class="pun">#</span><span class="lit">12</span><span class="pln"> prio</span><span class="pun">=</span><span class="lit">5</span><span class="pln"> os_prio</span><span class="pun">=</span><span class="lit">0</span><span class="pln"> tid</span><span class="pun">=</span><span class="lit">0x0000000018d49000</span><span class="pln"> nid</span><span class="pun">=</span><span class="lit">0x17b8</span><span class="pln"> waiting </span><span class="kwd">for</span><span class="pln"> monitor entry </span><span class="pun">[</span><span class="lit">0x0000000019d7f000</span><span class="pun">]</span></code></li><li class="L6"><code class="lang-java"><span class="com">/* 线程状态：阻塞（在对象同步上）</span></code></li><li class="L7"><code class="lang-java"><span class="com">    代码位置：at com.leo.interview.SimpleDeadLock$B.run(SimpleDeadLock.java:56)</span></code></li><li class="L8"><code class="lang-java"><span class="com">    等待锁：0x00000000d629b4d8 </span></code></li><li class="L9"><code class="lang-java"><span class="com">    已经获得锁：0x00000000d629b4e8*/</span></code></li><li class="L0"><code class="lang-java"><span class="pln">   java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="typ">Thread</span><span class="pun">.</span><span class="typ">State</span><span class="pun">:</span><span class="pln"> BLOCKED </span><span class="pun">(</span><span class="pln">on object monitor</span><span class="pun">)</span></code></li><li class="L1"><code class="lang-java"><span class="pln">    at com</span><span class="pun">.</span><span class="pln">leo</span><span class="pun">.</span><span class="pln">interview</span><span class="pun">.</span><span class="typ">SimpleDeadLock$B</span><span class="pun">.</span><span class="pln">run</span><span class="pun">(</span><span class="typ">SimpleDeadLock</span><span class="pun">.</span><span class="pln">java</span><span class="pun">:</span><span class="lit">56</span><span class="pun">)</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    </span><span class="pun">-</span><span class="pln"> waiting to lock </span><span class="pun">&lt;</span><span class="lit">0x00000000d629b4d8</span><span class="pun">&gt;</span><span class="pln"> </span><span class="pun">(</span><span class="pln">a java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="typ">Object</span><span class="pun">)</span></code></li><li class="L3"><code class="lang-java"><span class="pln">    </span><span class="pun">-</span><span class="pln"> locked </span><span class="pun">&lt;</span><span class="lit">0x00000000d629b4e8</span><span class="pun">&gt;</span><span class="pln"> </span><span class="pun">(</span><span class="pln">a java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="typ">Object</span><span class="pun">)</span></code></li><li class="L4"><code class="lang-java"></code></li><li class="L5"><code class="lang-java"><span class="str">"Thread-0"</span><span class="pln"> </span><span class="pun">#</span><span class="lit">11</span><span class="pln"> prio</span><span class="pun">=</span><span class="lit">5</span><span class="pln"> os_prio</span><span class="pun">=</span><span class="lit">0</span><span class="pln"> tid</span><span class="pun">=</span><span class="lit">0x0000000018d44000</span><span class="pln"> nid</span><span class="pun">=</span><span class="lit">0x1ebc</span><span class="pln"> waiting </span><span class="kwd">for</span><span class="pln"> monitor entry </span><span class="pun">[</span><span class="lit">0x000000001907f000</span><span class="pun">]</span></code></li><li class="L6"><code class="lang-java"><span class="pln">   java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="typ">Thread</span><span class="pun">.</span><span class="typ">State</span><span class="pun">:</span><span class="pln"> BLOCKED </span><span class="pun">(</span><span class="pln">on object monitor</span><span class="pun">)</span></code></li><li class="L7"><code class="lang-java"><span class="pln">    at com</span><span class="pun">.</span><span class="pln">leo</span><span class="pun">.</span><span class="pln">interview</span><span class="pun">.</span><span class="typ">SimpleDeadLock$A</span><span class="pun">.</span><span class="pln">run</span><span class="pun">(</span><span class="typ">SimpleDeadLock</span><span class="pun">.</span><span class="pln">java</span><span class="pun">:</span><span class="lit">34</span><span class="pun">)</span></code></li><li class="L8"><code class="lang-java"><span class="pln">    </span><span class="pun">-</span><span class="pln"> waiting to lock </span><span class="pun">&lt;</span><span class="lit">0x00000000d629b4e8</span><span class="pun">&gt;</span><span class="pln"> </span><span class="pun">(</span><span class="pln">a java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="typ">Object</span><span class="pun">)</span></code></li><li class="L9"><code class="lang-java"><span class="pln">    </span><span class="pun">-</span><span class="pln"> locked </span><span class="pun">&lt;</span><span class="lit">0x00000000d629b4d8</span><span class="pun">&gt;</span><span class="pln"> </span><span class="pun">(</span><span class="pln">a java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="typ">Object</span><span class="pun">)</span></code></li><li class="L0"><code class="lang-java"></code></li><li class="L1"><code class="lang-java"><span class="str">"Service Thread"</span><span class="pln"> </span><span class="pun">#</span><span class="lit">10</span><span class="pln"> daemon prio</span><span class="pun">=</span><span class="lit">9</span><span class="pln"> os_prio</span><span class="pun">=</span><span class="lit">0</span><span class="pln"> tid</span><span class="pun">=</span><span class="lit">0x0000000018ca5000</span><span class="pln"> nid</span><span class="pun">=</span><span class="lit">0x1264</span><span class="pln"> runnable </span><span class="pun">[</span><span class="lit">0x0000000000000000</span><span class="pun">]</span></code></li><li class="L2"><code class="lang-java"><span class="pln">   java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="typ">Thread</span><span class="pun">.</span><span class="typ">State</span><span class="pun">:</span><span class="pln"> RUNNABLE</span></code></li><li class="L3"><code class="lang-java"></code></li><li class="L4"><code class="lang-java"><span class="str">"C1 CompilerThread2"</span><span class="pln"> </span><span class="pun">#</span><span class="lit">9</span><span class="pln"> daemon prio</span><span class="pun">=</span><span class="lit">9</span><span class="pln"> os_prio</span><span class="pun">=</span><span class="lit">2</span><span class="pln"> tid</span><span class="pun">=</span><span class="lit">0x0000000018c46000</span><span class="pln"> nid</span><span class="pun">=</span><span class="lit">0xb8c</span><span class="pln"> waiting on condition </span><span class="pun">[</span><span class="lit">0x0000000000000000</span><span class="pun">]</span></code></li><li class="L5"><code class="lang-java"><span class="pln">   java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="typ">Thread</span><span class="pun">.</span><span class="typ">State</span><span class="pun">:</span><span class="pln"> RUNNABLE</span></code></li><li class="L6"><code class="lang-java"></code></li><li class="L7"><code class="lang-java"><span class="str">"C2 CompilerThread1"</span><span class="pln"> </span><span class="pun">#</span><span class="lit">8</span><span class="pln"> daemon prio</span><span class="pun">=</span><span class="lit">9</span><span class="pln"> os_prio</span><span class="pun">=</span><span class="lit">2</span><span class="pln"> tid</span><span class="pun">=</span><span class="lit">0x0000000018be4800</span><span class="pln"> nid</span><span class="pun">=</span><span class="lit">0x1db4</span><span class="pln"> waiting on condition </span><span class="pun">[</span><span class="lit">0x0000000000000000</span><span class="pun">]</span></code></li><li class="L8"><code class="lang-java"><span class="pln">   java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="typ">Thread</span><span class="pun">.</span><span class="typ">State</span><span class="pun">:</span><span class="pln"> RUNNABLE</span></code></li><li class="L9"><code class="lang-java"></code></li><li class="L0"><code class="lang-java"><span class="str">"C2 CompilerThread0"</span><span class="pln"> </span><span class="pun">#</span><span class="lit">7</span><span class="pln"> daemon prio</span><span class="pun">=</span><span class="lit">9</span><span class="pln"> os_prio</span><span class="pun">=</span><span class="lit">2</span><span class="pln"> tid</span><span class="pun">=</span><span class="lit">0x0000000018be3800</span><span class="pln"> nid</span><span class="pun">=</span><span class="lit">0x810</span><span class="pln"> waiting on condition </span><span class="pun">[</span><span class="lit">0x0000000000000000</span><span class="pun">]</span></code></li><li class="L1"><code class="lang-java"><span class="pln">   java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="typ">Thread</span><span class="pun">.</span><span class="typ">State</span><span class="pun">:</span><span class="pln"> RUNNABLE</span></code></li><li class="L2"><code class="lang-java"></code></li><li class="L3"><code class="lang-java"><span class="str">"Monitor Ctrl-Break"</span><span class="pln"> </span><span class="pun">#</span><span class="lit">6</span><span class="pln"> daemon prio</span><span class="pun">=</span><span class="lit">5</span><span class="pln"> os_prio</span><span class="pun">=</span><span class="lit">0</span><span class="pln"> tid</span><span class="pun">=</span><span class="lit">0x0000000018bcc800</span><span class="pln"> nid</span><span class="pun">=</span><span class="lit">0x1c24</span><span class="pln"> runnable </span><span class="pun">[</span><span class="lit">0x00000000193ce000</span><span class="pun">]</span></code></li><li class="L4"><code class="lang-java"><span class="pln">   java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="typ">Thread</span><span class="pun">.</span><span class="typ">State</span><span class="pun">:</span><span class="pln"> RUNNABLE</span></code></li><li class="L5"><code class="lang-java"><span class="pln">    at java</span><span class="pun">.</span><span class="pln">net</span><span class="pun">.</span><span class="typ">SocketInputStream</span><span class="pun">.</span><span class="pln">socketRead0</span><span class="pun">(</span><span class="typ">Native</span><span class="pln"> </span><span class="typ">Method</span><span class="pun">)</span></code></li><li class="L6"><code class="lang-java"><span class="pln">    at java</span><span class="pun">.</span><span class="pln">net</span><span class="pun">.</span><span class="typ">SocketInputStream</span><span class="pun">.</span><span class="pln">socketRead</span><span class="pun">(</span><span class="typ">SocketInputStream</span><span class="pun">.</span><span class="pln">java</span><span class="pun">:</span><span class="lit">116</span><span class="pun">)</span></code></li><li class="L7"><code class="lang-java"><span class="pln">    at java</span><span class="pun">.</span><span class="pln">net</span><span class="pun">.</span><span class="typ">SocketInputStream</span><span class="pun">.</span><span class="pln">read</span><span class="pun">(</span><span class="typ">SocketInputStream</span><span class="pun">.</span><span class="pln">java</span><span class="pun">:</span><span class="lit">171</span><span class="pun">)</span></code></li><li class="L8"><code class="lang-java"><span class="pln">    at java</span><span class="pun">.</span><span class="pln">net</span><span class="pun">.</span><span class="typ">SocketInputStream</span><span class="pun">.</span><span class="pln">read</span><span class="pun">(</span><span class="typ">SocketInputStream</span><span class="pun">.</span><span class="pln">java</span><span class="pun">:</span><span class="lit">141</span><span class="pun">)</span></code></li><li class="L9"><code class="lang-java"><span class="pln">    at sun</span><span class="pun">.</span><span class="pln">nio</span><span class="pun">.</span><span class="pln">cs</span><span class="pun">.</span><span class="typ">StreamDecoder</span><span class="pun">.</span><span class="pln">readBytes</span><span class="pun">(</span><span class="typ">StreamDecoder</span><span class="pun">.</span><span class="pln">java</span><span class="pun">:</span><span class="lit">284</span><span class="pun">)</span></code></li><li class="L0"><code class="lang-java"><span class="pln">    at sun</span><span class="pun">.</span><span class="pln">nio</span><span class="pun">.</span><span class="pln">cs</span><span class="pun">.</span><span class="typ">StreamDecoder</span><span class="pun">.</span><span class="pln">implRead</span><span class="pun">(</span><span class="typ">StreamDecoder</span><span class="pun">.</span><span class="pln">java</span><span class="pun">:</span><span class="lit">326</span><span class="pun">)</span></code></li><li class="L1"><code class="lang-java"><span class="pln">    at sun</span><span class="pun">.</span><span class="pln">nio</span><span class="pun">.</span><span class="pln">cs</span><span class="pun">.</span><span class="typ">StreamDecoder</span><span class="pun">.</span><span class="pln">read</span><span class="pun">(</span><span class="typ">StreamDecoder</span><span class="pun">.</span><span class="pln">java</span><span class="pun">:</span><span class="lit">178</span><span class="pun">)</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    </span><span class="pun">-</span><span class="pln"> locked </span><span class="pun">&lt;</span><span class="lit">0x00000000d632b928</span><span class="pun">&gt;</span><span class="pln"> </span><span class="pun">(</span><span class="pln">a java</span><span class="pun">.</span><span class="pln">io</span><span class="pun">.</span><span class="typ">InputStreamReader</span><span class="pun">)</span></code></li><li class="L3"><code class="lang-java"><span class="pln">    at java</span><span class="pun">.</span><span class="pln">io</span><span class="pun">.</span><span class="typ">InputStreamReader</span><span class="pun">.</span><span class="pln">read</span><span class="pun">(</span><span class="typ">InputStreamReader</span><span class="pun">.</span><span class="pln">java</span><span class="pun">:</span><span class="lit">184</span><span class="pun">)</span></code></li><li class="L4"><code class="lang-java"><span class="pln">    at java</span><span class="pun">.</span><span class="pln">io</span><span class="pun">.</span><span class="typ">BufferedReader</span><span class="pun">.</span><span class="pln">fill</span><span class="pun">(</span><span class="typ">BufferedReader</span><span class="pun">.</span><span class="pln">java</span><span class="pun">:</span><span class="lit">161</span><span class="pun">)</span></code></li><li class="L5"><code class="lang-java"><span class="pln">    at java</span><span class="pun">.</span><span class="pln">io</span><span class="pun">.</span><span class="typ">BufferedReader</span><span class="pun">.</span><span class="pln">readLine</span><span class="pun">(</span><span class="typ">BufferedReader</span><span class="pun">.</span><span class="pln">java</span><span class="pun">:</span><span class="lit">324</span><span class="pun">)</span></code></li><li class="L6"><code class="lang-java"><span class="pln">    </span><span class="pun">-</span><span class="pln"> locked </span><span class="pun">&lt;</span><span class="lit">0x00000000d632b928</span><span class="pun">&gt;</span><span class="pln"> </span><span class="pun">(</span><span class="pln">a java</span><span class="pun">.</span><span class="pln">io</span><span class="pun">.</span><span class="typ">InputStreamReader</span><span class="pun">)</span></code></li><li class="L7"><code class="lang-java"><span class="pln">    at java</span><span class="pun">.</span><span class="pln">io</span><span class="pun">.</span><span class="typ">BufferedReader</span><span class="pun">.</span><span class="pln">readLine</span><span class="pun">(</span><span class="typ">BufferedReader</span><span class="pun">.</span><span class="pln">java</span><span class="pun">:</span><span class="lit">389</span><span class="pun">)</span></code></li><li class="L8"><code class="lang-java"><span class="pln">    at com</span><span class="pun">.</span><span class="pln">intellij</span><span class="pun">.</span><span class="pln">rt</span><span class="pun">.</span><span class="pln">execution</span><span class="pun">.</span><span class="pln">application</span><span class="pun">.</span><span class="typ">AppMainV2$1</span><span class="pun">.</span><span class="pln">run</span><span class="pun">(</span><span class="typ">AppMainV2</span><span class="pun">.</span><span class="pln">java</span><span class="pun">:</span><span class="lit">64</span><span class="pun">)</span></code></li><li class="L9"><code class="lang-java"></code></li><li class="L0"><code class="lang-java"><span class="str">"Attach Listener"</span><span class="pln"> </span><span class="pun">#</span><span class="lit">5</span><span class="pln"> daemon prio</span><span class="pun">=</span><span class="lit">5</span><span class="pln"> os_prio</span><span class="pun">=</span><span class="lit">2</span><span class="pln"> tid</span><span class="pun">=</span><span class="lit">0x0000000017781800</span><span class="pln"> nid</span><span class="pun">=</span><span class="lit">0x524</span><span class="pln"> runnable </span><span class="pun">[</span><span class="lit">0x0000000000000000</span><span class="pun">]</span></code></li><li class="L1"><code class="lang-java"><span class="pln">   java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="typ">Thread</span><span class="pun">.</span><span class="typ">State</span><span class="pun">:</span><span class="pln"> RUNNABLE</span></code></li><li class="L2"><code class="lang-java"></code></li><li class="L3"><code class="lang-java"><span class="str">"Signal Dispatcher"</span><span class="pln"> </span><span class="pun">#</span><span class="lit">4</span><span class="pln"> daemon prio</span><span class="pun">=</span><span class="lit">9</span><span class="pln"> os_prio</span><span class="pun">=</span><span class="lit">2</span><span class="pln"> tid</span><span class="pun">=</span><span class="lit">0x000000001778f800</span><span class="pln"> nid</span><span class="pun">=</span><span class="lit">0x1b08</span><span class="pln"> waiting on condition </span><span class="pun">[</span><span class="lit">0x0000000000000000</span><span class="pun">]</span></code></li><li class="L4"><code class="lang-java"><span class="pln">   java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="typ">Thread</span><span class="pun">.</span><span class="typ">State</span><span class="pun">:</span><span class="pln"> RUNNABLE</span></code></li><li class="L5"><code class="lang-java"></code></li><li class="L6"><code class="lang-java"><span class="str">"Finalizer"</span><span class="pln"> </span><span class="pun">#</span><span class="lit">3</span><span class="pln"> daemon prio</span><span class="pun">=</span><span class="lit">8</span><span class="pln"> os_prio</span><span class="pun">=</span><span class="lit">1</span><span class="pln"> tid</span><span class="pun">=</span><span class="lit">0x000000001776a800</span><span class="pln"> nid</span><span class="pun">=</span><span class="lit">0xdac</span><span class="pln"> in </span><span class="typ">Object</span><span class="pun">.</span><span class="pln">wait</span><span class="pun">()</span><span class="pln"> </span><span class="pun">[</span><span class="lit">0x0000000018b6f000</span><span class="pun">]</span></code></li><li class="L7"><code class="lang-java"><span class="pln">   java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="typ">Thread</span><span class="pun">.</span><span class="typ">State</span><span class="pun">:</span><span class="pln"> WAITING </span><span class="pun">(</span><span class="pln">on object monitor</span><span class="pun">)</span></code></li><li class="L8"><code class="lang-java"><span class="pln">    at java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="typ">Object</span><span class="pun">.</span><span class="pln">wait</span><span class="pun">(</span><span class="typ">Native</span><span class="pln"> </span><span class="typ">Method</span><span class="pun">)</span></code></li><li class="L9"><code class="lang-java"><span class="pln">    </span><span class="pun">-</span><span class="pln"> waiting on </span><span class="pun">&lt;</span><span class="lit">0x00000000d6108ec8</span><span class="pun">&gt;</span><span class="pln"> </span><span class="pun">(</span><span class="pln">a java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="pln">ref</span><span class="pun">.</span><span class="typ">ReferenceQueue$Lock</span><span class="pun">)</span></code></li><li class="L0"><code class="lang-java"><span class="pln">    at java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="pln">ref</span><span class="pun">.</span><span class="typ">ReferenceQueue</span><span class="pun">.</span><span class="pln">remove</span><span class="pun">(</span><span class="typ">ReferenceQueue</span><span class="pun">.</span><span class="pln">java</span><span class="pun">:</span><span class="lit">143</span><span class="pun">)</span></code></li><li class="L1"><code class="lang-java"><span class="pln">    </span><span class="pun">-</span><span class="pln"> locked </span><span class="pun">&lt;</span><span class="lit">0x00000000d6108ec8</span><span class="pun">&gt;</span><span class="pln"> </span><span class="pun">(</span><span class="pln">a java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="pln">ref</span><span class="pun">.</span><span class="typ">ReferenceQueue$Lock</span><span class="pun">)</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    at java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="pln">ref</span><span class="pun">.</span><span class="typ">ReferenceQueue</span><span class="pun">.</span><span class="pln">remove</span><span class="pun">(</span><span class="typ">ReferenceQueue</span><span class="pun">.</span><span class="pln">java</span><span class="pun">:</span><span class="lit">164</span><span class="pun">)</span></code></li><li class="L3"><code class="lang-java"><span class="pln">    at java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="pln">ref</span><span class="pun">.</span><span class="typ">Finalizer$FinalizerThread</span><span class="pun">.</span><span class="pln">run</span><span class="pun">(</span><span class="typ">Finalizer</span><span class="pun">.</span><span class="pln">java</span><span class="pun">:</span><span class="lit">209</span><span class="pun">)</span></code></li><li class="L4"><code class="lang-java"></code></li><li class="L5"><code class="lang-java"><span class="str">"Reference Handler"</span><span class="pln"> </span><span class="pun">#</span><span class="lit">2</span><span class="pln"> daemon prio</span><span class="pun">=</span><span class="lit">10</span><span class="pln"> os_prio</span><span class="pun">=</span><span class="lit">2</span><span class="pln"> tid</span><span class="pun">=</span><span class="lit">0x0000000017723800</span><span class="pln"> nid</span><span class="pun">=</span><span class="lit">0x1670</span><span class="pln"> in </span><span class="typ">Object</span><span class="pun">.</span><span class="pln">wait</span><span class="pun">()</span><span class="pln"> </span><span class="pun">[</span><span class="lit">0x00000000189ef000</span><span class="pun">]</span></code></li><li class="L6"><code class="lang-java"><span class="pln">   java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="typ">Thread</span><span class="pun">.</span><span class="typ">State</span><span class="pun">:</span><span class="pln"> WAITING </span><span class="pun">(</span><span class="pln">on object monitor</span><span class="pun">)</span></code></li><li class="L7"><code class="lang-java"><span class="pln">    at java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="typ">Object</span><span class="pun">.</span><span class="pln">wait</span><span class="pun">(</span><span class="typ">Native</span><span class="pln"> </span><span class="typ">Method</span><span class="pun">)</span></code></li><li class="L8"><code class="lang-java"><span class="pln">    </span><span class="pun">-</span><span class="pln"> waiting on </span><span class="pun">&lt;</span><span class="lit">0x00000000d6106b68</span><span class="pun">&gt;</span><span class="pln"> </span><span class="pun">(</span><span class="pln">a java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="pln">ref</span><span class="pun">.</span><span class="typ">Reference$Lock</span><span class="pun">)</span></code></li><li class="L9"><code class="lang-java"><span class="pln">    at java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="typ">Object</span><span class="pun">.</span><span class="pln">wait</span><span class="pun">(</span><span class="typ">Object</span><span class="pun">.</span><span class="pln">java</span><span class="pun">:</span><span class="lit">502</span><span class="pun">)</span></code></li><li class="L0"><code class="lang-java"><span class="pln">    at java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="pln">ref</span><span class="pun">.</span><span class="typ">Reference</span><span class="pun">.</span><span class="pln">tryHandlePending</span><span class="pun">(</span><span class="typ">Reference</span><span class="pun">.</span><span class="pln">java</span><span class="pun">:</span><span class="lit">191</span><span class="pun">)</span></code></li><li class="L1"><code class="lang-java"><span class="pln">    </span><span class="pun">-</span><span class="pln"> locked </span><span class="pun">&lt;</span><span class="lit">0x00000000d6106b68</span><span class="pun">&gt;</span><span class="pln"> </span><span class="pun">(</span><span class="pln">a java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="pln">ref</span><span class="pun">.</span><span class="typ">Reference$Lock</span><span class="pun">)</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    at java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="pln">ref</span><span class="pun">.</span><span class="typ">Reference$ReferenceHandler</span><span class="pun">.</span><span class="pln">run</span><span class="pun">(</span><span class="typ">Reference</span><span class="pun">.</span><span class="pln">java</span><span class="pun">:</span><span class="lit">153</span><span class="pun">)</span></code></li><li class="L3"><code class="lang-java"></code></li><li class="L4"><code class="lang-java"><span class="str">"VM Thread"</span><span class="pln"> os_prio</span><span class="pun">=</span><span class="lit">2</span><span class="pln"> tid</span><span class="pun">=</span><span class="lit">0x000000001771b800</span><span class="pln"> nid</span><span class="pun">=</span><span class="lit">0x604</span><span class="pln"> runnable </span></code></li><li class="L5"><code class="lang-java"></code></li><li class="L6"><code class="lang-java"><span class="str">"GC task thread#0 (ParallelGC)"</span><span class="pln"> os_prio</span><span class="pun">=</span><span class="lit">0</span><span class="pln"> tid</span><span class="pun">=</span><span class="lit">0x0000000001c9d800</span><span class="pln"> nid</span><span class="pun">=</span><span class="lit">0x9f0</span><span class="pln"> runnable </span></code></li><li class="L7"><code class="lang-java"></code></li><li class="L8"><code class="lang-java"><span class="str">"GC task thread#1 (ParallelGC)"</span><span class="pln"> os_prio</span><span class="pun">=</span><span class="lit">0</span><span class="pln"> tid</span><span class="pun">=</span><span class="lit">0x0000000001c9f000</span><span class="pln"> nid</span><span class="pun">=</span><span class="lit">0x154c</span><span class="pln"> runnable </span></code></li><li class="L9"><code class="lang-java"></code></li><li class="L0"><code class="lang-java"><span class="str">"GC task thread#2 (ParallelGC)"</span><span class="pln"> os_prio</span><span class="pun">=</span><span class="lit">0</span><span class="pln"> tid</span><span class="pun">=</span><span class="lit">0x0000000001ca0800</span><span class="pln"> nid</span><span class="pun">=</span><span class="lit">0xcd0</span><span class="pln"> runnable </span></code></li><li class="L1"><code class="lang-java"></code></li><li class="L2"><code class="lang-java"><span class="str">"GC task thread#3 (ParallelGC)"</span><span class="pln"> os_prio</span><span class="pun">=</span><span class="lit">0</span><span class="pln"> tid</span><span class="pun">=</span><span class="lit">0x0000000001ca2000</span><span class="pln"> nid</span><span class="pun">=</span><span class="lit">0x1e58</span><span class="pln"> runnable </span></code></li><li class="L3"><code class="lang-java"></code></li><li class="L4"><code class="lang-java"><span class="str">"VM Periodic Task Thread"</span><span class="pln"> os_prio</span><span class="pun">=</span><span class="lit">2</span><span class="pln"> tid</span><span class="pun">=</span><span class="lit">0x0000000018c5a000</span><span class="pln"> nid</span><span class="pun">=</span><span class="lit">0x1b58</span><span class="pln"> waiting on condition </span></code></li><li class="L5"><code class="lang-java"></code></li><li class="L6"><code class="lang-java"><span class="pln">JNI global references</span><span class="pun">:</span><span class="pln"> </span><span class="lit">33</span></code></li><li class="L7"><code class="lang-java"></code></li><li class="L8"><code class="lang-java"></code></li><li class="L9"><code class="lang-java"><span class="com">/* 此处可以看待死锁的相关信息！ */</span></code></li><li class="L0"><code class="lang-java"><span class="typ">Found</span><span class="pln"> one </span><span class="typ">Java</span><span class="pun">-</span><span class="pln">level deadlock</span><span class="pun">:</span></code></li><li class="L1"><code class="lang-java"><span class="pun">=============================</span></code></li><li class="L2"><code class="lang-java"><span class="str">"Thread-1"</span><span class="pun">:</span></code></li><li class="L3"><code class="lang-java"><span class="pln">  waiting to lock monitor </span><span class="lit">0x0000000017729fc8</span><span class="pln"> </span><span class="pun">(</span><span class="pln">object </span><span class="lit">0x00000000d629b4d8</span><span class="pun">,</span><span class="pln"> a java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="typ">Object</span><span class="pun">),</span></code></li><li class="L4"><code class="lang-java"><span class="pln">  which is held by </span><span class="str">"Thread-0"</span></code></li><li class="L5"><code class="lang-java"><span class="str">"Thread-0"</span><span class="pun">:</span></code></li><li class="L6"><code class="lang-java"><span class="pln">  waiting to lock monitor </span><span class="lit">0x0000000017727738</span><span class="pln"> </span><span class="pun">(</span><span class="pln">object </span><span class="lit">0x00000000d629b4e8</span><span class="pun">,</span><span class="pln"> a java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="typ">Object</span><span class="pun">),</span></code></li><li class="L7"><code class="lang-java"><span class="pln">  which is held by </span><span class="str">"Thread-1"</span></code></li><li class="L8"><code class="lang-java"></code></li><li class="L9"><code class="lang-java"><span class="typ">Java</span><span class="pln"> stack information </span><span class="kwd">for</span><span class="pln"> the threads listed above</span><span class="pun">:</span></code></li><li class="L0"><code class="lang-java"><span class="pun">===================================================</span></code></li><li class="L1"><code class="lang-java"><span class="str">"Thread-1"</span><span class="pun">:</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    at com</span><span class="pun">.</span><span class="pln">leo</span><span class="pun">.</span><span class="pln">interview</span><span class="pun">.</span><span class="typ">SimpleDeadLock$B</span><span class="pun">.</span><span class="pln">run</span><span class="pun">(</span><span class="typ">SimpleDeadLock</span><span class="pun">.</span><span class="pln">java</span><span class="pun">:</span><span class="lit">56</span><span class="pun">)</span></code></li><li class="L3"><code class="lang-java"><span class="pln">    </span><span class="pun">-</span><span class="pln"> waiting to lock </span><span class="pun">&lt;</span><span class="lit">0x00000000d629b4d8</span><span class="pun">&gt;</span><span class="pln"> </span><span class="pun">(</span><span class="pln">a java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="typ">Object</span><span class="pun">)</span></code></li><li class="L4"><code class="lang-java"><span class="pln">    </span><span class="pun">-</span><span class="pln"> locked </span><span class="pun">&lt;</span><span class="lit">0x00000000d629b4e8</span><span class="pun">&gt;</span><span class="pln"> </span><span class="pun">(</span><span class="pln">a java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="typ">Object</span><span class="pun">)</span></code></li><li class="L5"><code class="lang-java"><span class="str">"Thread-0"</span><span class="pun">:</span></code></li><li class="L6"><code class="lang-java"><span class="pln">    at com</span><span class="pun">.</span><span class="pln">leo</span><span class="pun">.</span><span class="pln">interview</span><span class="pun">.</span><span class="typ">SimpleDeadLock$A</span><span class="pun">.</span><span class="pln">run</span><span class="pun">(</span><span class="typ">SimpleDeadLock</span><span class="pun">.</span><span class="pln">java</span><span class="pun">:</span><span class="lit">34</span><span class="pun">)</span></code></li><li class="L7"><code class="lang-java"><span class="pln">    </span><span class="pun">-</span><span class="pln"> waiting to lock </span><span class="pun">&lt;</span><span class="lit">0x00000000d629b4e8</span><span class="pun">&gt;</span><span class="pln"> </span><span class="pun">(</span><span class="pln">a java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="typ">Object</span><span class="pun">)</span></code></li><li class="L8"><code class="lang-java"><span class="pln">    </span><span class="pun">-</span><span class="pln"> locked </span><span class="pun">&lt;</span><span class="lit">0x00000000d629b4d8</span><span class="pun">&gt;</span><span class="pln"> </span><span class="pun">(</span><span class="pln">a java</span><span class="pun">.</span><span class="pln">lang</span><span class="pun">.</span><span class="typ">Object</span><span class="pun">)</span></code></li><li class="L9"><code class="lang-java"></code></li><li class="L0"><code class="lang-java"><span class="typ">Found</span><span class="pln"> </span><span class="lit">1</span><span class="pln"> deadlock</span><span class="pun">.</span></code></li><li class="L1"><code class="lang-java"></code></li><li class="L2"><code class="lang-java"><span class="com">/* 内存使用状况，详情得看JVM方面的书 */</span></code></li><li class="L3"><code class="lang-java"><span class="typ">Heap</span></code></li><li class="L4"><code class="lang-java"><span class="pln"> </span><span class="typ">PSYoungGen</span><span class="pln">      total </span><span class="lit">37888K</span><span class="pun">,</span><span class="pln"> used </span><span class="lit">4590K</span><span class="pln"> </span><span class="pun">[</span><span class="lit">0x00000000d6100000</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0x00000000d8b00000</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0x0000000100000000</span><span class="pun">)</span></code></li><li class="L5"><code class="lang-java"><span class="pln">  eden space </span><span class="lit">32768K</span><span class="pun">,</span><span class="pln"> </span><span class="lit">14</span><span class="pun">%</span><span class="pln"> used </span><span class="pun">[</span><span class="lit">0x00000000d6100000</span><span class="pun">,</span><span class="lit">0x00000000d657b968</span><span class="pun">,</span><span class="lit">0x00000000d8100000</span><span class="pun">)</span></code></li><li class="L6"><code class="lang-java"><span class="pln">  from space </span><span class="lit">5120K</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">%</span><span class="pln"> used </span><span class="pun">[</span><span class="lit">0x00000000d8600000</span><span class="pun">,</span><span class="lit">0x00000000d8600000</span><span class="pun">,</span><span class="lit">0x00000000d8b00000</span><span class="pun">)</span></code></li><li class="L7"><code class="lang-java"><span class="pln">  to   space </span><span class="lit">5120K</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">%</span><span class="pln"> used </span><span class="pun">[</span><span class="lit">0x00000000d8100000</span><span class="pun">,</span><span class="lit">0x00000000d8100000</span><span class="pun">,</span><span class="lit">0x00000000d8600000</span><span class="pun">)</span></code></li><li class="L8"><code class="lang-java"><span class="pln"> </span><span class="typ">ParOldGen</span><span class="pln">       total </span><span class="lit">86016K</span><span class="pun">,</span><span class="pln"> used </span><span class="lit">0K</span><span class="pln"> </span><span class="pun">[</span><span class="lit">0x0000000082200000</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0x0000000087600000</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0x00000000d6100000</span><span class="pun">)</span></code></li><li class="L9"><code class="lang-java"><span class="pln">  object space </span><span class="lit">86016K</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">%</span><span class="pln"> used </span><span class="pun">[</span><span class="lit">0x0000000082200000</span><span class="pun">,</span><span class="lit">0x0000000082200000</span><span class="pun">,</span><span class="lit">0x0000000087600000</span><span class="pun">)</span></code></li><li class="L0"><code class="lang-java"><span class="pln"> </span><span class="typ">Metaspace</span><span class="pln">       used </span><span class="lit">3474K</span><span class="pun">,</span><span class="pln"> capacity </span><span class="lit">4500K</span><span class="pun">,</span><span class="pln"> committed </span><span class="lit">4864K</span><span class="pun">,</span><span class="pln"> reserved </span><span class="lit">1056768K</span></code></li><li class="L1"><code class="lang-java"><span class="pln">  </span><span class="kwd">class</span><span class="pln"> space    used </span><span class="lit">382K</span><span class="pun">,</span><span class="pln"> capacity </span><span class="lit">388K</span><span class="pun">,</span><span class="pln"> committed </span><span class="lit">512K</span><span class="pun">,</span><span class="pln"> reserved </span><span class="lit">1048576K</span></code></li></ol></pre>
+<h3 id="h3-19-start-run-run-"><a name="19、为什么我们调用start()方法时会执行run()方法，为什么我们不能直接调用run()方法？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>19、为什么我们调用start()方法时会执行run()方法，为什么我们不能直接调用run()方法？</h3><p>当你调用start()方法时你将创建新的线程，并且执行在run()方法里的代码。 </p>
+<p>但是如果你直接调用run()方法，它不会创建新的线程也不会执行调用线程的代码，只会把run方法当作普通方法去执行。</p>
+<h3 id="h3-20-java-"><a name="20、Java中你怎样唤醒一个阻塞的线程？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>20、Java中你怎样唤醒一个阻塞的线程？</h3><p>在Java发展史上曾经使用suspend()、resume()方法对于线程进行阻塞唤醒，但随之出现很多问题，比较典型的还是死锁问题。 </p>
+<p>解决方案可以使用以对象为目标的阻塞，即利用Object类的wait()和notify()方法实现线程阻塞。 </p>
+<p>首先，wait、notify方法是针对对象的，调用任意对象的wait()方法都将导致线程阻塞，阻塞的同时也将释放该对象的锁，相应地，调用任意对象的notify()方法则将随机解除该对象阻塞的线程，但它需要重新获取改对象的锁，直到获取成功才能往下执行；其次，wait、notify方法必须在synchronized块或方法中被调用，并且要保证同步块或方法的锁对象与调用wait、notify方法的对象是同一个，如此一来在调用wait之前当前线程就已经成功获取某对象的锁，执行wait阻塞后当前线程就将之前获取的对象锁释放。</p>
+<h3 id="h3-21-java-cyclibarriar-countdownlatch-"><a name="21、在Java中CycliBarriar和CountdownLatch有什么区别？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>21、在Java中CycliBarriar和CountdownLatch有什么区别？</h3><p>CyclicBarrier可以重复使用，而CountdownLatch不能重复使用。 </p>
+<p>Java的concurrent包里面的CountDownLatch其实可以把它看作一个计数器，只不过这个计数器的操作是原子操作，同时只能有一个线程去操作这个计数器，也就是同时只能有一个线程去减这个计数器里面的值。 </p>
+<p>你可以向CountDownLatch对象设置一个初始的数字作为计数值，任何调用这个对象上的await()方法都会阻塞，直到这个计数器的计数值被其他的线程减为0为止。 </p>
+<p>所以在当前计数到达零之前，await 方法会一直受阻塞。之后，会释放所有等待的线程，await的所有后续调用都将立即返回。这种现象只出现一次——计数无法被重置。如果需要重置计数，请考虑使用 CyclicBarrier。 </p>
+<p>CountDownLatch的一个非常典型的应用场景是：有一个任务想要往下执行，但必须要等到其他的任务执行完毕后才可以继续往下执行。假如我们这个想要继续往下执行的任务调用一个CountDownLatch对象的await()方法，其他的任务执行完自己的任务后调用同一个CountDownLatch对象上的countDown()方法，这个调用await()方法的任务将一直阻塞等待，直到这个CountDownLatch对象的计数值减到0为止</p>
+<p>CyclicBarrier一个同步辅助类，它允许一组线程互相等待，直到到达某个公共屏障点 (common barrier point)。在涉及一组固定大小的线程的程序中，这些线程必须不时地互相等待，此时 CyclicBarrier 很有用。因为该 barrier 在释放等待线程后可以重用，所以称它为循环 的 barrier。</p>
+<h3 id="h3-22-"><a name="22、什么是不可变对象，它对写并发应用有什么帮助？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>22、什么是不可变对象，它对写并发应用有什么帮助？</h3><p>不可变对象(Immutable Objects)即对象一旦被创建它的状态（对象的数据，也即对象属性值）就不能改变，反之即为可变对象(Mutable Objects)。 </p>
+<p>不可变对象的类即为不可变类(Immutable Class)。Java平台类库中包含许多不可变类，如String、基本类型的包装类、BigInteger和BigDecimal等。 </p>
+<p>不可变对象天生是线程安全的。它们的常量（域）是在构造函数中创建的。既然它们的状态无法修改，这些常量永远不会变。</p>
+<p>不可变对象永远是线程安全的。 </p>
+<p>只有满足如下状态，一个对象才是不可变的；</p>
+<ol>
+<li>它的状态不能在创建后再被修改； </li><li>所有域都是final类型；并且， </li><li>它被正确创建（创建期间没有发生this引用的逸出）。</li></ol>
+<h3 id="h3-23-"><a name="23、什么是多线程中的上下文切换？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>23、什么是多线程中的上下文切换？</h3><p>在上下文切换过程中，CPU会停止处理当前运行的程序，并保存当前程序运行的具体位置以便之后继续运行。从这个角度来看，上下文切换有点像我们同时阅读几本书，在来回切换书本的同时我们需要记住每本书当前读到的页码。在程序中，上下文切换过程中的“页码”信息是保存在进程控制块（PCB）中的。PCB还经常被称作“切换桢”（switchframe）。“页码”信息会一直保存到CPU的内存中，直到他们被再次使用。<br>上下文切换是存储和恢复CPU状态的过程，它使得线程执行能够从中断点恢复执行。上下文切换是多任务操作系统和多线程环境的基本特征。</p>
+<h3 id="h3-24-java-"><a name="24、Java中用到的线程调度算法是什么？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>24、Java中用到的线程调度算法是什么？</h3><p>计算机通常只有一个CPU,在任意时刻只能执行一条机器指令,每个线程只有获得CPU的使用权才能执行指令.所谓多线程的并发运行,其实是指从宏观上看,各个线程轮流获得CPU的使用权,分别执行各自的任务.在运行池中,会有多个处于就绪状态的线程在等待CPU,JAVA虚拟机的一项任务就是负责线程的调度,线程调度是指按照特定机制为多个线程分配CPU的使用权.</p>
+<p>有两种调度模型：分时调度模型和抢占式调度模型。 </p>
+<p>分时调度模型是指让所有的线程轮流获得cpu的使用权,并且平均分配每个线程占用的CPU的时间片这个也比较好理解。</p>
+<p>java虚拟机采用抢占式调度模型，是指优先让可运行池中优先级高的线程占用CPU，如果可运行池中的线程优先级相同，那么就随机选择一个线程，使其占用CPU。处于运行状态的线程会一直运行，直至它不得不放弃CPU。</p>
+<h3 id="h3-25-java-"><a name="25、什么是线程组，为什么在Java中不推荐使用？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>25、什么是线程组，为什么在Java中不推荐使用？</h3><p>线程组和线程池是两个不同的概念，他们的作用完全不同，前者是为了方便线程的管理，后者是为了管理线程的生命周期，复用线程，减少创建销毁线程的开销。</p>
+<h3 id="h3-26-executor-"><a name="26、为什么使用Executor框架比使用应用创建和管理线程好？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>26、为什么使用Executor框架比使用应用创建和管理线程好？</h3><ol>
+<li>为什么要使用Executor线程池框架 </li><li><p>每次执行任务创建线程 new Thread()比较消耗性能，创建一个线程是比较耗时、耗资源的。 </p>
+</li><li><p>调用 new Thread()创建的线程缺乏管理，被称为野线程，而且可以无限制的创建，线程之间的相互竞争会导致过多占用系统资源而导致系统瘫痪，还有线程之间的频繁交替也会消耗很多系统资源。 </p>
+</li><li><p>直接使用new Thread() 启动的线程不利于扩展，比如定时执行、定期执行、定时定期执行、线程中断等都不便实现。</p>
+</li></ol>
+<p>使用Executor线程池框架的优点 </p>
+<ol>
+<li><p>能复用已存在并空闲的线程从而减少线程对象的创建从而减少了消亡线程的开销。 </p>
+</li><li><p>可有效控制最大并发线程数，提高系统资源使用率，同时避免过多资源竞争。 </p>
+</li><li><p>框架中已经有定时、定期、单线程、并发数控制等功能。 </p>
+</li></ol>
+<p>综上所述使用线程池框架Executor能更好的管理线程、提供系统资源使用率。</p>
+<h3 id="h3-27-java-"><a name="27、java中有几种方法可以实现一个线程？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>27、java中有几种方法可以实现一个线程？</h3><p>继承 Thread 类</p>
+<p>实现 Runnable 接口</p>
+<p>实现 Callable 接口，需要实现的是 call() 方法</p>
+<h3 id="h3-28-"><a name="28、如何停止一个正在运行的线程？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>28、如何停止一个正在运行的线程？</h3><p>使用共享变量的方式<br>在这种方式中，之所以引入共享变量，是因为该变量可以被多个执行相同任务的线程用来作为是否中断的信号，通知中断线程的执行。</p>
+<p>使用interrupt方法终止线程<br>如果一个线程由于等待某些事件的发生而被阻塞，又该怎样停止该线程呢？这种情况经常会发生，比如当一个线程由于需要等候键盘输入而被阻塞，或者调用Thread.join()方法，或者Thread.sleep()方法，在网络中调用ServerSocket.accept()方法，或者调用了DatagramSocket.receive()方法时，都有可能导致线程阻塞，使线程处于处于不可运行状态时，即使主程序中将该线程的共享变量设置为true，但该线程此时根本无法检查循环标志，当然也就无法立即中断。这里我们给出的建议是，不要使用stop()方法，而是使用Thread提供的interrupt()方法，因为该方法虽然不会中断一个正在运行的线程，但是它可以使一个被阻塞的线程抛出一个中断异常，从而使线程提前结束阻塞状态，退出堵塞代码。</p>
+<h3 id="h3-29-notify-notifyall-"><a name="29、notify()和notifyAll()有什么区别？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>29、notify()和notifyAll()有什么区别？</h3><p>当一个线程进入wait之后，就必须等其他线程notify/notifyall,使用notifyall,可以唤醒所有处于wait状态的线程，使其重新进入锁的争夺队列中，而notify只能唤醒一个。</p>
+<p>如果没把握，建议notifyAll，防止notigy因为信号丢失而造成程序异常。</p>
+<h3 id="h3-30-daemon-"><a name="30、什么是Daemon线程？它有什么意义？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>30、什么是Daemon线程？它有什么意义？</h3><p>所谓后台(daemon)线程，是指在程序运行的时候在后台提供一种通用服务的线程，并且这个线程并不属于程序中不可或缺的部分。因此，当所有的非后台线程结束时，程序也就终止了，同时会杀死进程中的所有后台线程。</p>
+<p>反过来说， 只要有任何非后台线程还在运行，程序就不会终止。必须在线程启动之前调用setDaemon()方法，才能把它设置为后台线程。注意：后台进程在不执行finally子句的情况下就会终止其run()方法。</p>
+<p>比如：JVM的垃圾回收线程就是Daemon线程，Finalizer也是守护线程。</p>
+<h3 id="h3-31-java-"><a name="31、java如何实现多线程之间的通讯和协作？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>31、java如何实现多线程之间的通讯和协作？</h3><p>中断和共享变量</p>
+<h3 id="h3-32-reentrantlock-"><a name="32、什么是可重入锁（ReentrantLock）？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>32、什么是可重入锁（ReentrantLock）？</h3><p>举例来说明锁的可重入性</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">UnReentrant</span><span class="pun">{</span></code></li><li class="L1"><code class="lang-java"><span class="pln">    </span><span class="typ">Lock</span><span class="pln"> lock </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Lock</span><span class="pun">();</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> outer</span><span class="pun">(){</span></code></li><li class="L3"><code class="lang-java"><span class="pln">        lock</span><span class="pun">.</span><span class="pln">lock</span><span class="pun">();</span></code></li><li class="L4"><code class="lang-java"><span class="pln">        inner</span><span class="pun">();</span></code></li><li class="L5"><code class="lang-java"><span class="pln">        lock</span><span class="pun">.</span><span class="pln">unlock</span><span class="pun">();</span></code></li><li class="L6"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li><li class="L7"><code class="lang-java"><span class="pln">    </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> inner</span><span class="pun">(){</span></code></li><li class="L8"><code class="lang-java"><span class="pln">        lock</span><span class="pun">.</span><span class="pln">lock</span><span class="pun">();</span></code></li><li class="L9"><code class="lang-java"><span class="pln">        </span><span class="com">//do something</span></code></li><li class="L0"><code class="lang-java"><span class="pln">        lock</span><span class="pun">.</span><span class="pln">unlock</span><span class="pun">();</span></code></li><li class="L1"><code class="lang-java"><span class="pln">    </span><span class="pun">}</span></code></li><li class="L2"><code class="lang-java"><span class="pun">}</span></code></li></ol></pre>
+<p>outer中调用了inner，outer先锁住了lock，这样inner就不能再获取lock。其实调用outer的线程已经获取了lock锁，但是不能在inner中重复利用已经获取的锁资源，这种锁即称之为 不可重入可重入就意味着：线程可以进入任何一个它已经拥有的锁所同步着的代码块。</p>
+<p>synchronized、ReentrantLock都是可重入的锁，可重入锁相对来说简化了并发编程的开发。</p>
+<h3 id="h3-33-synchronized-"><a name="33、当一个线程进入某个对象的一个synchronized的实例方法后，其它线程是否可进入此对象的其它方法？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>33、当一个线程进入某个对象的一个synchronized的实例方法后，其它线程是否可进入此对象的其它方法？</h3><p>如果其他方法没有synchronized的话，其他线程是可以进入的。</p>
+<p>所以要开放一个线程安全的对象时，得保证每个方法都是线程安全的。</p>
+<h3 id="h3-34-"><a name="34、乐观锁和悲观锁的理解及如何实现，有哪些实现方式？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>34、乐观锁和悲观锁的理解及如何实现，有哪些实现方式？</h3><p>悲观锁：总是假设最坏的情况，每次去拿数据的时候都认为别人会修改，所以每次在拿数据的时候都会上锁，这样别人想拿这个数据就会阻塞直到它拿到锁。传统的关系型数据库里边就用到了很多这种锁机制，比如行锁，表锁等，读锁，写锁等，都是在做操作之前先上锁。再比如Java里面的同步原语synchronized关键字的实现也是悲观锁。</p>
+<p>乐观锁：顾名思义，就是很乐观，每次去拿数据的时候都认为别人不会修改，所以不会上锁，但是在更新的时候会判断一下在此期间别人有没有去更新这个数据，可以使用版本号等机制。乐观锁适用于多读的应用类型，这样可以提高吞吐量，像数据库提供的类似于write_condition机制，其实都是提供的乐观锁。在Java中java.util.concurrent.atomic包下面的原子变量类就是使用了乐观锁的一种实现方式CAS实现的。</p>
+<p>乐观锁的实现方式： </p>
+<p>使用版本标识来确定读到的数据与提交时的数据是否一致。提交后修改版本标识，不一致时可以采取丢弃和再次尝试的策略。 </p>
+<p>java中的Compare and Swap即CAS ，当多个线程尝试使用CAS同时更新同一个变量时，只有其中一个线程能更新变量的值，而其它线程都失败，失败的线程并不会被挂起，而是被告知这次竞争中失败，并可以再次尝试。　CAS 操作中包含三个操作数 —— 需要读写的内存位置（V）、进行比较的预期原值（A）和拟写入的新值(B)。如果内存位置V的值与预期原值A相匹配，那么处理器会自动将该位置值更新为新值B。否则处理器不做任何操作。</p>
+<p>CAS缺点：  </p>
+<p>ABA问题：<br>比如说一个线程one从内存位置V中取出A，这时候另一个线程two也从内存中取出A，并且two进行了一些操作变成了B，然后two又将V位置的数据变成A，这时候线程one进行CAS操作发现内存中仍然是A，然后one操作成功。尽管线程one的CAS操作成功，但可能存在潜藏的问题。从Java1.5开始JDK的atomic包里提供了一个类AtomicStampedReference来解决ABA问题。 </p>
+<p>循环时间长开销大：<br>对于资源竞争严重（线程冲突严重）的情况，CAS自旋的概率会比较大，从而浪费更多的CPU资源，效率低于synchronized。 </p>
+<p>只能保证一个共享变量的原子操作：<br>当对一个共享变量执行操作时，我们可以使用循环CAS的方式来保证原子操作，但是对多个共享变量操作时，循环CAS就无法保证操作的原子性，这个时候就可以用锁。</p>
+<h3 id="h3-35-synchronizedmap-concurrenthashmap-"><a name="35、SynchronizedMap和ConcurrentHashMap有什么区别？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>35、SynchronizedMap和ConcurrentHashMap有什么区别？</h3><p>SynchronizedMap一次锁住整张表来保证线程安全，所以每次只能有一个线程来访为map。</p>
+<p>ConcurrentHashMap使用分段锁来保证在多线程下的性能。ConcurrentHashMap中则是一次锁住一个桶。ConcurrentHashMap默认将hash表分为16个桶，诸如get,put,remove等常用操作只锁当前需要用到的桶。这样，原来只能一个线程进入，现在却能同时有16个写线程执行，并发性能的提升是显而易见的。 </p>
+<p>另外ConcurrentHashMap使用了一种不同的迭代方式。在这种迭代方式中，当iterator被创建后集合再发生改变就不再是抛出ConcurrentModificationException，取而代之的是在改变时new新的数据从而不影响原有的数据 ，iterator完成后再将头指针替换为新的数据 ，这样iterator线程可以使用原来老的数据，而写线程也可以并发的完成改变。</p>
+<h3 id="h3-36-copyonwritearraylist-"><a name="36、CopyOnWriteArrayList可以用于什么应用场景？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>36、CopyOnWriteArrayList可以用于什么应用场景？</h3><p>CopyOnWriteArrayList(免锁容器)的好处之一是当多个迭代器同时遍历和修改这个列表时，不会抛出ConcurrentModificationException。在CopyOnWriteArrayList中，写入将导致创建整个底层数组的副本，而源数组将保留在原地，使得复制的数组在被修改时，读取操作可以安全地执行。</p>
+<p>由于写操作的时候，需要拷贝数组，会消耗内存，如果原数组的内容比较多的情况下，可能导致young gc或者full gc； </p>
+<p>不能用于实时读的场景，像拷贝数组、新增元素都需要时间，所以调用一个set操作后，读取到数据可能还是旧的,虽然CopyOnWriteArrayList 能做到最终一致性,但是还是没法满足实时性要求；</p>
+<p>CopyOnWriteArrayList透露的思想<br>读写分离，读和写分开<br>最终一致性<br>使用另外开辟空间的思路，来解决并发冲突</p>
+<h3 id="h3-37-servlet-"><a name="37、什么叫线程安全？servlet是线程安全吗?" class="reference-link"></a><span class="header-link octicon octicon-link"></span>37、什么叫线程安全？servlet是线程安全吗?</h3><p>线程安全是编程中的术语，指某个函数、函数库在多线程环境中被调用时，能够正确地处理多个线程之间的共享变量，使程序功能正确完成。</p>
+<p>Servlet不是线程安全的，servlet是单实例多线程的，当多个线程同时访问同一个方法，是不能保证共享变量的线程安全性的。 </p>
+<p>Struts2的action是多实例多线程的，是线程安全的，每个请求过来都会new一个新的action分配给这个请求，请求完成后销毁。 </p>
+<p>SpringMVC的Controller是线程安全的吗？不是的，和Servlet类似的处理流程</p>
+<p>Struts2好处是不用考虑线程安全问题；Servlet和SpringMVC需要考虑线程安全问题，但是性能可以提升不用处理太多的gc，可以使用ThreadLocal来处理多线程的问题。</p>
+<h3 id="h3-38-volatile-volatile-"><a name="38、volatile有什么用？能否用一句话说明下volatile的应用场景？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>38、volatile有什么用？能否用一句话说明下volatile的应用场景？</h3><p>volatile保证内存可见性和禁止指令重排。</p>
+<p>volatile用于多线程环境下的单次操作(单次读或者单次写)。</p>
+<h3 id="h3-39-"><a name="39、为什么代码会重排序？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>39、为什么代码会重排序？</h3><p>在执行程序时，为了提供性能，处理器和编译器常常会对指令进行重排序，但是不能随意重排序，不是你想怎么排序就怎么排序，它需要满足以下两个条件：</p>
+<p>在单线程环境下不能改变程序运行的结果；</p>
+<p>存在数据依赖关系的不允许重排序</p>
+<p>需要注意的是：重排序不会影响单线程环境的执行结果，但是会破坏多线程的执行语义。</p>
+<h3 id="h3-40-java-wait-sleep-"><a name="40、在java中wait和sleep方法的不同？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>40、在java中wait和sleep方法的不同？</h3><p>最大的不同是在等待时wait会释放锁，而sleep一直持有锁。Wait通常被用于线程间交互，sleep通常被用于暂停执行。</p>
+<p>直接了解的深入一点吧：<br>在Java中线程的状态一共被分成6种：</p>
+<h4 id="h4--new"><a name="初始态：NEW" class="reference-link"></a><span class="header-link octicon octicon-link"></span>初始态：NEW</h4><p>创建一个Thread对象，但还未调用start()启动线程时，线程处于初始态。</p>
+<h4 id="h4--runnable"><a name="运行态：RUNNABLE" class="reference-link"></a><span class="header-link octicon octicon-link"></span>运行态：RUNNABLE</h4><p>在Java中，运行态包括就绪态和运行态。 </p>
+<p>就绪态该状态下的线程已经获得执行所需的所有资源，只要CPU分配执行权就能运行。所有就绪态的线程存放在就绪队列中。 </p>
+<p>运行态获得CPU执行权，正在执行的线程。由于一个CPU同一时刻只能执行一条线程，因此每个CPU每个时刻只有一条运行态的线程。</p>
+<h4 id="h4-u963Bu585Eu6001"><a name="阻塞态" class="reference-link"></a><span class="header-link octicon octicon-link"></span>阻塞态</h4><p>当一条正在执行的线程请求某一资源失败时，就会进入阻塞态。而在Java中，阻塞态专指请求锁失败时进入的状态。由一个阻塞队列存放所有阻塞态的线程。处于阻塞态的线程会不断请求资源，一旦请求成功，就会进入就绪队列，等待执行。PS：锁、IO、Socket等都资源。</p>
+<h4 id="h4-u7B49u5F85u6001"><a name="等待态" class="reference-link"></a><span class="header-link octicon octicon-link"></span>等待态</h4><p>当前线程中调用wait、join、park函数时，当前线程就会进入等待态。也有一个等待队列存放所有等待态的线程。线程处于等待态表示它需要等待其他线程的指示才能继续运行。进入等待态的线程会释放CPU执行权，并释放资源（如：锁）</p>
+<h4 id="h4-u8D85u65F6u7B49u5F85u6001"><a name="超时等待态" class="reference-link"></a><span class="header-link octicon octicon-link"></span>超时等待态</h4><p>当运行中的线程调用sleep(time)、wait、join、parkNanos、parkUntil时，就会进入该状态；它和等待态一样，并不是因为请求不到资源，而是主动进入，并且进入后需要其他线程唤醒；进入该状态后释放CPU执行权 和 占有的资源。与等待态的区别：到了超时时间后自动进入阻塞队列，开始竞争锁。</p>
+<h4 id="h4-u7EC8u6B62u6001"><a name="终止态" class="reference-link"></a><span class="header-link octicon octicon-link"></span>终止态</h4><p>线程执行结束后的状态。</p>
+<p>注意：</p>
+<p>wait()方法会释放CPU执行权 和 占有的锁。</p>
+<p>sleep(long)方法仅释放CPU使用权，锁仍然占用；线程被放入超时等待队列，与yield相比，它会使线程较长时间得不到运行。</p>
+<p>yield()方法仅释放CPU执行权，锁仍然占用，线程会被放入就绪队列，会在短时间内再次执行。</p>
+<p>wait和notify必须配套使用，即必须使用同一把锁调用；</p>
+<p>wait和notify必须放在一个同步块中调用wait和notify的对象必须是他们所处同步块的锁对象。</p>
+<h3 id="h3-41-"><a name="41、一个线程运行时发生异常会怎样？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>41、一个线程运行时发生异常会怎样？</h3><p>如果异常没有被捕获该线程将会停止执行。Thread.UncaughtExceptionHandler是用于处理未捕获异常造成线程突然中断情况的一个内嵌接口。当一个未捕获异常将造成线程中断的时候JVM会使用Thread.getUncaughtExceptionHandler()来查询线程的UncaughtExceptionHandler并将线程和异常作为参数传递给handler的uncaughtException()方法进行处理。</p>
+<h3 id="h3-42-"><a name="42、如何在两个线程间共享数据？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>42、如何在两个线程间共享数据？</h3><p>在两个线程间共享变量即可实现共享。 </p>
+<p>一般来说，共享变量要求变量本身是线程安全的，然后在线程内使用的时候，如果有对共享变量的复合操作，那么也得保证复合操作的线程安全性。</p>
+<h3 id="h3-43-java-notify-notifyall-"><a name="43、Java中notify 和 notifyAll有什么区别？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>43、Java中notify 和 notifyAll有什么区别？</h3><p>notify() 方法不能唤醒某个具体的线程，所以只有一个线程在等待的时候它才有用武之地。而notifyAll()唤醒所有线程并允许他们争夺锁确保了至少有一个线程能继续运行。</p>
+<h3 id="h3-44-wait-notify-notifyall-thread-"><a name="44、为什么wait, notify 和 notifyAll这些方法不在thread类里面？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>44、为什么wait, notify 和 notifyAll这些方法不在thread类里面？</h3><p>一个很明显的原因是JAVA提供的锁是对象级的而不是线程级的，每个对象都有锁，通过线程获得。由于wait，notify和notifyAll都是锁级别的操作，所以把他们定义在Object类中因为锁属于对象。</p>
+<h3 id="h3-45-threadlocal-"><a name="45、什么是ThreadLocal变量？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>45、什么是ThreadLocal变量？</h3><p>ThreadLocal是Java里一种特殊的变量。每个线程都有一个ThreadLocal就是每个线程都拥有了自己独立的一个变量，竞争条件被彻底消除了。它是为创建代价高昂的对象获取线程安全的好方法，比如你可以用ThreadLocal让SimpleDateFormat变成线程安全的，因为那个类创建代价高昂且每次调用都需要创建不同的实例所以不值得在局部范围使用它，如果为每个线程提供一个自己独有的变量拷贝，将大大提高效率。首先，通过复用减少了代价高昂的对象的创建个数。其次，你在没有使用高代价的同步或者不变性的情况下获得了线程安全。</p>
+<h3 id="h3-46-java-interrupted-isinterrupted-"><a name="46、Java中interrupted 和 isInterrupted方法的区别？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>46、Java中interrupted 和 isInterrupted方法的区别？</h3><p>interrupt<br>interrupt方法用于中断线程。调用该方法的线程的状态为将被置为”中断”状态。<br>注意：线程中断仅仅是置线程的中断状态位，不会停止线程。需要用户自己去监视线程的状态为并做处理。支持线程中断的方法（也就是线程中断后会抛出interruptedException的方法）就是在监视线程的中断状态，一旦线程的中断状态被置为“中断状态”，就会抛出中断异常。</p>
+<p>interrupted<br>查询当前线程的中断状态，并且清除原状态。如果一个线程被中断了，第一次调用interrupted则返回true，第二次和后面的就返回false了。</p>
+<p>isInterrupted<br>仅仅是查询当前线程的中断状态</p>
+<h3 id="h3-47-wait-notify-"><a name="47、为什么wait和notify方法要在同步块中调用？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>47、为什么wait和notify方法要在同步块中调用？</h3><p>Java API强制要求这样做，如果你不这么做，你的代码会抛出IllegalMonitorStateException异常。还有一个原因是为了避免wait和notify之间产生竞态条件。</p>
+<h3 id="h3-48-"><a name="48、为什么你应该在循环中检查等待条件?" class="reference-link"></a><span class="header-link octicon octicon-link"></span>48、为什么你应该在循环中检查等待条件?</h3><p>处于等待状态的线程可能会收到错误警报和伪唤醒，如果不在循环中检查等待条件，程序就会在没有满足结束条件的情况下退出。</p>
+<h3 id="h3-49-java-"><a name="49、Java中的同步集合与并发集合有什么区别？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>49、Java中的同步集合与并发集合有什么区别？</h3><p>同步集合与并发集合都为多线程和并发提供了合适的线程安全的集合，不过并发集合的可扩展性更高。在Java1.5之前程序员们只有同步集合来用且在多线程并发的时候会导致争用，阻碍了系统的扩展性。Java5介绍了并发集合像ConcurrentHashMap，不仅提供线程安全还用锁分离和内部分区等现代技术提高了可扩展性。</p>
+<h3 id="h3-50-"><a name="50、什么是线程池？ 为什么要使用它？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>50、什么是线程池？ 为什么要使用它？</h3><p>创建线程要花费昂贵的资源和时间，如果任务来了才创建线程那么响应时间会变长，而且一个进程能创建的线程数有限。为了避免这些问题，在程序启动的时候就创建若干线程来响应处理，它们被称为线程池，里面的线程叫工作线程。从JDK1.5开始，Java API提供了Executor框架让你可以创建不同的线程池。</p>
+<h3 id="h3-51-"><a name="51、怎么检测一个线程是否拥有锁？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>51、怎么检测一个线程是否拥有锁？</h3><p>在java.lang.Thread中有一个方法叫holdsLock()，它返回true如果当且仅当当前线程拥有某个具体对象的锁。</p>
+<h3 id="h3-52-java-"><a name="52、你如何在Java中获取线程堆栈？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>52、你如何在Java中获取线程堆栈？</h3><p>kill -3 [java pid]<br>不会在当前终端输出，它会输出到代码执行的或指定的地方去。比如，kill -3 tomcat pid, 输出堆栈到log目录下。</p>
+<p>Jstack [java pid]<br>这个比较简单，在当前终端显示，也可以重定向到指定文件中。<br>-JvisualVM：Thread Dump<br>不做说明，打开JvisualVM后，都是界面操作，过程还是很简单的。</p>
+<h3 id="h3-53-jvm-"><a name="53、JVM中哪个参数是用来控制线程的栈堆栈小的?" class="reference-link"></a><span class="header-link octicon octicon-link"></span>53、JVM中哪个参数是用来控制线程的栈堆栈小的?</h3><p>-Xss 每个线程的栈大小</p>
+<h3 id="h3-54-thread-yield-"><a name="54、Thread类中的yield方法有什么作用？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>54、Thread类中的yield方法有什么作用？</h3><p>使当前线程从执行状态（运行状态）变为可执行态（就绪状态）。</p>
+<p>当前线程到了就绪状态，那么接下来哪个线程会从就绪状态变成执行状态呢？可能是当前线程，也可能是其他线程，看系统的分配了。</p>
+<h3 id="h3-55-java-concurrenthashmap-"><a name="55、Java中ConcurrentHashMap的并发度是什么？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>55、Java中ConcurrentHashMap的并发度是什么？</h3><p>ConcurrentHashMap把实际map划分成若干部分来实现它的可扩展性和线程安全。这种划分是使用并发度获得的，它是ConcurrentHashMap类构造函数的一个可选参数，默认值为16，这样在多线程情况下就能避免争用。</p>
+<p>在JDK8后，它摒弃了Segment（锁段）的概念，而是启用了一种全新的方式实现,利用CAS算法。同时加入了更多的辅助变量来提高并发度，具体内容还是查看源码吧。</p>
+<h3 id="h3-56-java-semaphore-"><a name="56、Java中Semaphore是什么？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>56、Java中Semaphore是什么？</h3><p>Java中的Semaphore是一种新的同步类，它是一个计数信号。从概念上讲，从概念上讲，信号量维护了一个许可集合。如有必要，在许可可用前会阻塞每一个 acquire()，然后再获取该许可。每个 release()添加一个许可，从而可能释放一个正在阻塞的获取者。但是，不使用实际的许可对象，Semaphore只对可用许可的号码进行计数，并采取相应的行动。信号量常常用于多线程的代码中，比如数据库连接池。</p>
+<h3 id="h3-57-java-submit-execute-"><a name="57、Java线程池中submit() 和 execute()方法有什么区别？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>57、Java线程池中submit() 和 execute()方法有什么区别？</h3><p>两个方法都可以向线程池提交任务，execute()方法的返回类型是void，它定义在Executor接口中。</p>
+<p>而submit()方法可以返回持有计算结果的Future对象，它定义在ExecutorService接口中，它扩展了Executor接口，其它线程池类像ThreadPoolExecutor和ScheduledThreadPoolExecutor都有这些方法。</p>
+<h3 id="h3-58-"><a name="58、什么是阻塞式方法？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>58、什么是阻塞式方法？</h3><p>阻塞式方法是指程序会一直等待该方法完成期间不做其他事情，ServerSocket的accept()方法就是一直等待客户端连接。这里的阻塞是指调用结果返回之前，当前线程会被挂起，直到得到结果之后才会返回。此外，还有异步和非阻塞式方法在任务完成前就返回。</p>
+<h3 id="h3-59-java-readwritelock-"><a name="59、Java中的ReadWriteLock是什么？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>59、Java中的ReadWriteLock是什么？</h3><p>读写锁是用来提升并发程序性能的锁分离技术的成果。</p>
+<h3 id="h3-60-volatile-atomic-"><a name="60、volatile 变量和 atomic 变量有什么不同？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>60、volatile 变量和 atomic 变量有什么不同？</h3><p>Volatile变量可以确保先行关系，即写操作会发生在后续的读操作之前, 但它并不能保证原子性。例如用volatile修饰count变量那么 count++ 操作就不是原子性的。</p>
+<p>而AtomicInteger类提供的atomic方法可以让这种操作具有原子性如getAndIncrement()方法会原子性的进行增量操作把当前值加一，其它数据类型和引用变量也可以进行相似操作。</p>
+<h3 id="h3-61-thread-run-"><a name="61、可以直接调用Thread类的run ()方法么？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>61、可以直接调用Thread类的run ()方法么？</h3><p>当然可以。但是如果我们调用了Thread的run()方法，它的行为就会和普通的方法一样，会在当前线程中执行。为了在新的线程中执行我们的代码，必须使用Thread.start()方法。</p>
+<h3 id="h3-62-"><a name="62、如何让正在运行的线程暂停一段时间？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>62、如何让正在运行的线程暂停一段时间？</h3><p>我们可以使用Thread类的Sleep()方法让线程暂停一段时间。需要注意的是，这并不会让线程终止，一旦从休眠中唤醒线程，线程的状态将会被改变为Runnable，并且根据线程调度，它将得到执行。</p>
+<h3 id="h3-63-"><a name="63、你对线程优先级的理解是什么？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>63、你对线程优先级的理解是什么？</h3><p>每一个线程都是有优先级的，一般来说，高优先级的线程在运行时会具有优先权，但这依赖于线程调度的实现，这个实现是和操作系统相关的(OS dependent)。我们可以定义线程的优先级，但是这并不能保证高优先级的线程会在低优先级的线程前执行。线程优先级是一个int变量(从1-10)，1代表最低优先级，10代表最高优先级。</p>
+<p>java的线程优先级调度会委托给操作系统去处理，所以与具体的操作系统优先级有关，如非特别需要，一般无需设置线程优先级。</p>
+<h3 id="h3-64-thread-scheduler-time-slicing-"><a name="64、什么是线程调度器(Thread Scheduler)和时间分片(Time Slicing )？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>64、什么是线程调度器(Thread Scheduler)和时间分片(Time Slicing )？</h3><p>线程调度器是一个操作系统服务，它负责为Runnable状态的线程分配CPU时间。一旦我们创建一个线程并启动它，它的执行便依赖于线程调度器的实现。<br>同上一个问题，线程调度并不受到Java虚拟机控制，所以由应用程序来控制它是更好的选择（也就是说不要让你的程序依赖于线程的优先级）。</p>
+<p>时间分片是指将可用的CPU时间分配给可用的Runnable线程的过程。分配CPU时间可以基于线程优先级或者线程等待的时间。</p>
+<h3 id="h3-65-main-java-"><a name="65、你如何确保main()方法所在的线程是Java 程序最后结束的线程？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>65、你如何确保main()方法所在的线程是Java 程序最后结束的线程？</h3><p>我们可以使用Thread类的join()方法来确保所有程序创建的线程在main()方法退出前结束。</p>
+<h3 id="h3-66-"><a name="66、线程之间是如何通信的？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>66、线程之间是如何通信的？</h3><p>当线程间是可以共享资源时，线程间通信是协调它们的重要的手段。Object类中wait() otify() otifyAll()方法可以用于线程间通信关于资源的锁的状态。</p>
+<h3 id="h3-67-wait-notify-notifyall-object-"><a name="67、为什么线程通信的方法wait(), notify()和notifyAll()被定义在Object 类里？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>67、为什么线程通信的方法wait(), notify()和notifyAll()被定义在Object 类里？</h3><p>Java的每个对象中都有一个锁(monitor，也可以成为监视器) 并且wait()，notify()等方法用于等待对象的锁或者通知其他线程对象的监视器可用。在Java的线程中并没有可供任何对象使用的锁和同步器。这就是为什么这些方法是Object类的一部分，这样Java的每一个类都有用于线程间通信的基本方法。</p>
+<h3 id="h3-68-wait-notify-notifyall-68-wait-notify-notifyall-"><a name="68、为什么wait(), notify()和notifyAll ()必须在同步方法或者同步块中被调用？68、为什么wait(), notify()和notifyAll ()必须在同步方法或者同步块中被调用？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>68、为什么wait(), notify()和notifyAll ()必须在同步方法或者同步块中被调用？68、为什么wait(), notify()和notifyAll ()必须在同步方法或者同步块中被调用？</h3><p>当一个线程需要调用对象的wait()方法的时候，这个线程必须拥有该对象的锁，接着它就会释放这个对象锁并进入等待状态直到其他线程调用这个对象上的notify()方法。同样的，当一个线程需要调用对象的notify()方法时，它会释放这个对象的锁，以便其他在等待的线程就可以得到这个对象锁。由于所有的这些方法都需要线程持有对象的锁，这样就只能通过同步来实现，所以他们只能在同步方法或者同步块中被调用。</p>
+<h3 id="h3-69-thread-sleep-yield-69-thread-sleep-yield-"><a name="69、为什么Thread类的sleep()和yield ()方法是静态的？69、为什么Thread类的sleep()和yield ()方法是静态的？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>69、为什么Thread类的sleep()和yield ()方法是静态的？69、为什么Thread类的sleep()和yield ()方法是静态的？</h3><p>Thread类的sleep()和yield()方法将在当前正在执行的线程上运行。所以在其他处于等待状态的线程上调用这些方法是没有意义的。这就是为什么这些方法是静态的。它们可以在当前正在执行的线程中工作，并避免程序员错误的认为可以在其他非运行线程调用这些方法。</p>
+<h3 id="h3-70-70-"><a name="70、如何确保线程安全？70、如何确保线程安全？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>70、如何确保线程安全？70、如何确保线程安全？</h3><p>在Java中可以有很多方法来保证线程安全——同步，使用原子类(atomic concurrent classes)，实现并发锁，使用volatile关键字，使用不变类和线程安全类。</p>
+<h3 id="h3-71-71-"><a name="71、同步方法和同步块，哪个是更好的选择？71、同步方法和同步块，哪个是更好的选择？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>71、同步方法和同步块，哪个是更好的选择？71、同步方法和同步块，哪个是更好的选择？</h3><p>同步块是更好的选择，因为它不会锁住整个对象（当然你也可以让它锁住整个对象）。同步方法会锁住整个对象，哪怕这个类中有多个不相关联的同步块，这通常会导致他们停止执行并需要等待获得这个对象上的锁。</p>
+<p>同步块更要符合开放调用的原则，只在需要锁住的代码块锁住相应的对象，这样从侧面来说也可以避免死锁。</p>
+<h3 id="h3-72-72-"><a name="72、如何创建守护线程72、如何创建守护线程？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>72、如何创建守护线程72、如何创建守护线程？</h3><p>使用Thread类的setDaemon(true)方法可以将线程设置为守护线程，需要注意的是，需要在调用start()方法前调用这个方法，否则会抛出IllegalThreadStateException异常。</p>
+<h3 id="h3-73-java-timer-73-java-timer-"><a name="73、什么是Java Timer 类？如何创建一个有特定时间间隔的任务？73、什么是Java Timer 类？如何创建一个有特定时间间隔的任务？" class="reference-link"></a><span class="header-link octicon octicon-link"></span>73、什么是Java Timer 类？如何创建一个有特定时间间隔的任务？73、什么是Java Timer 类？如何创建一个有特定时间间隔的任务？</h3><p>java.util.Timer是一个工具类，可以用于安排一个线程在未来的某个特定时间执行。Timer类可以用安排一次性任务或者周期任务。 </p>
+<p>java.util.TimerTask是一个实现了Runnable接口的抽象类，我们需要去继承这个类来创建我们自己的定时任务并使用Timer去安排它的执行。 </p>
+<p>目前有开源的Qurtz可以用来创建定时任务。</p>
+</div>
+                                      </div>
+                                   <div class="layui-row text-center layui-mt20">
+                                           
+                                           <div class="layui-btn layui-btn-danger" onclick="emotion()"><i class="fa fa-thumbs-o-up" id="za"> 赞 (115)</i></div>
+                                       </div>
+                                   <div class="layui-row layui-mt20">
+                                         <blockquote class="layui-elem-quote text-center " style="border: none;">
+                                                  <span class="layui-show-md-inline-block layui-hide"  >文章出处：书生个人博客</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                   <span class="layui-show-md-inline-block layui-hide" id="artiurl"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                  <span>转载注明下哦！o(≧v≦)o~~</span>
+                                           </blockquote>
+                                    </div>
+                                 <div class="layui-row layui-mt20">
+                                         <p class="blog-tags">
+                                              标签：
+                                                       <span >多线程</span><span >面试</span>
+
+                                               </p>
+                                 </div>
+                                 <div class="layui-row layui-col-space20 layui-mt20 article-page-similar">
+                                           <p>相似文章：</p>
+                                            <hr>
+                                             <ul>
+                                                    <li><a href="1550247872963.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;看源码深入了解JDK动态代理</a> </li>
+                                                    <li><a href="1547605669187.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;JDK8特性二之Streams</a> </li>
+                                                    <li><a href="1559282468236.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Thread线程start方法的深入解析:模板设计模式的使用</a> </li>
+                                                    <li><a href="1549036487797.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Java面试宝典之并发编程73道面试题及答案</a> </li>
+                                                    <li><a href="1565592757497.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Java的字节流转成字符流</a> </li>
+                                                    <li><a href="1560232575185.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;解决Class bytes found but defineClass()failed for错误和修改eclipse自带Ant运行的jdk版本</a> </li>
+                                                    <li><a href="1561615333747.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;线程间的通信：wait,notify,notifyAll方法的使用与详解</a> </li>
+                                                    <li><a href="1567992407132.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;使用Hyperic-Sigar获取服务器设备信息（监控服务器）</a> </li>
+                                                    <li><a href="1548170146951.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;多线程基础知识总结与名词解释</a> </li>
+                                                    <li><a href="1548814993331.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp; nested exception is java.lang.RuntimeException: java.lang.NullPointerException的修复</a> </li>
+                                              </ul>
+                                    </div>
+                               </div>
+                      <script>
+                          $("#artiurl").html("文章地址："+location.href);
+
+
+                      </script>
+
+                       </div></div>
+
+                </div>
+
+               <div  >
+<div id="cta" class="layui-collapse layui-panel layui-article">
+       <div class="layui-colla-item">
+               <div class="layui-colla-content layui-show layui-article comment">
+                       <fieldset class="layui-elem-field layui-field-title">
+                               <legend>随便说两句</legend>
+                               <div class="layui-field-box">
+                                       <label for="comment-input"></label>
+                                           <textarea id="comment-input" style="display: none;"></textarea>
+                                  </div>
+                               
+                               <a class="layui-btn layui-btn-sm layui-btn-danger" style="float: right;width: 120px;"  href="#"  onclick="javascript:beforeLogin()" id="beforeLogin"><i class="fa fa-qq"></i> 请先登录</a>
+                           </fieldset>
+                   </div>
+           </div>
+    </div>
+</div>
+<script>
+    function beforeLogin() {
+        var url=window.location.href;
+        window.open('/api/qq?url='+url,'_self');
+    }
+
+</script>
+
+               <blockquote id="cccc" class="layui-elem-quote layui-mt20" style="border-left: 5px solid #F44336;"><span style="color:#FF5722;">遵守国家法律法规，请勿回复无意义内容，请不要回复嵌套过多的楼层！</span></blockquote>
+               <div class="comment-list">
+
+</div>
+
+
+
+
+           </div>
+               <!--<div class="layui-col-md3" id="article-app">-->
+                       <!--<div id="affix-side">-->
+                           <!--<div th:replace="frontend/fragment/callme :: callme" ></div>-->
+                           <!--&lt;!&ndash;<div class="layui-tab layui-tab-card layui-master-recommend" >&ndash;&gt;-->
+                               <!--&lt;!&ndash;<div class="layui-tab-content select-none">&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<h3 class="tit">时光悄然</h3>&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<div class="layui-inline" id="test22"></div>&ndash;&gt;-->
+                               <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--<div th:replace ="frontend/fragment/guidang" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/imageinfo" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/cate" ></div>-->
+                           <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相关文章'})" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/image :: image"></div>-->
+                           <!--</div>-->
+                   <!--</div>-->
+           </div>
+    </div>
+
+
+    <footer >
+    <div class="footer"><p>
+	<span><strong>友情链接:</strong><strong>&nbsp;</strong> &nbsp;&nbsp;</span><a class="ke-insertfile" href="https://www.layui.com/" target="_blank">layui</a><span>&nbsp;&nbsp;</span>&nbsp;<a class="ke-insertfile" href="http://www.shuyong.net/" target="_blank">舍力博客</a>&nbsp;&nbsp;<a class="ke-insertfile" href="javascript:;" id="friend">申请友链</a> 
+</p>
+<p>
+	2018-2019 nonelonely.com | 网站备案号：<a class="ke-insertfile" href="http://www.miitbeian.gov.cn/" target="_blank">闽ICP备18026034号-1</a> 
+</p>
+<p>
+	<br />
+</p></div>
+
+    <div class="layui-hide-xs" style="position: fixed;left: 100px; bottom: 100px; z-index: 999999;" id="robot" data-method="robot">
+        <div class="layui-layer-tips" ><div id="" class="layui-layer-content" style="background-color: rgb(114, 193, 236);width: 150px">Hi 我是小码，可以点击我问我笑话，天气，智能聊天，故事，查询备案等等。<i class="layui-layer-TipsG layui-layer-TipsT" style="border-right-color:rgb(114, 193, 236);"></i></div><span class="layui-layer-setwin"></span></div>
+        <a href="#" ><img src="../static/assets/img/robot.png" width="100px" alt="Hi 我是小码！" >
+        </a>
+    </div>
+
+
+</footer>
+<script src="../static/plugins/layui/layui.js"></script>
+
+<script>
+    layui.use([ 'layer'], function () {
+        var layer = layui.layer;
+        var $ = layui.jquery;
+        //触发事件
+        var active = {
+            robot: function(){
+                var that = this;
+                $("#robot").css('display','none');
+                //多窗口模式，层叠置顶
+                layer.open({
+                    type: 2,
+                    title:'智能小码',
+                    area: ['600px', '480px'],
+                    content: '/webrobot',
+                    end:function () {
+                        $("#robot").css('display','');
+                    }
+                });
+            },
+            friend: function () {
+                layer.open({
+                    title: '申请友链'
+                    ,content: '发送邮件至：admin@nonelonely.com<br>' +
+                        '邮件标题为：申请书生个人博客友链'
+                });
+            }
+        };
+
+        $('#robot').on('click', function(){
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+        $('#friend').on('click', function(){
+            var othis = $(this), method = 'friend';
+            active[method] ? active[method].call(this, othis) : '';
+        });
+
+
+        // var la;
+            // la = layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot',
+            //     {
+            //         tips: [1, '#3595CC'],
+            //         end: function () {
+            //             if($("#robot").is(":visible")) {
+            //                 la = layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot',
+            //                     {tips: [1, '#3595CC']})
+            //             }
+            //         }
+            //     });
+            // window.setInterval(" if($('#robot').is(':visible')) {la=layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot', { tips: [1, '#3595CC'],end : function(){ la=layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot', {tips: [1, '#3595CC']});}});}", 10000*6 );
+
+    });
+</script>
+
+</div>
+
+
+
+
+<script>
+    var articleId=1549036487797;
+    var su=null ;
+    $(function(){
+        $(".comment-list").addCommentList({data:[],add:""});
+        $("#comment").click(function(){
+            var obj = new Object();
+            obj.img="images/img.html";
+            obj.replyName="匿名";
+            obj.content=$("#content").val();
+            obj.browse="深圳";
+            obj.osname="win10";
+            obj.replyBody="";
+            $(".comment-list").addCommentList({data:[],add:obj});
+        });
+    })
+
+    var layer;
+    var layedit;
+    var index;
+    layui.use(['layedit', 'laypage', 'laydate', 'element','layer'], function () {
+        layer = layui.layer;
+        var element = layui.element;
+        layedit = layui.layedit;
+        // var laydate = layui.laydate;
+        // //不出现底部栏
+        // laydate.render({
+        //     elem: '#test22'
+        //     ,showBottom: false
+        //     ,position: 'static'
+        //     ,calendar: true
+        //     ,theme: '#a7a4a4'
+        // });
+
+       index= layedit.build('comment-input', {
+            tool: ['face', '|', 'left', 'center', 'right', 'link', 'unlink']
+            , height: 150
+        });
+        //相册
+        if($(window).width() > 750){
+            layer.photos({
+                photos: '.photos'
+                ,zIndex: 9999999999
+                ,anim: -1
+            });
+        } else {
+            $('body').on('click', '.photos img', function(){
+                window.open(this.src);
+            });
+        }
+
+            layer.open({
+                title: '目录',
+                type: 1,
+                offset: 'r',
+                shade: 0,
+                closeBtn: 2,
+                content: $(".markdown-toc")
+            });
+
+        // $('#affix-side').hcSticky({
+        //     stickTo: '#blog-body'
+        // });
+
+    });
+    function submit() {
+
+        var osname = detectOS();
+
+        var obj = new Object();
+        if (su) {
+           obj.img = su.avatar;
+           obj.replyName = su.nickname;
+        }
+        obj.content=layedit.getContent(index);
+        obj.browse=navigator.appName;
+        obj.osname=osname;
+        obj.time=new Date();
+        obj.replyBody="";
+
+        obj.comment= obj.content;
+        if(!obj.comment){
+            layer.msg('不能为空');
+            return false;
+        }
+        var indexc = layer.load();
+        obj.userId=su.id;
+        obj.user=su.id;
+        obj.articleId=articleId;
+        obj.enable=true;
+        obj.parentId=0;
+
+         obj.time =new Date();
+
+
+
+
+        $.post("/token/comment/sub",obj, function (resp) {
+            layer.close(indexc);
+            $(window.frames["LAY_layedit_1"].document).find("body").html('');
+            layer.msg(resp.message);
+            setTimeout(function () {
+                if (resp.code === 200) {
+                    $(".comment-list").addCommentList({data:[],add:obj});
+                }
+            }, 1000);
+        });
+
+    };
+
+    function emotion() {
+        var uid = "guest";
+        if (BMY.getCookie("article::" + 1549036487797 + "::" + uid) != null) {
+            layer.msg("近期您已经点过赞，感谢您的支持！");
+        } else {
+            $.post("/article/approve", {articleId: 1549036487797}, function (json) {
+                if (json.code === BMY.status.ok) {
+                    BMY.setCookie("article::" + 1549036487797+ "::" + uid, "noteblog system");
+                  //  that.approve++;
+                    $('#za').html('赞 (116)')
+                    layer.msg("谢谢您的支持！");
+                }
+            })
+        }
+    }
+    function money  (alipay, wechat) {
+        alipay = "#\/static\/assets\/img\/wechat.png";
+        wechat="#\/static\/assets\/img\/alipay.png";
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['640px', '300px'],
+            shadeClose: true,
+            skin: 'text-center',
+            content:
+                '<div class="layui-fluid">' +
+                '   <div class="layui-row layui-mt20">' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + wechat + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">微信</p>' +
+                '       </div>' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + alipay + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">支付宝</p>' +
+                '       </div>' +
+                '   </div> ' +
+                '</div>'
+        });
+    }
+
+
+
+
+</script>
+<script src="../static/assets/js/jquery.comment.js" ></script>
+</body>
+
+<!-- Mirrored from www.nonelonely.com/article/1549036487797 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:05:49 GMT -->
+</html>

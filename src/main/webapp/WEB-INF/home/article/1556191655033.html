@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Mirrored from www.nonelonely.com/article/1556191655033 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:02:33 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+
+    <title>Redis的下载和安装与集群的配置解决redis requiresRuby version &gt;= 2.2.2的问题- 书生个人博客</title>
+    <link href="../static/plugins/editormd/css/editormd.min.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+<meta name="baidu_union_verify" content="3e514e79dc5e7201b9bee186137e9562">
+<meta name="keywords" content="Centos,redis集群配置,ruby版本过低,原创">
+
+<meta name="description" content="Redis不仅可以搭建单机的，还可以搭建集器或者主从复制的结构，在高并发的环境下具有高可用性。在搭建集群时使用redis官方给的工具：redis-trib.rb这个工具构建redis集群的时候，报错了：“redisrequiresRubyversion&amp;gt;=2.2.2”，于是这里给出完整的安装过程和配置过程一Redis安装1.选择安装位置，我这里安装在/src文件里cd/usr/local/src2.下载Redis，本例的版本是4.0.10，Linux的版本是Ce">
+
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../static/plugins/layui/css/layui.css">
+<link rel="stylesheet" href="../static/plugins/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="../static/assets/css/frontend/base.css">
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "../../hm.baidu.com/hm6618.js?c07ddd5b98c69450ebd8e255627f70b0";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <link rel="canonical" href="1556191655033.html"/>
+    <script src="../../msite.baidu.com/sdk/cb688.js?appid=1622832448885693"></script>
+    <script src="../static/plugins/jquery/jquery.min.js"></script>
+     <style>
+         @media screen and (max-width: 767px) {
+             .layui-layer-page {
+                 display: none;
+             }
+         }
+
+         .markdown-body.layui-layer-content {
+             padding: 20px;
+             /*background-image: url("/static/assets/img/long.png");*/
+         }
+         .markdown-body  .layui-layer-title{
+             background-color: #e4e4e400;
+         }
+         .markdown-body  .layui-layer{
+             background-color: #e4e4e4;
+             background-image: url("../static/assets/img/long.png") ;
+             background-size: 100% 100%;
+         }
+         .markdown-body .layui-layer-content {
+
+            padding: 20px;
+         }
+
+     </style>
+
+</head>
+<body class="animated fadeIn">
+
+<div class="wrapper" >
+    <header>
+    <div class="headtop"></div>
+    <div class="contenttop">
+        <div class="logo f_l"> Java码猿-书生个人博客</div>
+        <div class="search f_r">
+            <input name="keyboard"  id="bdcsMain" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+            <input name="Submit" class="input_submit" onclick="window.open('http://zhannei.baidu.com/cse/search?s=6583887351044514798&entry=1&q='+document.getElementById('bdcsMain').value)" value="搜索" type="button">
+            <!--<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=6583887351044514798' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>-->
+            <ul class="layui-nav" style="background-color: rgba(0,0,0,0);" >
+                
+                
+
+                <li  class="layui-nav-item"><a href="#"  style="color: #000;" onclick="goto()" title="QQ登入" class="iconfont icon-qq"></a>
+                </li>
+            </ul>
+
+
+        </div>
+        <div class="blank"></div>
+
+        <nav>
+            <div  class="navigation">
+                <ul class="menu">
+                    <li><a href="../index.html">网站首页</a></li>
+                    <li><a href="#">技术文章</a>
+                        <ul >
+                            <li><a  href="../pages748a.html?cateId=1">Spring系列</a></li>
+                            <li><a  href="../pages3c7b.html?cateId=6">前端开发</a></li>
+                            <li><a  href="../pages4ead.html?cateId=7">软件安装</a></li>
+                            <li><a  href="../pages8396.html?cateId=9">Java语法</a></li>
+                            <li><a  href="../pagesff6a.html?cateId=10">资源下载</a></li>
+                            <li><a  href="../pagesad9e.html?cateId=12">ORM框架</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="../note.html">我的日记</a> </li>
+                    <li><a href="../msg.html">给我留言</a> </li>
+                    <li><a href="../about.html">关于</a></li>
+                </ul>
+            </div>
+        </nav>
+        <SCRIPT type=text/javascript>
+            // Navigation Menu
+            $(function() {
+                $(".menu ul").css({display: "none"}); // Opera Fix
+                $(".menu li").hover(function(){
+                    $(this).find('ul:first').css({visibility: "visible",display: "none"}).slideDown("normal");
+                },function(){
+                    $(this).find('ul:first').css({visibility: "hidden"});
+                });
+            });
+
+            function  search() {
+                var s=$('#keyboard').val();
+                location.href = s === "" ? "/" : "/pages?searchStr=" + s;
+            };
+            function goto () {
+                var url = window.location.href;
+                var winObj = window.open('/api/qq?url=' + url, '_self');
+            }
+        </SCRIPT>
+
+    </div>
+</header>
+    <div class="jztop"></div>
+
+    <!--<bmy-article-page :alipay="params.alipay" :wechat="params.wechat_pay" :su="su">-->
+        <!--<div th:insert ="frontend/fragment/articlepage :: article"  slot="article"></div>-->
+        <!--<div  th:insert="frontend/fragment/comment :: comment" slot="post"></div>-->
+
+        <!--<bmy-comment-list slot="comment" :comments="comments" :tips="params.comment_notice"-->
+                          <!--:re="params.all_comment_open == 1 && article.commented"></bmy-comment-list>-->
+       <!--<bmy-search slot="search"></bmy-search>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相似文章'})" slot="similar"></div>-->
+        <!--<div th:insert ="frontend/fragment/lot :: lot (${lots},${'热度文章'})" slot="lot"></div>-->
+    <!--</bmy-article-page>-->
+
+    <div id="blog-body" class="layui-container">
+       <div class="layui-row layui-col-space10">
+           <div id="blog-info" class="layui-col-md12">
+                <div class="layui-collapse layui-panel layui-article photos" >
+
+                     <div  ><div class="layui-colla-item">
+                    <h2 class="nh1"><span>您现在的位置是：<a href="../index.html" target="_blank">网站首页</a>>><a href="#" target="_blank">信息浏览</a>
+                    </span><b>文章详情</b></h2>
+                          <div class="layui-colla-content layui-show layui-article">
+                                   <fieldset class="layui-elem-field layui-field-title layui-article-page-title">
+                                       <legend class="center-to-head" align="center">Redis的下载和安装与集群的配置解决redis requiresRuby version &gt;= 2.2.2的问题</legend>
+                                      </fieldset>
+                                  <div class="layui-text layui-blog-body">
+                                           <div class="layui-row">
+                                                  <div class="layui-col-md6 layui-col-md-offset3 text-center blog-base-info">
+                                                           <span><i class="fa fa-clock-o" ></i>2019-04-25 19:27 </span>
+                                                           <span><i class="fa fa-user-o"></i> <span style="color: #FF5722;">许多年以后</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-renzhengkaobei"></use></svg></span>
+                                                          <span><i class="fa fa-comment-o"></i></span>
+                                                           <span><i class="fa fa-eye"></i> 1234</span>
+                                                       </div>
+                                               </div>
+                                      <!-- Baidu Button BEGIN -->
+                                           <!--<div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">-->
+                                                  <!--<span class="bds_more">分享到：</span>-->
+                                                  <!--<a class="bds_qzone"></a>-->
+                                                  <!--<a class="bds_tsina"></a>-->
+                                                  <!--<a class="bds_tqq"></a>-->
+                                                  <!--<a class="bds_renren"></a>-->
+                                                  <!--<a class="bds_t163"></a>-->
+                                                  <!--<a class="shareCount"></a>-->
+                                          <!--</div>-->
+                                          <!--<script type="text/javascript" id="bdshare_js" data="type=tools&uid=6701193" ></script>-->
+                                          <!--<script type="text/javascript" id="bdshell_js"></script>-->
+                                          <!--<script type="text/javascript">-->
+                                              <!--document.getElementById("bdshell_js").src = "https://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)-->
+                                          <!--</script>-->
+                                      <!-- Baidu Button END -->
+                                           <hr>
+                                           <div class="content detail markdown-body editormd-preview-container editormd-preview-active"><blockquote>
+<p>Redis不仅可以搭建单机的，还可以搭建集器或者主从复制的结构，在高并发的环境下具有高可用性。在搭建集群时使用redis官方给的工具：redis-trib.rb 这个工具构建redis集群的时候，报错了：“redis requires Ruby version &gt;= 2.2.2”，于是这里给出完整的安装过程和配置过程</p>
+</blockquote>
+<p><strong>一 Redis安装</strong><br>1.选择安装位置，我这里安装在/src文件里</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln"> cd </span><span class="pun">/</span><span class="pln">usr</span><span class="pun">/</span><span class="kwd">local</span><span class="pun">/</span><span class="pln">src</span></code></li></ol></pre><p>2.下载Redis，本例的版本是4.0.10，Linux的版本是CentOS7</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">wget http</span><span class="pun">:</span><span class="com">//download.redis.io/releases/redis-4.0.10.tar.gz</span></code></li></ol></pre><p>如果提示没有找到命令，则先执行如下命令安装wget，再下载Redis</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">yum install wget</span></code></li></ol></pre><blockquote>
+<p>若系统没有网络，可以去官网下载 Redis 压缩包<a href="http://download.redis.io/releases，然后将下载的">http://download.redis.io/releases，然后将下载的</a> redis 上传到虚拟机的/usr/local/src 目录下</p>
+</blockquote>
+<p>3.安装Redis<br>  先解压，在进入解压目录安装，如下4条命令；</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">tar </span><span class="pun">-</span><span class="pln">zxvf redis</span><span class="pun">-</span><span class="lit">4.0</span><span class="pun">.</span><span class="lit">10.tar</span><span class="pun">.</span><span class="pln">gz</span></code></li><li class="L1"><code><span class="pln">cd  redis</span><span class="pun">-</span><span class="lit">4.0</span><span class="pun">.</span><span class="lit">10</span></code></li><li class="L2"><code><span class="pln">make MALLOC</span><span class="pun">=</span><span class="pln">libc</span></code></li><li class="L3"><code><span class="pln">make install</span></code></li></ol></pre><p>如果在执行make MALLOC=libc 提示gcc 命令没有找到时，先安装gcc，命令如下:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">yum install gcc</span></code></li></ol></pre><p>4.配置Redis<br>我们可以在目录中找到redis.conf配置文件，用vi打开，主要修改如下几个地方</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">daemonize yes</span></code></li><li class="L1"><code><span class="com">#bind 127.0.0.1</span></code></li><li class="L2"><code><span class="pln">requirepass </span><span class="lit">123</span><span class="pun">@</span><span class="lit">123</span></code></li><li class="L3"><code><span class="kwd">protected</span><span class="pun">-</span><span class="pln">mode </span><span class="kwd">no</span></code></li></ol></pre><p>说明:</p>
+<ol>
+<li>第一行： 表示redis可以在后台启动</li><li>第二行:表示连接该Redis的地址，默认下只能本地连接，如果注释掉，外网就可以连接了</li><li>第三行: 设置登陆该redis的密码</li><li>第四行: 由于设置了登陆密码，保护模式可以关闭了</li></ol>
+<p>5.配置CentOS7<br> 为了可以让远程电脑连接上，我们要开放6370端口或者直接禁用防火墙。</p>
+<p> 可以看这边文章：<a href="1556167621636.html" title="linux的Centos系统开放特定端口，关闭防火墙，解决Centos7没有iptables的问题">linux的Centos系统开放特定端口，关闭防火墙，解决Centos7没有iptables的问题</a></p>
+<p>6.Redis的启动和关闭<br>启动</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">redis</span><span class="pun">-</span><span class="pln">server redis</span><span class="pun">.</span><span class="pln">conf  </span><span class="com">//其中redis.conf是配置文件，你也可以指定其他配置文件</span></code></li></ol></pre><p>进入Redis控制台</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">redis</span><span class="pun">-</span><span class="pln">cli </span><span class="pun">-</span><span class="pln">a </span><span class="lit">123</span><span class="pun">@</span><span class="lit">123</span></code></li></ol></pre><p>执行ping命令，如果看到pong,表示redis安装成功<br>如果想退出，先执行shutdowm 再执行exit命令</p>
+<p>到这里单机的Redis就可以了，接下来搭建Redis集群<br><strong>二 Redis集群配置</strong><br><strong>1，集群规划</strong></p>
+<p>我们在同一台服务器上用不同的端口代表不同的redis服务器<br>主节点: 192.168.174.10:8081,192.168.174.10:8082,192.168.174.10:8083<br>从节点: 192.168.174.10:8085,192.168.174.10:8085,192.168.174.10:8086</p>
+<p><strong>2.集群配置</strong></p>
+<p>Redis的集群管理工具依赖于Ruby环境，但是centos7默认的Ruby环境一般都是低的，不然会出现<strong>redis requires Ruby version &gt;= 2.2.2</strong>的问题”所以按以下步骤来</p>
+<p>安装RVM,RVM是Ruby的管理工具<br><a href="https://imgchr.com/i/EeDgYQ"><img src="../../s2.ax1x.com/2019/04/25/EeDgYQ.md.png" alt="EeDgYQ.md.png"></a></p>
+<p>先执行一条官方 <a href="https://rvm.io/">https://rvm.io/</a> 复制来的长命令（…C0E3空格7D2B…）</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="com">#gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB</span></code></li></ol></pre><p>可能会等待十几秒时间，然后执行下面命令：</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">\curl </span><span class="pun">-</span><span class="pln">sSL https</span><span class="pun">:</span><span class="com">//get.rvm.io | bash -s stable</span></code></li></ol></pre><p><a href="https://imgchr.com/i/EeDwQI"><img src="../../s2.ax1x.com/2019/04/25/EeDwQI.png" alt="EeDwQI.png"></a></p>
+<p>按照提示，执行该命令    </p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">source  </span><span class="pun">/</span><span class="pln">etc</span><span class="pun">/</span><span class="pln">profile</span><span class="pun">.</span><span class="pln">d</span><span class="pun">/</span><span class="pln">rvm</span><span class="pun">.</span><span class="pln">sh</span><span class="pun">　　</span></code></li></ol></pre><p>最后的命令是让RVM安装后直接可以用，然后查看RVM里的Ruby列表<br><a href="https://imgchr.com/i/EeDdSA"><img src="../../s2.ax1x.com/2019/04/25/EeDdSA.png" alt="EeDdSA.png"></a><br>    rvm list known<br>安装ruby 2.4.1 ，直接跟版本号即可    </p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">rvm install </span><span class="lit">2.4</span><span class="pun">.</span><span class="lit">1</span><span class="pun">　　　　</span></code></li></ol></pre><p>安装Redis依赖</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">gem install redis</span></code></li></ol></pre><p>接下来创建redisCluster文件，将上面单机下载的redis压缩包复制到redisCluster并解压安装，如</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">mkdir redisCluster</span></code></li><li class="L1"><code><span class="pln">cp </span><span class="pun">-</span><span class="pln">f </span><span class="pun">./</span><span class="pln">redis</span><span class="pun">-</span><span class="lit">4.0</span><span class="pun">.</span><span class="lit">10.tar</span><span class="pun">.</span><span class="pln">gz </span><span class="pun">./</span><span class="pln">redisCluster</span></code></li><li class="L2"><code><span class="pln">cd redisCluster</span></code></li><li class="L3"><code><span class="pln">tar </span><span class="pun">-</span><span class="pln">zxvf redis</span><span class="pun">-</span><span class="lit">4.0</span><span class="pun">.</span><span class="lit">10.tar</span><span class="pun">.</span><span class="pln">gz</span></code></li><li class="L4"><code><span class="pln">cd  redis</span><span class="pun">-</span><span class="lit">4.0</span><span class="pun">.</span><span class="lit">10</span></code></li><li class="L5"><code><span class="pln">make MALLOC</span><span class="pun">=</span><span class="pln">libc</span></code></li><li class="L6"><code><span class="pln">make install</span></code></li></ol></pre><p>安装成功后，把解压文件中的redis-4.0.10/src中的redis-trib.rb文件复制到redisCluster文件中</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">cp </span><span class="pun">-</span><span class="pln">f </span><span class="pun">./</span><span class="pln">redis</span><span class="pun">-</span><span class="lit">4.0</span><span class="pun">.</span><span class="lit">10</span><span class="pun">/</span><span class="pln">src</span><span class="pun">/</span><span class="pln">redis</span><span class="pun">-</span><span class="pln">trib</span><span class="pun">.</span><span class="pln">rb </span><span class="pun">./</span></code></li></ol></pre><p>然后再redisCluster文件再创建6个目录，分别是8001-8006，代表6个redis服务器，于是我们复制redis-4.0.10目录下的配置文件redis.conf到这6个目录中，修改其中的端口分别是8001—8006.主要修改配置如下:</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">port </span><span class="lit">8001</span></code></li><li class="L1"><code><span class="com">#bind 127.0.0.1  注释后可以远程访问</span></code></li><li class="L2"><code><span class="pln">cluster</span><span class="pun">-</span><span class="pln">enabled yes </span><span class="com">#开启集群</span></code></li><li class="L3"><code><span class="pln">cluster</span><span class="pun">-</span><span class="pln">config</span><span class="pun">-</span><span class="pln">file nodes</span><span class="pun">-</span><span class="lit">8001.conf</span><span class="pln"> </span><span class="com">#配置文件名</span></code></li><li class="L4"><code><span class="kwd">protected</span><span class="pln"> </span><span class="kwd">no</span><span class="pln"> </span><span class="com">#关闭</span></code></li><li class="L5"><code><span class="pln">daemonize yes </span><span class="com">#后台运行</span></code></li><li class="L6"><code><span class="pln">requirepass </span><span class="lit">123</span><span class="pun">@</span><span class="lit">123</span></code></li><li class="L7"><code><span class="pln">masterauth </span><span class="lit">123</span><span class="pun">@</span><span class="lit">123</span></code></li></ol></pre><p>安装这个配置对8002-8006的配置文件进行配置</p>
+<p>配置完成后，返回到redisCluster目录，对6个服务器启动</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">redis</span><span class="pun">-</span><span class="pln">server </span><span class="pun">../</span><span class="lit">8001</span><span class="pun">/</span><span class="pln">redis</span><span class="pun">.</span><span class="pln">conf</span></code></li><li class="L1"><code><span class="pln">redis</span><span class="pun">-</span><span class="pln">server </span><span class="pun">../</span><span class="lit">8002</span><span class="pun">/</span><span class="pln">redis</span><span class="pun">.</span><span class="pln">conf</span></code></li><li class="L2"><code><span class="pln">redis</span><span class="pun">-</span><span class="pln">server </span><span class="pun">../</span><span class="lit">8003</span><span class="pun">/</span><span class="pln">redis</span><span class="pun">.</span><span class="pln">conf</span></code></li><li class="L3"><code><span class="pln">redis</span><span class="pun">-</span><span class="pln">server </span><span class="pun">../</span><span class="lit">8004</span><span class="pun">/</span><span class="pln">redis</span><span class="pun">.</span><span class="pln">conf</span></code></li><li class="L4"><code><span class="pln">redis</span><span class="pun">-</span><span class="pln">server </span><span class="pun">../</span><span class="lit">8005</span><span class="pun">/</span><span class="pln">redis</span><span class="pun">.</span><span class="pln">conf</span></code></li><li class="L5"><code><span class="pln">redis</span><span class="pun">-</span><span class="pln">server </span><span class="pun">../</span><span class="lit">8006</span><span class="pun">/</span><span class="pln">redis</span><span class="pun">.</span><span class="pln">conf</span></code></li></ol></pre><p>启动完成后对redis-trib.rb进行修改</p>
+<p>用vi打开redis-trib.rb 搜索到这行(用“/”搜索Redis.new 就行)</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="lit">@r</span><span class="pln">  </span><span class="pun">=</span><span class="pln">  </span><span class="typ">Redis</span><span class="pln"> </span><span class="pun">.</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="pun">(:</span><span class="pln">host</span><span class="pun">=&gt;</span><span class="pln"> </span><span class="lit">@info</span><span class="pun">[:</span><span class="pln">host</span><span class="pun">]，:</span><span class="pln">port</span><span class="pun">=&gt;</span><span class="pln"> </span><span class="lit">@info</span><span class="pun">[:</span><span class="pln">port</span><span class="pun">],</span><span class="pln"> </span><span class="pun">:</span><span class="pln">timeout </span><span class="pun">=&gt;</span><span class="pln"> </span><span class="lit">60</span><span class="pln"> </span><span class="pun">)</span></code></li></ol></pre><p>修改这行增加密码</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="lit">@r</span><span class="pln">  </span><span class="pun">=</span><span class="pln">  </span><span class="typ">Redis</span><span class="pln"> </span><span class="pun">.</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="pun">(:</span><span class="pln">host</span><span class="pun">=&gt;</span><span class="pln"> </span><span class="lit">@info</span><span class="pun">[:</span><span class="pln">host</span><span class="pun">]，:</span><span class="pln">port</span><span class="pun">=&gt;</span><span class="pln"> </span><span class="lit">@info</span><span class="pun">[:</span><span class="pln">port</span><span class="pun">],</span><span class="pln"> </span><span class="pun">:</span><span class="pln">timeout </span><span class="pun">=&gt;</span><span class="pln"> </span><span class="lit">60</span><span class="pun">，</span><span class="pln">password</span><span class="pun">=&gt;</span><span class="str">"123@123"</span><span class="pln"> </span><span class="pun">)</span></code></li></ol></pre><p>这样就好了，我们就可以用redis-trib.rb创建集群了</p>
+<p><strong>3.创建集群</strong></p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pun">./</span><span class="pln">redis</span><span class="pun">-</span><span class="pln">trib</span><span class="pun">.</span><span class="pln">rb create </span><span class="pun">--</span><span class="pln">replicas </span><span class="lit">1</span><span class="pln"> </span><span class="lit">192.168</span><span class="pun">.</span><span class="lit">174.10</span><span class="pun">:</span><span class="lit">8081</span><span class="pun">,</span><span class="lit">192.168</span><span class="pun">.</span><span class="lit">174.10</span><span class="pun">:</span><span class="lit">8082</span><span class="pun">,</span><span class="lit">192.168</span><span class="pun">.</span><span class="lit">174.10</span><span class="pun">:</span><span class="lit">8083</span><span class="pun">,</span><span class="lit">192.168</span><span class="pun">.</span><span class="lit">174.10</span><span class="pun">:</span><span class="lit">8085</span><span class="pun">,</span><span class="lit">192.168</span><span class="pun">.</span><span class="lit">174.10</span><span class="pun">:</span><span class="lit">8085</span><span class="pun">,</span><span class="lit">192.168</span><span class="pun">.</span><span class="lit">174.10</span><span class="pun">:</span><span class="lit">8086</span></code></li></ol></pre><p>其中 —replicas 1 这个1代表每个主机有多少个从机，在创建集群刚才中，会分配主机和从机。</p>
+<p>当集群创建成功后我们就可以用登陆任何的redis服务器就行。</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">redis</span><span class="pun">-</span><span class="pln">cli </span><span class="pun">-</span><span class="pln">p </span><span class="lit">8001</span><span class="pln"> </span><span class="pun">-</span><span class="pln">a </span><span class="lit">123</span><span class="pun">@</span><span class="lit">123</span><span class="pln"> </span><span class="pun">-</span><span class="pln">c</span></code></li></ol></pre><p><strong>-p 是端口， -a是密码 -c表示用集群的方式登陆</strong></p>
+<p><strong>4.查看集群状态</strong><br>登陆成功后可以用以下命令查看集群状态 可以看到每个节点的信息，他是主机还是从机</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">cluster info</span></code></li></ol></pre></div>
+                                      </div>
+                                   <div class="layui-row text-center layui-mt20">
+                                           
+                                           <div class="layui-btn layui-btn-danger" onclick="emotion()"><i class="fa fa-thumbs-o-up" id="za"> 赞 (123)</i></div>
+                                       </div>
+                                   <div class="layui-row layui-mt20">
+                                         <blockquote class="layui-elem-quote text-center " style="border: none;">
+                                                  <span class="layui-show-md-inline-block layui-hide"  >文章出处：书生个人博客</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                   <span class="layui-show-md-inline-block layui-hide" id="artiurl"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                  <span>转载注明下哦！o(≧v≦)o~~</span>
+                                           </blockquote>
+                                    </div>
+                                 <div class="layui-row layui-mt20">
+                                         <p class="blog-tags">
+                                              标签：
+                                                       <span >Centos</span><span >redis集群配置</span><span >ruby版本过低</span><span >原创</span>
+
+                                               </p>
+                                 </div>
+                                 <div class="layui-row layui-col-space20 layui-mt20 article-page-similar">
+                                           <p>相似文章：</p>
+                                            <hr>
+                                             <ul>
+                                                    <li><a href="1556813069557.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;分享本网站的个人博客模板，程序员前端个人博客模板</a> </li>
+                                                    <li><a href="1551716918682.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Nginx面试中最常见的18道题</a> </li>
+                                                    <li><a href="1566354006050.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;解决canvas的fillText绘制文本时无法清空上次文本造成重叠的问题</a> </li>
+                                                    <li><a href="1550139661320.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;解决C:\Program Files\TortoiseSVN\bin\SendRpt.exe not found的问题</a> </li>
+                                                    <li><a href="1551020778492.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;log4j2日志的完整配置文件信息和同步与异步的配置信息</a> </li>
+                                                    <li><a href="1545894655813.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;win10运行vmware workstation14黑屏的完美解决方法</a> </li>
+                                                    <li><a href="1544457036686.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;WIN10 自带功能拨号连接下开启移动热点</a> </li>
+                                                    <li><a href="1544506733627.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;Linux(Centos)配置静态IP</a> </li>
+                                                    <li><a href="1551347280419.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;tomcat,nginx,SpringBoot中启动gzip压缩优化网站</a> </li>
+                                                    <li><a href="1563978742701.html"><i class="fa fa-circle-thin"></i>&nbsp;&nbsp;javaScript 获取 当前时间 时间差 时间戳 倒计时的方法</a> </li>
+                                              </ul>
+                                    </div>
+                               </div>
+                      <script>
+                          $("#artiurl").html("文章地址："+location.href);
+
+
+                      </script>
+
+                       </div></div>
+
+                </div>
+
+               <div  >
+<div id="cta" class="layui-collapse layui-panel layui-article">
+       <div class="layui-colla-item">
+               <div class="layui-colla-content layui-show layui-article comment">
+                       <fieldset class="layui-elem-field layui-field-title">
+                               <legend>随便说两句</legend>
+                               <div class="layui-field-box">
+                                       <label for="comment-input"></label>
+                                           <textarea id="comment-input" style="display: none;"></textarea>
+                                  </div>
+                               
+                               <a class="layui-btn layui-btn-sm layui-btn-danger" style="float: right;width: 120px;"  href="#"  onclick="javascript:beforeLogin()" id="beforeLogin"><i class="fa fa-qq"></i> 请先登录</a>
+                           </fieldset>
+                   </div>
+           </div>
+    </div>
+</div>
+<script>
+    function beforeLogin() {
+        var url=window.location.href;
+        window.open('/api/qq?url='+url,'_self');
+    }
+
+</script>
+
+               <blockquote id="cccc" class="layui-elem-quote layui-mt20" style="border-left: 5px solid #F44336;"><span style="color:#FF5722;">遵守国家法律法规，请勿回复无意义内容，请不要回复嵌套过多的楼层！</span></blockquote>
+               <div class="comment-list">
+
+</div>
+
+
+
+
+           </div>
+               <!--<div class="layui-col-md3" id="article-app">-->
+                       <!--<div id="affix-side">-->
+                           <!--<div th:replace="frontend/fragment/callme :: callme" ></div>-->
+                           <!--&lt;!&ndash;<div class="layui-tab layui-tab-card layui-master-recommend" >&ndash;&gt;-->
+                               <!--&lt;!&ndash;<div class="layui-tab-content select-none">&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<h3 class="tit">时光悄然</h3>&ndash;&gt;-->
+                                   <!--&lt;!&ndash;<div class="layui-inline" id="test22"></div>&ndash;&gt;-->
+                               <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                           <!--<div th:replace ="frontend/fragment/guidang" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/imageinfo" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/cate" ></div>-->
+                           <!--<div th:insert ="frontend/fragment/lot :: lot (${similarArticles},${'相关文章'})" ></div>-->
+                           <!--<div th:replace ="frontend/fragment/image :: image"></div>-->
+                           <!--</div>-->
+                   <!--</div>-->
+           </div>
+    </div>
+
+
+    <footer >
+    <div class="footer"><p>
+	<span><strong>友情链接:</strong><strong>&nbsp;</strong> &nbsp;&nbsp;</span><a class="ke-insertfile" href="https://www.layui.com/" target="_blank">layui</a><span>&nbsp;&nbsp;</span>&nbsp;<a class="ke-insertfile" href="http://www.shuyong.net/" target="_blank">舍力博客</a>&nbsp;&nbsp;<a class="ke-insertfile" href="javascript:;" id="friend">申请友链</a> 
+</p>
+<p>
+	2018-2019 nonelonely.com | 网站备案号：<a class="ke-insertfile" href="http://www.miitbeian.gov.cn/" target="_blank">闽ICP备18026034号-1</a> 
+</p>
+<p>
+	<br />
+</p></div>
+
+    <div class="layui-hide-xs" style="position: fixed;left: 100px; bottom: 100px; z-index: 999999;" id="robot" data-method="robot">
+        <div class="layui-layer-tips" ><div id="" class="layui-layer-content" style="background-color: rgb(114, 193, 236);width: 150px">Hi 我是小码，可以点击我问我笑话，天气，智能聊天，故事，查询备案等等。<i class="layui-layer-TipsG layui-layer-TipsT" style="border-right-color:rgb(114, 193, 236);"></i></div><span class="layui-layer-setwin"></span></div>
+        <a href="#" ><img src="../static/assets/img/robot.png" width="100px" alt="Hi 我是小码！" >
+        </a>
+    </div>
+
+
+</footer>
+<script src="../static/plugins/layui/layui.js"></script>
+
+<script>
+    layui.use([ 'layer'], function () {
+        var layer = layui.layer;
+        var $ = layui.jquery;
+        //触发事件
+        var active = {
+            robot: function(){
+                var that = this;
+                $("#robot").css('display','none');
+                //多窗口模式，层叠置顶
+                layer.open({
+                    type: 2,
+                    title:'智能小码',
+                    area: ['600px', '480px'],
+                    content: '/webrobot',
+                    end:function () {
+                        $("#robot").css('display','');
+                    }
+                });
+            },
+            friend: function () {
+                layer.open({
+                    title: '申请友链'
+                    ,content: '发送邮件至：admin@nonelonely.com<br>' +
+                        '邮件标题为：申请书生个人博客友链'
+                });
+            }
+        };
+
+        $('#robot').on('click', function(){
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+        $('#friend').on('click', function(){
+            var othis = $(this), method = 'friend';
+            active[method] ? active[method].call(this, othis) : '';
+        });
+
+
+        // var la;
+            // la = layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot',
+            //     {
+            //         tips: [1, '#3595CC'],
+            //         end: function () {
+            //             if($("#robot").is(":visible")) {
+            //                 la = layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot',
+            //                     {tips: [1, '#3595CC']})
+            //             }
+            //         }
+            //     });
+            // window.setInterval(" if($('#robot').is(':visible')) {la=layer.tips('Hi 我是小码，什么问题都可以问我咯。', '#robot', { tips: [1, '#3595CC'],end : function(){ la=layer.tips('可以问我笑话，天气，智能聊天，故事，查询备案等等', '#robot', {tips: [1, '#3595CC']});}});}", 10000*6 );
+
+    });
+</script>
+
+</div>
+
+
+
+
+<script>
+    var articleId=1556191655033;
+    var su=null ;
+    $(function(){
+        $(".comment-list").addCommentList({data:[],add:""});
+        $("#comment").click(function(){
+            var obj = new Object();
+            obj.img="images/img.html";
+            obj.replyName="匿名";
+            obj.content=$("#content").val();
+            obj.browse="深圳";
+            obj.osname="win10";
+            obj.replyBody="";
+            $(".comment-list").addCommentList({data:[],add:obj});
+        });
+    })
+
+    var layer;
+    var layedit;
+    var index;
+    layui.use(['layedit', 'laypage', 'laydate', 'element','layer'], function () {
+        layer = layui.layer;
+        var element = layui.element;
+        layedit = layui.layedit;
+        // var laydate = layui.laydate;
+        // //不出现底部栏
+        // laydate.render({
+        //     elem: '#test22'
+        //     ,showBottom: false
+        //     ,position: 'static'
+        //     ,calendar: true
+        //     ,theme: '#a7a4a4'
+        // });
+
+       index= layedit.build('comment-input', {
+            tool: ['face', '|', 'left', 'center', 'right', 'link', 'unlink']
+            , height: 150
+        });
+        //相册
+        if($(window).width() > 750){
+            layer.photos({
+                photos: '.photos'
+                ,zIndex: 9999999999
+                ,anim: -1
+            });
+        } else {
+            $('body').on('click', '.photos img', function(){
+                window.open(this.src);
+            });
+        }
+
+            layer.open({
+                title: '目录',
+                type: 1,
+                offset: 'r',
+                shade: 0,
+                closeBtn: 2,
+                content: $(".markdown-toc")
+            });
+
+        // $('#affix-side').hcSticky({
+        //     stickTo: '#blog-body'
+        // });
+
+    });
+    function submit() {
+
+        var osname = detectOS();
+
+        var obj = new Object();
+        if (su) {
+           obj.img = su.avatar;
+           obj.replyName = su.nickname;
+        }
+        obj.content=layedit.getContent(index);
+        obj.browse=navigator.appName;
+        obj.osname=osname;
+        obj.time=new Date();
+        obj.replyBody="";
+
+        obj.comment= obj.content;
+        if(!obj.comment){
+            layer.msg('不能为空');
+            return false;
+        }
+        var indexc = layer.load();
+        obj.userId=su.id;
+        obj.user=su.id;
+        obj.articleId=articleId;
+        obj.enable=true;
+        obj.parentId=0;
+
+         obj.time =new Date();
+
+
+
+
+        $.post("/token/comment/sub",obj, function (resp) {
+            layer.close(indexc);
+            $(window.frames["LAY_layedit_1"].document).find("body").html('');
+            layer.msg(resp.message);
+            setTimeout(function () {
+                if (resp.code === 200) {
+                    $(".comment-list").addCommentList({data:[],add:obj});
+                }
+            }, 1000);
+        });
+
+    };
+
+    function emotion() {
+        var uid = "guest";
+        if (BMY.getCookie("article::" + 1556191655033 + "::" + uid) != null) {
+            layer.msg("近期您已经点过赞，感谢您的支持！");
+        } else {
+            $.post("/article/approve", {articleId: 1556191655033}, function (json) {
+                if (json.code === BMY.status.ok) {
+                    BMY.setCookie("article::" + 1556191655033+ "::" + uid, "noteblog system");
+                  //  that.approve++;
+                    $('#za').html('赞 (124)')
+                    layer.msg("谢谢您的支持！");
+                }
+            })
+        }
+    }
+    function money  (alipay, wechat) {
+        alipay = "#\/static\/assets\/img\/wechat.png";
+        wechat="#\/static\/assets\/img\/alipay.png";
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['640px', '300px'],
+            shadeClose: true,
+            skin: 'text-center',
+            content:
+                '<div class="layui-fluid">' +
+                '   <div class="layui-row layui-mt20">' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + wechat + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">微信</p>' +
+                '       </div>' +
+                '       <div class="layui-col-md6">' +
+                '           <img src="' + alipay + '" style="height: 250px;width: 250px;">' +
+                '           <p class="text-center">支付宝</p>' +
+                '       </div>' +
+                '   </div> ' +
+                '</div>'
+        });
+    }
+
+
+
+
+</script>
+<script src="../static/assets/js/jquery.comment.js" ></script>
+</body>
+
+<!-- Mirrored from www.nonelonely.com/article/1556191655033 by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2019 05:02:34 GMT -->
+</html>
