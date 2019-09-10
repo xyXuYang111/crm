@@ -2,6 +2,7 @@
 <project version="4">
   <component name="Encoding" native2AsciiForPropertiesFiles="true" defaultCharsetForPropertiesFiles="UTF-8">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resource/mybatis/mapper/emailMapper.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/resource/mybatis/mapper/fileMapper.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/resource/mybatis/mapper/historyMapper.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/resource/mybatis/mapper/loggerMapper.xml" charset="GBK" />

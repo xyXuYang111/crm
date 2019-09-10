@@ -48,17 +48,28 @@
 			<form id="form1" name="form1" class="layui-form" method="post" action="/insertMessage.do">
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 					<tr>
-						<td height="40">点滴标题</td>
-						<td><input name="messageName" type="text" class="layui-input" id="messageName" style="width:250px;"
+						<td height="40">邮件标题</td>
+						<td height="40"><input name="messageName" type="text" class="layui-input" id="messageName" style="width:250px;"
 								   lay-verify="required"/></td>
 					</tr>
 					<tr>
-						<td height="50" width="100">标题描述</td>
-						<td height="50" colspan="4"><textarea name="messageDes" class="layui-textarea"></textarea></td>
-					</tr>
-					<tr>
-						<td height="50" width="100">详细介绍</td>
+						<td height="50" width="100">邮件内容</td>
 						<td height="50" colspan="4"><textarea name="messageContent" class="layui-textarea"></textarea></td>
+					</tr>
+
+					<tr>
+						<td height="50" width="100">发送人</td>
+						<td height="50"><textarea name="messageDes" class="layui-textarea"></textarea></td>
+					</tr>
+
+					<tr>
+						<td height="50" width="100">发送人账号</td>
+						<td height="50"><textarea name="messageDes" class="layui-textarea"></textarea></td>
+					</tr>
+
+					<tr>
+						<td height="50" width="100">发送人密码</td>
+						<td height="50"><textarea name="messageDes" class="layui-textarea"></textarea></td>
 					</tr>
 
 					<tr>

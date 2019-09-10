@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuyang.crm.email.dao.EmailDao">
+
+    <resultMap id="emailResult" type="Email">
+        <id column="emailID" property="emailID"/>
+        <result column="titleName" property="titleName"/>
+        <result column="message" property="message"/>
+        <result column="sendName" property="sendName"/>
+        <result column="sendNumber" property="sendNumber"/>
+        <result column="sendPassword" property="sendPassword"/>
+        <result column="receiveName" property="receiveName"/>
+        <result column="receiveNumber" property="receiveNumber"/>
+        <result column="receivePassword" property="receivePassword"/>
+        <result column="createTime" property="createTime"/>
+    </resultMap>
+
+    <sql id="emailSql">
+        emailID,
+        titleName,
+        message,
+        sendName,
+        sendNumber,
+        sendPassword,
+        receiveName,
+        receiveNumber,
+        receivePassword,
+        createTime
+    </sql>
+
+    <select id="emailList" parameterType="Email" resultMap="emailResult">
+        SELECT
+        <include refid="emailSql"/>
+        FROM email
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="emailID != null">AND
+                emailID = #{emailID}
+            </if>
+            <if test="sendNumber != null">AND
+                sendNumber like '%' || #{sendNumber} || '%'
+            </if>
+            <if test="receiveNumber != null">AND
+                receiveNumber like '%' || #{receiveNumber} || '%'
+            </if>
+        </trim>
+    </select>
+
+    <select id="emailInfo" parameterType="Email" resultMap="emailResult">
+        SELECT
+        <include refid="emailSql"/>
+        FROM email
+        WHERE  emailID = #{emailID}
+        <if test="sendNumber != null">AND
+            sendNumber like '%' || #{sendNumber} || '%'
+        </if>
+        <if test="receiveNumber != null">AND
+            receiveNumber like '%' || #{receiveNumber} || '%'
+        </if>
+    </select>
+
+    <insert id="insertEmail" parameterType="Email" useGeneratedKeys="true" keyProperty="emailID">
+        INSERT email(
+        titleName,
+        message,
+        sendName,
+        sendNumber,
+        sendPassword,
+        receiveName,
+        receiveNumber,
+        receivePassword,
+        createTime
+        )VALUES
+        (
+        #{titleName},
+        #{message},
+        #{sendName},
+        #{sendNumber},
+        #{sendPassword},
+        #{receiveName},
+        #{receiveNumber},
+        #{receivePassword},
+        now()
+        )
+    </insert>
+
+    <update id="updateEmail" parameterType="Email">
+        UPDATE email SET
+        emailName = #{emailName}
+        WHERE  emailID = #{emailID}
+    </update>
+
+    <delete id="deleteEmail" parameterType="Email">
+        DELETE FROM email
+        WHERE  emailID = #{emailID}
+    </delete>
+</mapper>
