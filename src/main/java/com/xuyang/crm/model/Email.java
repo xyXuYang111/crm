@@ -59,5 +59,7 @@ public class Email implements Serializable {
     @JsonProperty(value = "receivePassword")
     private String receivePassword;
 
+    @Field
+    @JsonProperty(value = "type")
     private String type;
 }

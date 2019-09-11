@@ -65,7 +65,6 @@ public class FilesController {
      * 通过流的方式上传文件
      * @RequestParam("file") 将name=file控件得到的文件封装成CommonsMultipartFile 对象
      */
-    @ResponseBody
     @RequestMapping(value = "fileTextUpload", method = RequestMethod.POST)
     public String fileTextUpload(@RequestParam(value="file") MultipartFile multipartFile) throws Exception {
         //用来检测程序运行时间
@@ -79,11 +78,11 @@ public class FilesController {
             fileOperate.fileUpload();;
 
             log.debug("文件上传成功");
-            return "文件上传成功";
+            return "file/file";
         } catch (Exception e) {
             // TODO Auto-generated catch block
             log.debug("异常信息："+ e.getMessage());
-            return e.getMessage();
+            return "file/file";
         }
     }
 

@@ -6,6 +6,7 @@ layui.use('upload', function () {
     var uploadInst = upload.render({
         elem: '#uploadFile'
         , method: "post"
+        , accept: 'file'
         , url: '/fileTextUpload.do'
         , before: function (obj) {
             //预读本地文件示例，不支持ie8

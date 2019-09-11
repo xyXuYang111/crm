@@ -12,6 +12,7 @@
         <result column="receiveName" property="receiveName"/>
         <result column="receiveNumber" property="receiveNumber"/>
         <result column="receivePassword" property="receivePassword"/>
+        <result column="type" property="type"/>
         <result column="createTime" property="createTime"/>
     </resultMap>
 
@@ -25,6 +26,7 @@
         receiveName,
         receiveNumber,
         receivePassword,
+        type,
         createTime
     </sql>
 
@@ -68,6 +70,7 @@
         receiveName,
         receiveNumber,
         receivePassword,
+        type,
         createTime
         )VALUES
         (
@@ -79,6 +82,7 @@
         #{receiveName},
         #{receiveNumber},
         #{receivePassword},
+        #{type},
         now()
         )
     </insert>

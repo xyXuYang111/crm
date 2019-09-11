@@ -54,9 +54,12 @@
 				<div id="uploader" class="layui-upload-drag">
 					<div id="pickfiles">
 						<i class="layui-icon"></i>
-						<button type="button" class="layui-btn" id="uploadFile">
-							本地文件上传至服务器
-						</button>
+						<form action="/fileTextUpload.do" enctype="multipart/form-data" method="post">
+							<input type="file" name="file"/>
+							<button type="submit" class="layui-btn">
+								本地文件上传至服务器
+							</button>
+						</form>
 					</div>
 					<div id="showImg" style="display: none;">
 						<img src="#" />
