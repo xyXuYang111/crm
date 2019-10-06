@@ -1,5 +1,6 @@
 package com.xuyang.crm.controller;
 
+import com.xuyang.crm.Exception.BaseController;
 import com.xuyang.crm.kafka.provider.KafkaProvider;
 import com.xuyang.crm.model.Talk;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @Description:
  */
 @Slf4j
-public class KafkaController {
+public class KafkaController extends BaseController {
 
     @Autowired
     private KafkaProvider kafkaProvider;

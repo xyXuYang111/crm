@@ -1,5 +1,6 @@
 package com.xuyang.crm.controller;
 
+import com.xuyang.crm.Exception.BaseController;
 import com.xuyang.crm.file.factory.FileFactory;
 import com.xuyang.crm.file.factory.FileOperate;
 import com.xuyang.crm.file.service.FileMongoDB;
@@ -29,7 +30,7 @@ import java.util.List;
 @Slf4j
 @Data
 @Controller
-public class FilesController {
+public class FilesController extends BaseController {
 
     @Autowired
     private FileService fileService;
@@ -41,7 +42,7 @@ public class FilesController {
      * 文件显示:数据库
      * @return
      */
-    @RequestMapping(value = "getFilesSqlList")
+    @RequestMapping(value = "/getFilesSqlList")
     public String getFilesSqlList(Model model, Files files) throws Exception{
         log.debug("文件列表显示");
         List<Files> filesList = fileService.filesList(files);
@@ -53,7 +54,7 @@ public class FilesController {
      * 文件显示:数据库
      * @return
      */
-    @RequestMapping(value = "getFilesMongoDBList")
+    @RequestMapping(value = "/getFilesMongoDBList")
     public String getFilesMongoDBList(Model model, Files files) throws Exception{
         log.debug("文件列表显示");
         List<Files> filesList = fileMongoDB.fileList(files);
@@ -65,7 +66,7 @@ public class FilesController {
      * 通过流的方式上传文件
      * @RequestParam("file") 将name=file控件得到的文件封装成CommonsMultipartFile 对象
      */
-    @RequestMapping(value = "fileTextUpload", method = RequestMethod.POST)
+    @RequestMapping(value = "/fileTextUpload", method = RequestMethod.POST)
     public String fileTextUpload(@RequestParam(value="file") MultipartFile multipartFile) throws Exception {
         //用来检测程序运行时间
         log.debug("文件名称："+multipartFile.getOriginalFilename());
@@ -90,7 +91,7 @@ public class FilesController {
      * 采用file.Transto 来保存上传的文件
      */
     @ResponseBody
-    @RequestMapping(value = "filePhotoUpload", method = RequestMethod.POST)
+    @RequestMapping(value = "/filePhotoUpload", method = RequestMethod.POST)
     public String  filePhotoUpload(@RequestBody @RequestParam("file") CommonsMultipartFile file) throws Exception {
         try {
             log.debug("fileName："+file.getOriginalFilename());

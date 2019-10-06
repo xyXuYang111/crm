@@ -1,5 +1,6 @@
 package com.xuyang.crm.controller;
 
+import com.xuyang.crm.Exception.BaseController;
 import com.xuyang.crm.model.ObjectValue;
 import com.xuyang.crm.service.ObjectService;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 @Slf4j
 @Controller
-public class ObjectController {
+public class ObjectController extends BaseController {
 
     @Autowired
     private ObjectService objectService;
@@ -31,7 +32,7 @@ public class ObjectController {
      * @throws Exception
      */
     @ResponseBody
-    @RequestMapping(value = "objectValueList")
+    @RequestMapping(value = "/objectValueList")
     public List<ObjectValue> ObjectValueList(ObjectValue objectValue) throws Exception {
         log.debug("获取list对象，返回值为json格式");
         List<ObjectValue> objectValueList = objectService.objectValueList(objectValue);
@@ -39,7 +40,7 @@ public class ObjectController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "objectValuePageList")
+    @RequestMapping(value = "/objectValuePageList")
     public List<ObjectValue> ObjectValuePageList(ObjectValue objectValue,
                                                  @RequestParam(value = "startPage", defaultValue = "1")String startPage,
                                                  @RequestParam(value = "pageSize", defaultValue = "10")String pageSize) throws Exception {
@@ -49,7 +50,7 @@ public class ObjectController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "insertObjectValue", method = RequestMethod.POST)
+    @RequestMapping(value = "/insertObjectValue", method = RequestMethod.POST)
     public String insertObjectValue(ObjectValue objectValue) throws Exception {
         log.debug("获取list对象，返回值为json格式");
         try {
@@ -62,7 +63,7 @@ public class ObjectController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "updateObjectValue")
+    @RequestMapping(value = "/updateObjectValue")
     public String updateObjectValue(ObjectValue objectValue) throws Exception {
         log.debug("获取list对象，返回值为json格式");
         try {
@@ -75,7 +76,7 @@ public class ObjectController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "deleteObjectValue")
+    @RequestMapping(value = "/deleteObjectValue")
     public String deleteObjectValue(ObjectValue objectValue) throws Exception {
         log.debug("获取list对象，返回值为json格式");
         try {

@@ -1,23 +1,22 @@
 package com.xuyang.crm.controller;
 
+import com.xuyang.crm.Exception.BaseController;
 import com.xuyang.crm.model.Talk;
 import com.xuyang.crm.redis.RedisMessageListener;
 import com.xuyang.crm.redis.RedisService;
-import com.xuyang.crm.redis.redisRepository.RedisRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @Controller
-public class TalkController {
+public class TalkController extends BaseController {
 
     @Autowired
     private RedisMessageListener redisMessageListener;
@@ -25,7 +24,7 @@ public class TalkController {
     @Autowired
     private RedisService redisService;
 
-    @RequestMapping(value = "talkInsertController", method = RequestMethod.POST)
+    @RequestMapping(value = "/talkInsertController", method = RequestMethod.POST)
     @ResponseBody
     public String talkInsertController(@RequestBody Talk talk) {
         log.debug("开始进行交谈");
@@ -42,7 +41,7 @@ public class TalkController {
         }
     }
 
-    @RequestMapping(value = "talkInsertObjectController", method = RequestMethod.POST)
+    @RequestMapping(value = "/talkInsertObjectController", method = RequestMethod.POST)
     @ResponseBody
     public String talkInsertObjectController(@RequestBody Talk talk) {
         log.debug("开始进行交谈");
@@ -58,7 +57,7 @@ public class TalkController {
         }
     }
 
-    @RequestMapping(value = "talkController", method = RequestMethod.POST)
+    @RequestMapping(value = "/talkController", method = RequestMethod.POST)
     @ResponseBody
     public List<Talk> talkController(@RequestBody Talk talk) {
         log.debug("获取交谈内容");
@@ -70,7 +69,7 @@ public class TalkController {
         return talkList;
     }
 
-    @RequestMapping(value = "talkCodeController", method = RequestMethod.POST)
+    @RequestMapping(value = "/talkCodeController", method = RequestMethod.POST)
     @ResponseBody
     public List<String> talkCodeController() {
         log.debug("获取订阅对象");

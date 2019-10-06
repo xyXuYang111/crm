@@ -1,8 +1,8 @@
 package com.xuyang.crm.controller;
 
+import com.xuyang.crm.Exception.BaseController;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
 
 /**
  * @Auther: cypc
@@ -11,6 +11,5 @@ import org.springframework.stereotype.Controller;
  */
 @Slf4j
 @Data
-@Controller
-public class CollectController {
+public class CollectController extends BaseController {
 }

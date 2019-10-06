@@ -1,5 +1,6 @@
 package com.xuyang.crm.controller;
 
+import com.xuyang.crm.Exception.BaseController;
 import com.xuyang.crm.email.factory.EmailFactory;
 import com.xuyang.crm.email.factory.EmailInterface;
 import com.xuyang.crm.model.Email;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Slf4j
 @Controller
-public class EmailController {
+public class EmailController extends BaseController {
 
     /**
      * 给qq邮箱发邮件
@@ -22,7 +23,7 @@ public class EmailController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "sendEmail")
+    @RequestMapping(value = "/sendEmail")
     public String sendQqEmail(Email emailParam) throws Exception{
 
         log.debug("开始发送邮件");

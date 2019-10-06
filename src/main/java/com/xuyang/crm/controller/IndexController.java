@@ -1,5 +1,6 @@
 package com.xuyang.crm.controller;
 
+import com.xuyang.crm.Exception.BaseController;
 import com.xuyang.crm.model.Menu;
 import com.xuyang.crm.service.ObjectService;
 import com.xuyang.crm.service.UserService;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Data
 @Slf4j
 @Controller
-public class IndexController {
+public class IndexController extends BaseController {
 
     @Autowired
     private UserService userService;
@@ -38,7 +39,7 @@ public class IndexController {
      *
      * @return
      */
-    @RequestMapping(value = "fileIndex", method = RequestMethod.GET)
+    @RequestMapping(value = "/fileIndex", method = RequestMethod.GET)
     public String fileIndex() {
         log.info("文件上传主页");
         return "file/file";
@@ -49,7 +50,7 @@ public class IndexController {
      *
      * @return
      */
-    @RequestMapping(value = "messageIndex", method = RequestMethod.GET)
+    @RequestMapping(value = "/messageIndex", method = RequestMethod.GET)
     public String messageIndex() {
         log.info("文件上传主页");
         return "message/message";
@@ -60,7 +61,7 @@ public class IndexController {
      *
      * @return
      */
-    @RequestMapping(value = "loggerIndex", method = RequestMethod.GET)
+    @RequestMapping(value = "/loggerIndex", method = RequestMethod.GET)
     public String loggerIndex() {
         log.info("文件上传主页");
         return "log/logger";
@@ -71,14 +72,14 @@ public class IndexController {
      *
      * @return
      */
-    @RequestMapping(value = "about", method = RequestMethod.GET)
+    @RequestMapping(value = "/about", method = RequestMethod.GET)
     public String about() {
         log.info("关于个人的主页");
         return "about/about";
     }
 
     @ResponseBody
-    @RequestMapping(value = "formDataText", method = RequestMethod.POST)
+    @RequestMapping(value = "/formDataText", method = RequestMethod.POST)
     public Menu formDataText(Menu menu){
         log.debug("测试接收到的数据");
         log.debug(menu.toString());

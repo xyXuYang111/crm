@@ -1,5 +1,6 @@
 package com.xuyang.crm.controller;
 
+import com.xuyang.crm.Exception.BaseController;
 import com.xuyang.crm.log.service.LoggerMongoDB;
 import com.xuyang.crm.log.service.LoggerService;
 import com.xuyang.crm.model.Logger;
@@ -17,7 +18,7 @@ import java.util.Map;
 
 @Slf4j
 @Controller
-public class LoggerController {
+public class LoggerController extends BaseController {
 
     @Autowired
     private RedisService redisService;
@@ -28,7 +29,7 @@ public class LoggerController {
     @Autowired
     private LoggerMongoDB loggerMongoDB;
 
-    @RequestMapping(value = "loggerErrorList")
+    @RequestMapping(value = "/loggerErrorList")
     public String loggerErrorList(Model model) throws Exception{
         try {
             Map<Object, Object> objectMap = redisService.getMap("ERROR");
@@ -50,7 +51,7 @@ public class LoggerController {
         }
     }
 
-    @RequestMapping(value = "loggerRequestList")
+    @RequestMapping(value = "/loggerRequestList")
     public String loggerRequestList(Model model) throws Exception{
         try {
             Map<Object, Object> objectMap = redisService.getMap("REQUEST");
@@ -74,7 +75,7 @@ public class LoggerController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "loggerSqlList")
+    @RequestMapping(value = "/loggerSqlList")
     public String loggerSqlList(Model model, Logger logger) throws Exception{
         try {
            log.debug("数据库中的日志");
@@ -94,7 +95,7 @@ public class LoggerController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "loggerMongoDBList")
+    @RequestMapping(value = "/loggerMongoDBList")
     public String loggerMongoDBList(Model model, Logger logger) throws Exception{
         try {
             log.debug("mongoDB中的日志");

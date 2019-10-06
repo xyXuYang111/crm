@@ -15,10 +15,10 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>文件后台管理</title>
-    <link rel="stylesheet" href="../../../statics/layui/css/layui.css"/>
-    <link rel="stylesheet" href="../../../statics/css/main.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/statics/layui/css/layui.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/statics/css/main.css"/>
 
-    <script src="../../../statics/layui/layui.js"></script>
+    <script src="${pageContext.request.contextPath}/statics/layui/layui.js"></script>
 
 </head>
 
@@ -30,7 +30,7 @@
         <div class="layui-logo">Lottery后台管理</div>
 
         <ul class="layui-nav layui-layout-left">
-            <li class="layui-nav-item"><a href="/messageIndex.do">发送邮件</a></li>
+            <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/messageIndex.do">发送邮件</a></li>
         </ul>
     </div>
 

@@ -13,14 +13,14 @@
     <bean id="jedisConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxTotal" value="50"/>
         <property name="maxIdle" value="300"/>
-        <property name="MaxWaitMillis" value="10000"/>
+        <property name="MaxWaitMillis" value="1000000"/>
     </bean>
 
     <!-- redis连接工厂 -->
     <bean id="connectionFactoryRedis" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
         <property name="hostName" value="${hostName}"/>
         <property name="port" value="${port}"/>
-        <property name="password" value="${pwd}"/>
+        <property name="password" value="1234qwer"/>
         <property name="poolConfig" ref="jedisConfig"/>
     </bean>
 

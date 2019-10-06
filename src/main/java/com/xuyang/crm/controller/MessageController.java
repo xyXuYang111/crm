@@ -1,7 +1,6 @@
 package com.xuyang.crm.controller;
 
-import com.xuyang.crm.log.service.LoggerMongoDB;
-import com.xuyang.crm.log.service.LoggerService;
+import com.xuyang.crm.Exception.BaseController;
 import com.xuyang.crm.message.service.MessageMongoDB;
 import com.xuyang.crm.message.service.MessageService;
 import com.xuyang.crm.model.Message;
@@ -21,7 +20,7 @@ import java.util.List;
  */
 @Slf4j
 @Controller
-public class MessageController {
+public class MessageController extends BaseController {
 
     @Autowired
     private MessageService messageService;
@@ -29,13 +28,7 @@ public class MessageController {
     @Autowired
     private MessageMongoDB messageMongoDB;
 
-    @Autowired
-    private LoggerService loggerService;
-
-    @Autowired
-    private LoggerMongoDB loggerMongoDB;
-
-    @RequestMapping(value = "getMessageSqlList")
+    @RequestMapping(value = "/getMessageSqlList")
     public String getMessageSqlList(Model model, Message message) throws Exception{
         log.debug("通过sql的方式查询文本信息");
         List<Message> messageList = messageService.messageList(message);
@@ -43,7 +36,7 @@ public class MessageController {
         return "message/show";
     }
 
-    @RequestMapping(value = "getMessageMongoDBList")
+    @RequestMapping(value = "/getMessageMongoDBList")
     public String getMessageMongoDBList(Model model, Message message) throws Exception{
         log.debug("通过sql的方式查询文本信息");
         List<Message> messageList = messageMongoDB.messageList(message);
@@ -51,7 +44,7 @@ public class MessageController {
         return "message/show";
     }
 
-    @RequestMapping(value = "insertMessage", method = RequestMethod.POST)
+    @RequestMapping(value = "/insertMessage", method = RequestMethod.POST)
     public String insertMessage(Model model, Message message) throws Exception{
         log.debug("新增点滴");
         messageMongoDB.insertMessage(message);
@@ -59,7 +52,7 @@ public class MessageController {
         return "message/message";
     }
 
-    @RequestMapping(value = "getMessageSqlInfo")
+    @RequestMapping(value = "/getMessageSqlInfo")
     public String getMessageSqlInfo(Model model, Message message) throws Exception{
         log.debug("通过sql的方式查询文本信息");
         Message messageInfo = messageService.messageInfo(message);
@@ -67,7 +60,7 @@ public class MessageController {
         return "show3/index";
     }
 
-    @RequestMapping(value = "getMessageMongoDBInfo")
+    @RequestMapping(value = "/getMessageMongoDBInfo")
     public String getMessageMongoDBInfo(Model model, Message message) throws Exception{
         log.debug("通过sql的方式查询文本信息");
         Message messageInfo = messageMongoDB.messageInfo(message);

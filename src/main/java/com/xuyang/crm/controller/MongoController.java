@@ -1,5 +1,6 @@
 package com.xuyang.crm.controller;
 
+import com.xuyang.crm.Exception.BaseController;
 import com.xuyang.crm.model.MongoParam;
 import com.xuyang.crm.mongo.service.MongoParamService;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,7 @@ import java.util.UUID;
  */
 @Slf4j
 @Controller
-public class MongoController {
+public class MongoController extends BaseController {
 
     @Autowired
     private MongoParamService mongoParamService;
@@ -34,7 +35,7 @@ public class MongoController {
      * @throws Exception
      */
     @ResponseBody
-    @RequestMapping(value = "insertMongoDB", method = RequestMethod.POST)
+    @RequestMapping(value = "/insertMongoDB", method = RequestMethod.POST)
     public String insertMongoDB(@RequestBody MongoParam mongoParam) throws Exception{
         log.debug("mongoParam参数"+ mongoParam.toString());
         mongoParam.setId(UUID.randomUUID().toString());
@@ -49,7 +50,7 @@ public class MongoController {
      * @throws Exception
      */
     @ResponseBody
-    @RequestMapping(value = "updateMongoDB", method = RequestMethod.POST)
+    @RequestMapping(value = "/updateMongoDB", method = RequestMethod.POST)
     public String updateMongoDB(@RequestBody MongoParam mongoParam) throws Exception{
         log.debug("mongoParam参数"+ mongoParam.toString());
         mongoParamService.update(mongoParam);
@@ -63,7 +64,7 @@ public class MongoController {
      * @throws Exception
      */
     @ResponseBody
-    @RequestMapping(value = "selectOneMongoDB", method = RequestMethod.POST)
+    @RequestMapping(value = "/selectOneMongoDB", method = RequestMethod.POST)
     public MongoParam selectOneMongoDB(@RequestBody MongoParam mongoParam) throws Exception{
         log.debug("mongoParam参数"+ mongoParam.toString());
         MongoParam findMongoDB = mongoParamService.findByAnd(mongoParam);
@@ -77,7 +78,7 @@ public class MongoController {
      * @throws Exception
      */
     @ResponseBody
-    @RequestMapping(value = "selectListMongoDB", method = RequestMethod.POST)
+    @RequestMapping(value = "/selectListMongoDB", method = RequestMethod.POST)
     public List<MongoParam> selectListMongoDB(@RequestBody MongoParam mongoParam) throws Exception{
         log.debug("mongoParam参数"+ mongoParam.toString());
         List<MongoParam> findMongoDB = mongoParamService.findByOr(mongoParam);
@@ -92,7 +93,7 @@ public class MongoController {
      * @throws Exception
      */
     @ResponseBody
-    @RequestMapping(value = "selectListPageMongoDB", method = RequestMethod.POST)
+    @RequestMapping(value = "/selectListPageMongoDB", method = RequestMethod.POST)
     public List<MongoParam> selectListPageMongoDB(@RequestBody MongoParam mongoParam) throws Exception{
         log.debug("mongoParam参数"+ mongoParam.toString());
         // 每页10个
