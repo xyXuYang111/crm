@@ -6,10 +6,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>梧桐灯-关于我呢</title>
-    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/statics/img/ico/wutong.ico" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/statics/layui/css/layui.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/statics/css/globle.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/statics/css/about.css" />
+    <link rel="icon" type="image/x-icon" href="${contextPath}/statics/img/ico/wutong.ico" />
+    <link rel="stylesheet" href="${contextPath}/statics/layui/css/layui.css" />
+    <link rel="stylesheet" href="${contextPath}/statics/css/globle.css" />
+    <link rel="stylesheet" href="${contextPath}/statics/css/about.css" />
 
 
 </head>
@@ -21,7 +21,7 @@
     <div class="blog-content layui-container">
         <div class="announce border">
             <span class="layui-breadcrumb" lay-separator="-">
-                <a href="${pageContext.request.contextPath}/indexPage.do">首页</a>
+                <a href="${contextPath}/indexPage.do">首页</a>
                 <a href="#">关于一些人和事</a>
             </span>
         </div>

@@ -10,18 +10,18 @@
 	<meta name="description" content="彼岸天图传,图片上传,上传图片,图片上传网站,上传图片,图片上传,怎么上传图片到百度,图片上传网站,淘宝上传图片">
 	<meta charset="utf-8"/>
 	<title>彼岸天图传</title>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/statics/layui/css/layui.css"/>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/statics/css/main.css"/>
+	<link rel="stylesheet" href="${contextPath}/statics/layui/css/layui.css"/>
+	<link rel="stylesheet" href="${contextPath}/statics/css/main.css"/>
 
-	<script type="text/javascript" src="${pageContext.request.contextPath}/statics/js/options.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/statics/layui/jquery-3.2.1.min.js"></script>
-	<script src="${pageContext.request.contextPath}/statics/layui/layui.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/statics/layui/lay/modules/upload.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/statics/js/crypto.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/statics/js/token.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/statics/js/qiniu.min.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/statics/js/main.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/statics/js/file.js"></script>
+	<script type="text/javascript" src="${contextPath}/statics/js/options.js"></script>
+	<script type="text/javascript" src="${contextPath}/statics/layui/jquery-3.2.1.min.js"></script>
+	<script src="${contextPath}/statics/layui/layui.js"></script>
+	<script type="text/javascript" src="${contextPath}/statics/layui/lay/modules/upload.js"></script>
+	<script type="text/javascript" src="${contextPath}/statics/js/crypto.js"></script>
+	<script type="text/javascript" src="${contextPath}/statics/js/token.js"></script>
+	<script type="text/javascript" src="${contextPath}/statics/js/qiniu.min.js"></script>
+	<script type="text/javascript" src="${contextPath}/statics/js/main.js"></script>
+	<script type="text/javascript" src="${contextPath}/statics/js/file.js"></script>
 
 </head>
 
@@ -29,29 +29,29 @@
 		<header>
 			<ul class="layui-nav">
 				<li class="logo" >
-					<a href="${pageContext.request.contextPath}/indexPage.do">花開彼岸天</a>
+					<a href="${contextPath}/indexPage.do">花開彼岸天</a>
 				</li>
 				<li class="layui-nav-item" >
-					<a href="${pageContext.request.contextPath}/loggerIndex.do">日志清单</a>
+					<a href="${contextPath}/loggerIndex.do">日志清单</a>
 				</li>
 				<li class="layui-nav-item">
-					<a href="${pageContext.request.contextPath}/loggerSqlList.do">sql日志</a>
+					<a href="${contextPath}/loggerSqlList.do">sql日志</a>
 				</li>
 				<li class="layui-nav-item">
-					<a href="${pageContext.request.contextPath}/loggerMongoDBList.do">mongoDB日志</a>
+					<a href="${contextPath}/loggerMongoDBList.do">mongoDB日志</a>
 				</li>
 				<li class="layui-nav-item">
-					<a href="${pageContext.request.contextPath}/loggerErrorList.do">redis错误日志</a>
+					<a href="${contextPath}/loggerErrorList.do">redis错误日志</a>
 				</li>
 				<li class="layui-nav-item">
-					<a href="${pageContext.request.contextPath}/loggerRequestList.do">redis请求日志</a>
+					<a href="${contextPath}/loggerRequestList.do">redis请求日志</a>
 				</li>
 			</ul>
 		</header>
 		
 		<div class="main" id="container">
 			<h1>
-				<a href="${pageContext.request.contextPath}/fileIndex.do">
+				<a href="${contextPath}/fileIndex.do">
 					系统日日志
 				</a>
 			</h1>

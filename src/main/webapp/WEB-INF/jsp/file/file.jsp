@@ -10,16 +10,16 @@
 	<meta name="description" content="彼岸天图传,图片上传,上传图片,图片上传网站,上传图片,图片上传,怎么上传图片到百度,图片上传网站,淘宝上传图片">
 	<meta charset="utf-8"/>
 	<title>彼岸天图传</title>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/statics/layui/css/layui.css"/>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/statics/css/main.css"/>
+	<link rel="stylesheet" href="${contextPath}/statics/layui/css/layui.css"/>
+	<link rel="stylesheet" href="${contextPath}/statics/css/main.css"/>
 
-	<script type="text/javascript" src="${pageContext.request.contextPath}/statics/js/options.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/statics/layui/jquery-3.2.1.min.js"></script>
-	<script src="${pageContext.request.contextPath}/statics/layui/layui.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/statics/layui/lay/modules/upload.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/statics/js/crypto.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/statics/js/token.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/statics/js/qiniu.min.js"></script>
+	<script type="text/javascript" src="${contextPath}/statics/js/options.js"></script>
+	<script type="text/javascript" src="${contextPath}/statics/layui/jquery-3.2.1.min.js"></script>
+	<script src="${contextPath}/statics/layui/layui.js"></script>
+	<script type="text/javascript" src="${contextPath}/statics/layui/lay/modules/upload.js"></script>
+	<script type="text/javascript" src="${contextPath}/statics/js/crypto.js"></script>
+	<script type="text/javascript" src="${contextPath}/statics/js/token.js"></script>
+	<script type="text/javascript" src="${contextPath}/statics/js/qiniu.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/statics/js/main.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/statics/js/file.js"></script>
 

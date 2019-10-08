@@ -15,10 +15,10 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>日志显示</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/statics/layui/css/layui.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/statics/css/main.css"/>
+    <link rel="stylesheet" href="${contextPath}/statics/layui/css/layui.css"/>
+    <link rel="stylesheet" href="${contextPath}/statics/css/main.css"/>
 
-    <script src="${pageContext.request.contextPath}/statics/layui/layui.js"></script>
+    <script src="${contextPath}/statics/layui/layui.js"></script>
 
 </head>
 

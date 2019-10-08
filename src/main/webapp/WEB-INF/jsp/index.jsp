@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>梧桐灯-未来可期</title>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/statics/img/ico/wutong.ico" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/statics/layui/css/layui.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/statics/css/home.css" />
+    <link rel="icon" type="image/x-icon" href="${contextPath}/statics/img/ico/wutong.ico" />
+    <link rel="stylesheet" href="${contextPath}/statics/layui/css/layui.css" />
+    <link rel="stylesheet" href="${contextPath}/statics/css/home.css" />
 </head>
 <body>
     <div id="particles-js"> </div>
@@ -18,12 +18,12 @@
     </div>
     <div class="home-menu">
         <ul>
-            <li><a href="${pageContext.request.contextPath}/indexPage.do">首页</a></li>
-            <li><a href="${pageContext.request.contextPath}/indexPage.do">主页</a></li>
-            <li><a href="${pageContext.request.contextPath}/fileIndex.do">文件</a></li>
-            <li><a href="${pageContext.request.contextPath}/messageIndex.do">点滴</a></li>
-            <li><a href="${pageContext.request.contextPath}/loggerIndex.do">日志</a></li>
-            <li><a href="${pageContext.request.contextPath}/about.do">关于</a></li>
+            <li><a href="${contextPath}/indexPage.do">首页</a></li>
+            <li><a href="${contextPath}/indexPage.do">主页</a></li>
+            <li><a href="${contextPath}/fileIndex.do">文件</a></li>
+            <li><a href="${contextPath}/messageIndex.do">点滴</a></li>
+            <li><a href="${contextPath}/loggerIndex.do">日志</a></li>
+            <li><a href="${contextPath}/about.do">关于</a></li>
         </ul>
     </div>
     <div class="home-content">
@@ -35,9 +35,9 @@
     </div>
     <div class="home-shade"></div>
 
-    <script src="${pageContext.request.contextPath}/statics/layui/layui.js"></script>
-    <script src="${pageContext.request.contextPath}/statics/js/particles.min.js"></script>
-    <script src="${pageContext.request.contextPath}/statics/js/home.js"></script>
+    <script src="${contextPath}/statics/layui/layui.js"></script>
+    <script src="${contextPath}/statics/js/particles.min.js"></script>
+    <script src="${contextPath}/statics/js/home.js"></script>
 </body>
 
 <!-- Mirrored from www.wutongdeng.com/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 08 Sep 2019 05:42:09 GMT -->

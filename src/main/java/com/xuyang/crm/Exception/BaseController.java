@@ -19,8 +19,8 @@ public class BaseController {
     @ModelAttribute
     public void init(Model model, HttpServletRequest req) throws Exception {
         log.debug("前置处理");
-        String url = "http://192.168.133.131:8000/crm/";
-        log.debug("相对路径：" + url);
-        model.addAttribute("url", url);
+        String contextPath = req.getContextPath();
+        log.debug("相对路径：" + contextPath);
+        model.addAttribute("contextPath", contextPath);
     }
 }

@@ -16,7 +16,8 @@
 
     <mvc:default-servlet-handler/>
 
-    <mvc:redirect-view-controller path="/" redirect-url="indexPage.do"/>
+    <!-- 定义无Controller的view直接映射 -->
+    <mvc:view-controller path="/" view-name="redirect:/indexPage.do"/>
 
     <!-- 定义跳转的文件的前后缀 ，视图模式配置 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

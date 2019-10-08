@@ -15,7 +15,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>文件后台管理</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/statics/layui/css/layui.css"/>
+    <link rel="stylesheet" href="${contextPath}/statics/layui/css/layui.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/statics/css/main.css"/>
 
     <script src="../../../statics/layui/layui.js"></script>

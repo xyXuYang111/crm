@@ -10,18 +10,18 @@
 	<meta name="description" content="彼岸天图传,图片上传,上传图片,图片上传网站,上传图片,图片上传,怎么上传图片到百度,图片上传网站,淘宝上传图片">
 	<meta charset="utf-8"/>
 	<title>点滴列表</title>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/statics/layui/css/layui.css"/>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/statics/css/main.css"/>
+	<link rel="stylesheet" href="${contextPath}/statics/layui/css/layui.css"/>
+	<link rel="stylesheet" href="${contextPath}/statics/css/main.css"/>
 
-	<script type="text/javascript" src="${pageContext.request.contextPath}/statics/js/options.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/statics/layui/jquery-3.2.1.min.js"></script>
-	<script src="${pageContext.request.contextPath}/statics/layui/layui.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/statics/layui/lay/modules/upload.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/statics/js/crypto.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/statics/js/token.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/statics/js/qiniu.min.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/statics/js/main.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/statics/js/file.js"></script>
+	<script type="text/javascript" src="${contextPath}/statics/js/options.js"></script>
+	<script type="text/javascript" src="${contextPath}/statics/layui/jquery-3.2.1.min.js"></script>
+	<script src="${contextPath}/statics/layui/layui.js"></script>
+	<script type="text/javascript" src="${contextPath}/statics/layui/lay/modules/upload.js"></script>
+	<script type="text/javascript" src="${contextPath}/statics/js/crypto.js"></script>
+	<script type="text/javascript" src="${contextPath}/statics/js/token.js"></script>
+	<script type="text/javascript" src="${contextPath}/statics/js/qiniu.min.js"></script>
+	<script type="text/javascript" src="${contextPath}/statics/js/main.js"></script>
+	<script type="text/javascript" src="${contextPath}/statics/js/file.js"></script>
 
 </head>
 
@@ -29,23 +29,23 @@
 		<header>
 			<ul class="layui-nav">
 				<li class="logo" >
-					<a href="${pageContext.request.contextPath}/indexPage.do">花開彼岸天</a>
+					<a href="${contextPath}/indexPage.do">花開彼岸天</a>
 				</li>
 				<li class="layui-nav-item" >
-					<a href="${pageContext.request.contextPath}/messageIndex.do">点滴列表</a>
+					<a href="${contextPath}/messageIndex.do">点滴列表</a>
 				</li>
 				<li class="layui-nav-item">
-					<a href="${pageContext.request.contextPath}/getMessageSqlList.do">通过sql查询方式</a>
+					<a href="${contextPath}/getMessageSqlList.do">通过sql查询方式</a>
 				</li>
 				<li class="layui-nav-item">
-					<a href="${pageContext.request.contextPath}/getMessageMongoDBList.do">通过mongoDB查询方式</a>
+					<a href="${contextPath}/getMessageMongoDBList.do">通过mongoDB查询方式</a>
 				</li>
 			</ul>
 		</header>
 
 		<div class="main" id="container" style="padding:15px;">
 
-			<form id="form1" name="form1" class="layui-form" method="post" action="${pageContext.request.contextPath}/insertMessage.do">
+			<form id="form1" name="form1" class="layui-form" method="post" action="${contextPath}/insertMessage.do">
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 					<tr>
 						<td height="40">点滴标题</td>
