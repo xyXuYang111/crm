@@ -1,5 +1,6 @@
 package com.xuyang.crm.Exception;
 
+import com.xuyang.crm.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,5 +23,8 @@ public class BaseController {
         String contextPath = req.getContextPath();
         log.debug("相对路径：" + contextPath);
         model.addAttribute("contextPath", contextPath);
+
+        String date = DateUtil.getNowTime();
+        model.addAttribute("date", date);
     }
 }

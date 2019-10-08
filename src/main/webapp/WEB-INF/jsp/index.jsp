@@ -10,6 +10,9 @@
     <link rel="icon" type="image/x-icon" href="${contextPath}/statics/img/ico/wutong.ico" />
     <link rel="stylesheet" href="${contextPath}/statics/layui/css/layui.css" />
     <link rel="stylesheet" href="${contextPath}/statics/css/home.css" />
+    <script src="${contextPath}/statics/layui/layui.js"></script>
+    <script src="${contextPath}/statics/js/particles.min.js"></script>
+    <script src="${contextPath}/statics/js/home.js"></script>
 </head>
 <body>
     <div id="particles-js"> </div>
@@ -31,13 +34,9 @@
         <br />
         而你，在何处又才能放下包袱呢....
         <br />
-        <em>记于 2018.09.10</em>
+        <em>记于 ${date}</em>
     </div>
     <div class="home-shade"></div>
-
-    <script src="${contextPath}/statics/layui/layui.js"></script>
-    <script src="${contextPath}/statics/js/particles.min.js"></script>
-    <script src="${contextPath}/statics/js/home.js"></script>
 </body>
 
 <!-- Mirrored from www.wutongdeng.com/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 08 Sep 2019 05:42:09 GMT -->
