@@ -112,7 +112,7 @@
 
     <!--定时调度-->
     <xxl-version>1.9.2</xxl-version>
-    <quartz.version>2.3.0</quartz.version>
+    <quartz.version>2.3.2</quartz.version>
 
     <!--el-->
     <el.version>2.2.4</el.version>
