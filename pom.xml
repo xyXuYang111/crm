@@ -105,7 +105,7 @@
 
     <!--json-->
     <json-version>1.9.13</json-version>
-    <jackson.version>2.9.8</jackson.version>
+    <jackson.version>2.12.1</jackson.version>
     <jackson-core-asl.version>1.9.13</jackson-core-asl.version>
     <fastjson.version>1.1.40</fastjson.version>
     <json-api>20180130</json-api>
