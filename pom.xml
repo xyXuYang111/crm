@@ -54,7 +54,7 @@
     <commons-sanselan.version>0.97.0.incubator</commons-sanselan.version>
 
     <!--tool setting-->
-    <guava.version>27.0.1-jre</guava.version>
+    <guava.version>29.0-jre</guava.version>
     <dozer.version>5.5.1</dozer.version>
     <poi.version>3.17</poi.version>
     <freemarker.version>2.3.28</freemarker.version>
