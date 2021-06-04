@@ -95,7 +95,7 @@
     <taglib-version>1.1.2</taglib-version>
     <jstl-version>1.2</jstl-version>
     <jsp-api>2.2</jsp-api>
-    <http-client.version>4.5.6</http-client.version>
+    <http-client.version>4.5.13</http-client.version>
     <http-core.version>4.4.10</http-core.version>
     <http-mine.version>4.5.5</http-mine.version>
     <javax.servlet-api.veersion>3.1.0</javax.servlet-api.veersion>
