@@ -111,7 +111,7 @@
     <json-api>20180130</json-api>
 
     <!--定时调度-->
-    <xxl-version>1.9.2</xxl-version>
+    <xxl-version>2.3.0</xxl-version>
     <quartz.version>2.3.0</quartz.version>
 
     <!--el-->
