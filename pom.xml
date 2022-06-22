@@ -936,7 +936,7 @@
     <dependency>
       <groupId>org.elasticsearch.client</groupId>
       <artifactId>elasticsearch-rest-client</artifactId>
-      <version>6.3.1</version>
+      <version>6.8.15</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.core/jersey-client -->
